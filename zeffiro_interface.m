@@ -1,17 +1,17 @@
 function zeffiro_interface(varargin)
 %This fuction starts Zeffiro Interface. It can be run with a variable
 %number of arguments, which can be called as a list of name-value pairs as
-%follows: 
+%follows:
 %
 %zeffiro_interface('property name 1','property value 1','property name 2','property value 2');
 %
 %This will enable running Zeffiro with or without a display and performing
 %different operations. The list of properties (and their values) is the
-%following: 
+%following:
 %
-%start_mode (display/nodisplay), open_project (project file name), 
+%start_mode (display/nodisplay), open_project (project file name),
 
- 
+
 if evalin('base','exist(''zef'');')
 error('It looks like that another instance of Zeffiro interface already open. To enable this script, clear zef by command ''clear zef'' in the base workspace.')
 end
@@ -21,9 +21,10 @@ zef_data.program_path = program_path;
 zef_data.code_path = [zef_data.program_path filesep 'm'];
 zef_data.cluster_path =  [zef_data.program_path filesep 'cluster'];
 
+addpath(genpath([zef_data.program_path '/m']));
 addpath(genpath([zef_data.program_path '/mlapp']));
-addpath(genpath([zef_data.program_path '/fig']));  
-addpath(genpath([zef_data.program_path zef_data.code_path])); 
+addpath(genpath([zef_data.program_path '/fig']));
+addpath(genpath([zef_data.program_path zef_data.code_path]));
 addpath(genpath([zef_data.program_path '/plugins']));
 addpath(genpath([zef_data.program_path '/profile']));
 addpath(genpath([zef_data.program_path '/cluster']));
@@ -42,10 +43,10 @@ start_mode = 'display';
 
 while option_counter <= length(varargin)
 
-if ismember(lower(varargin{option_counter}),{lower('display'),lower('nodisplay')}) 
+if ismember(lower(varargin{option_counter}),{lower('display'),lower('nodisplay')})
 start_mode = lower(varargin{option_counter});
 option_counter = option_counter + 1;
-elseif  ismember(lower(varargin{option_counter}),{'start_mode'}) 
+elseif  ismember(lower(varargin{option_counter}),{'start_mode'})
 start_mode = lower(varargin{option_counter+1});
 option_counter = option_counter + 2;
 elseif ismember(varargin{option_counter},lower('profile_name'))
@@ -71,7 +72,7 @@ evalin('base','zeffiro_interface_start');
 option_counter = 1;
 
 while option_counter <= length(varargin)
-    
+
 if isequal(varargin{option_counter},lower('open_project'))
 open_project_file = varargin{option_counter+1};
 [file_path, file_1, file_2] = fileparts(open_project_file);
@@ -173,7 +174,7 @@ if isempty(file_2)
 end
 zef_data.file_path = [file_path];
 zef_data.file = [file_1 file_2];
-zef_data.save_switch = 1; 
+zef_data.save_switch = 1;
 assignin('base','zef_data',zef_data);
 evalin('base','zef_assign_data;');
 clear zef_data;
@@ -191,7 +192,7 @@ file_2 = '.mat';
 end
 zef_data.file_path = [file_path];
 zef_data.file = [file_1 file_2];
-zef_data.save_switch = 1; 
+zef_data.save_switch = 1;
 assignin('base','zef_data',zef_data);
 evalin('base','zef_assign_data;');
 clear zef_data;
@@ -202,7 +203,7 @@ open_figure_file = varargin{option_counter+1};
 if not(iscell(open_figure_file))
     open_figure_file_aux = open_figure_file;
     open_figure_file = cell(0);
-    open_figure_file{1} = open_figure_file_aux; 
+    open_figure_file{1} = open_figure_file_aux;
 end
 for i = 1 : length(open_figure_file)
 [file_path, file_1, file_2] = fileparts(open_figure_file{i});
@@ -215,7 +216,7 @@ if isempty(file_2)
 end
 zef_data.file_path = [file_path];
 zef_data.file = [file_1 file_2];
-zef_data.save_switch = 1; 
+zef_data.save_switch = 1;
 assignin('base','zef_data',zef_data);
 evalin('base','zef_assign_data;');
 clear zef_data;
@@ -230,7 +231,7 @@ for i = 3 : length(dir_aux)
 if isequal(file_2,'.fig')
 zef_data.file_path = [file_path];
 zef_data.file = [file_1 file_2];
-zef_data.save_switch = 1; 
+zef_data.save_switch = 1;
 assignin('base','zef_data',zef_data);
 evalin('base','zef_assign_data;');
 clear zef_data;
@@ -244,7 +245,7 @@ run_script_name = varargin{option_counter+1};
 if not(iscell(run_script_name))
    run_script_name_aux = run_script_name;
     run_script_name = cell(0);
-    run_script_name{1} = run_script_name_aux; 
+    run_script_name{1} = run_script_name_aux;
 end
 for i = 1 : length(run_script_name)
 evalin('base',run_script_name{i});
@@ -276,7 +277,7 @@ end
 end
 
 else
-    
+
 evalin('base','zeffiro_interface_start');
 
 end
