@@ -5,8 +5,8 @@ function [L_eeg, dipole_locations, dipole_directions] = lead_field_eeg_fem(nodes
 %
 % Input:
 % ------
-% - nodes              = N x 3
-% - elements           = M x 4
+% - nodes              = N x 3 3D positions of the mesh nodes
+% - elements           = M x 4 matrix of tetrahedra, where each row contains the coordinates of a set of 4 nodes
 % - sigma              = M x 1 (or M x 6, one row: sigma_11 sigma_22 sigma_33 sigma_12 sigma_13 sigma_23)
 % - electrodes         = L x 3
 % - brain_ind          = P x 1 (The set of elements that potentially contain source currents, by default contains all elements)
