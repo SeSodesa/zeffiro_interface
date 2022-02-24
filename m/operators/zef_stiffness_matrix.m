@@ -87,15 +87,23 @@ function A = zef_stiffness_matrix(nodes, tetrahedra, tensor)
 
             A_part = sparse(tetrahedra(:,i),tetrahedra(:,j), entry_vec',N,N);
 
-            clear entry_vec;
-
             % Sum the integrand to 𝐴 iteratively. This corresponds to integration.
 
             if i == j
+
+                % On the diagonal, no need to do anthing special
+
                 A = A + A_part;
+
             else
+
+                % Stiffness matrices are symmetric, so what is added to the
+                % lower triangle must be added to the upper one. Hence the
+                % added transpose.
+
                 A = A + A_part ;
                 A = A + A_part';
+
             end
         end
     end
