@@ -101,8 +101,7 @@ function A = zef_stiffness_matrix(nodes, tetrahedra, tensor)
                 % lower triangle must be added to the upper one. Hence the
                 % added transpose.
 
-                A = A + A_part ;
-                A = A + A_part';
+                A = A + A_part + A_part';
 
             end
         end
