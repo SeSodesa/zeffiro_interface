@@ -39,16 +39,10 @@ source_model = evalin('base','zef.source_model');
 
 if iscell(elements)
         tetrahedra = elements{1};
-        prisms = [];
         K2 = size(tetrahedra,1);
         waitbar_length = 4;
-        if length(elements)>1
-        prisms = elements{2};
-        waitbar_length = 10;
-        end
     else
         tetrahedra = elements;
-        prisms = [];
         K2 = size(tetrahedra,1);
         waitbar_length = 4;
     end
@@ -61,15 +55,6 @@ if iscell(elements)
         else
         rho_tetrahedra = rho{1};
         end
-        rho_prisms = [];
-        if length(rho)>1
-        rho{2} = rho{2}';
-        if size(rho{2},1) == 1
-        rho_prisms = [repmat(rho{2},3,1) ; zeros(3,size(rho{2},2))];
-        else
-        rho_prisms = rho{2};
-        end
-        end
     else
         rho = rho';
         if size(rho,1) == 1
@@ -77,7 +62,6 @@ if iscell(elements)
         else
         rho_tetrahedra = rho;
         end
-        rho_prisms = [];
     end
     clear elements;
 

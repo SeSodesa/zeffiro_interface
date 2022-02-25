@@ -5,7 +5,7 @@ set(groot,'defaultFigureVisible','on')
 zef.fieldnames = fieldnames(zef_data);
 for zef_i = 1:length(zef.fieldnames)
 zef.(zef.fieldnames{zef_i}) = zef_data.(zef.fieldnames{zef_i});
-end   
+end
 
 set(zef.h_transform_table,'columnformat',{'numeric','char'});
 set(zef.h_transform_table,'columnformat',{'numeric','char'});
@@ -76,7 +76,7 @@ set(zef.h_menu_import_reconstruction                 ,'MenuSelectedFcn','zef.inv
 set(zef.h_menu_import_current_pattern                ,'MenuSelectedFcn','zef.inv_import_type = 3; zef_inv_import;zef_update;');
 set(zef.h_menu_import_resection_points              ,'MenuSelectedFcn','zef_import_resection_points;');
 set(zef.h_menu_reset_lead_field                      ,'MenuSelectedFcn','[zef.yesno] = questdlg(''Reset the lead field?'',''Yes'',''No''); if isequal(zef.yesno,''Yes''); zef.L = []; end;zef_update;');
-set(zef.h_menu_reset_volume_data                     ,'MenuSelectedFcn','[zef.yesno] = questdlg(''Reset volume data?'',''Yes'',''No''); if isequal(zef.yesno,''Yes'');zef.nodes=[];zef.nodes_raw=[];zef.tetra=[];zef.tetra_raw=[];zef.domain_labels_aux=[];zef.sigma_vec=[];zef.surface_triangles=[];zef.brain_ind=[];zef.source_ind=[];zef.sigma_prisms=[];zef.prisms=[];end;zef_update;');
+set(zef.h_menu_reset_volume_data                     ,'MenuSelectedFcn','[zef.yesno] = questdlg(''Reset volume data?'',''Yes'',''No''); if isequal(zef.yesno,''Yes'');zef.nodes=[];zef.nodes_raw=[];zef.tetra=[];zef.tetra_raw=[];zef.domain_labels_aux=[];zef.sigma_vec=[];zef.surface_triangles=[];zef.brain_ind=[];zef.source_ind=[];end;zef_update;');
 set(zef.h_menu_reset_measurement_data                ,'MenuSelectedFcn','[zef.yesno] = questdlg(''Reset the measurement data?'',''Yes'',''No''); if isequal(zef.yesno,''Yes''); zef.measurements = []; end;zef_update;');
 set(zef.h_menu_reset_reconstruction                  ,'MenuSelectedFcn','[zef.yesno] = questdlg(''Reset the reconstruction?'',''Yes'',''No''); if isequal(zef.yesno,''Yes''); zef.reconstruction = []; end;zef_update;');
 set(zef.h_menu_merge_lead_field                      ,'MenuSelectedFcn','merge_lead_field;zef_update;');
@@ -132,18 +132,18 @@ zef.mlapp = 1;
 clear zef_data;
 
 zef.aux_dir = dir([zef.program_path filesep 'profile']);
-zef.aux_cell = cell(0); 
-zef_j = 0; 
+zef.aux_cell = cell(0);
+zef_j = 0;
 for zef_i = 3 : length(zef.aux_dir)
     if zef.aux_dir(zef_i).isdir
-        zef_j = zef_j + 1; 
-   zef.aux_cell{zef_j} = zef.aux_dir(zef_i).name; 
+        zef_j = zef_j + 1;
+   zef.aux_cell{zef_j} = zef.aux_dir(zef_i).name;
     end
 end
 zef.h_profile_name.Items = zef.aux_cell;
 zef = rmfield(zef,{'aux_dir','aux_cell'});
 zef.h_profile_name.Value = zef.profile_name;
-zef.h_profile_name.ValueChangedFcn = 'zef.profile_name = zef.h_profile_name.Value;';    
+zef.h_profile_name.ValueChangedFcn = 'zef.profile_name = zef.h_profile_name.Value;';
 
 zef.h_project_tag.Value = zef.project_tag;
 
