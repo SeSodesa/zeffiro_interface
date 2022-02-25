@@ -1,5 +1,6 @@
-function gradients = zef_volume_gradient(nodes, tetrahedra, node_index)
-% Calculates all of the ∇𝑉 of tetrahedra in the generated finite element mesh
+function gradients = zef_volume_gradient(nodes, shapes, node_index, fdn)
+
+% Calculates all of the ∇𝑉 of shapes in the generated finite element mesh
 % as a triple product a ⋅ (b × c). See https://math.stackexchange.com/q/797845
 % for the general idea.
 %
@@ -7,39 +8,37 @@ function gradients = zef_volume_gradient(nodes, tetrahedra, node_index)
 %
 % - nodes: a matrix that contains the 3D coordinates of each node in the
 %   finite element mesh as its rows.
-% - tetrahedra: a matrix that contains the 4 nodes of tetrahedra in the finite
-%   element mesh as its rows.
+%
+% - shapes: a matrix that contains the nodes of shapes such as tetrahedra or
+%   prisms in the finite element mesh as its rows.
+%
+% - node_index: index of a node within a shape like a tetrahedron or a prism.
+%
+% - fdn: face-defining neighbours, an M × 3 matrix, where M is the number of
+%   nodes in a given shape, and where the vectors fdn[:,2] - fdn[:,1] and
+%   fdn[:,3] - fdn[:,1] define the planes that the faces of the shape reside
+%   in.
 %
 % output: a set of volume gradients ∇𝑉
 
-    % Helper matrix with rows determining the indices of the nodes whose
-    % differences will be taken.
-
-    ind_m = [
-        2 3 4 ;
-        3 4 1 ;
-        4 1 2 ;
-        1 2 3
-    ];
-
     % Cross products between the direction vectors that determine the faces of
-    % the tetrahedra. Results in the surface normals of the faces.
+    % the shapes. Results in the surface normals of the faces.
 
-    normals = 1/2 * cross(                          ...
-        nodes(tetrahedra(:,ind_m(node_index,2)),:)' ...
-        -                                           ...
-        nodes(tetrahedra(:,ind_m(node_index,1)),:)' ...
-    ,                                               ...
-        nodes(tetrahedra(:,ind_m(node_index,3)),:)' ...
-        -                                           ...
-        nodes(tetrahedra(:,ind_m(node_index,1)),:)' ...
+    normals = 1/2 * cross(                      ...
+        nodes(shapes(:,fdn(node_index,2)),:)'   ...
+        -                                       ...
+        nodes(shapes(:,fdn(node_index,1)),:)'   ...
+    ,                                           ...
+        nodes(shapes(:,fdn(node_index,3)),:)'   ...
+        -                                       ...
+        nodes(shapes(:,fdn(node_index,1)),:)'   ...
     );
 
     % Dot products between the face normals and the direction vectors between
     % a fixed node and other nodes in a tetrahedron.
 
-    fixed_nodes = nodes(tetrahedra(:,node_index),:)'
-    other_nodes = nodes(tetrahedra(:,ind_m(node_index,1)),:)'
+    fixed_nodes = nodes(shapes(:,node_index),:)'
+    other_nodes = nodes(shapes(:,fdn(node_index,1)),:)'
     direction_vectors = fixed_nodes - other_nodes
 
     gradients = normals .* repmat(  ...
