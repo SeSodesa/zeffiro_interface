@@ -124,7 +124,7 @@ tic;
 load_vec_count = 0;
 for i = 1 : 4
 
-grad_1 = zef_volume_gradient(nodes, tetrahedra, i);
+grad_1 = zef_volume_gradient(nodes, tetrahedra, i, zef_tetra_fdn);
 
 for j = 1 : L
 
@@ -160,14 +160,14 @@ waitbar(0,h,'System matrices.')
 
 for i = 1 : 4
 
-grad_1 = zef_volume_gradient(nodes, tetrahedra, i);
+grad_1 = zef_volume_gradient(nodes, tetrahedra, i, zef_tetra_fdn);
 
 for j = i : 4
 
 if i == j
 grad_2 = grad_1;
 else
-grad_2 = zef_volume_gradient(nodes, tetrahedra, j);
+grad_2 = zef_volume_gradient(nodes, tetrahedra, j, zef_tetra_fdn);
 end
 
 entry_vec = zeros(1,size(tetrahedra,1));
