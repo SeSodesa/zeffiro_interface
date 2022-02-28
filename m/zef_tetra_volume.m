@@ -75,6 +75,6 @@ function V = zef_tetra_volume(nodes, tetrahedra, take_absolute_value)
     % Flip the sign of the volume, if needed.
 
     if take_absolute_value
-        V = abs(V)
+        V = abs(V);
     end
 end
