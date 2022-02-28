@@ -269,12 +269,8 @@ clear tetra_new_ind tetra_new_out;
 
 waitbar(10/length_waitbar,h,'Surface refinement.');
 
-Aux_mat = [nodes(tetra(:,1),:)'; nodes(tetra(:,2),:)'; nodes(tetra(:,3),:)'] - repmat(nodes(tetra(:,4),:)',3,1);
-ind_m = [1 4 7; 2 5 8 ; 3 6 9];
-tilavuus = (Aux_mat(ind_m(1,1),:).*(Aux_mat(ind_m(2,2),:).*Aux_mat(ind_m(3,3),:)-Aux_mat(ind_m(2,3),:).*Aux_mat(ind_m(3,2),:)) ...
-- Aux_mat(ind_m(1,2),:).*(Aux_mat(ind_m(2,1),:).*Aux_mat(ind_m(3,3),:)-Aux_mat(ind_m(2,3),:).*Aux_mat(ind_m(3,1),:)) ...
-+ Aux_mat(ind_m(1,3),:).*(Aux_mat(ind_m(2,1),:).*Aux_mat(ind_m(3,2),:)-Aux_mat(ind_m(2,2),:).*Aux_mat(ind_m(3,1),:)))/6;
-clear Aux_mat;
+tilavuus = zef_tetra_volume(nodes, tetrahedra, false);
+
 I = find(tilavuus > 0);
 tetra(I,:) = tetra(I,[2 1 3 4]);
 clear tilavuus I;
