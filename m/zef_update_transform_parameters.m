@@ -3,7 +3,7 @@ zef.aux_field_2 = {'scaling','x_correction','y_correction','z_correction','xy_ro
 
 for zef_i = 1 : size(zef.aux_field_1,1)
 
-   evalin('base',['zef.' zef.current_tag '_' zef.aux_field_2{zef_i} '(' num2str(zef.current_transform) ')=' num2str(zef.aux_field_1{zef_i,2}) ';']);
+evalin('base',['zef.' zef.current_tag '_' zef.aux_field_2{zef_i} '(' num2str(zef.current_transform) ')=' num2str(zef.aux_field_1{zef_i,2}) ';']);
 
 end
 

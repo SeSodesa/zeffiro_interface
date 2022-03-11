@@ -2,7 +2,7 @@ function [d] = zef_determinant(a,b,c,varargin)
 
 det_dir = 2;
 if not(isempty(varargin))
-    det_dir = varargin{1};
+det_dir = varargin{1};
 end
 
 if det_dir == 1;

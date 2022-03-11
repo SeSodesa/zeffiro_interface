@@ -3,9 +3,9 @@ function contrast_val = zef_update_contrast(varargin)
 slider_value_new = evalin('base','zef.h_update_contrast.Value');
 
 if not(isempty(varargin))
-      h = varargin{1};
+h = varargin{1};
 else
-    h = evalin('base','zef.h_axes1');
+h = evalin('base','zef.h_axes1');
 end
 
 if not(isempty(varargin))

@@ -6,9 +6,9 @@
 %Designer or app's functionalities to crash or both of them
 if isfield(zef,'GMM.apps')
 if isfield(zef.GMM.apps,'main')
-    if isvalid(zef.GMM.apps.main)
-        eval(zef.GMM.apps.main.UIFigure.CloseRequestFcn);
-    end
+if isvalid(zef.GMM.apps.main)
+eval(zef.GMM.apps.main.UIFigure.CloseRequestFcn);
+end
 end
 end
 zef.GMM.apps.main = GMModelApp;
@@ -51,17 +51,17 @@ zef_GMM_values{12} = '0.3';
 zef_GMM_values{13} = '1';
 %stop frame
 if iscell(zef.reconstruction)
-    zef_GMM_values{14} = num2str(length(zef.reconstruction));
+zef_GMM_values{14} = num2str(length(zef.reconstruction));
 else
-    zef_GMM_values{14} = '1';
+zef_GMM_values{14} = '1';
 end
 %start frame for calculation
 zef_GMM_values{17} = '1';
 %stop frame for calculation
 if iscell(zef.reconstruction)
-    zef_GMM_values{18} = num2str(length(zef.reconstruction));
+zef_GMM_values{18} = num2str(length(zef.reconstruction));
 else
-    zef_GMM_values{18} = '1';
+zef_GMM_values{18} = '1';
 end
 %time point for amplitude bar plot
 zef_GMM_values{20} = '';
@@ -102,24 +102,24 @@ zef_GMM_values{zef_i} = '1';
 %number of dipoles
 zef_i = zef_i+1;
 if isfield(zef.GMM,'model')
-    if iscell(zef.GMM.model)
-        zef_GMM_values{zef_i} = num2str(zef.GMM.model{find(~cellfun(@isempty,zef.GMM.model),1)}.NumComponents);
-    else
-        zef_GMM_values{zef_i} = num2str(zef.GMM.model.NumComponents);
-    end
+if iscell(zef.GMM.model)
+zef_GMM_values{zef_i} = num2str(zef.GMM.model{find(~cellfun(@isempty,zef.GMM.model),1)}.NumComponents);
 else
-    zef_GMM_values{zef_i} = '3';
+zef_GMM_values{zef_i} = num2str(zef.GMM.model.NumComponents);
+end
+else
+zef_GMM_values{zef_i} = '3';
 end
 %number of ellipsoids
 zef_i = zef_i+1;
 if isfield(zef.GMM,'model')
-    if iscell(zef.GMM.model)
-        zef_GMM_values{zef_i} = num2str(zef.GMM.model{find(~cellfun(@isempty,zef.GMM.model),1)}.NumComponents);
-    else
-        zef_GMM_values{zef_i} = num2str(zef.GMM.model.NumComponents);
-    end
+if iscell(zef.GMM.model)
+zef_GMM_values{zef_i} = num2str(zef.GMM.model{find(~cellfun(@isempty,zef.GMM.model),1)}.NumComponents);
 else
-    zef_GMM_values{zef_i} = '3';
+zef_GMM_values{zef_i} = num2str(zef.GMM.model.NumComponents);
+end
+else
+zef_GMM_values{zef_i} = '3';
 end
 %manually seleced dipole components
 zef_i = zef_i+1;
@@ -138,45 +138,45 @@ zef.GMM.meta{3} = zef_i;
 
 zef_GMM_label_names = repmat({''},length(zef_GMM_values),1);
 else
-    zef_load_GMM(zef.GMM);
-    zef_GMM_update;
-    zef_GMM_values = zef.GMM.parameters{:,2};
-    zef_GMM_label_names = zef.GMM.parameters{:,1};
-    zef_GMM_tags = zef.GMM.parameters{:,3};
-    zef.GMM.meta{1} = length(findobj(zef.GMM.apps.main.UIFigure,{'Type','uieditfield','-or','Type','uidropdown'}));
+zef_load_GMM(zef.GMM);
+zef_GMM_update;
+zef_GMM_values = zef.GMM.parameters{:,2};
+zef_GMM_label_names = zef.GMM.parameters{:,1};
+zef_GMM_tags = zef.GMM.parameters{:,3};
+zef.GMM.meta{1} = length(findobj(zef.GMM.apps.main.UIFigure,{'Type','uieditfield','-or','Type','uidropdown'}));
 end
 
 zef_props = properties(zef.GMM.apps.main);
 zef_n=0;
 for zef_i = 2:length(zef_props)
-    if strcmp(zef.GMM.apps.main.(zef_props{zef_i-1}).Type,'uilabel')
-        zef_n=zef_n+1;
-        zef_GMM_label_names{zef_n}=zef.GMM.apps.main.(zef_props{zef_i-1}).Text;
-        if ~isempty(zef_GMM_values{zef_n}) || ~strcmp(zef.GMM.apps.main.(zef_props{zef_i}).Type,'uidropdown')
-        zef.GMM.apps.main.(zef_props{zef_i}).Value = zef_GMM_values{zef_n};
-        end
-        if isfield(zef,zef_props{zef_i})
-            if ~ischar(zef.(zef_props{zef_i}))
-            zef.GMM.apps.main.(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
-            %zef = rmfield(zef,zef_props{zef_i});
-            zef_GMM_label_names{zef_n}=zef.GMM.apps.main.(zef_props{zef_i-1}).Text;
-            zef_GMM_values{zef_n}=zef.GMM.apps.main.(zef_props{zef_i}).Value;
-            else
-            zef.GMM.apps.main.(zef_props{zef_i}).Value = zef.(zef_props{zef_i});
-            %zef = rmfield(zef,zef_props{zef_i});
-            zef_GMM_label_names{zef_n}=zef.GMM.apps.main.(zef_props{zef_i-1}).Text;
-            zef_GMM_values{zef_n}=zef.GMM.apps.main.(zef_props{zef_i}).Value;
-            end
-        end
-    end
+if strcmp(zef.GMM.apps.main.(zef_props{zef_i-1}).Type,'uilabel')
+zef_n=zef_n+1;
+zef_GMM_label_names{zef_n}=zef.GMM.apps.main.(zef_props{zef_i-1}).Text;
+if ~isempty(zef_GMM_values{zef_n}) || ~strcmp(zef.GMM.apps.main.(zef_props{zef_i}).Type,'uidropdown')
+zef.GMM.apps.main.(zef_props{zef_i}).Value = zef_GMM_values{zef_n};
+end
+if isfield(zef,zef_props{zef_i})
+if ~ischar(zef.(zef_props{zef_i}))
+zef.GMM.apps.main.(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
+%zef = rmfield(zef,zef_props{zef_i});
+zef_GMM_label_names{zef_n}=zef.GMM.apps.main.(zef_props{zef_i-1}).Text;
+zef_GMM_values{zef_n}=zef.GMM.apps.main.(zef_props{zef_i}).Value;
+else
+zef.GMM.apps.main.(zef_props{zef_i}).Value = zef.(zef_props{zef_i});
+%zef = rmfield(zef,zef_props{zef_i});
+zef_GMM_label_names{zef_n}=zef.GMM.apps.main.(zef_props{zef_i-1}).Text;
+zef_GMM_values{zef_n}=zef.GMM.apps.main.(zef_props{zef_i}).Value;
+end
+end
+end
 end
 
 %set up parameters table
 if ~isfield(zef.GMM,'parameters')
-    zef_GMM_tags=findobj(zef.GMM.apps.main.UIFigure,'-property','Value');
-    zef_GMM_tags = flip(get(zef_GMM_tags,'Tag'));
-    zef_GMM_tags = [zef_GMM_tags;{'model_criterion';'initial_mode';'replicates';'logpost_threshold';'comp_prob';'smooth_std'}];
-    zef_GMM_tags = [zef_GMM_tags;{'comp_ord';'dip_num';'ellip_num';'dip_comp';'ellip_comp';'ellip_coloring';'colors'}];
+zef_GMM_tags=findobj(zef.GMM.apps.main.UIFigure,'-property','Value');
+zef_GMM_tags = flip(get(zef_GMM_tags,'Tag'));
+zef_GMM_tags = [zef_GMM_tags;{'model_criterion';'initial_mode';'replicates';'logpost_threshold';'comp_prob';'smooth_std'}];
+zef_GMM_tags = [zef_GMM_tags;{'comp_ord';'dip_num';'ellip_num';'dip_comp';'ellip_comp';'ellip_coloring';'colors'}];
 end
 
 zef.GMM.parameters = table(zef_GMM_label_names,zef_GMM_values,zef_GMM_tags,'VariableNames',{'Parameter Names','Values','Tags'});

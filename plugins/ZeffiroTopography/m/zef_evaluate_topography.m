@@ -81,9 +81,9 @@ z_aux = z_aux + f(sensor_ind)./(evalin('base','zef.top_regularization_parameter'
 end
 
 if number_of_frames > 1
-    z{f_ind} = z_aux;
+z{f_ind} = z_aux;
 else
-    z = z_aux;
+z = z_aux;
 end
 
 end

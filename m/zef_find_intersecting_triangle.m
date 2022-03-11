@@ -3,7 +3,7 @@ function [tri_ind, lambda_1, lambda_2, lambda_3] = zef_find_intersecting_triangl
 search_type = 'convex';
 
 if not(isempty(varargin))
-    search_type = varargin{1};
+search_type = varargin{1};
 end
 
 tri_ind = [];
@@ -36,7 +36,7 @@ lambda_2 = lambda_2(tri_ind);
 lambda_3 = lambda_3(tri_ind);
 
 else
-   tri_ind = [];
+tri_ind = [];
 lambda_1 = [];
 lambda_2 = [];
 lambda_3 = [];

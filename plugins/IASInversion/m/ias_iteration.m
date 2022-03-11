@@ -39,15 +39,15 @@ reconstruction_information.pm_val = evalin('base','zef.inv_prior_over_measuremen
 
 source_count = n_interp;
 if evalin('base','zef.ias_normalize_data')==1;
-    normalize_data = 'maximum';
+normalize_data = 'maximum';
 else
-    normalize_data = 'average';
+normalize_data = 'average';
 end
 
 if ias_hyperprior == 1
-    balance_spatially = 1;
+balance_spatially = 1;
 else
-    balance_spatially = 0;
+balance_spatially = 0;
 end
 if evalin('base','zef.inv_hyperprior') == 1
 [beta, theta0] = zef_find_ig_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L,size(L,2),evalin('base','zef.ias_normalize_data'),balance_spatially,evalin('base','zef.inv_hyperprior_weight'));

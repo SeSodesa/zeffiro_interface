@@ -79,10 +79,10 @@ open_project_file = varargin{option_counter+1};
 [file_path, file_1, file_2] = fileparts(open_project_file);
 file_path = [file_path filesep];
 if isempty(file_path)
-    file_path = './data/';
+file_path = './data/';
 end
 if isempty(file_2)
-    file_2 = '.mat';
+file_2 = '.mat';
 end
 zef_data.file_path = [file_path];
 zef_data.file = [file_1 file_2];
@@ -96,10 +96,10 @@ import_segmentation_file = varargin{option_counter+1};
 [file_path, file_1, file_2] = fileparts(import_segmentation_file);
 file_path = [file_path filesep];
 if isempty(file_path)
-    file_path = './data/';
+file_path = './data/';
 end
 if isempty(file_2)
-    file_2 = '.mat';
+file_2 = '.mat';
 end
 zef_data.file_path = [file_path];
 zef_data.file = [file_1 file_2];
@@ -114,10 +114,10 @@ import_segmentation_file = varargin{option_counter+1};
 [file_path, file_1, file_2] = fileparts(import_segmentation_file);
 file_path = [file_path filesep];
 if isempty(file_path)
-    file_path = './data/';
+file_path = './data/';
 end
 if isempty(file_2)
-    file_2 = '.mat';
+file_2 = '.mat';
 end
 zef_data.file_path = [file_path];
 zef_data.file = [file_1 file_2];
@@ -132,10 +132,10 @@ import_segmentation_file = varargin{option_counter+1};
 [file_path, file_1, file_2] = fileparts(import_segmentation_file);
 file_path = [file_path filesep];
 if isempty(file_path)
-    file_path = './data/';
+file_path = './data/';
 end
 if isempty(file_2)
-    file_2 = '.mat';
+file_2 = '.mat';
 end
 zef_data.file_path = [file_path];
 zef_data.file = [file_1 file_2];
@@ -150,10 +150,10 @@ import_segmentation_file = varargin{option_counter+1};
 [file_path, file_1, file_2] = fileparts(import_segmentation_file);
 file_path = [file_path filesep];
 if isempty(file_path)
-    file_path = './data/';
+file_path = './data/';
 end
 if isempty(file_2)
-    file_2 = '.mat';
+file_2 = '.mat';
 end
 zef_data.file_path = [file_path];
 zef_data.file = [file_1 file_2];
@@ -168,10 +168,10 @@ save_project_file = varargin{option_counter+1};
 [file_path, file_1, file_2] = fileparts(save_project_file);
 file_path = [file_path filesep];
 if isempty(file_path)
-    file_path = './data/';
+file_path = './data/';
 end
 if isempty(file_2)
-    file_2 = '.mat';
+file_2 = '.mat';
 end
 zef_data.file_path = [file_path];
 zef_data.file = [file_1 file_2];
@@ -202,18 +202,18 @@ option_counter = option_counter + 2;
 elseif ismember(varargin{option_counter},lower('open_figure'))
 open_figure_file = varargin{option_counter+1};
 if not(iscell(open_figure_file))
-    open_figure_file_aux = open_figure_file;
-    open_figure_file = cell(0);
-    open_figure_file{1} = open_figure_file_aux;
+open_figure_file_aux = open_figure_file;
+open_figure_file = cell(0);
+open_figure_file{1} = open_figure_file_aux;
 end
 for i = 1 : length(open_figure_file)
 [file_path, file_1, file_2] = fileparts(open_figure_file{i});
 file_path = [file_path filesep];
 if isempty(file_path)
-    file_path = './fig/';
+file_path = './fig/';
 end
 if isempty(file_2)
-    file_2 = '.fig';
+file_2 = '.fig';
 end
 zef_data.file_path = [file_path];
 zef_data.file = [file_1 file_2];
@@ -228,7 +228,7 @@ elseif ismember(varargin{option_counter},lower('open_figure_folder'))
 file_path = varargin{option_counter+1};
 dir_aux = dir(fullfile(zef_data.program_path,file_path));
 for i = 3 : length(dir_aux)
-    [~,file_1,file_2] = fileparts(dir_aux(i).name);
+[~,file_1,file_2] = fileparts(dir_aux(i).name);
 if isequal(file_2,'.fig')
 zef_data.file_path = [file_path];
 zef_data.file = [file_1 file_2];
@@ -244,9 +244,9 @@ option_counter = option_counter + 2;
 elseif ismember(varargin{option_counter},lower('run_script'))
 run_script_name = varargin{option_counter+1};
 if not(iscell(run_script_name))
-   run_script_name_aux = run_script_name;
-    run_script_name = cell(0);
-    run_script_name{1} = run_script_name_aux;
+run_script_name_aux = run_script_name;
+run_script_name = cell(0);
+run_script_name{1} = run_script_name_aux;
 end
 for i = 1 : length(run_script_name)
 evalin('base',run_script_name{i});

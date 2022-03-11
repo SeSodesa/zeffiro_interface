@@ -24,10 +24,10 @@ h = waitbar(0,['Simple ICA filter.']);
 
 for i = 1 : size_f
 
-  Mdl = rica(f(:,[i ica_reference_channels]),n_ica);
-  aux_vec = transform(Mdl,f(:,[i ica_reference_channels]));
-  f_2(:,i) = aux_vec(:,1);
-  waitbar(i/size_f,h,['Simple ICA filter.']);
+Mdl = rica(f(:,[i ica_reference_channels]),n_ica);
+aux_vec = transform(Mdl,f(:,[i ica_reference_channels]));
+f_2(:,i) = aux_vec(:,1);
+waitbar(i/size_f,h,['Simple ICA filter.']);
 
 end
 

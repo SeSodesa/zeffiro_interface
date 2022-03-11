@@ -5,130 +5,130 @@ function [eit_data_vec] = compute_eit_data(nodes,elements,sigma,electrodes,varar
 N = size(nodes,1);
 
 if iscell(elements)
-        tetrahedra = elements{1};
-        prisms = [];
-        K2 = size(tetrahedra,1);
-        waitbar_length = 4;
-        if length(elements)>1
-        prisms = elements{2};
-        waitbar_length = 10;
-        end
-    else
-        tetrahedra = elements;
-        prisms = [];
-        K2 = size(tetrahedra,1);
-        waitbar_length = 4;
-    end
-    clear elements;
+tetrahedra = elements{1};
+prisms = [];
+K2 = size(tetrahedra,1);
+waitbar_length = 4;
+if length(elements)>1
+prisms = elements{2};
+waitbar_length = 10;
+end
+else
+tetrahedra = elements;
+prisms = [];
+K2 = size(tetrahedra,1);
+waitbar_length = 4;
+end
+clear elements;
 
-    if iscell(sigma)
-        sigma{1} = sigma{1}';
-        if size(sigma{1},1) == 1
-        sigma_tetrahedra = [repmat(sigma{1},3,1) ; zeros(3,size(sigma{1},2))];
-        else
-        sigma_tetrahedra = sigma{1};
-        end
-        sigma_prisms = [];
-        if length(sigma)>1
-        sigma{2} = sigma{2}';
-        if size(sigma{2},1) == 1
-        sigma_prisms = [repmat(sigma{2},3,1) ; zeros(3,size(sigma{2},2))];
-        else
-        sigma_prisms = sigma{2};
-        end
-        end
-    else
-        sigma = sigma';
-        if size(sigma,1) == 1
-        sigma_tetrahedra = [repmat(sigma,3,1) ; zeros(3,size(sigma,2))];
-        else
-        sigma_tetrahedra = sigma;
-        end
-        sigma_prisms = [];
-    end
-    clear elements;
+if iscell(sigma)
+sigma{1} = sigma{1}';
+if size(sigma{1},1) == 1
+sigma_tetrahedra = [repmat(sigma{1},3,1) ; zeros(3,size(sigma{1},2))];
+else
+sigma_tetrahedra = sigma{1};
+end
+sigma_prisms = [];
+if length(sigma)>1
+sigma{2} = sigma{2}';
+if size(sigma{2},1) == 1
+sigma_prisms = [repmat(sigma{2},3,1) ; zeros(3,size(sigma{2},2))];
+else
+sigma_prisms = sigma{2};
+end
+end
+else
+sigma = sigma';
+if size(sigma,1) == 1
+sigma_tetrahedra = [repmat(sigma,3,1) ; zeros(3,size(sigma,2))];
+else
+sigma_tetrahedra = sigma;
+end
+sigma_prisms = [];
+end
+clear elements;
 
-    tol_val = 1e-6;
-    m_max = 3*floor(sqrt(N));
-    precond = 'cholinc';
-    permutation = 'symamd';
-    direction_mode = 'mesh based';
-    dipole_mode = 1;
-    brain_ind = [1:size(tetrahedra,1)]';
-    source_ind = [1:size(tetrahedra,1)]';
-    cholinc_tol = 1e-3;
-    if size(electrodes,2) == 4
-    electrode_model = 'CEM';
-    L = max(electrodes(:,1));
-    ele_ind = electrodes;
-    impedance_vec = ones(max(electrodes(:,1)),1);
-    impedance_inf = 1;
-    else
-    electrode_model = 'PEM';
-    L = size(electrodes,1);
-    ele_ind = zeros(L,1);
-    for i = 1 : L
-    [min_val, min_ind] = min(sum((repmat(electrodes(i,:),N,1)' - nodes').^2));
-    ele_ind(i) = min_ind;
-    end
-    end
+tol_val = 1e-6;
+m_max = 3*floor(sqrt(N));
+precond = 'cholinc';
+permutation = 'symamd';
+direction_mode = 'mesh based';
+dipole_mode = 1;
+brain_ind = [1:size(tetrahedra,1)]';
+source_ind = [1:size(tetrahedra,1)]';
+cholinc_tol = 1e-3;
+if size(electrodes,2) == 4
+electrode_model = 'CEM';
+L = max(electrodes(:,1));
+ele_ind = electrodes;
+impedance_vec = ones(max(electrodes(:,1)),1);
+impedance_inf = 1;
+else
+electrode_model = 'PEM';
+L = size(electrodes,1);
+ele_ind = zeros(L,1);
+for i = 1 : L
+[min_val, min_ind] = min(sum((repmat(electrodes(i,:),N,1)' - nodes').^2));
+ele_ind(i) = min_ind;
+end
+end
 
-    n_varargin = length(varargin);
-    if n_varargin >= 1
-    if not(isstruct(varargin{1}))
-    brain_ind = varargin{1};
-    end
-    end
-    if n_varargin >= 2
-    if not(isstruct(varargin{2}))
-    source_ind = varargin{2};
-    end
-    end
-    if n_varargin >= 1
-    if isstruct(varargin{n_varargin})
-    if isfield(varargin{n_varargin},'pcg_tol');
-        tol_val = varargin{n_varargin}.pcg_tol;
-    end
-    if  isfield(varargin{n_varargin},'maxit');
-        m_max = varargin{n_varargin}.maxit;
-    end
-    if  isfield(varargin{n_varargin},'precond');
-        precond = varargin{n_varargin}.precond;
-    end
-    if isfield(varargin{n_varargin},'direction_mode');
-    direction_mode = varargin{n_varargin}.direction_mode;
-    end
-    if isfield(varargin{n_varargin},'dipole_mode');
-    dipole_mode = varargin{n_varargin}.dipole_mode;
-    end
-    if isfield(varargin{n_varargin},'impedances') & size(electrodes,2) == 4;
-    if length(varargin{n_varargin}.impedances)==1;
-    impedance_vec = varargin{n_varargin}.impedances*ones(max(electrodes(:,1)),1);
-    impedance_inf = 0;
-    else
-    impedance_vec = varargin{n_varargin}.impedances;
-    impedance_inf = 0;
-    end
-    end
-    if isfield(varargin{n_varargin},'cholinc_tol')
-    cholinc_tol = varargin{n_varargin}.cholinc_tol;
-    end
-    if isfield(varargin{n_varargin},'permutation')
-    permutation = varargin{n_varargin}.permutation;
-    end
-    end
-    end
-    K = length(brain_ind);
-    K3 = length(source_ind);
-    clear electrodes;
-    A = spalloc(N,N,0);
-    D_A = zeros(K,10);
+n_varargin = length(varargin);
+if n_varargin >= 1
+if not(isstruct(varargin{1}))
+brain_ind = varargin{1};
+end
+end
+if n_varargin >= 2
+if not(isstruct(varargin{2}))
+source_ind = varargin{2};
+end
+end
+if n_varargin >= 1
+if isstruct(varargin{n_varargin})
+if isfield(varargin{n_varargin},'pcg_tol');
+tol_val = varargin{n_varargin}.pcg_tol;
+end
+if  isfield(varargin{n_varargin},'maxit');
+m_max = varargin{n_varargin}.maxit;
+end
+if  isfield(varargin{n_varargin},'precond');
+precond = varargin{n_varargin}.precond;
+end
+if isfield(varargin{n_varargin},'direction_mode');
+direction_mode = varargin{n_varargin}.direction_mode;
+end
+if isfield(varargin{n_varargin},'dipole_mode');
+dipole_mode = varargin{n_varargin}.dipole_mode;
+end
+if isfield(varargin{n_varargin},'impedances') & size(electrodes,2) == 4;
+if length(varargin{n_varargin}.impedances)==1;
+impedance_vec = varargin{n_varargin}.impedances*ones(max(electrodes(:,1)),1);
+impedance_inf = 0;
+else
+impedance_vec = varargin{n_varargin}.impedances;
+impedance_inf = 0;
+end
+end
+if isfield(varargin{n_varargin},'cholinc_tol')
+cholinc_tol = varargin{n_varargin}.cholinc_tol;
+end
+if isfield(varargin{n_varargin},'permutation')
+permutation = varargin{n_varargin}.permutation;
+end
+end
+end
+K = length(brain_ind);
+K3 = length(source_ind);
+clear electrodes;
+A = spalloc(N,N,0);
+D_A = zeros(K,10);
 
 Aux_mat = [nodes(tetrahedra(:,1),:)'; nodes(tetrahedra(:,2),:)'; nodes(tetrahedra(:,3),:)'] - repmat(nodes(tetrahedra(:,4),:)',3,1);
 ind_m = [1 4 7; 2 5 8 ; 3 6 9];
 tilavuus = abs(Aux_mat(ind_m(1,1),:).*(Aux_mat(ind_m(2,2),:).*Aux_mat(ind_m(3,3),:)-Aux_mat(ind_m(2,3),:).*Aux_mat(ind_m(3,2),:)) ...
-                - Aux_mat(ind_m(1,2),:).*(Aux_mat(ind_m(2,1),:).*Aux_mat(ind_m(3,3),:)-Aux_mat(ind_m(2,3),:).*Aux_mat(ind_m(3,1),:)) ...
-                + Aux_mat(ind_m(1,3),:).*(Aux_mat(ind_m(2,1),:).*Aux_mat(ind_m(3,2),:)-Aux_mat(ind_m(2,2),:).*Aux_mat(ind_m(3,1),:)))/6;
+- Aux_mat(ind_m(1,2),:).*(Aux_mat(ind_m(2,1),:).*Aux_mat(ind_m(3,3),:)-Aux_mat(ind_m(2,3),:).*Aux_mat(ind_m(3,1),:)) ...
++ Aux_mat(ind_m(1,3),:).*(Aux_mat(ind_m(2,1),:).*Aux_mat(ind_m(3,2),:)-Aux_mat(ind_m(2,2),:).*Aux_mat(ind_m(3,1),:)))/6;
 clear Aux_mat;
 
 roi_ind_vec = [];
@@ -147,9 +147,9 @@ sigma_tetrahedra(1:3,r_aux) =  sigma_tetrahedra(1:3,r_aux) + roi_perturbation(j)
 end
 
 ind_m = [ 2 3 4 ;
-          3 4 1 ;
-          4 1 2 ;
-          1 2 3 ];
+3 4 1 ;
+4 1 2 ;
+1 2 3 ];
 
 h=waitbar(0,'System matrices.');
 waitbar_ind = 0;
@@ -174,25 +174,25 @@ end
 entry_vec = zeros(1,size(tetrahedra,1));
 entry_vec_2 = zeros(1,size(tetrahedra,1));
 for k = 1 : 6
-   switch k
-       case 1
-           k_1 = 1;
-           k_2 = 1;
-       case 2
-           k_1 = 2;
-           k_2 = 2;
-       case 3
-           k_1 = 3;
-           k_2 = 3;
-       case 4
-           k_1 = 1;
-           k_2 = 2;
-       case 5
-           k_1 = 1;
-           k_2 = 3;
-       case 6
-           k_1 = 2;
-           k_2 = 3;
+switch k
+case 1
+k_1 = 1;
+k_2 = 1;
+case 2
+k_1 = 2;
+k_2 = 2;
+case 3
+k_1 = 3;
+k_2 = 3;
+case 4
+k_1 = 1;
+k_2 = 2;
+case 5
+k_1 = 1;
+k_2 = 3;
+case 6
+k_1 = 2;
+k_2 = 3;
 end
 
 if k <= 3
@@ -230,11 +230,11 @@ clear A_part grad_1 grad_2 tilavuus ala sigma_tetrahedra;
 if not(isempty(prisms))
 
 ind_m = [ 4 2 3 5;
-          5 3 1 6;
-          6 1 2 4;
-          1 5 6 2;
-          2 6 4 3;
-          3 4 5 1];
+5 3 1 6;
+6 1 2 4;
+1 5 6 2;
+2 6 4 3;
+3 4 5 1];
 
 normal_vecs_aux = cross(nodes(prisms(:,3),:)'-nodes(prisms(:,1),:)', nodes(prisms(:,2),:)'-nodes(prisms(:,1),:)');
 ala = zeros(3,size(prisms,1));
@@ -247,23 +247,23 @@ int_coeffs_1 = [1/5 1/30 1/10 ; 1/20 1/20 1/15];
 int_coeffs_2 = [1/18 1/18 1/18 ; 1/36 1/36 1/36];
 int_coeffs_3 = [1/12 1/36 1/18];
 coeff_ind_1 =            [1 1 1 2 2 2;
-                          1 1 1 2 2 2;
-                          1 1 1 2 2 2;
-                          2 2 2 1 1 1;
-                          2 2 2 1 1 1;
-                          2 2 2 1 1 1];
+1 1 1 2 2 2;
+1 1 1 2 2 2;
+2 2 2 1 1 1;
+2 2 2 1 1 1;
+2 2 2 1 1 1];
 coeff_ind_2 =            [1 2 2 1 2 2;
-                          2 1 2 2 1 2;
-                          2 2 1 2 2 1;
-                          1 2 2 1 2 2;
-                          2 1 2 2 1 2;
-                          2 2 1 2 2 1];
+2 1 2 2 1 2;
+2 2 1 2 2 1;
+1 2 2 1 2 2;
+2 1 2 2 1 2;
+2 2 1 2 2 1];
 ala_ind =                [1 1 1 2 2 2;
-                          1 1 1 2 2 2;
-                          1 1 1 2 2 2;
-                          2 2 2 2 2 2;
-                          2 2 2 2 2 2;
-                          2 2 2 2 2 2];
+1 1 1 2 2 2;
+1 1 1 2 2 2;
+2 2 2 2 2 2;
+2 2 2 2 2 2;
+2 2 2 2 2 2];
 
 for i = 1 : 6
 
@@ -286,69 +286,69 @@ entry_vec = zeros(1,size(prisms,1));
 
 for ell = 1 : 4
 
-    grad_vec_aux = zeros(size(entry_vec));
+grad_vec_aux = zeros(size(entry_vec));
 
-    for k = 1 : 6
-   switch k
-       case 1
-           k_1 = 1;
-           k_2 = 1;
-       case 2
-           k_1 = 2;
-           k_2 = 2;
-       case 3
-           k_1 = 3;
-           k_2 = 3;
-       case 4
-           k_1 = 1;
-           k_2 = 2;
-       case 5
-           k_1 = 1;
-           k_2 = 3;
-       case 6
-           k_1 = 2;
-           k_2 = 3;
+for k = 1 : 6
+switch k
+case 1
+k_1 = 1;
+k_2 = 1;
+case 2
+k_1 = 2;
+k_2 = 2;
+case 3
+k_1 = 3;
+k_2 = 3;
+case 4
+k_1 = 1;
+k_2 = 2;
+case 5
+k_1 = 1;
+k_2 = 3;
+case 6
+k_1 = 2;
+k_2 = 3;
 end
 
-    if k <= 3
-    switch ell
-        case 1
-           grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*grad_11(k_1,:).*grad_21(k_2,:);
-        case 2
-           grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*grad_11(k_1,:).*grad_22(k_2,:);
-        case 3
-           grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*grad_12(k_1,:).*grad_21(k_2,:);
-        case 4
-           grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*grad_12(k_1,:).*grad_22(k_2,:);
-    end
-    else
-           switch ell
-        case 1
-           grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*(grad_11(k_1,:).*grad_21(k_2,:) + grad_11(k_2,:).*grad_21(k_1,:));
-        case 2
-           grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*(grad_11(k_1,:).*grad_22(k_2,:) + grad_11(k_2,:).*grad_22(k_1,:));
-        case 3
-           grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*(grad_12(k_1,:).*grad_21(k_2,:) + grad_12(k_2,:).*grad_21(k_1,:));
-        case 4
-           grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*(grad_12(k_1,:).*grad_22(k_2,:) + grad_12(k_2,:).*grad_22(k_1,:));
-    end
-  end
+if k <= 3
+switch ell
+case 1
+grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*grad_11(k_1,:).*grad_21(k_2,:);
+case 2
+grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*grad_11(k_1,:).*grad_22(k_2,:);
+case 3
+grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*grad_12(k_1,:).*grad_21(k_2,:);
+case 4
+grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*grad_12(k_1,:).*grad_22(k_2,:);
+end
+else
+switch ell
+case 1
+grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*(grad_11(k_1,:).*grad_21(k_2,:) + grad_11(k_2,:).*grad_21(k_1,:));
+case 2
+grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*(grad_11(k_1,:).*grad_22(k_2,:) + grad_11(k_2,:).*grad_22(k_1,:));
+case 3
+grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*(grad_12(k_1,:).*grad_21(k_2,:) + grad_12(k_2,:).*grad_21(k_1,:));
+case 4
+grad_vec_aux = grad_vec_aux + sigma_prisms(k,:).*(grad_12(k_1,:).*grad_22(k_2,:) + grad_12(k_2,:).*grad_22(k_1,:));
+end
+end
 
 end
 
-      switch ell
-        case 1
-           entry_vec = entry_vec + grad_vec_aux.*(int_coeffs_2(coeff_ind_2(i,j),:)*ala).*korkeus;
-        case 2
-           coeff_perm = [ala_ind(1,j) mod(ala_ind(1,j),2)+1 3];
-           entry_vec = entry_vec + grad_vec_aux.*(int_coeffs_3(coeff_perm)*ala).*korkeus;
-        case 3
-           coeff_perm = [ala_ind(1,i) mod(ala_ind(1,i),2)+1 3];
-           entry_vec = entry_vec + grad_vec_aux.*(int_coeffs_3(coeff_perm)*ala).*korkeus;
-        case 4
-            coeff_perm = [ala_ind(i,j) mod(ala_ind(i,j),2)+1 3];
-            entry_vec = entry_vec + grad_vec_aux.*(int_coeffs_1(coeff_ind_1(i,j),coeff_perm)*ala).*korkeus;
-    end
+switch ell
+case 1
+entry_vec = entry_vec + grad_vec_aux.*(int_coeffs_2(coeff_ind_2(i,j),:)*ala).*korkeus;
+case 2
+coeff_perm = [ala_ind(1,j) mod(ala_ind(1,j),2)+1 3];
+entry_vec = entry_vec + grad_vec_aux.*(int_coeffs_3(coeff_perm)*ala).*korkeus;
+case 3
+coeff_perm = [ala_ind(1,i) mod(ala_ind(1,i),2)+1 3];
+entry_vec = entry_vec + grad_vec_aux.*(int_coeffs_3(coeff_perm)*ala).*korkeus;
+case 4
+coeff_perm = [ala_ind(i,j) mod(ala_ind(i,j),2)+1 3];
+entry_vec = entry_vec + grad_vec_aux.*(int_coeffs_1(coeff_ind_1(i,j),coeff_perm)*ala).*korkeus;
+end
 
 end
 
@@ -408,9 +408,9 @@ end
 else
 
 ind_m = [ 2 3 4 ;
-          3 4 1 ;
-          4 1 2 ;
-          1 2 3 ];
+3 4 1 ;
+4 1 2 ;
+1 2 3 ];
 
 I_aux_1 = ele_ind(find(ele_ind(:,1) == 1),2:4);
 I_aux_2 = find(sum(ismember(tetrahedra,I_aux_1),2));
@@ -490,17 +490,17 @@ p = gpuArray(p);
 norm_b = gpuArray(norm_b);
 
 while( (norm(r)/norm_b > tol_val) & (m < m_max))
-  a = A * p;
-  a_dot_p = sum(a.*p);
-  aux_val = sum(r.*p);
-  lambda = aux_val ./ a_dot_p;
-  x = x + lambda * p;
-  r = r - lambda * a;
-  inv_M_r = precond_vec.*r;
-  aux_val = sum(inv_M_r.*a);
-  gamma = aux_val ./ a_dot_p;
-  p = inv_M_r - gamma * p;
-  m=m+1;
+a = A * p;
+a_dot_p = sum(a.*p);
+aux_val = sum(r.*p);
+lambda = aux_val ./ a_dot_p;
+x = x + lambda * p;
+r = r - lambda * a;
+inv_M_r = precond_vec.*r;
+aux_val = sum(inv_M_r.*a);
+gamma = aux_val ./ a_dot_p;
+p = inv_M_r - gamma * p;
+m=m+1;
 end
 relres_vec(i) = gather(norm(r)/norm_b);
 r = gather(x(iperm_vec));
@@ -517,10 +517,10 @@ Aux_mat(:,i) = C(:,i);
 end
 end
 if tol_val < relres_vec(i)
-    close(h);
-    'Error: PCG iteration did not converge.'
-    L_eit = [];
-    return
+close(h);
+'Error: PCG iteration did not converge.'
+L_eit = [];
+return
 end
 time_val = toc;
 if isequal(electrode_model,'PEM')
@@ -565,18 +565,18 @@ aux_vec = S1 \ r;
 p = S2 \ aux_vec;
 m = 0;
 while( (norm(r)/norm_b > tol_val) & (m < m_max))
-  a = A * p;
-  a_dot_p = sum(a.*p);
-  aux_val = sum(r.*p);
-  lambda = aux_val ./ a_dot_p;
-  x = x + lambda * p;
-  r = r - lambda * a;
-  aux_vec = S1\r;
-  inv_M_r = S2\aux_vec;
-  aux_val = sum(inv_M_r.*a);
-  gamma = aux_val ./ a_dot_p;
-  p = inv_M_r - gamma * p;
-  m=m+1;
+a = A * p;
+a_dot_p = sum(a.*p);
+aux_val = sum(r.*p);
+lambda = aux_val ./ a_dot_p;
+x = x + lambda * p;
+r = r - lambda * a;
+aux_vec = S1\r;
+inv_M_r = S2\aux_vec;
+aux_val = sum(inv_M_r.*a);
+gamma = aux_val ./ a_dot_p;
+p = inv_M_r - gamma * p;
+m=m+1;
 end
 relres_vec(i) = norm(r)/norm_b;
 r = x(iperm_vec);
@@ -592,10 +592,10 @@ Aux_mat(:,i) = C(:,i);
 end
 end
 if tol_val < relres_vec(i)
-    close(h);
-    'Error: PCG iteration did not converge.'
-    L_eit = [];
-    return
+close(h);
+'Error: PCG iteration did not converge.'
+L_eit = [];
+return
 end
 time_val = toc;
 if isequal(electrode_model,'PEM')

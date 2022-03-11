@@ -1,7 +1,7 @@
 function [M, multigrid_perm_output] = zef_block_diagonal_preconditioner(L, multigrid_dec, multigrid_ind, multigrid_perm,varargin)
 
 if not(isempty(varargin))
-    reg_param = varargin{1};
+reg_param = varargin{1};
 end
 
 multigrid_perm_output = cell(0);

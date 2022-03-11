@@ -7,9 +7,9 @@ output_mode = 'compact';
 
 explode_param = 1;
 if not(isempty(varargin))
-      if not(isempty(varargin{1}))
+if not(isempty(varargin{1}))
 explode_param = varargin{1};
-    end
+end
 end
 
 i = 0;
@@ -23,19 +23,19 @@ reuna_type = cell(0);
 compartment_tags = evalin('base','zef.compartment_tags');
 for k = 1 : length(compartment_tags)
 
-        var_0 = ['zef.' compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_scaling'];
-        var_2 = ['zef.' compartment_tags{k} '_x_correction'];
-        var_3 = ['zef.' compartment_tags{k} '_y_correction'];
-        var_4 = ['zef.' compartment_tags{k} '_z_correction'];
-        var_5 = ['zef.' compartment_tags{k} '_xy_rotation'];
-        var_6 = ['zef.' compartment_tags{k} '_yz_rotation'];
-        var_7 = ['zef.' compartment_tags{k} '_zx_rotation'];
-        var_8 = ['zef.' compartment_tags{k} '_points_inf'];
-        var_9 = ['zef.' compartment_tags{k} '_points'];
-        var_10 = ['zef.' compartment_tags{k} '_triangles'];
-        var_11 = ['zef.' compartment_tags{k} '_submesh_ind'];
-        var_12 = ['zef.' compartment_tags{k} '_sources'];
+var_0 = ['zef.' compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_scaling'];
+var_2 = ['zef.' compartment_tags{k} '_x_correction'];
+var_3 = ['zef.' compartment_tags{k} '_y_correction'];
+var_4 = ['zef.' compartment_tags{k} '_z_correction'];
+var_5 = ['zef.' compartment_tags{k} '_xy_rotation'];
+var_6 = ['zef.' compartment_tags{k} '_yz_rotation'];
+var_7 = ['zef.' compartment_tags{k} '_zx_rotation'];
+var_8 = ['zef.' compartment_tags{k} '_points_inf'];
+var_9 = ['zef.' compartment_tags{k} '_points'];
+var_10 = ['zef.' compartment_tags{k} '_triangles'];
+var_11 = ['zef.' compartment_tags{k} '_submesh_ind'];
+var_12 = ['zef.' compartment_tags{k} '_sources'];
 
 on_val = evalin('base',var_0);
 
@@ -67,12 +67,12 @@ reuna_p_inf{i} = scaling_val*reuna_p_inf{i};
 end
 for j = 1 : 3
 switch j
-    case 1
-        axes_ind = [1 2];
-    case 2
-        axes_ind = [2 3];
-    case 3
-        axes_ind = [3 1];
+case 1
+axes_ind = [1 2];
+case 2
+axes_ind = [2 3];
+case 3
+axes_ind = [3 1];
 end
 
 if theta_angle_vec(j) ~= 0
@@ -94,19 +94,19 @@ end
 
 if explode_param ~= 1
 for s_ind = 1 : length(reuna_submesh_ind{i})
-    if s_ind == 1
-        t_ind_1 = 1;
-    else
-        t_ind_1 = reuna_submesh_ind{i}(s_ind-1)+1;
-    end
-    t_ind_2 = reuna_submesh_ind{i}(s_ind);
-    p_ind = unique(reuna_t{i}(t_ind_1:t_ind_2,:));
-    mean_aux = mean(reuna_p{i}(p_ind,:),1);
-            reuna_p{i}(p_ind,:) = reuna_p{i}(p_ind,:) + (explode_param-1)*repmat(mean_aux,length(p_ind),1);
-    if not(isempty(reuna_p_inf{i}))
- mean_aux = mean(reuna_p_inf{i}(p_ind,:),1);
-        reuna_p_inf{i}(p_ind,:) = reuna_p_inf{i}(p_ind,:) + (explode_param-1)*repmat(mean_aux,length(p_ind),1);
-    end
+if s_ind == 1
+t_ind_1 = 1;
+else
+t_ind_1 = reuna_submesh_ind{i}(s_ind-1)+1;
+end
+t_ind_2 = reuna_submesh_ind{i}(s_ind);
+p_ind = unique(reuna_t{i}(t_ind_1:t_ind_2,:));
+mean_aux = mean(reuna_p{i}(p_ind,:),1);
+reuna_p{i}(p_ind,:) = reuna_p{i}(p_ind,:) + (explode_param-1)*repmat(mean_aux,length(p_ind),1);
+if not(isempty(reuna_p_inf{i}))
+mean_aux = mean(reuna_p_inf{i}(p_ind,:),1);
+reuna_p_inf{i}(p_ind,:) = reuna_p_inf{i}(p_ind,:) + (explode_param-1)*repmat(mean_aux,length(p_ind),1);
+end
 end
 end
 end
@@ -163,18 +163,18 @@ sensors(:,1:3) = scaling_val*sensors(:,1:3);
 end
 for j = 1 : 3
 switch j
-    case 1
-        axes_ind_1 = [1 2];
-        axes_ind_2 = [4 5];
-        axes_ind_3 = [7 8];
-    case 2
-        axes_ind_1 = [2 3];
-        axes_ind_2 = [5 6];
-        axes_ind_3 = [8 9];
-    case 3
-        axes_ind_1 = [3 1];
-        axes_ind_2 = [6 4];
-        axes_ind_3 = [9 7];
+case 1
+axes_ind_1 = [1 2];
+axes_ind_2 = [4 5];
+axes_ind_3 = [7 8];
+case 2
+axes_ind_1 = [2 3];
+axes_ind_2 = [5 6];
+axes_ind_3 = [8 9];
+case 3
+axes_ind_1 = [3 1];
+axes_ind_2 = [6 4];
+axes_ind_3 = [9 7];
 end
 if theta_angle_vec(j) ~= 0
 theta_angle = theta_angle_vec(j)*pi/180;
@@ -208,7 +208,7 @@ sensors = [sensors s_data_aux];
 end
 
 else
-    sensors = [NaN NaN NaN];
+sensors = [NaN NaN NaN];
 end
 
 if use_pem
@@ -218,52 +218,52 @@ end
 max_val = 0;
 box_ind = 0;
 for i = 1 : length(reuna_p)
-    if not(isequal(reuna_type{i,1}, -1))
+if not(isequal(reuna_type{i,1}, -1))
 max_val = max([abs(reuna_p{i}(:)) ; max_val]);
-    elseif isequal(reuna_type{i,1}, -1)
-   box_ind = i;
+elseif isequal(reuna_type{i,1}, -1)
+box_ind = i;
 end
 end
 
 if not(isequal(box_ind,0))
 
- pml_outer_radius_unit = evalin('base','zef.pml_outer_radius_unit');
+pml_outer_radius_unit = evalin('base','zef.pml_outer_radius_unit');
 pml_outer_radius = evalin('base','zef.pml_outer_radius');
-    if pml_outer_radius_unit == 1
-        box_outer_radius = pml_outer_radius*max_val;
-    elseif pml_outer_radius_unit == 2
-        box_outer_radius = pml_outer_radius;
-    end
-    reuna_p{box_ind} = [
-        -box_outer_radius  -box_outer_radius  -box_outer_radius;
-        box_outer_radius  -box_outer_radius -box_outer_radius;
-        box_outer_radius  box_outer_radius -box_outer_radius;
-        -box_outer_radius  box_outer_radius -box_outer_radius;
-               -box_outer_radius  -box_outer_radius box_outer_radius ;
-        box_outer_radius  -box_outer_radius box_outer_radius;
-        box_outer_radius  box_outer_radius box_outer_radius;
-        -box_outer_radius  box_outer_radius box_outer_radius;
-        ];
-    reuna_t{box_ind} = [1 2 6;
-                  6  5  1;
-                  3  4  7;
-                  8  7  4;
-                  2  3  7;
-                  2  7  6;
-                  5  1  8;
-                  4  1  8;
-                  2  1  4;
-                  4  3  2;
-                  5  6  8;
-                  7  8  6;
-                  ];
+if pml_outer_radius_unit == 1
+box_outer_radius = pml_outer_radius*max_val;
+elseif pml_outer_radius_unit == 2
+box_outer_radius = pml_outer_radius;
+end
+reuna_p{box_ind} = [
+-box_outer_radius  -box_outer_radius  -box_outer_radius;
+box_outer_radius  -box_outer_radius -box_outer_radius;
+box_outer_radius  box_outer_radius -box_outer_radius;
+-box_outer_radius  box_outer_radius -box_outer_radius;
+-box_outer_radius  -box_outer_radius box_outer_radius ;
+box_outer_radius  -box_outer_radius box_outer_radius;
+box_outer_radius  box_outer_radius box_outer_radius;
+-box_outer_radius  box_outer_radius box_outer_radius;
+];
+reuna_t{box_ind} = [1 2 6;
+6  5  1;
+3  4  7;
+8  7  4;
+2  3  7;
+2  7  6;
+5  1  8;
+4  1  8;
+2  1  4;
+4  3  2;
+5  6  8;
+7  8  6;
+];
 
-    assignin('base','zef_data',reuna_p{box_ind});
-    evalin('base',['zef.' compartment_tags{reuna_type{box_ind,3}} '_points = zef_data;']);
-    assignin('base','zef_data',reuna_t{box_ind});
-    evalin('base',['zef.' compartment_tags{reuna_type{box_ind,3}} '_triangles = zef_data;']);
-    evalin('base',['zef.' compartment_tags{reuna_type{box_ind,3}} '_submesh_ind = size(zef_data,1);']);
-    evalin('base','clear zef_data;');
+assignin('base','zef_data',reuna_p{box_ind});
+evalin('base',['zef.' compartment_tags{reuna_type{box_ind,3}} '_points = zef_data;']);
+assignin('base','zef_data',reuna_t{box_ind});
+evalin('base',['zef.' compartment_tags{reuna_type{box_ind,3}} '_triangles = zef_data;']);
+evalin('base',['zef.' compartment_tags{reuna_type{box_ind,3}} '_submesh_ind = size(zef_data,1);']);
+evalin('base','clear zef_data;');
 
 end
 

@@ -37,7 +37,7 @@ matBig_vdWO=matBig;
 matBig_2max=matBig;
 matBig_disp=matBig;
 
- mat_color=[];
+mat_color=[];
 
 matSuperBig=[];
 matSuperBig_imp=[];
@@ -55,15 +55,15 @@ matSuperBig_disp=[];
 for runIndex=1
 
 for snr_i=1:SNR_number
-    allHashes=fieldnames(zef.dataBank.tree);
+allHashes=fieldnames(zef.dataBank.tree);
 
-    allHashes=allHashes(startsWith(allHashes,strcat( 'node_', num2str(nodeInde))));
+allHashes=allHashes(startsWith(allHashes,strcat( 'node_', num2str(nodeInde))));
 
-    snr_now=SNR(snr_i);
-    %a=strcat('..\p2\treeAt_SNR_', num2str(snr_now), '.mat');
-    %a=strcat('..\p2\tree\eegtreeAt_SNR_', num2str(snr_now),'_', num2str(runIndex),  '.mat');
-    %load(a);
-   % zef.dataBank.tree=tree;
+snr_now=SNR(snr_i);
+%a=strcat('..\p2\treeAt_SNR_', num2str(snr_now), '.mat');
+%a=strcat('..\p2\tree\eegtreeAt_SNR_', num2str(snr_now),'_', num2str(runIndex),  '.mat');
+%load(a);
+% zef.dataBank.tree=tree;
 
 diff_ind=1;
 %open gmm tool first and set the parameters
@@ -81,129 +81,129 @@ diff_2max=cell(0,0);
 diff_disp=cell(0,0);
 
 for i=1:length(allHashes)
-    if strcmp(zef.dataBank.tree.(allHashes{i}).type, 'data')
+if strcmp(zef.dataBank.tree.(allHashes{i}).type, 'data')
 
-        for meth=1:M
+for meth=1:M
 
-            for gmmInd=1:2
+for gmmInd=1:2
 
-                zef.dataBank.hash=strcat(allHashes{i},'_',num2str(meth),'_',num2str(gmmInd));
-                zef.dataBank.loadParents=true;
+zef.dataBank.hash=strcat(allHashes{i},'_',num2str(meth),'_',num2str(gmmInd));
+zef.dataBank.loadParents=true;
 
-                zef_dataBank_setData;
+zef_dataBank_setData;
 
-                zef.dataBank.loadParents=false;
+zef.dataBank.loadParents=false;
 
-                [amp, dip_ind_all]=maxk(sum(zef.GMM.dipoles.^2,2),10); %this is used by Joonas, so I
+[amp, dip_ind_all]=maxk(sum(zef.GMM.dipoles.^2,2),10); %this is used by Joonas, so I
 
-                % find maximum of reconstruction
+% find maximum of reconstruction
 
-                values=nan(length(zef.reconstruction{1})/3,1);
-                j=1;
-                for k=1:3:length(zef.reconstruction{1})
-                    values(j)=zef.reconstruction{1}(k)^2+zef.reconstruction{1}(k+1)^2+zef.reconstruction{1}(k+2)^2;
-                    j=j+1;
-                end
-
-                [~, ind]=max(values);
-
-                [~, posDiffmax]=knnsearch(signal_pos, zef.source_positions(ind, :));
-                %[~, posDiffmax_res]=knnsearch(AP, zef.source_positions(ind, :));
-                %nearestNeighbor(A,zef.source_positions(ind, 1),zef.source_positions(ind, 2),zef.source_positions(ind, 3) );
-                   posDiffmax_res=zef_distance_to_resection(zef.source_positions(ind, :),AP, AF);
-
-                %diff_array_max=[diff_array_max,posDiffmax]; %
-
-                diff_array=[];
-                diff_array_max=[];
-                diff_array_toMax=[];
-                vol=[];
-                exc=[];
-                vol_diff=[];
-                vol_diffO=[];
-                vol_diffA=[];
-                vol_diffWO=[];
-
-                for j=1:length(dip_ind_all)
-                    dip_ind=dip_ind_all(j);
-                    pos=[zef.GMM.model.mu(dip_ind,1),zef.GMM.model.mu(dip_ind,2),zef.GMM.model.mu(dip_ind,3)];
-                    [~, posDiff]=knnsearch(signal_pos, pos);
-                    posDiff_res=zef_distance_to_resection(pos,AP, AF);
-
-                    [~, posDiff2max]=knnsearch(zef.source_positions(ind, :), pos);
-                    diff_array_toMax=[diff_array_toMax, posDiff2max];
-
-                    diff_array=[diff_array, posDiff_res];
-
-                    diff_array_max=[diff_array_max,posDiffmax_res];
-
-                    [principal_axes,semi_axes]=eig(inv(zef.GMM.model.Sigma(1:3,1:3,j)));
-                    semi_axes = transpose(r./sqrt(diag(semi_axes)));
-                    [X,Y,Z]=ellipsoid(zef.GMM.model.mu(j,1),zef.GMM.model.mu(j,2),zef.GMM.model.mu(j,3),semi_axes(1),semi_axes(2),semi_axes(3),100);
-
-                    vol(j)=semi_axes(1)*semi_axes(2)*semi_axes(3);
-                    vol(j)=vol(j)^(1/3);
-                    exc(j)=semi_axes(3)/semi_axes(1);
-
-                    [vol_diff(j), vol_diffA(j), vol_diffO(j)]=zef_GMM_resection_volume(res_zef, FB,D, zef.GMM,dip_ind);
-                   vol_diffWO(j)=vol_diffA(j)/(4/3*pi*semi_axes(1)*semi_axes(2)*semi_axes(3));
-
-                end
-
-                diff{diff_ind,meth, gmmInd}=diff_array;
-                diff_max{diff_ind,meth, gmmInd}=diff_array_max;
-                diff_2max{diff_ind,meth, gmmInd}=diff_array_toMax;
-                diff_vol{diff_ind,meth, gmmInd}=vol;
-                diff_exc{diff_ind,meth, gmmInd}=exc;
-                diff_amp{diff_ind,meth, gmmInd}=amp;
-                diff_vdi{diff_ind,meth, gmmInd}=vol_diff;
-                diff_vdA{diff_ind,meth, gmmInd}=vol_diffA;
-                diff_vdO{diff_ind,meth, gmmInd}=vol_diffO;
-                diff_vdWO{diff_ind,meth, gmmInd}=vol_diffWO;
-
-                [~, distGMM]=knnsearch(mean(zef.GMM.model.mu(:,1:3),1), zef.GMM.model.mu(:,1:3));
-                diff_disp{diff_ind,meth, gmmInd}=sqrt(mean(distGMM.^2));
-
-            end
-
-        end
-        diff_ind=diff_ind+1;
-    end
+values=nan(length(zef.reconstruction{1})/3,1);
+j=1;
+for k=1:3:length(zef.reconstruction{1})
+values(j)=zef.reconstruction{1}(k)^2+zef.reconstruction{1}(k+1)^2+zef.reconstruction{1}(k+2)^2;
+j=j+1;
 end
 
-    for meth=1:M
+[~, ind]=max(values);
 
-        for n=1:N
-        matBig(n, snr_i+                                                           (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)    +            (meth-1)*M_space)=diff_max{n, meth, 1}(1);
-                matBig_min(n, snr_i+                                                           (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)    +            (meth-1)*M_space)=diff_max{n, meth, 1}(1);
+[~, posDiffmax]=knnsearch(signal_pos, zef.source_positions(ind, :));
+%[~, posDiffmax_res]=knnsearch(AP, zef.source_positions(ind, :));
+%nearestNeighbor(A,zef.source_positions(ind, 1),zef.source_positions(ind, 2),zef.source_positions(ind, 3) );
+posDiffmax_res=zef_distance_to_resection(zef.source_positions(ind, :),AP, AF);
 
-        end
+%diff_array_max=[diff_array_max,posDiffmax]; %
 
-        for g=1:(GMM_number-1)
+diff_array=[];
+diff_array_max=[];
+diff_array_toMax=[];
+vol=[];
+exc=[];
+vol_diff=[];
+vol_diffO=[];
+vol_diffA=[];
+vol_diffWO=[];
 
-            for n=1:N
-                matBig    (n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff    {n, meth, g}(1);
+for j=1:length(dip_ind_all)
+dip_ind=dip_ind_all(j);
+pos=[zef.GMM.model.mu(dip_ind,1),zef.GMM.model.mu(dip_ind,2),zef.GMM.model.mu(dip_ind,3)];
+[~, posDiff]=knnsearch(signal_pos, pos);
+posDiff_res=zef_distance_to_resection(pos,AP, AF);
 
-                matBig_imp    (n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=(diff{n, meth, g}(1)-min(diff    {n, meth, g}))/diff{n, meth, g}(1);
+[~, posDiff2max]=knnsearch(zef.source_positions(ind, :), pos);
+diff_array_toMax=[diff_array_toMax, posDiff2max];
 
-                matBig_min    (n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=min(diff    {n, meth, g});
+diff_array=[diff_array, posDiff_res];
 
-                matBig_amp(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_amp{n, meth, g}(1);
-                matBig_vol(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_vol{n, meth, g}(1);
-                matBig_exc(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_exc{n, meth, g}(1);
-                matBig_vdi(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_vdi{n, meth, g}(1);
-                matBig_vdA(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_vdA{n, meth, g}(1);
-                matBig_vdO(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_vdO{n, meth, g}(1);
-                matBig_vdWO(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_vdWO{n, meth, g}(1);
-                matBig_2max(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_2max{n, meth, g}(1);
+diff_array_max=[diff_array_max,posDiffmax_res];
 
-                matBig_disp(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_disp{n, meth, g};
+[principal_axes,semi_axes]=eig(inv(zef.GMM.model.Sigma(1:3,1:3,j)));
+semi_axes = transpose(r./sqrt(diag(semi_axes)));
+[X,Y,Z]=ellipsoid(zef.GMM.model.mu(j,1),zef.GMM.model.mu(j,2),zef.GMM.model.mu(j,3),semi_axes(1),semi_axes(2),semi_axes(3),100);
 
-            end
+vol(j)=semi_axes(1)*semi_axes(2)*semi_axes(3);
+vol(j)=vol(j)^(1/3);
+exc(j)=semi_axes(3)/semi_axes(1);
 
-        end
+[vol_diff(j), vol_diffA(j), vol_diffO(j)]=zef_GMM_resection_volume(res_zef, FB,D, zef.GMM,dip_ind);
+vol_diffWO(j)=vol_diffA(j)/(4/3*pi*semi_axes(1)*semi_axes(2)*semi_axes(3));
 
-    end
+end
+
+diff{diff_ind,meth, gmmInd}=diff_array;
+diff_max{diff_ind,meth, gmmInd}=diff_array_max;
+diff_2max{diff_ind,meth, gmmInd}=diff_array_toMax;
+diff_vol{diff_ind,meth, gmmInd}=vol;
+diff_exc{diff_ind,meth, gmmInd}=exc;
+diff_amp{diff_ind,meth, gmmInd}=amp;
+diff_vdi{diff_ind,meth, gmmInd}=vol_diff;
+diff_vdA{diff_ind,meth, gmmInd}=vol_diffA;
+diff_vdO{diff_ind,meth, gmmInd}=vol_diffO;
+diff_vdWO{diff_ind,meth, gmmInd}=vol_diffWO;
+
+[~, distGMM]=knnsearch(mean(zef.GMM.model.mu(:,1:3),1), zef.GMM.model.mu(:,1:3));
+diff_disp{diff_ind,meth, gmmInd}=sqrt(mean(distGMM.^2));
+
+end
+
+end
+diff_ind=diff_ind+1;
+end
+end
+
+for meth=1:M
+
+for n=1:N
+matBig(n, snr_i+                                                           (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)    +            (meth-1)*M_space)=diff_max{n, meth, 1}(1);
+matBig_min(n, snr_i+                                                           (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)    +            (meth-1)*M_space)=diff_max{n, meth, 1}(1);
+
+end
+
+for g=1:(GMM_number-1)
+
+for n=1:N
+matBig    (n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff    {n, meth, g}(1);
+
+matBig_imp    (n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=(diff{n, meth, g}(1)-min(diff    {n, meth, g}))/diff{n, meth, g}(1);
+
+matBig_min    (n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=min(diff    {n, meth, g});
+
+matBig_amp(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_amp{n, meth, g}(1);
+matBig_vol(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_vol{n, meth, g}(1);
+matBig_exc(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_exc{n, meth, g}(1);
+matBig_vdi(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_vdi{n, meth, g}(1);
+matBig_vdA(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_vdA{n, meth, g}(1);
+matBig_vdO(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_vdO{n, meth, g}(1);
+matBig_vdWO(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_vdWO{n, meth, g}(1);
+matBig_2max(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_2max{n, meth, g}(1);
+
+matBig_disp(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_disp{n, meth, g};
+
+end
+
+end
+
+end
 
 end
 
@@ -232,21 +232,21 @@ myXticks=[];
 newTick=floor(SNR_number/2);
 for m=1:M
 
-    for g=1:GMM_number
-    newTick=newTick;
-    myXticks=[ myXticks newTick];
-    newTick=newTick+(GMM_space+SNR_number);
-    end
-    newTick=newTick+M_space-GMM_space;
+for g=1:GMM_number
+newTick=newTick;
+myXticks=[ myXticks newTick];
+newTick=newTick+(GMM_space+SNR_number);
+end
+newTick=newTick+M_space-GMM_space;
 end
 %%
 
 for m=1:M
 
-    myXLabel{(m-1)*3 +1}=gLab{1};
-    myXLabel{(m-1)*3 +2}=strcat(gLab{2}, '\newline', mLab{m});
-    myXLabel{(m-1)*3 +3}= gLab{3};
-    %myXLabel{(m-1)*4 +4}= gLab{4};
+myXLabel{(m-1)*3 +1}=gLab{1};
+myXLabel{(m-1)*3 +2}=strcat(gLab{2}, '\newline', mLab{m});
+myXLabel{(m-1)*3 +3}= gLab{3};
+%myXLabel{(m-1)*4 +4}= gLab{4};
 
 %     myXC{(m-1)*3 +1}=gColor{1};
 %     myXC{(m-1)*3 +2}=gColor{2};
@@ -295,12 +295,12 @@ end
 %%
 
 switch nodeInde
-    case 1
-        nom='eeg';
-    case 2
-        nom='meg';
-    case 3
-        nom='meeg';
+case 1
+nom='eeg';
+case 2
+nom='meg';
+case 3
+nom='meeg';
 end
 
 plottingStuff.(nom).matSuperBig=matSuperBig;
@@ -381,24 +381,24 @@ iii=1;
 
 myXticks=[];
 for ci=1:length(plottingStuff.eeg.matSuperBig)
-    if ~isnan(plottingStuff.eeg.matSuperBig(ci))
+if ~isnan(plottingStuff.eeg.matSuperBig(ci))
 
-        myXticks=[myXticks, ci];
+myXticks=[myXticks, ci];
 
-        if iii==1
-        col(ci,:)=[0,1,0];
-        iii=2;
-        end
-        if iii==2
-        col(ci,:)=[0,0,1];
-        iii=3;
-        end
-         if iii==3
-        col(ci,:)=[1,0,0];
-        iii=1;
-        end
+if iii==1
+col(ci,:)=[0,1,0];
+iii=2;
+end
+if iii==2
+col(ci,:)=[0,0,1];
+iii=3;
+end
+if iii==3
+col(ci,:)=[1,0,0];
+iii=1;
+end
 
-    end
+end
 
 end
 
@@ -464,12 +464,12 @@ end
 for nomIndex=1:3
 
 switch nomIndex
-    case 1
-        nom='eeg';
-    case 2
-        nom='meg';
-    case 3
-        nom='meeg';
+case 1
+nom='eeg';
+case 2
+nom='meg';
+case 3
+nom='meeg';
 end
 
 %
@@ -481,18 +481,18 @@ hold on;
 title(strcat(typ, '-' ,nom, '-', 'Distance to resection'));
 colorIndex=1;
 for pIndex=1:length(plottingStuff.(nom).matSuperBig)
-    b=bar(pIndex, plottingStuff.(nom).matSuperBig(pIndex), 2 );
-    b.FaceColor=colors(colorIndex,:);
+b=bar(pIndex, plottingStuff.(nom).matSuperBig(pIndex), 2 );
+b.FaceColor=colors(colorIndex,:);
 
-    if ~isnan(plottingStuff.(nom).matSuperBig(pIndex))
-        colorIndex=colorIndex+1;
-        if colorIndex==4
-            colorIndex=1;
-        end
-    end
-    %drawnow;
-    %disp(colorIndex);
-    %pause(0.5);
+if ~isnan(plottingStuff.(nom).matSuperBig(pIndex))
+colorIndex=colorIndex+1;
+if colorIndex==4
+colorIndex=1;
+end
+end
+%drawnow;
+%disp(colorIndex);
+%pause(0.5);
 
 end
 
@@ -509,7 +509,7 @@ xticklabels(myXLabel);
 % name=strcat('./', p, '_', nom, '_distance');
 % % saveas(gca, name, 'epsc');
 %
- yL=ylim;
+yL=ylim;
 
 % pause(2);
 %

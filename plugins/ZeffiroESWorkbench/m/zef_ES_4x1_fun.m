@@ -11,13 +11,13 @@ axes(evalin('base','zef.h_axes1'));
 quiver3(source_pos(1), source_pos(2), source_pos(3), source_ori(1),source_ori(2),source_ori(3),20,'g','linewidth',1,'marker','o');
 hold on
 for i = 1:length(sensors)
-    if ismember(i,ell_idx(1))
-        scatter3(sensors(i,1),sensors(i,2),sensors(i,3),'r','filled');
-    elseif ismember(i,ell_idx(2:5))
-        scatter3(sensors(i,1),sensors(i,2),sensors(i,3),'b','filled');
-     else
-        scatter3(sensors(i,1),sensors(i,2),sensors(i,3),'.','k');
-    end
+if ismember(i,ell_idx(1))
+scatter3(sensors(i,1),sensors(i,2),sensors(i,3),'r','filled');
+elseif ismember(i,ell_idx(2:5))
+scatter3(sensors(i,1),sensors(i,2),sensors(i,3),'b','filled');
+else
+scatter3(sensors(i,1),sensors(i,2),sensors(i,3),'.','k');
+end
 end
 axis equal
 hold off

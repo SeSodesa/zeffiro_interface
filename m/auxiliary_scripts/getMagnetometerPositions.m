@@ -14,21 +14,21 @@ function [posOri, magnetometerLabel, gradiometerLabel, tra] = getMagnetometerPos
 %                OptionalName='magnetometer'
 
 if nargin==1
-    OptionalSaveToFile0or1=1;
-    OptionalName='magnetometer';
-    OptionalPlace='';
+OptionalSaveToFile0or1=1;
+OptionalName='magnetometer';
+OptionalPlace='';
 end
 
 if nargin==2
-    OptionalSaveToFile0or1=1;
-    OptionalPlace='';
+OptionalSaveToFile0or1=1;
+OptionalPlace='';
 end
 
 if nargin==3
-    OptionalSaveToFile0or1=1;
+OptionalSaveToFile0or1=1;
 end
 
-    tra=MEGdata.grad.tra;
+tra=MEGdata.grad.tra;
 
 posOri=horzcat(MEGdata.grad.coilpos, MEGdata.grad.coilori);
 
@@ -45,25 +45,25 @@ end
 
 i=543;
 for j=272:298
-    %for the references, coils seem to be positioned consecutively
+%for the references, coils seem to be positioned consecutively
 
-    if strcmp(MEGdata.grad.chantype{j}, 'refmag')
-        magnetometerLabel{i}=gradiometerLabel{j};
-        i=i+1;
-    end
+if strcmp(MEGdata.grad.chantype{j}, 'refmag')
+magnetometerLabel{i}=gradiometerLabel{j};
+i=i+1;
+end
 
-    if strcmp(MEGdata.grad.chantype{j}, 'refgrad')
-        magnetometerLabel{i}=strcat(gradiometerLabel{j}, '_mag1');
-        magnetometerLabel{i+1}=strcat(gradiometerLabel{j}, '_mag2');
+if strcmp(MEGdata.grad.chantype{j}, 'refgrad')
+magnetometerLabel{i}=strcat(gradiometerLabel{j}, '_mag1');
+magnetometerLabel{i+1}=strcat(gradiometerLabel{j}, '_mag2');
 
-        i=i+2;
-    end
+i=i+2;
+end
 
 end
 
-    %some coils are only used for higher order gradiometers or other things
-    %we will ignore these coils later, so we cut them out and do not
-    %calculate leadfields for them
+%some coils are only used for higher order gradiometers or other things
+%we will ignore these coils later, so we cut them out and do not
+%calculate leadfields for them
 
 index=find(tra(1,:));
 
@@ -78,14 +78,14 @@ magnetometerLabel=magnetometerLabel(index);
 %
 if OptionalSaveToFile0or1
 
-    name=strcat(OptionalPlace, OptionalName, '_');
+name=strcat(OptionalPlace, OptionalName, '_');
 
-    disp(strcat({'writing data to '}, name, '*.dat'));
+disp(strcat({'writing data to '}, name, '*.dat'));
 
-    writecell(magnetometerLabel, strcat(name, 'magnetometerLabel.dat')) ;
-    writecell(gradiometerLabel, strcat(name, 'gradiometerLabel.dat'));
-    writematrix(tra, strcat(name, 'tra.dat')) ;
-    writematrix(posOri, strcat(name, 'posOri.dat')) ;
+writecell(magnetometerLabel, strcat(name, 'magnetometerLabel.dat')) ;
+writecell(gradiometerLabel, strcat(name, 'gradiometerLabel.dat'));
+writematrix(tra, strcat(name, 'tra.dat')) ;
+writematrix(posOri, strcat(name, 'posOri.dat')) ;
 end
 %
 

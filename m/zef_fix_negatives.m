@@ -14,16 +14,16 @@ if fix_length > 0
 h_waitbar = waitbar([0], ['Fix ' num2str(fix_length) ' negatives.']);
 
 while fix_it < fix_n_max && fix_length > 0
-    fix_it = fix_it + 1;
+fix_it = fix_it + 1;
 
-    tetra_c = tetra(find(sum(ismember(tetra,tetra(c,:)),2)),:);
-    c = find(sum(ismember(tetra_c,tetra(c,:)),2)==4);
+tetra_c = tetra(find(sum(ismember(tetra,tetra(c,:)),2)),:);
+c = find(sum(ismember(tetra_c,tetra(c,:)),2)==4);
 
 for i = 1 : length(c)
 
-    if mod(i,ceil(length(c)/20))==0 || length(c) < 50
-    waitbar([i/length(c)],h_waitbar, ['Fix ' num2str(fix_length) ' negatives.']);
-    end
+if mod(i,ceil(length(c)/20))==0 || length(c) < 50
+waitbar([i/length(c)],h_waitbar, ['Fix ' num2str(fix_length) ' negatives.']);
+end
 
 [~,~,~,~,g] = zef_surface_mesh(tetra_c, [], c(i));
 
@@ -96,9 +96,9 @@ close(h_waitbar);
 end
 
 if fix_length == 0
-    flag_val = 1;
+flag_val = 1;
 else
-    flag_val = -1;
+flag_val = -1;
 end
 
 end

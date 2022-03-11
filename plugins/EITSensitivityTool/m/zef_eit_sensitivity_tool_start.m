@@ -1,23 +1,23 @@
 zef_data = zef_eit_sensitivity_tool;
 
 if not(isfield(zef,'eit_sensitivity_tool_file'))
-    zef.eit_sensitivity_tool_file = '';
+zef.eit_sensitivity_tool_file = '';
 end
 
 if not(isfield(zef,'eit_sensitivity_tool_file_2'))
-    zef.eit_sensitivity_tool_file_2 = '';
+zef.eit_sensitivity_tool_file_2 = '';
 end
 
 if not(isfield(zef,'eit_sensitivity_tool_active'))
-    zef.eit_sensitivity_tool_active = 0;
+zef.eit_sensitivity_tool_active = 0;
 end
 
 if not(isfield(zef,'eit_sensitivity_tool_lower_quantile'))
-    zef.eit_sensitivity_tool_lower_quantile = 0;
+zef.eit_sensitivity_tool_lower_quantile = 0;
 end
 
 if not(isfield(zef,'eit_sensitivity_tool_upper_quantile'))
-    zef.eit_sensitivity_tool_upper_quantile = 1;
+zef.eit_sensitivity_tool_upper_quantile = 1;
 end
 
 zef.h_eit_sensitivity_tool = zef_data.UIFigure;

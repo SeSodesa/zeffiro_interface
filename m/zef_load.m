@@ -28,28 +28,28 @@ zef_data.program_path = zef.program_path;
 
 zef_data.mlapp = 1;
 
- zef.fieldnames = fieldnames(zef_data);
- for zef_i = 1:length(zef.fieldnames)
- zef.(zef.fieldnames{zef_i}) = zef_data.(zef.fieldnames{zef_i});
- end
-  if isempty(find(contains(zef.fieldnames,'current_version'),1))
-     zef.current_version = 2.2;
-  end
- clear zef_i;
- zef = rmfield(zef,'fieldnames');
+zef.fieldnames = fieldnames(zef_data);
+for zef_i = 1:length(zef.fieldnames)
+zef.(zef.fieldnames{zef_i}) = zef_data.(zef.fieldnames{zef_i});
+end
+if isempty(find(contains(zef.fieldnames,'current_version'),1))
+zef.current_version = 2.2;
+end
+clear zef_i;
+zef = rmfield(zef,'fieldnames');
 
- zef_apply_system_settings;
+zef_apply_system_settings;
 
- zef.save_file = zef_data.save_file;
- zef.save_file_path = zef_data.save_file_path;
- if isfield(zef_data,'profile_name')
- zef.profile_name = zef_data.profile_name;
- end
+zef.save_file = zef_data.save_file;
+zef.save_file_path = zef_data.save_file_path;
+if isfield(zef_data,'profile_name')
+zef.profile_name = zef_data.profile_name;
+end
 
- zef_replace_project_fields;
+zef_replace_project_fields;
 
- zef_init_init_profile;
- zef_init_parameter_profile;
+zef_init_init_profile;
+zef_init_parameter_profile;
 
 if ismember(zef.start_mode,{'nodisplay','display'})
 zef.use_display = 0;

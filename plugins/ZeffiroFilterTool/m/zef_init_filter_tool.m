@@ -6,39 +6,39 @@ zef.filter_file_list = cell(0);
 zef.filter_parameter_list = cell(0);
 
 if not(isfield(zef,'filter_zoom'));
-    zef.filter_zoom = 1;
+zef.filter_zoom = 1;
 end
 
 if not(isfield(zef,'filter_epoch_points'));
-    zef.filter_epoch_points = [];
+zef.filter_epoch_points = [];
 end
 
 if not(isfield(zef,'filter_save_file_path'));
-    zef.filter_save_file_path = './data';
+zef.filter_save_file_path = './data';
 end
 
 if not(isfield(zef,'filter_save_file'));
-    zef.filter_save_file = '';
+zef.filter_save_file = '';
 end
 
 if not(isfield(zef,'filter_list_selected'));
-    zef.filter_list_selected = cell(0);
+zef.filter_list_selected = cell(0);
 end
 
 if not(isfield(zef,'filter_sampling_rate'));
-    zef.filter_sampling_rate = zef.inv_sampling_frequency;
+zef.filter_sampling_rate = zef.inv_sampling_frequency;
 end
 
 if not(isfield(zef,'filter_tag'));
-   zef.filter_tag = 'Default tag';
+zef.filter_tag = 'Default tag';
 end;
 
 if not(isfield(zef,'filter_data_segment'));
-   zef.filter_data_segment = '0';
+zef.filter_data_segment = '0';
 end;
 
 if not(isfield(zef,'filter_pipeline'));
-   zef.filter_pipeline = cell(0);
+zef.filter_pipeline = cell(0);
 end;
 
 if not(isfield(zef,'filter_pipeline_list'));
@@ -46,7 +46,7 @@ zef.filter_pipeline_list = cell(0);
 end;
 
 if not(isfield(zef,'filter_pipeline_selected'));
-   zef.filter_pipeline_selected = cell(0);
+zef.filter_pipeline_selected = cell(0);
 end;
 
 set(zef.h_filter_tag,'Value',zef.filter_tag);

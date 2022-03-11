@@ -4,15 +4,15 @@ end
 
 if evalin('base','zef.refinement_on');
 
-  if refinement_flag == 1
+if refinement_flag == 1
 surface_refinement_on = evalin('base','zef.refinement_surface_on');
 elseif refinement_flag == 2
-    surface_refinement_on = evalin('base','zef.refinement_surface_on_2');
+surface_refinement_on = evalin('base','zef.refinement_surface_on_2');
 end
 
-    if surface_refinement_on
+if surface_refinement_on
 
- length_waitbar = 11;
+length_waitbar = 11;
 waitbar(0,h,'Surface refinement.');
 
 J_c = [];
@@ -21,11 +21,11 @@ I = [];
 if refinement_flag == 1
 refinement_type = evalin('base','zef.refinement_surface_compartments');
 elseif refinement_flag == 2
-    refinement_type = evalin('base','zef.refinement_surface_compartments_2');
+refinement_type = evalin('base','zef.refinement_surface_compartments_2');
 end
 
 if length(n_surface_refinement) > 1
-    refinement_type = refinement_type(j_surface_refinement);
+refinement_type = refinement_type(j_surface_refinement);
 end
 
 if ismember(1,refinement_type)
@@ -33,25 +33,25 @@ if refinement_flag == 1
 I = find(ismember(domain_labels,zef_compartment_to_subcompartment(aux_brain_ind(:))));
 elseif refinement_flag == 2
 I = brain_ind(:);
-    end
+end
 end
 refinement_type = zef_compartment_to_subcompartment(setdiff(refinement_type,1) - 1);
 
- I = [I ; find(ismember(domain_labels,refinement_type(:)))];
+I = [I ; find(ismember(domain_labels,refinement_type(:)))];
 
 tetra = tetra_aux;
 
 tetra = tetra(I,:);
 
- ind_m = [ 2 4 3 ;
-           1 3 4 ;
-           1 4 2 ;
-           1 2 3 ];
+ind_m = [ 2 4 3 ;
+1 3 4 ;
+1 4 2 ;
+1 2 3 ];
 
 tetra_sort = [tetra(:,[2 4 3]) ones(size(tetra,1),1) [1:size(tetra,1)]';
-              tetra(:,[1 3 4]) 2*ones(size(tetra,1),1) [1:size(tetra,1)]';
-              tetra(:,[1 4 2]) 3*ones(size(tetra,1),1) [1:size(tetra,1)]';
-              tetra(:,[1 2 3]) 4*ones(size(tetra,1),1) [1:size(tetra,1)]';];
+tetra(:,[1 3 4]) 2*ones(size(tetra,1),1) [1:size(tetra,1)]';
+tetra(:,[1 4 2]) 3*ones(size(tetra,1),1) [1:size(tetra,1)]';
+tetra(:,[1 2 3]) 4*ones(size(tetra,1),1) [1:size(tetra,1)]';];
 tetra_sort(:,1:3) = sort(tetra_sort(:,1:3),2);
 tetra_sort = sortrows(tetra_sort,[1 2 3]);
 tetra_ind = zeros(size(tetra_sort,1),1);
@@ -136,13 +136,13 @@ clear edge_ind I;
 waitbar(6/length_waitbar,h,'Surface refinement.');
 
 t_ind_1 = [  1     5     6     7
-     7     9     6    10
-     6     8     3    10
-     2     9     8     5
-     4     7    10     9
-     5     6     9     8
-     6     9     8    10
-     7     9     5     6 ];
+7     9     6    10
+6     8     3    10
+2     9     8     5
+4     7    10     9
+5     6     9     8
+6     9     8    10
+7     9     5     6 ];
 
 t_ind_2 = [tetra(J,:) edge_mat(1:length(J),:)];
 
@@ -173,26 +173,26 @@ ind_aux = length(J) + [1 : length(J_2)]';
 tetra_new = [];
 domain_labels_new = [];
 for i = 1 : 6
-    switch i
-        case 1
-            nodes_aux_vec = [1 2 3 4];
-        case 2
-            nodes_aux_vec = [1 3 2 4];
-        case 3
-            nodes_aux_vec = [1 4 2 3];
-        case 4
-            nodes_aux_vec = [2 3 1 4];
-        case 5
-            nodes_aux_vec = [2 4 1 3];
-        case 6
-            nodes_aux_vec = [3 4 1 2];
-    end
+switch i
+case 1
+nodes_aux_vec = [1 2 3 4];
+case 2
+nodes_aux_vec = [1 3 2 4];
+case 3
+nodes_aux_vec = [1 4 2 3];
+case 4
+nodes_aux_vec = [2 3 1 4];
+case 5
+nodes_aux_vec = [2 4 1 3];
+case 6
+nodes_aux_vec = [3 4 1 2];
+end
 
-    I = find(edge_mat(ind_aux,i));
+I = find(edge_mat(ind_aux,i));
 
-    tetra_new = [tetra_new ; edge_mat(ind_aux(I),i) tetra(J_2(I),nodes_aux_vec(:,1)) tetra(J_2(I),nodes_aux_vec(:,3)) tetra(J_2(I),nodes_aux_vec(:,4))];
-    domain_labels_new = [domain_labels_new ; domain_labels(J_2(I),:)];
-    tetra(J_2(I),:) = [edge_mat(ind_aux(I),i) tetra(J_2(I),nodes_aux_vec(:,2)) tetra(J_2(I),nodes_aux_vec(:,3)) tetra(J_2(I),nodes_aux_vec(:,4))];
+tetra_new = [tetra_new ; edge_mat(ind_aux(I),i) tetra(J_2(I),nodes_aux_vec(:,1)) tetra(J_2(I),nodes_aux_vec(:,3)) tetra(J_2(I),nodes_aux_vec(:,4))];
+domain_labels_new = [domain_labels_new ; domain_labels(J_2(I),:)];
+tetra(J_2(I),:) = [edge_mat(ind_aux(I),i) tetra(J_2(I),nodes_aux_vec(:,2)) tetra(J_2(I),nodes_aux_vec(:,3)) tetra(J_2(I),nodes_aux_vec(:,4))];
 
 end
 
@@ -205,59 +205,59 @@ ind_aux = length(J) + length(J_2) + [1 : length(J_3)]';
 tetra_new = [];
 domain_labels_new = [];
 for i = 1 : 4
-    switch i
-        case 1
-            nodes_ind_aux = [1 2 3 4];
-            col_ind_aux = [1 4 2];
-        case 2
-            nodes_ind_aux = [1 2 4 3];
-            col_ind_aux = [1 5 3];
-        case 3
-            nodes_ind_aux = [1 3 4 2];
-            col_ind_aux = [2 6 3];
-        case 4
-            nodes_ind_aux = [2 3 4 1];
-            col_ind_aux = [4 6 5];
-    end
+switch i
+case 1
+nodes_ind_aux = [1 2 3 4];
+col_ind_aux = [1 4 2];
+case 2
+nodes_ind_aux = [1 2 4 3];
+col_ind_aux = [1 5 3];
+case 3
+nodes_ind_aux = [1 3 4 2];
+col_ind_aux = [2 6 3];
+case 4
+nodes_ind_aux = [2 3 4 1];
+col_ind_aux = [4 6 5];
+end
 
-    I = find(sum(not(edge_mat(ind_aux,col_ind_aux)),2)==0);
-    if length(I) > 0
-    tetra_new = [tetra_new ; tetra(J_3(I),nodes_ind_aux(:,1))  edge_mat(ind_aux(I),col_ind_aux(1)) edge_mat(ind_aux(I),col_ind_aux(3)) tetra(J_3(I),nodes_ind_aux(:,4))];
-    tetra_new = [tetra_new ; tetra(J_3(I),nodes_ind_aux(:,2))  edge_mat(ind_aux(I),col_ind_aux(2)) edge_mat(ind_aux(I),col_ind_aux(1)) tetra(J_3(I),nodes_ind_aux(:,4))];
-    tetra_new = [tetra_new ; tetra(J_3(I),nodes_ind_aux(:,3))  edge_mat(ind_aux(I),col_ind_aux(2)) edge_mat(ind_aux(I),col_ind_aux(3)) tetra(J_3(I),nodes_ind_aux(:,4))];
-    domain_labels_new = [domain_labels_new ; repmat(domain_labels(J_3(I),:),3,1)];
-    tetra(J_3(I),:) = [edge_mat(ind_aux(I),col_ind_aux(1))  edge_mat(ind_aux(I),col_ind_aux(2)) edge_mat(ind_aux(I),col_ind_aux(3)) tetra(J_3(I),nodes_ind_aux(:,4))];
-    end
+I = find(sum(not(edge_mat(ind_aux,col_ind_aux)),2)==0);
+if length(I) > 0
+tetra_new = [tetra_new ; tetra(J_3(I),nodes_ind_aux(:,1))  edge_mat(ind_aux(I),col_ind_aux(1)) edge_mat(ind_aux(I),col_ind_aux(3)) tetra(J_3(I),nodes_ind_aux(:,4))];
+tetra_new = [tetra_new ; tetra(J_3(I),nodes_ind_aux(:,2))  edge_mat(ind_aux(I),col_ind_aux(2)) edge_mat(ind_aux(I),col_ind_aux(1)) tetra(J_3(I),nodes_ind_aux(:,4))];
+tetra_new = [tetra_new ; tetra(J_3(I),nodes_ind_aux(:,3))  edge_mat(ind_aux(I),col_ind_aux(2)) edge_mat(ind_aux(I),col_ind_aux(3)) tetra(J_3(I),nodes_ind_aux(:,4))];
+domain_labels_new = [domain_labels_new ; repmat(domain_labels(J_3(I),:),3,1)];
+tetra(J_3(I),:) = [edge_mat(ind_aux(I),col_ind_aux(1))  edge_mat(ind_aux(I),col_ind_aux(2)) edge_mat(ind_aux(I),col_ind_aux(3)) tetra(J_3(I),nodes_ind_aux(:,4))];
+end
 
-    I = find(sum(not(edge_mat(ind_aux,col_ind_aux)),2)==1);
-    if length(I)>0
-        for j_ind = 1 : length(I)
-    [zero_ind_aux, ~] = find(edge_mat(ind_aux(I(j_ind)),col_ind_aux)' == 0);
-        switch zero_ind_aux
-        case 1
-            col_ind_aux_2 = col_ind_aux([2 3]);
-            k_ind = 3;
-            i_ind = [1 2];
-        case 2
-            col_ind_aux_2 = col_ind_aux([1 3]);
-            k_ind = 1;
-            i_ind = [3 2];
-        case 3
-            col_ind_aux_2 = col_ind_aux([2 1]);
-            k_ind = 2;
-            i_ind = [1 3];
-        end
+I = find(sum(not(edge_mat(ind_aux,col_ind_aux)),2)==1);
+if length(I)>0
+for j_ind = 1 : length(I)
+[zero_ind_aux, ~] = find(edge_mat(ind_aux(I(j_ind)),col_ind_aux)' == 0);
+switch zero_ind_aux
+case 1
+col_ind_aux_2 = col_ind_aux([2 3]);
+k_ind = 3;
+i_ind = [1 2];
+case 2
+col_ind_aux_2 = col_ind_aux([1 3]);
+k_ind = 1;
+i_ind = [3 2];
+case 3
+col_ind_aux_2 = col_ind_aux([2 1]);
+k_ind = 2;
+i_ind = [1 3];
+end
 
- if tetra(J_3(I(j_ind)),nodes_ind_aux(i_ind(1))) > tetra(J_3(I(j_ind)),nodes_ind_aux(i_ind(2)))
- i_ind = fliplr(i_ind);
- col_ind_aux_2 = fliplr(col_ind_aux_2);
- end
- tetra_new = [tetra_new ; tetra(J_3(I(j_ind)),nodes_ind_aux(k_ind))  edge_mat(ind_aux(I(j_ind)),col_ind_aux_2(1)) edge_mat(ind_aux(I(j_ind)),col_ind_aux_2(2)) tetra(J_3(I(j_ind)),nodes_ind_aux(4))];
-    tetra_new = [tetra_new ; tetra(J_3(I(j_ind)),nodes_ind_aux(i_ind(1)))  edge_mat(ind_aux(I(j_ind)),col_ind_aux_2(2)) edge_mat(ind_aux(I(j_ind)),col_ind_aux_2(1)) tetra(J_3(I(j_ind)),nodes_ind_aux(4))];
- domain_labels_new = [domain_labels_new ; repmat(domain_labels(J_3(I(j_ind)),:),2,1)];
-    tetra(J_3(I(j_ind)),:) = [tetra(J_3(I(j_ind)),nodes_ind_aux(i_ind(1))) tetra(J_3(I(j_ind)),nodes_ind_aux(i_ind(2)))  edge_mat(ind_aux(I(j_ind)),col_ind_aux_2(1)) tetra(J_3(I(j_ind)),nodes_ind_aux(4))];
-        end
-    end
+if tetra(J_3(I(j_ind)),nodes_ind_aux(i_ind(1))) > tetra(J_3(I(j_ind)),nodes_ind_aux(i_ind(2)))
+i_ind = fliplr(i_ind);
+col_ind_aux_2 = fliplr(col_ind_aux_2);
+end
+tetra_new = [tetra_new ; tetra(J_3(I(j_ind)),nodes_ind_aux(k_ind))  edge_mat(ind_aux(I(j_ind)),col_ind_aux_2(1)) edge_mat(ind_aux(I(j_ind)),col_ind_aux_2(2)) tetra(J_3(I(j_ind)),nodes_ind_aux(4))];
+tetra_new = [tetra_new ; tetra(J_3(I(j_ind)),nodes_ind_aux(i_ind(1)))  edge_mat(ind_aux(I(j_ind)),col_ind_aux_2(2)) edge_mat(ind_aux(I(j_ind)),col_ind_aux_2(1)) tetra(J_3(I(j_ind)),nodes_ind_aux(4))];
+domain_labels_new = [domain_labels_new ; repmat(domain_labels(J_3(I(j_ind)),:),2,1)];
+tetra(J_3(I(j_ind)),:) = [tetra(J_3(I(j_ind)),nodes_ind_aux(i_ind(1))) tetra(J_3(I(j_ind)),nodes_ind_aux(i_ind(2)))  edge_mat(ind_aux(I(j_ind)),col_ind_aux_2(1)) tetra(J_3(I(j_ind)),nodes_ind_aux(4))];
+end
+end
 
 end
 
@@ -307,15 +307,15 @@ non_source_ind = find(tetra_vec > 2);
 non_source_ind = intersect(brain_ind, non_source_ind);
 end
 
-   if refinement_flag == 2
-       [nodes,optimizer_flag] = zef_fix_negatives(nodes, tetra);
+if refinement_flag == 2
+[nodes,optimizer_flag] = zef_fix_negatives(nodes, tetra);
 if optimizer_flag == 1
-       [tetra, optimizer_flag] = zef_tetra_turn(nodes, tetra, thresh_val);
+[tetra, optimizer_flag] = zef_tetra_turn(nodes, tetra, thresh_val);
 end
 end
 
 tetra_aux = tetra;
 
-    end
+end
 
 end

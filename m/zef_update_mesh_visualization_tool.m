@@ -46,7 +46,7 @@ zef.mesh_visualization_graph_selected = zef.h_mesh_visualization_graph_list.Valu
 if zef.inv_dynamic_range == 0
 zef.inv_dynamic_range = Inf;
 else
-    zef.inv_dynamic_range = 1./zef.inv_dynamic_range;
+zef.inv_dynamic_range = 1./zef.inv_dynamic_range;
 end
 
 zef.submesh_num = str2num(zef.h_submesh_num.Value);

@@ -24,7 +24,7 @@ end
 
 h_colorbar = findobj(evalin('base','zef.h_zeffiro'),'-regexp','tag','Colorbar');
 if not(isempty(h_colorbar))
-    delete(h_colorbar(:));
+delete(h_colorbar(:));
 end
 
 void = [];
@@ -163,22 +163,22 @@ sensors_aux = sensors;
 if electrode_model == 1 & evalin('base','zef.attach_electrodes') & ismember(evalin('base','zef.imaging_method'),[1 4 5])
 sensors = zef_attach_sensors_volume(sensors);
 elseif electrode_model==2 & evalin('base','zef.attach_electrodes') & ismember(evalin('base','zef.imaging_method'),[1 4 5])
- sensors = zef_attach_sensors_volume(sensors);
-  sensors_point_like_index = find(sensors(:,4)==0);
-  unique_sensors_point_like = unique(sensors(sensors_point_like_index,1));
-  sensors_point_like = zeros(length(unique_sensors_point_like),3);
+sensors = zef_attach_sensors_volume(sensors);
+sensors_point_like_index = find(sensors(:,4)==0);
+unique_sensors_point_like = unique(sensors(sensors_point_like_index,1));
+sensors_point_like = zeros(length(unique_sensors_point_like),3);
 %April 2021
 sensors_name_points = zef_attach_sensors_volume(sensors_aux,'points');
 sensors_point_like_id = find(sensors(:,4)==0);
 %April 2021
-  for spl_ind = 1 : length(unique_sensors_point_like)
+for spl_ind = 1 : length(unique_sensors_point_like)
 spl_aux_ind = find(sensors(sensors_point_like_index,1)==unique_sensors_point_like(spl_ind));
 sensors_point_like(spl_ind,:) = mean(nodes(sensors(sensors_point_like_index(spl_aux_ind),2),:),1);
-  end
+end
 sensors_patch_like_index = setdiff(1:size(sensors,1),sensors_point_like_index);
-  sensors = sensors(sensors_patch_like_index,:);
+sensors = sensors(sensors_patch_like_index,:);
 else
-    electrode_model = 1;
+electrode_model = 1;
 end
 
 if electrode_model == 1 | not(ismember(evalin('base','zef.imaging_method'),[1,4,5]))
@@ -223,7 +223,7 @@ set(h,'edgecolor','none');
 % set(h,'ambientstrength',0.7);
 set(h,'facealpha',evalin('base','zef.layer_transparency'));
 set(h,'edgealpha',evalin('base','zef.layer_transparency'));
-    end
+end
 if not(isempty(sensors_point_like))
 h = zeros(size(sensors_point_like,1),1);
 for i = 1 : size(sensors_point_like,1)
@@ -271,11 +271,11 @@ aux_active_compartment_ind = [];
 aux_dir_mode = [];
 for k = 1 : length(compartment_tags)
 
-        var_0 = ['zef.' compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_sigma'];
-        var_2 = ['zef.' compartment_tags{k} '_priority'];
-        var_3 = ['zef.' compartment_tags{k} '_visible'];
-    color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
+var_0 = ['zef.' compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_sigma'];
+var_2 = ['zef.' compartment_tags{k} '_priority'];
+var_3 = ['zef.' compartment_tags{k} '_visible'];
+color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
 
 on_val = evalin('base',var_0);
 sigma_val = evalin('base',var_1);
@@ -288,7 +288,7 @@ priority_vec(i,1) = priority_val;
 color_cell{i} = color_str;
 visible_vec(i,1) = i*visible_val;
 if evalin('base',['zef.' compartment_tags{k} '_sources'])>0;
-    aux_active_compartment_ind = [aux_active_compartment_ind i];
+aux_active_compartment_ind = [aux_active_compartment_ind i];
 end
 end
 end
@@ -300,9 +300,9 @@ I = gpuArray(uint32(find(ismember(johtavuus,visible_vec))));
 tetra = gpuArray(uint32(evalin('base','zef.tetra')));
 nodes = gpuArray(nodes);
 else
-    %tässä
-  I = uint32(find(ismember(johtavuus,visible_vec)));
-  tetra = uint32(evalin('base','zef.tetra'));
+%tässä
+I = uint32(find(ismember(johtavuus,visible_vec)));
+tetra = uint32(evalin('base','zef.tetra'));
 end
 
 johtavuus = johtavuus(I);
@@ -355,18 +355,18 @@ aux_ind = [1:size(tetra,1)]';
 end;
 I_aux = I(aux_ind);
 
- ind_m = [ 2 3 4;
-           1 4 3;
-           1 2 4;
-           1 3 2];
+ind_m = [ 2 3 4;
+1 4 3;
+1 2 4;
+1 3 2];
 
 tetra_sort = uint32([tetra(:,[2 3 4]) ones(size(tetra,1),1) [1:size(tetra,1)]';
-              tetra(:,[1 4 3]) 2*ones(size(tetra,1),1) [1:size(tetra,1)]';
-              tetra(:,[1 2 4]) 3*ones(size(tetra,1),1) [1:size(tetra,1)]';
-              tetra(:,[1 3 2]) 4*ones(size(tetra,1),1) [1:size(tetra,1)]';]);
+tetra(:,[1 4 3]) 2*ones(size(tetra,1),1) [1:size(tetra,1)]';
+tetra(:,[1 2 4]) 3*ones(size(tetra,1),1) [1:size(tetra,1)]';
+tetra(:,[1 3 2]) 4*ones(size(tetra,1),1) [1:size(tetra,1)]';]);
 
 if evalin('base','zef.use_gpu_graphic') == 1 & evalin('base','zef.use_gpu') == 1 & gpuDeviceCount > 0
-    tetra_sort = gpuArray(tetra_sort);
+tetra_sort = gpuArray(tetra_sort);
 end
 
 tetra_sort(:,1:3) = sort(tetra_sort(:,1:3),2);
@@ -376,8 +376,8 @@ tetra_ind = uint32(zeros(size(tetra_sort,1),1));
 I = uint32(find(sum(abs(tetra_sort(2:end,1:3)-tetra_sort(1:end-1,1:3)),2)==0));
 
 if evalin('base','zef.use_gpu_graphic') == 1 & evalin('base','zef.use_gpu') == 1 & gpuDeviceCount > 0
-    tetra_ind = gpuArray(tetra_ind);
-    I = gpuArray(I);
+tetra_ind = gpuArray(tetra_ind);
+I = gpuArray(I);
 end
 
 tetra_ind(I) = 1;
@@ -397,12 +397,12 @@ frame_start = 1;
 frame_stop = 1;
 frame_step = 1;
 if ismember(evalin('base','zef.visualization_type'), [2,4])
-    if ismember(evalin('base','zef.volumetric_distribution_mode'), [1,3])
+if ismember(evalin('base','zef.volumetric_distribution_mode'), [1,3])
 s_i_ind = evalin('base','zef.source_interpolation_ind{1}');
-    elseif ismember(evalin('base','zef.volumetric_distribution_mode'), [2,4])
-    s_i_ind = [1:evalin('base','size(zef.tetra,1)')]';
-    end
-    end
+elseif ismember(evalin('base','zef.volumetric_distribution_mode'), [2,4])
+s_i_ind = [1:evalin('base','size(zef.tetra,1)')]';
+end
+end
 
 if evalin('base','zef.use_parcellation')
 selected_list = evalin('base','zef.parcellation_selected');
@@ -415,10 +415,10 @@ frame_start = evalin('base','zef.frame_start');
 frame_stop = evalin('base','zef.frame_stop');
 frame_step = evalin('base','zef.frame_step');
 if frame_start == 0
-    frame_start = 1;
+frame_start = 1;
 end
 if frame_stop == 0
-    frame_stop = length_reconstruction_cell;
+frame_stop = length_reconstruction_cell;
 end
 frame_start = max(frame_start,1);
 frame_start = min(length_reconstruction_cell,frame_start);
@@ -756,13 +756,13 @@ delete(h_axes_text);
 h_axes_text = [];
 end
 
- if evalin('base','zef.visualization_type') == 2
-  h_axes_text = axes('position',[0.0325 0.95 0.5 0.05],'visible','off');
-  set(h_axes_text,'tag','image_details');
-  h_text = findobj(get(gcf,'Children'),'Tag','time_text');
-  set(h_text,'String',['Time: ' num2str(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2')/2 + frame_step*(f_ind - 1)*evalin('base','zef.inv_time_3'),'%0.6f') ' s, Frame: ' num2str(f_ind) ' / ' num2str(length_reconstruction_cell) '.']);
-  set(h_text,'visible','on','Tag','time_text');
-  set(h_axes_text,'layer','bottom');
+if evalin('base','zef.visualization_type') == 2
+h_axes_text = axes('position',[0.0325 0.95 0.5 0.05],'visible','off');
+set(h_axes_text,'tag','image_details');
+h_text = findobj(get(gcf,'Children'),'Tag','time_text');
+set(h_text,'String',['Time: ' num2str(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2')/2 + frame_step*(f_ind - 1)*evalin('base','zef.inv_time_3'),'%0.6f') ' s, Frame: ' num2str(f_ind) ' / ' num2str(length_reconstruction_cell) '.']);
+set(h_text,'visible','on','Tag','time_text');
+set(h_axes_text,'layer','bottom');
 end
 if evalin('base','zef.axes_visible')
 set(evalin('base','zef.h_axes1'),'visible','on');
@@ -778,18 +778,18 @@ end
 %drawnow;
 hold off;
 
- evalin('base',['zef.h_slider.Value=' num2str(max(1e-5,(f_ind-frame_start)/(frame_step*(number_of_frames-1)))) ';']);
+evalin('base',['zef.h_slider.Value=' num2str(max(1e-5,(f_ind-frame_start)/(frame_step*(number_of_frames-1)))) ';']);
 
 end
 
-        sensor_patches = findobj(evalin('base','zef.h_axes1'),'Type','Patch','Tag','sensor');
-        uistack(sensor_patches,'top');
+sensor_patches = findobj(evalin('base','zef.h_axes1'),'Type','Patch','Tag','sensor');
+uistack(sensor_patches,'top');
 zef_plot_dpq('static');
 zef_plot_dpq('dynamical');
-        zef_set_sliders_plot(1);
+zef_set_sliders_plot(1);
 
-          zef_store_cdata(cdata_counter,cdata_info);
-        cdata_counter = cdata_counter + 1;
+zef_store_cdata(cdata_counter,cdata_info);
+cdata_counter = cdata_counter + 1;
 
 %&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 %&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -800,11 +800,11 @@ pause(0.01);
 stop_movie = evalin('base','zef.stop_movie');
 pause(0.01);
 if stop_movie
-    if get(evalin('base','zef.h_pause_movie'),'value') == 1
-    waitfor(evalin('base','zef.h_pause_movie'),'value');
-    else
+if get(evalin('base','zef.h_pause_movie'),'value') == 1
+waitfor(evalin('base','zef.h_pause_movie'),'value');
+else
 return;
-    end
+end
 end
 
 f_ind_aux = f_ind_aux + 1;
@@ -956,18 +956,18 @@ zef_plot_dpq('dynamical');
 zef_set_sliders_plot(2);
 camorbit(frame_step*evalin('base','zef.orbit_1')/movie_fps,frame_step*evalin('base','zef.orbit_2')/movie_fps);
 
-  axes(h_axes_text);% = axes('position',[0.0325 0.95 0.5 0.05],'visible','off');
-  %set(h_axes_text,'tag','image_details');
-  set(h_text, 'string', ['Time: ' num2str(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2')/2 + frame_step*(f_ind - 1)*evalin('base','zef.inv_time_3'),'%0.6f') ' s, Frame: ' num2str(f_ind) ' / ' num2str(length_reconstruction_cell) '.']);
-  set(h_text,'visible','on');
-  set(h_axes_text,'layer','bottom');
-  drawnow limitrate;
-  %drawnow;
+axes(h_axes_text);% = axes('position',[0.0325 0.95 0.5 0.05],'visible','off');
+%set(h_axes_text,'tag','image_details');
+set(h_text, 'string', ['Time: ' num2str(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2')/2 + frame_step*(f_ind - 1)*evalin('base','zef.inv_time_3'),'%0.6f') ' s, Frame: ' num2str(f_ind) ' / ' num2str(length_reconstruction_cell) '.']);
+set(h_text,'visible','on');
+set(h_axes_text,'layer','bottom');
+drawnow limitrate;
+%drawnow;
 
-    zef_store_cdata(cdata_counter,cdata_info);
-        cdata_counter = cdata_counter + 1;
+zef_store_cdata(cdata_counter,cdata_info);
+cdata_counter = cdata_counter + 1;
 
-  evalin('base',['zef.h_slider.Value=' num2str(max(1e-5,(f_ind-frame_start)/(frame_step*(number_of_frames-1)))) ';']);
+evalin('base',['zef.h_slider.Value=' num2str(max(1e-5,(f_ind-frame_start)/(frame_step*(number_of_frames-1)))) ';']);
 
 end
 

@@ -33,7 +33,7 @@ end
 length_f = size(f,2);
 
 if isempty(number_of_epochs)
-    number_of_epochs = Inf;
+number_of_epochs = Inf;
 end
 
 f_db = f/max(abs(f(:)));
@@ -48,12 +48,12 @@ n_epochs = 0;
 
 while size(f_db, 2) >= size(epoch_data,2) && max(f_db) >= threshold_value && n_epochs < number_of_epochs
 
-    n_epochs = n_epochs + 1;
-    epoch_point_ind = find(f_db >= threshold_value,1);
-    epoch_data = epoch_data + f(:, start_time_ind+epoch_point_ind:end_time_ind+epoch_point_ind);
+n_epochs = n_epochs + 1;
+epoch_point_ind = find(f_db >= threshold_value,1);
+epoch_data = epoch_data + f(:, start_time_ind+epoch_point_ind:end_time_ind+epoch_point_ind);
 
-    f = f(:,end_time_ind+epoch_point_ind+1:end);
-    f_db = f_db(:,end_time_ind+epoch_point_ind+1:end);
+f = f(:,end_time_ind+epoch_point_ind+1:end);
+f_db = f_db(:,end_time_ind+epoch_point_ind+1:end);
 
 end
 

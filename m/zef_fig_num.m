@@ -6,7 +6,7 @@ max_tag = 0;
 for i = 1 : length(h_fig_aux)
 tag_val = str2num(get(h_fig_aux(i),'Tag'));
 if not(isempty(tag_val))
-    max_tag = max(max_tag,tag_val);
+max_tag = max(max_tag,tag_val);
 end
 end
 

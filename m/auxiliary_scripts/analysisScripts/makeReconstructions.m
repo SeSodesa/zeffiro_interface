@@ -25,9 +25,9 @@ zef_dataBank_addButtonPress;
 
 %beamformer
 if strcmp(zef.beamformer.estimation_attr.Value,'1')
-    [zef.reconstruction,~, zef.reconstruction_information] = zef_beamformer;
+[zef.reconstruction,~, zef.reconstruction_information] = zef_beamformer;
 elseif strcmp(zef.beamformer.estimation_attr.Value,'2')
-    [~,zef.reconstruction, zef.reconstruction_information] = zef_beamformer;
+[~,zef.reconstruction, zef.reconstruction_information] = zef_beamformer;
 else; [zef.reconstruction,zef.bf_var_loc, zef.reconstruction_information] = zef_beamformer;
 end
 zef_dataBank_addButtonPress;

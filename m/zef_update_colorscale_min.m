@@ -16,9 +16,9 @@ end
 slider_value_new = h_object.Value;
 
 if isempty(h_object.UserData)
-    slider_value_old = 0;
+slider_value_old = 0;
 else
-    slider_value_old = h_object.UserData;
+slider_value_old = h_object.UserData;
 end
 
 h_object.UserData = slider_value_new;

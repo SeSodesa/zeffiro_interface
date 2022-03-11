@@ -13,7 +13,7 @@ if isfield(zef_data,'fieldnames')
 zef_data = rmfield(zef_data,'fieldnames');
 end
 if isfield(zef_data,'h')
-    zef_data = rmfield(zef_data,'h');
+zef_data = rmfield(zef_data,'h');
 end
 save([zef.save_file_path zef.save_file],'zef_data','-v7.3');
 clear zef_data;
@@ -92,7 +92,7 @@ if isfield(zef_data,'fieldnames')
 zef_data = rmfield(zef_data,'fieldnames');
 end
 if isfield(zef_data,'h')
-    zef_data = rmfield(zef_data,'h');
+zef_data = rmfield(zef_data,'h');
 end
 save([zef.save_file_path zef.save_file],'zef_data','-v7.3');
 clear zef_data;
@@ -109,7 +109,7 @@ if isfield(zef_data,'fieldnames')
 zef_data = rmfield(zef_data,'fieldnames');
 end
 if isfield(zef_data,'h')
-    zef_data = rmfield(zef_data,'h');
+zef_data = rmfield(zef_data,'h');
 end
 save([zef.save_file_path zef.save_file],'zef_data','-v7.3');
 clear zef_data;
@@ -134,15 +134,15 @@ end;
 end;
 if zef.save_switch == 10
 if not(isequal(zef.file,0));
-    if zef.file_index == 1
+if zef.file_index == 1
 print(zef.h_zeffiro,'-dpng','-r200',[zef.file_path zef.file]);
-    end
-        if zef.file_index == 2
+end
+if zef.file_index == 2
 print(zef.h_zeffiro,['-djpeg' zef.video_codec],'-r200',[zef.save_file_path zef.file]);
-    end
+end
 if zef.file_index == 3
 print(zef.h_zeffiro,'-dtiff','-r200',[zef.file_path zef.file]);
-    end
+end
 end;
 end;
 

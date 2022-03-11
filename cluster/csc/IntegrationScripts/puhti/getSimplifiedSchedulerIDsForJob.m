@@ -12,11 +12,11 @@ function [schedulerIDs, numTasks] = getSimplifiedSchedulerIDsForJob(job, data)
 % Copyright 2019 The MathWorks, Inc.
 
 if verLessThan('matlab', '9.7')
-    schedulerIDs = data.ClusterJobIDs;
-    numTasks = numel(job.Tasks);
+schedulerIDs = data.ClusterJobIDs;
+numTasks = numel(job.Tasks);
 else
-    schedulerIDs = job.getTaskSchedulerIDs();
-    numTasks = numel(schedulerIDs);
+schedulerIDs = job.getTaskSchedulerIDs();
+numTasks = numel(schedulerIDs);
 end
 
 % Child jobs within a job array will have a schedulerID of the form

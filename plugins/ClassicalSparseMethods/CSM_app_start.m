@@ -6,15 +6,15 @@ zef.CSM = CSM_app;
 
 %_ Names of methods that are included in app _
 zef_csm_names = {'dSPM',
-                 'sLORETA',
-                 'Sparse Bayesian Learning'
-                };
+'sLORETA',
+'Sparse Bayesian Learning'
+};
 
 zef.CSM.csm_type.Items = zef_csm_names;
 zef.CSM.csm_type.ItemsData = strsplit(num2str(1:length(zef_csm_names)));
 zef.CSM.csm_type.Value = '1';
 if ~isfield(zef,'csm_type')
-    zef.csm_type = 1;
+zef.csm_type = 1;
 end
 
 clear zef_csm_names
@@ -31,23 +31,23 @@ zef.CSM.inv_time_3.Value = '0';
 zef.CSM.inv_data_segment.Value = '1';
 
 if ~isfield(zef,'cms_n_iter')
-    zef.csm_n_iter = 10;
+zef.csm_n_iter = 10;
 end
 
 %set parameters if saved in ZI:
 %(Naming concept: zef.CSM."field" = zef."field")
 zef_props = properties(zef.CSM);
 for zef_i = 1:length(zef_props)
-    if isfield(zef,zef_props{zef_i})
-        zef.CSM.(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
-    end
+if isfield(zef,zef_props{zef_i})
+zef.CSM.(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
+end
 end
 clear zef_props zef_i
 
 if zef.csm_type == 1 || zef.csm_type == 2
-    zef.CSM.csm_n_iter.Enable = 'off';
+zef.CSM.csm_n_iter.Enable = 'off';
 else
-    zef.CSM.csm_n_iter.Enable = 'on';
+zef.CSM.csm_n_iter.Enable = 'on';
 end
 
 %_ Functions _

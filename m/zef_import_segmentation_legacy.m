@@ -9,8 +9,8 @@ if nargin < 2
 [file_name folder_name] = uigetfile({'*.zef'},'Segmentation data file and folder',evalin('base','zef.save_file_path'));
 end
 else
-    file_name = evalin('base','zef.file');
-    folder_name = evalin('base','zef.file_path');
+file_name = evalin('base','zef.file');
+folder_name = evalin('base','zef.file_path');
 end
 
 if not(isequal(file_name,0));
@@ -20,8 +20,8 @@ ini_cell = textscan(h_import,'%s','HeaderLines',57,'Delimiter',',');
 n_columns = 12;
 
 compartment_cell = {'detail_1', 'detail_2', 'detail_3', 'detail_4', 'detail_5', 'detail_6', 'detail_7','detail_8','detail_9', ...
-    'detail_10', 'detail_11', 'detail_12', 'detail_13', 'detail_14', 'detail_15', 'detail_16','detail_17','detail_18',...
-    'detail_19','detail_20','detail_21','detail_22','white_matter','grey_matter','csf','skull','scalp'};
+'detail_10', 'detail_11', 'detail_12', 'detail_13', 'detail_14', 'detail_15', 'detail_16','detail_17','detail_18',...
+'detail_19','detail_20','detail_21','detail_22','white_matter','grey_matter','csf','skull','scalp'};
 
 name_cell = {'d1','d2','d3','d4','d5','d6','d7','d8','d9','d10','d11','d12','d13','d14','d15','d16','d17','d18','d19','d20','d21','d22','w','g','c','sk','sc'};
 
@@ -178,8 +178,8 @@ end
 
 elseif isequal(ini_cell{1}{n_columns*(i-1)+2},'mat_struct')
 
-    file_name_1 = [folder_name ini_cell{1}{n_columns*(i-1)+1} '.mat'];
-    zef_import_mat_struct(load(file_name_1));
+file_name_1 = [folder_name ini_cell{1}{n_columns*(i-1)+1} '.mat'];
+zef_import_mat_struct(load(file_name_1));
 
 else
 
@@ -244,7 +244,7 @@ mesh_data = double(mesh_data);
 triangle_data = mesh_data(:,1:3);
 triangle_data = mesh_data(:,1:3);
 if min(triangle_data(:)) == 0
-    triangle_data = triangle_data + 1;
+triangle_data = triangle_data + 1;
 end
 
 end
@@ -255,7 +255,7 @@ if isequal(ini_cell{1}{n_columns*(i-1)+2},compartment_cell{j})
 
 if isequal(ini_cell{1}{n_columns*(i-1)+9},'ASC') && j < 23
 
-    [point_data] = zef_smooth_surface(point_data,triangle_data,0.5,60);
+[point_data] = zef_smooth_surface(point_data,triangle_data,0.5,60);
 
 end
 
@@ -282,19 +282,19 @@ if merge_on
 l1_triangles = evalin('base',['zef.' name_cell{j} '_triangles']);
 l2_triangles = triangle_data;
 if invert_on
-    l2_triangles = l2_triangles(:,[1 3 2]);
+l2_triangles = l2_triangles(:,[1 3 2]);
 end
 if isempty(l1_triangles)
-    max_val = 0;
+max_val = 0;
 else
-    max_val = max(l1_triangles(:));
+max_val = max(l1_triangles(:));
 end
 triangle_data = [l1_triangles; l2_triangles+max_val];
 assignin('base','zef_data', [evalin('base',['zef.' name_cell{j} '_submesh_ind']) size(triangle_data,1)]);
 evalin('base',['zef.' name_cell{j} '_submesh_ind = zef_data;']);
 else
 if invert_on
-    triangle_data = triangle_data(:,[1 3 2]);
+triangle_data = triangle_data(:,[1 3 2]);
 end
 assignin('base','zef_data', size(triangle_data,1));
 evalin('base',['zef.' name_cell{j} '_submesh_ind = zef_data;']);
@@ -321,7 +321,7 @@ if compartment_count_vec(j+2) == 1
 if not(isequal(ini_cell{1}{n_columns*(i-1)+3},'0'))
 aux_var = ini_cell{1}{n_columns*(i-1)+3};
 if isstr(aux_var)
-    aux_var = str2num(aux_var);
+aux_var = str2num(aux_var);
 end
 assignin('base', 'zef_data', aux_var);
 evalin('base',['zef.' name_cell{j} '_scaling = zef_data;'])
@@ -330,7 +330,7 @@ end
 if not(isequal(ini_cell{1}{n_columns*(i-1)+4},'0'))
 aux_var = ini_cell{1}{n_columns*(i-1)+4};
 if isstr(aux_var)
-    aux_var = str2num(aux_var);
+aux_var = str2num(aux_var);
 end
 assignin('base', 'zef_data', aux_var);
 evalin('base', ['zef.' name_cell{j} '_sigma = zef_data;']);
@@ -339,7 +339,7 @@ end
 if not(isequal(ini_cell{1}{n_columns*(i-1)+5},'0'))
 aux_var = ini_cell{1}{n_columns*(i-1)+5};
 if isstr(aux_var)
-    aux_var = str2num(aux_var);
+aux_var = str2num(aux_var);
 end
 assignin('base', 'zef_data', aux_var);
 evalin('base',['zef.' name_cell{j} '_priority = zef_data;']);
@@ -348,7 +348,7 @@ end
 %if not(isequal(ini_cell{1}{n_columns*(i-1)+6},'0'))
 aux_var = ini_cell{1}{n_columns*(i-1)+6};
 if isstr(aux_var)
-    aux_var = str2num(aux_var);
+aux_var = str2num(aux_var);
 end
 assignin('base', 'zef_data', aux_var);
 evalin('base',['zef.' name_cell{j} '_sources = zef_data;']);

@@ -22,21 +22,21 @@ n_tiles = 20;
 h_aux = [];
 
 if isequal(arrange_mode,'on-screen')
-    if isequal(arrange_target,'windows')
+if isequal(arrange_target,'windows')
 h_aux = evalin('base','findall(groot,''-regexp'',''Name'',''ZEFFIRO Interface:*'',''WindowState'',''normal'')');
 elseif isequal(arrange_target,'figs')
-    h_aux = evalin('base','findall(groot,''-regexp'',''Name'',''ZEFFIRO Interface: Figure tool*'',''WindowState'',''normal'')');
- elseif isequal(arrange_target,'tools')
-     h_aux = evalin('base','findall(groot,''Name'',''ZEFFIRO Interface:*'',''-not'',''-regexp'',''Name'',''ZEFFIRO Interface: Figure tool*'',''WindowState'',''normal'')');
-    end
+h_aux = evalin('base','findall(groot,''-regexp'',''Name'',''ZEFFIRO Interface: Figure tool*'',''WindowState'',''normal'')');
+elseif isequal(arrange_target,'tools')
+h_aux = evalin('base','findall(groot,''Name'',''ZEFFIRO Interface:*'',''-not'',''-regexp'',''Name'',''ZEFFIRO Interface: Figure tool*'',''WindowState'',''normal'')');
+end
 elseif isequal(arrange_mode,'all')
-    if isequal(arrange_target,'windows')
+if isequal(arrange_target,'windows')
 h_aux = evalin('base','findall(groot,''-regexp'',''Name'',''ZEFFIRO Interface:*'')');
 elseif isequal(arrange_target,'figs')
 h_aux = evalin('base','findall(groot,''-regexp'',''Name'',''ZEFFIRO Interface: Figure tool*'')');
- elseif isequal(arrange_target,'tools')
+elseif isequal(arrange_target,'tools')
 h_aux = evalin('base','findall(groot,''Name'',''ZEFFIRO Interface:*'',''-not'',''-regexp'',''Name'',''ZEFFIRO Interface: Figure tool*'')');
-    end
+end
 end
 
 if isequal(arrange_mode,'tile')
@@ -58,26 +58,26 @@ tile_mat(find(tile_mat < length(h_aux))) = Inf;
 for i = 1 : length(h_aux)
 unit_mode = get(h_aux(i),'units');
 if isequal(arrange_mode,'all')
-    set(h_aux(i),'WindowState','normal');
+set(h_aux(i),'WindowState','normal');
 end
 if isequal(unit_mode,'pixels')
-    set(h_aux(i),'position',round([position_grid_1(i)*screen_size(3) position_grid_2(i)*screen_size(4) screen_size(3)/n_1 screen_size(4)/n_2]))
+set(h_aux(i),'position',round([position_grid_1(i)*screen_size(3) position_grid_2(i)*screen_size(4) screen_size(3)/n_1 screen_size(4)/n_2]))
 else
-    set(h_aux(i),'position',[position_grid_1(i) position_grid_2(i) 1/n_1 1/n_2])
+set(h_aux(i),'position',[position_grid_1(i) position_grid_2(i) 1/n_1 1/n_2])
 end
 end
 end
 
 if isequal(arrange_mode,'maximize')
-    for i = 1 : length(h_aux)
-    set(h_aux(i),'WindowState','normal');
-    end
+for i = 1 : length(h_aux)
+set(h_aux(i),'WindowState','normal');
+end
 end
 
 if isequal(arrange_mode,'minimize')
-    for i = 1 : length(h_aux)
-    set(h_aux(i),'WindowState','minimized');
-    end
+for i = 1 : length(h_aux)
+set(h_aux(i),'WindowState','minimized');
+end
 end
 
 end

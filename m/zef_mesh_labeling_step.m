@@ -34,10 +34,10 @@ I(I_2(I_1)) = compartment_counter;
 I_2 = find(I==0);
 
 else
-    pml_counter = compartment_counter;
-    if not(isempty(pml_ind))
-    I(pml_ind) = pml_counter;
-    end
+pml_counter = compartment_counter;
+if not(isempty(pml_ind))
+I(pml_ind) = pml_counter;
+end
 end
 
 end
@@ -76,7 +76,7 @@ domain_label_ind = find(ismember(unique_domain_labels,compartment_counter));
 if domain_label_ind
 
 if compartment_counter == max_compartments
-    break
+break
 end
 
 if isempty(submesh_cell{i_labeling})
@@ -154,7 +154,7 @@ domain_label_ind = find(ismember(unique_domain_labels,compartment_counter));
 if domain_label_ind
 
 if compartment_counter == max_compartments
-    break
+break
 end
 
 if isempty(submesh_cell{i_labeling})
@@ -176,9 +176,9 @@ while not(isempty(tetra_ind_aux))
 I_1_0 = find(domain_labels <= compartment_counter);
 I_1 = intersect(I_1_0,tetra_refine_ind);
 if isempty(I_1)
-    tetra_ind_aux = [];
+tetra_ind_aux = [];
 else
-    loop_steps = loop_steps + 1;
+loop_steps = loop_steps + 1;
 [I_2] = zef_surface_mesh(label_ind(I_1,:));
 I_1 = setdiff([1:size(domain_labels,1)]',I_1);
 [I_2, ~] = find(ismember(label_ind(I_1,:),I_2));

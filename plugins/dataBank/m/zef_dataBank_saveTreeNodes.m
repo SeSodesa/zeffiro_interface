@@ -6,10 +6,10 @@ dbFieldNames=fieldnames(tree);
 
 for i=1:length(dbFieldNames)
 
-    nodeData=tree.(dbFieldNames{i}).data;
-    folderName=strcat(folder, dbFieldNames{i});
-    save(folderName, '-struct', 'nodeData');
-    tree.(dbFieldNames{i}).data=matfile(folderName);
+nodeData=tree.(dbFieldNames{i}).data;
+folderName=strcat(folder, dbFieldNames{i});
+save(folderName, '-struct', 'nodeData');
+tree.(dbFieldNames{i}).data=matfile(folderName);
 
 end
 

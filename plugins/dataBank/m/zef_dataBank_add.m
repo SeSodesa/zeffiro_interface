@@ -15,7 +15,7 @@ node.type=data.type;
 node.name=data.type;
 
 if strcmp(data.type, 'reconstruction') && isfield(node.data, 'reconstruction_information') && isfield(node.data.reconstruction_information, 'tag')
-    node.name=strcat('rec-', node.data.reconstruction_information.tag);
+node.name=strcat('rec-', node.data.reconstruction_information.tag);
 end
 
 i=1;

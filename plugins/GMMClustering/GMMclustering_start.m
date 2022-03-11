@@ -7,103 +7,103 @@ zef.GMMclustering = GMMclustering_app;
 %_ Initial values _
 
 if ~isfield(zef,'GMMcluster_clustnum')
-    zef.GMMcluster_clustnum = 3;
+zef.GMMcluster_clustnum = 3;
 end
 if ~isfield(zef,'GMMcluster_reg')
-    zef.GMMcluster_reg = 0.05;
+zef.GMMcluster_reg = 0.05;
 end
 if ~isfield(zef,'GMMcluster_threshold')
-    zef.GMMcluster_threshold = 0.25;
+zef.GMMcluster_threshold = 0.25;
 end
 if ~isfield(zef,'GMMcluster_MaxIter')
-    zef.GMMcluster_MaxIter = 1000;
+zef.GMMcluster_MaxIter = 1000;
 end
 if ~isfield(zef,'GMMcluster_alpha')
-    zef.GMMcluster_alpha = 90;
+zef.GMMcluster_alpha = 90;
 end
 if ~isfield(zef,'GMMcluster_covident')
-    zef.GMMcluster_covident = 1;
+zef.GMMcluster_covident = 1;
 end
 if ~isfield(zef,'GMMcluster_covtype')
-    zef.GMMcluster_covtype = 1;
+zef.GMMcluster_covtype = 1;
 end
 if ~isfield(zef,'GMMcluster_domain')
-    zef.GMMcluster_domain = 1;
+zef.GMMcluster_domain = 1;
 end
 if ~isfield(zef,'GMMcluster_markercolor')
-    zef.GMMcluster_markercolor = zef.GMMclustering.GMMcluster_markercolor.ItemsData{1};
+zef.GMMcluster_markercolor = zef.GMMclustering.GMMcluster_markercolor.ItemsData{1};
 end
 if ~isfield(zef,'GMMcluster_markersize')
-    zef.GMMcluster_markersize = 8;
+zef.GMMcluster_markersize = 8;
 end
 if ~isfield(zef,'GMMcluster_markerwidth')
-    zef.GMMcluster_markerwidth = 4;
+zef.GMMcluster_markerwidth = 4;
 end
 if ~isfield(zef,'GMMcluster_veclength')
-    zef.GMMcluster_veclength = 3;
+zef.GMMcluster_veclength = 3;
 end
 if ~isfield(zef,'GMMcluster_headtrans')
-    zef.GMMcluster_headtrans = 0.4;
+zef.GMMcluster_headtrans = 0.4;
 end
 if ~isfield(zef,'GMMcluster_plotellip')
-    zef.GMMcluster_plotellip = 1;
+zef.GMMcluster_plotellip = 1;
 end
 if ~isfield(zef,'GMMcluster_elliptrans')
-    zef.GMMcluster_elliptrans = 0.3;
+zef.GMMcluster_elliptrans = 0.3;
 end
 if ~isfield(zef,'GMMcluster_startframe')
-    zef.GMMcluster_startframe = 1;
+zef.GMMcluster_startframe = 1;
 end
 if ~isfield(zef,'GMMcluster_stopframe')
-    if iscell(zef.reconstruction)
-        zef.GMMcluster_stopframe = length(zef.reconstruction);
-    else
-        zef.GMMcluster_stopframe = 1;
-    end
+if iscell(zef.reconstruction)
+zef.GMMcluster_stopframe = length(zef.reconstruction);
+else
+zef.GMMcluster_stopframe = 1;
+end
 end
 if ~isfield(zef,'GMMcluster_c_startframe')
-    zef.GMMcluster_c_startframe = 1;
+zef.GMMcluster_c_startframe = 1;
 end
 if ~isfield(zef,'GMMcluster_c_stopframe')
-    if iscell(zef.reconstruction)
-        zef.GMMcluster_c_stopframe = length(zef.reconstruction);
-    else
-        zef.GMMcluster_c_stopframe = 1;
-    end
+if iscell(zef.reconstruction)
+zef.GMMcluster_c_stopframe = length(zef.reconstruction);
+else
+zef.GMMcluster_c_stopframe = 1;
+end
 end
 if ~isfield(zef,'GMM_colors')
-    zef.GMM_colors = [];
+zef.GMM_colors = [];
 end
 if ~isfield(zef,'GMM_ellip_coloring')
-    zef.GMM_ellip_coloring = 1;
+zef.GMM_ellip_coloring = 1;
 end
 if ~isfield(zef,'GMM_ellip_comp')
-    zef.GMM_ellip_comp = [];
+zef.GMM_ellip_comp = [];
 end
 if ~isfield(zef,'GMM_dip_comp')
-    zef.GMM_dip_comp = [];
+zef.GMM_dip_comp = [];
 end
 if ~isfield(zef,'GMM_ellip_num')
-    zef.GMM_ellip_num = 3;
+zef.GMM_ellip_num = 3;
 end
 if ~isfield(zef,'GMM_dip_num')
-    zef.GMM_dip_num = 3;
+zef.GMM_dip_num = 3;
 end
 if ~isfield(zef,'GMM_comp_ord')
-    zef.GMM_comp_ord = 1;
+zef.GMM_comp_ord = 1;
 end
 
 %set parameters if saved in ZI:
 %(Naming concept: zef.GMMclustering."field" = zef."field")
 zef_props = properties(zef.GMMclustering);
 for zef_i = 1:length(zef_props)
-    if isfield(zef,zef_props{zef_i})
-        if ~ischar(zef.(zef_props{zef_i}))
-        zef.GMMclustering.(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
-        else
-        zef.GMMclustering.(zef_props{zef_i}).Value = zef.(zef_props{zef_i});
-        end
-    end
+if isfield(zef,zef_props{zef_i})
+if ~ischar(zef.(zef_props{zef_i}))
+zef.GMMclustering.(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
+else
+zef.GMMclustering.(zef_props{zef_i}).Value = zef.(zef_props{zef_i});
+end
+end
 end
 clear zef_props zef_i
 

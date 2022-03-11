@@ -7,7 +7,7 @@ source_ind = varargin{1};
 if length(varargin) > 1
 n_sources = varargin{2};
 else
-    n_sources = evalin('base','zef.n_sources');
+n_sources = evalin('base','zef.n_sources');
 end
 if length(varargin) > 2
 dof_decomposition_type = varargin{3};
@@ -86,10 +86,10 @@ decomposition_ind_first = i_a;
 
 elseif dof_decomposition_type == 3
 
- decomposition_ind = [1:length(brain_ind)]';
- decomposition_count = ones(size(decomposition_ind));
- dof_positions = center_points;
- decomposition_ind_first = [1:length(brain_ind)]';
+decomposition_ind = [1:length(brain_ind)]';
+decomposition_count = ones(size(decomposition_ind));
+dof_positions = center_points;
+decomposition_ind_first = [1:length(brain_ind)]';
 
 end
 end

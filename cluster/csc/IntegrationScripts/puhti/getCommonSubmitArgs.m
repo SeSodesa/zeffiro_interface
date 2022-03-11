@@ -11,9 +11,9 @@ commonSubmitArgs = '';
 % Number of cores/node
 ppn = validatedPropValue(cluster, 'ProcsPerNode', 'double');
 if ppn>0
-    % Don't request more cores/node than workers
-    ppn = min(numWorkers,ppn);
-    commonSubmitArgs = sprintf('%s --ntasks-per-node=%d',commonSubmitArgs,ppn);
+% Don't request more cores/node than workers
+ppn = min(numWorkers,ppn);
+commonSubmitArgs = sprintf('%s --ntasks-per-node=%d',commonSubmitArgs,ppn);
 end
 commonSubmitArgs = sprintf('%s --ntasks-per-core=1',commonSubmitArgs);
 
@@ -22,26 +22,26 @@ commonSubmitArgs = sprintf('%s --ntasks-per-core=1',commonSubmitArgs);
 % AccountName
 an = validatedPropValue(cluster, 'AccountName', 'char');
 if isempty(an)
-    emsg = sprintf(['\n\t>> %% Must set AccountName.  E.g.\n\n', ...
-                    '\t>> c = parcluster;\n', ...
-                    '\t>> c.AdditionalProperties.AccountName = ''account-name'';\n', ...
-                    '\t>> c.saveProfile\n\n']);
-    error(emsg) %#ok<SPERR>
+emsg = sprintf(['\n\t>> %% Must set AccountName.  E.g.\n\n', ...
+'\t>> c = parcluster;\n', ...
+'\t>> c.AdditionalProperties.AccountName = ''account-name'';\n', ...
+'\t>> c.saveProfile\n\n']);
+error(emsg) %#ok<SPERR>
 else
-    commonSubmitArgs = [commonSubmitArgs ' -A ' an];
+commonSubmitArgs = [commonSubmitArgs ' -A ' an];
 end
 
 % Walltime
 wt = validatedPropValue(cluster, 'WallTime', 'char');
 if isempty(wt)
-    emsg = sprintf(['\n\t>> %% Must set WallTime.  E.g.\n\n', ...
-                    '\t>> c = parcluster;\n', ...
-                    '\t>> %% 5 hours\n', ...
-                    '\t>> c.AdditionalProperties.WallTime = ''05:00:00'';\n', ...
-                    '\t>> c.saveProfile\n\n']);
-    error(emsg) %#ok<SPERR>
+emsg = sprintf(['\n\t>> %% Must set WallTime.  E.g.\n\n', ...
+'\t>> c = parcluster;\n', ...
+'\t>> %% 5 hours\n', ...
+'\t>> c.AdditionalProperties.WallTime = ''05:00:00'';\n', ...
+'\t>> c.saveProfile\n\n']);
+error(emsg) %#ok<SPERR>
 else
-    commonSubmitArgs = [commonSubmitArgs ' -t ' wt];
+commonSubmitArgs = [commonSubmitArgs ' -t ' wt];
 end
 
 %% OPTIONAL
@@ -49,21 +49,21 @@ end
 % Partition
 qn = validatedPropValue(cluster, 'QueueName', 'char');
 if ~isempty(qn)
-    commonSubmitArgs = [commonSubmitArgs ' -p ' qn];
+commonSubmitArgs = [commonSubmitArgs ' -p ' qn];
 end
 
 % Check for GPU
 ngpus = validatedPropValue(cluster, 'GpusPerNode', 'double');
 if ngpus>0
-    gcard = validatedPropValue(cluster, 'GpuCard', 'char', 'v100');
-    commonSubmitArgs = sprintf('%s --gres=gpu:%s:%d', commonSubmitArgs, gcard, ngpus);
-    commonSubmitArgs = strrep(commonSubmitArgs,'::',':');
+gcard = validatedPropValue(cluster, 'GpuCard', 'char', 'v100');
+commonSubmitArgs = sprintf('%s --gres=gpu:%s:%d', commonSubmitArgs, gcard, ngpus);
+commonSubmitArgs = strrep(commonSubmitArgs,'::',':');
 end
 
 % Physical Memory used by a single core
 mu = validatedPropValue(cluster, 'MemUsage', 'char');
 if ~isempty(mu)
-    commonSubmitArgs = [commonSubmitArgs ' --mem-per-cpu=' mu];
+commonSubmitArgs = [commonSubmitArgs ' --mem-per-cpu=' mu];
 end
 
 % Local storage space per node
@@ -91,13 +91,13 @@ end
 %  would need to move it before the job is finished.  Not terrible likely to be used.
 lss = validatedPropValue(cluster, 'LocalStorageSpacePerNode', 'char');
 if ~isempty(lss)
-    commonSubmitArgs = [commonSubmitArgs ' --gres=nvme:' lss];
+commonSubmitArgs = [commonSubmitArgs ' --gres=nvme:' lss];
 end
 
 % Email notification
 ea = validatedPropValue(cluster, 'EmailAddress', 'char');
 if ~isempty(ea)
-    commonSubmitArgs = [commonSubmitArgs ' --mail-type=ALL --mail-user=' ea];
+commonSubmitArgs = [commonSubmitArgs ' --mail-type=ALL --mail-user=' ea];
 end
 
 % Every job is going to require a certain number of MATLAB Parallel Server licenses.
@@ -117,7 +117,7 @@ commonSubmitArgs = sprintf('%s --licenses=mdcs:%d',commonSubmitArgs,numWorkers);
 % Catch-all
 asa = validatedPropValue(cluster, 'AdditionalSubmitArgs', 'char');
 if ~isempty(asa)
-    commonSubmitArgs = [commonSubmitArgs ' ' asa];
+commonSubmitArgs = [commonSubmitArgs ' ' asa];
 end
 
 commonSubmitArgs = strtrim(commonSubmitArgs);

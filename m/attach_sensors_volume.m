@@ -4,18 +4,18 @@ function  [sensors_attached_volume] = attach_sensors_volume(sensors,varargin)
 
 attach_type = 'mesh';
 nodes = evalin('base','zef.nodes');
- tetra = evalin('base','zef.tetra');
+tetra = evalin('base','zef.tetra');
 
 if not(isempty(varargin))
-   if length(varargin) > 0
-   attach_type = varargin{1};
-   if length(varargin) > 1
-       nodes = varargin{2};
-   end
-      if length(varargin) > 2
-       tetra = varargin{3};
-      end
-   end
+if length(varargin) > 0
+attach_type = varargin{1};
+if length(varargin) > 1
+nodes = varargin{2};
+end
+if length(varargin) > 2
+tetra = varargin{3};
+end
+end
 end
 
 if ismember(evalin('base','zef.imaging_method'),[1,4,5])
@@ -34,9 +34,9 @@ use_depth_electrodes = evalin('base','zef.use_depth_electrodes');
 %end
 
 if size(sensors,2) == 6
-    electrode_model = 2;
+electrode_model = 2;
 else
-    electrode_model = 1;
+electrode_model = 1;
 end
 
 if electrode_model == 1 || isequal(attach_type,'points')
@@ -48,8 +48,8 @@ elseif electrode_model == 1 && use_depth_electrodes == 0
 surface_ind = [1:size(sensors,1)]';
 deep_ind = [];
 else
-    surface_ind = find(not(ismember(sensors(:,5),0)));
-    deep_ind = setdiff(find(ismember(sensors(:,4),0)),surface_ind);
+surface_ind = find(not(ismember(sensors(:,5),0)));
+deep_ind = setdiff(find(ismember(sensors(:,4),0)),surface_ind);
 end
 sensors_attached_volume = sensors;
 for i = 1 : length(deep_ind)
@@ -65,21 +65,21 @@ else
 
 if (isequal(attach_type,'geometry'))
 geometry_center_points_aux = (1/3)*(geometry_nodes(geometry_triangles(:,1),:) + ...
-                           geometry_nodes(geometry_triangles(:,2),:) + ...
-                           geometry_nodes(geometry_triangles(:,3),:));
+geometry_nodes(geometry_triangles(:,2),:) + ...
+geometry_nodes(geometry_triangles(:,3),:));
 else
-    center_points_aux = (1/3)*(nodes(surface_triangles(:,1),:) + ...
-                           nodes(surface_triangles(:,2),:) + ...
-                           nodes(surface_triangles(:,3),:));
+center_points_aux = (1/3)*(nodes(surface_triangles(:,1),:) + ...
+nodes(surface_triangles(:,2),:) + ...
+nodes(surface_triangles(:,3),:));
 
 unique_surface_triangles = unique(surface_triangles);
 ele_nodes = nodes(unique_surface_triangles,:);
 
 if not(isempty(find(sensors(:,4) == 0)))
-    diff_vec_1 = (nodes(tetra(:,2),:) - nodes(tetra(:,1),:));
-    diff_vec_2 = (nodes(tetra(:,3),:) - nodes(tetra(:,1),:));
-    diff_vec_3 = (nodes(tetra(:,4),:) - nodes(tetra(:,1),:));
-    det_system = zef_determinant(diff_vec_1,diff_vec_2,diff_vec_3);
+diff_vec_1 = (nodes(tetra(:,2),:) - nodes(tetra(:,1),:));
+diff_vec_2 = (nodes(tetra(:,3),:) - nodes(tetra(:,1),:));
+diff_vec_3 = (nodes(tetra(:,4),:) - nodes(tetra(:,1),:));
+det_system = zef_determinant(diff_vec_1,diff_vec_2,diff_vec_3);
 end
 
 end
@@ -92,20 +92,20 @@ if sensors(i,4) == 0 && sensors(i,5) == 0
 
 if isequal(attach_type,'mesh')
 
-    diff_vec_sensor = (repmat(sensors(i,1:3),size(tetra,1),1)- nodes(tetra(:,1),:));
-    lambda_2 = zef_determinant(diff_vec_sensor,diff_vec_2,diff_vec_3);
-    lambda_3 = zef_determinant(diff_vec_1,diff_vec_sensor,diff_vec_3);
-    lambda_4 = zef_determinant(diff_vec_1,diff_vec_2,diff_vec_sensor);
-    lambda_2 = lambda_2./det_system;
-    lambda_3 = lambda_3./det_system;
-    lambda_4 = lambda_4./det_system;
-    lambda_1 = 1 - lambda_2 - lambda_3 - lambda_4;
-    sensor_index = find(lambda_1 <= 1 & lambda_2 <= 1 & lambda_3 <= 1  & lambda_4 <= 1 ...
-       &  lambda_1 >= 0 & lambda_2 >= 0 & lambda_3 >= 0  & lambda_4 >= 0,1);
-        lambda_vec = [lambda_1(sensor_index) ; lambda_2(sensor_index) ; lambda_3(sensor_index) ; lambda_4(sensor_index)];
-    sensors_aux = [sensors_aux ; i*ones(4,1)  tetra(sensor_index,:)' lambda_vec zeros(4,1)];
+diff_vec_sensor = (repmat(sensors(i,1:3),size(tetra,1),1)- nodes(tetra(:,1),:));
+lambda_2 = zef_determinant(diff_vec_sensor,diff_vec_2,diff_vec_3);
+lambda_3 = zef_determinant(diff_vec_1,diff_vec_sensor,diff_vec_3);
+lambda_4 = zef_determinant(diff_vec_1,diff_vec_2,diff_vec_sensor);
+lambda_2 = lambda_2./det_system;
+lambda_3 = lambda_3./det_system;
+lambda_4 = lambda_4./det_system;
+lambda_1 = 1 - lambda_2 - lambda_3 - lambda_4;
+sensor_index = find(lambda_1 <= 1 & lambda_2 <= 1 & lambda_3 <= 1  & lambda_4 <= 1 ...
+&  lambda_1 >= 0 & lambda_2 >= 0 & lambda_3 >= 0  & lambda_4 >= 0,1);
+lambda_vec = [lambda_1(sensor_index) ; lambda_2(sensor_index) ; lambda_3(sensor_index) ; lambda_4(sensor_index)];
+sensors_aux = [sensors_aux ; i*ones(4,1)  tetra(sensor_index,:)' lambda_vec zeros(4,1)];
 
-      end
+end
 
 if isequal(attach_type,'geometry')
 
@@ -133,7 +133,7 @@ end
 
 else
 
- if isequal(attach_type,'mesh')
+if isequal(attach_type,'mesh')
 
 [min_val, min_ind] = min(sqrt(sum((ele_nodes - repmat(sensors(i,1:3),size(ele_nodes,1),1)).^2,2)));
 sensors(i,1:3) = ele_nodes(min_ind,:);

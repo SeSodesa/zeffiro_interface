@@ -16,10 +16,10 @@ zef.LeadFieldProcessingTool.auxData.source_structure = cell(0,0);
 
 for zef_ind=1:length(zef.compartment_tags)
 
-    zef_name=strcat(zef.compartment_tags{zef_ind}, '_sources');
+zef_name=strcat(zef.compartment_tags{zef_ind}, '_sources');
 
-    zef.LeadFieldProcessingTool.auxData.source_structure{zef_ind}=zef.(zef_name);
-    %evalin('base', ['zef.' zef.compartment_tags{zef_ind} '_sources']);
+zef.LeadFieldProcessingTool.auxData.source_structure{zef_ind}=zef.(zef_name);
+%evalin('base', ['zef.' zef.compartment_tags{zef_ind} '_sources']);
 
 end
 

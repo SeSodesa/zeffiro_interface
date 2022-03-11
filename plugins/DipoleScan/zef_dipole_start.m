@@ -20,32 +20,32 @@ appName='dipole_app';
 %Import or set initial values
 
 zef.inv_names={'inv_leadfield_lambda', 'inv_snr', 'inv_sampling_frequency', 'inv_low_cut_frequency',...
-    'inv_high_cut_frequency', 'inv_time_1', 'inv_time_2', 'number_of_frames', 'inv_time_3', 'inv_data_segment'...
-    'normalize_leadfield', 'L_reg_type'};
+'inv_high_cut_frequency', 'inv_time_1', 'inv_time_2', 'number_of_frames', 'inv_time_3', 'inv_data_segment'...
+'normalize_leadfield', 'L_reg_type'};
 zef.inv_default={1e-3, 30, 2400, 2, 80, 0, 0, 0, 0, 1, 1, 1};
 for invNames=1:length(zef.inv_names)
-    if ~isfield(zef,zef.inv_names{invNames})
-        zef.(zef.inv_names{invNames})=zef.inv_default{invNames};
-    end
-    %if isfield(zef.(appName),zef.inv_names{invNames})
+if ~isfield(zef,zef.inv_names{invNames})
+zef.(zef.inv_names{invNames})=zef.inv_default{invNames};
+end
+%if isfield(zef.(appName),zef.inv_names{invNames})
 %        zef.(appName).(zef.inv_names{invNames}).Value=zef.(zef.inv_names{invNames});
-    %end
+%end
 end
 
 % % this is quite elegant
 %
 % %set parameters if saved in ZI:
 % %(Naming concept: zef.(app)."field" = zef."field")
- zef_props = properties(zef.(appName));
+zef_props = properties(zef.(appName));
 for zef_i = 1:length(zef_props)
-    if isfield(zef,zef_props{zef_i})
-        zef.(appName).(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
-    end
+if isfield(zef,zef_props{zef_i})
+zef.(appName).(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
+end
 end
 clear zef_props zef_i
 
 if zef.L_reg_type==2 || zef.L_reg_type==3
-    zef.dipole.inv_leadfield_lambda.Enable = 'off';
+zef.dipole.inv_leadfield_lambda.Enable = 'off';
 end
 
 %_ Functions _

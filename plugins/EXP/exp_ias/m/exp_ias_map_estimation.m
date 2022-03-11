@@ -14,14 +14,14 @@ set(findobj(zef.h_exp_ias_map_estimation.Children,'-property','FontSize'),'FontS
 zef_init_exp_ias;
 if isfield(zef,'measurements')
 if iscell(zef.measurements)
-    set(zef.h_exp_ias_data_segment,'enable','on');
+set(zef.h_exp_ias_data_segment,'enable','on');
 end
 if not(iscell(zef.measurements))
-    set(zef.h_exp_ias_data_segment,'enable','off');
+set(zef.h_exp_ias_data_segment,'enable','off');
 end
 end
 uistack(flipud([zef.h_exp_ias_beta ; zef.h_exp_ias_theta0;
-    zef.h_exp_ias_snr ; zef.h_exp_ias_n_map_iterations ;
-    zef.h_exp_ias_sampling_frequency ; zef.h_exp_ias_low_cut_frequency ;
-    zef.h_exp_ias_high_cut_frequency ; zef.h_exp_ias_time_1 ; zef.h_exp_ias_time_2; zef.h_exp_ias_number_of_frames; zef.h_exp_ias_time_3; zef.h_exp_ias_data_segment ; zef.h_exp_ias_cancel ;
-    zef.h_exp_ias_apply; zef.h_exp_ias_start  ]),'top');
+zef.h_exp_ias_snr ; zef.h_exp_ias_n_map_iterations ;
+zef.h_exp_ias_sampling_frequency ; zef.h_exp_ias_low_cut_frequency ;
+zef.h_exp_ias_high_cut_frequency ; zef.h_exp_ias_time_1 ; zef.h_exp_ias_time_2; zef.h_exp_ias_number_of_frames; zef.h_exp_ias_time_3; zef.h_exp_ias_data_segment ; zef.h_exp_ias_cancel ;
+zef.h_exp_ias_apply; zef.h_exp_ias_start  ]),'top');

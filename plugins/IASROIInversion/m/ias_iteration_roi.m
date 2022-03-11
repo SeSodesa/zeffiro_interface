@@ -44,12 +44,12 @@ aux_dir_mode = [];
 submesh_cell = cell(0);
 compartment_tags = evalin('base','zef.compartment_tags');
 for k = 1 : length(compartment_tags)
-        var_0 = ['zef.'  compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_sigma'];
-        var_2 = ['zef.' compartment_tags{k} '_priority'];
-        var_3 = ['zef.' compartment_tags{k} '_visible'];
-        var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
-    color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
+var_0 = ['zef.'  compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_sigma'];
+var_2 = ['zef.' compartment_tags{k} '_priority'];
+var_3 = ['zef.' compartment_tags{k} '_visible'];
+var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
+color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
 on_val = evalin('base',var_0);
 sigma_val = evalin('base',var_1);
 priority_val = evalin('base',var_2);
@@ -63,8 +63,8 @@ color_cell{i} = color_str;
 visible_vec(i,1) = i*visible_val;
 submesh_cell{i} = submesh_ind;
 if evalin('base',['zef.' compartment_tags{k} '_sources'])>0;
-    aux_brain_ind = [aux_brain_ind i];
-    aux_dir_mode = [aux_dir_mode evalin('base',['zef.' compartment_tags{k} '_sources'])-1];
+aux_brain_ind = [aux_brain_ind i];
+aux_dir_mode = [aux_dir_mode evalin('base',['zef.' compartment_tags{k} '_sources'])-1];
 end
 end
 end
@@ -167,9 +167,9 @@ I_aux = find(ismember(s_ind_0,I_aux));
 end
 
 if source_direction_mode == 2
-    roi_length = length(I_aux(:));
-    s_ind_5 = intersect(s_ind_4,I_aux(:));
-    s_ind_5 = find(ismember(I_aux(:),s_ind_5));
+roi_length = length(I_aux(:));
+s_ind_5 = intersect(s_ind_4,I_aux(:));
+s_ind_5 = find(ismember(I_aux(:),s_ind_5));
 end
 
 if source_direction_mode == 1 || source_direction_mode == 2
@@ -184,14 +184,14 @@ L = L(:,roi_aux_ind);
 
 source_count = n_interp;
 if evalin('base','zef.iasroi_normalize_data')==1;
-    normalize_data = 'maximum';
+normalize_data = 'maximum';
 else
-    normalize_data = 'average';
+normalize_data = 'average';
 end
 if iasroi_hyperprior == 1
-    balance_spatially = 1;
+balance_spatially = 1;
 else
-    balance_spatially = 0;
+balance_spatially = 0;
 end
 if evalin('base','zef.inv_hyperprior') == 1
 [beta, theta0] = zef_find_ig_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L,size(L,2),evalin('base','zef.iasroi_normalize_data'),balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
@@ -345,13 +345,13 @@ if roi_mode == 1
 
 rec_size = length(roi_ind_vec);
 for j = 1 : size(roi_sphere,1)
-    r_aux = find(roi_ind_vec==j);
-    w_vec = (sum([z_vec(r_aux) z_vec(rec_size+r_aux) z_vec(2*rec_size +r_aux)].^2,2));
-    rec_pos = [w_vec.*source_positions(roi_aux_ind(r_aux),1) w_vec.*source_positions(roi_aux_ind(r_aux),2) w_vec.*source_positions(roi_aux_ind(r_aux),3)];
-    rec_pos = sum(rec_pos)./sum([w_vec w_vec w_vec]);
-    rec_dir =  1e3*sum([z_vec(r_aux) z_vec(rec_size+r_aux) z_vec(2*rec_size +r_aux)]);
-    rec_norm = norm(rec_dir);
-    rec_dir = rec_dir/rec_norm;
+r_aux = find(roi_ind_vec==j);
+w_vec = (sum([z_vec(r_aux) z_vec(rec_size+r_aux) z_vec(2*rec_size +r_aux)].^2,2));
+rec_pos = [w_vec.*source_positions(roi_aux_ind(r_aux),1) w_vec.*source_positions(roi_aux_ind(r_aux),2) w_vec.*source_positions(roi_aux_ind(r_aux),3)];
+rec_pos = sum(rec_pos)./sum([w_vec w_vec w_vec]);
+rec_dir =  1e3*sum([z_vec(r_aux) z_vec(rec_size+r_aux) z_vec(2*rec_size +r_aux)]);
+rec_norm = norm(rec_dir);
+rec_dir = rec_dir/rec_norm;
 rec_source(j,1:7) = [rec_pos rec_dir rec_norm];
 end
 end
@@ -365,7 +365,7 @@ z_vec_aux(roi_aux_ind) = z_vec;
 z_vec = z_vec_aux;
 
 if ismember(source_direction_mode, [1,2])
-    z_aux(s_ind_1) = z_vec;
+z_aux(s_ind_1) = z_vec;
 end
 if source_direction_mode == 3
 z_aux(s_ind_2) = z_vec;

@@ -42,7 +42,7 @@ set(zef.h_mesh_visualization_graph_list,'Items',zef.mesh_visualization_graph_lis
 zef.h_mesh_visualization_graph_list.ItemsData = [1:length(zef.h_mesh_visualization_graph_list.Items)];
 
 if not(isfield(zef,'mesh_visualization_graph_selected'))
-    zef.mesh_visualization_graph_selected = 1;
+zef.mesh_visualization_graph_selected = 1;
 end
 set(zef.h_mesh_visualization_graph_list,'value',zef.mesh_visualization_graph_selected);
 

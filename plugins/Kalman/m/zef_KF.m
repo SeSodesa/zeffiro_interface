@@ -82,54 +82,54 @@ source_count_aux = 0;
 q_estimation = false;
 Q_est = 0;
 for n_rep = 1:n_decompositions
-    waitbar([n_rep/n_decompositions, 0],h,['Kalman decompositions ' int2str(n_rep) ' of ' int2str(n_decompositions) '.']);
-    iter_ind = iter_ind + 1;
-    n_mr_dec = length(multires_dec{n_rep}{1});
+waitbar([n_rep/n_decompositions, 0],h,['Kalman decompositions ' int2str(n_rep) ' of ' int2str(n_decompositions) '.']);
+iter_ind = iter_ind + 1;
+n_mr_dec = length(multires_dec{n_rep}{1});
 
-    if source_direction_mode == 1 || source_direction_mode == 2
-    mr_dec = [multires_dec{n_rep}{1}; multires_dec{n_rep}{1}+n_interp ; multires_dec{n_rep}{1} + 2*n_interp];
-    mr_dec = mr_dec(:);
-    mr_ind = [multires_ind{n_rep}{1} ; multires_ind{n_rep}{1} + n_mr_dec ; multires_ind{n_rep}{1} + 2*n_mr_dec];
-    mr_ind = mr_ind(:);
-    end
+if source_direction_mode == 1 || source_direction_mode == 2
+mr_dec = [multires_dec{n_rep}{1}; multires_dec{n_rep}{1}+n_interp ; multires_dec{n_rep}{1} + 2*n_interp];
+mr_dec = mr_dec(:);
+mr_ind = [multires_ind{n_rep}{1} ; multires_ind{n_rep}{1} + n_mr_dec ; multires_ind{n_rep}{1} + 2*n_mr_dec];
+mr_ind = mr_ind(:);
+end
 
-    if source_direction_mode == 3
-    mr_dec = multires_dec{n_rep}{1};
-    mr_dec = mr_dec(:);
-    mr_ind = multires_ind{n_rep}{1};
-    mr_ind = mr_ind(:);
-    end
+if source_direction_mode == 3
+mr_dec = multires_dec{n_rep}{1};
+mr_dec = mr_dec(:);
+mr_ind = multires_ind{n_rep}{1};
+mr_ind = mr_ind(:);
+end
 
-    L_aux = L(:,mr_dec);
+L_aux = L(:,mr_dec);
 
-    % m_0 = prior mean
-    m = zeros(size(L_aux,2), 1);
+% m_0 = prior mean
+m = zeros(size(L_aux,2), 1);
 
-    [theta0] = zef_find_gaussian_prior(snr_val-pm_val,L,size(L_aux,2),evalin('base','zef.normalize_data'),0);
+[theta0] = zef_find_gaussian_prior(snr_val-pm_val,L,size(L_aux,2),evalin('base','zef.normalize_data'),0);
 
-    % Transition matrix is Identity matrix
-    P = eye(size(L_aux,2)) * theta0;
+% Transition matrix is Identity matrix
+P = eye(size(L_aux,2)) * theta0;
 
-    A = eye(size(L_aux,2));
+A = eye(size(L_aux,2));
 
-    if q_estimation
-        load('q_est.mat', 'Q')
-    else
-        Q = 3e-10*eye(size(L_aux,2));
+if q_estimation
+load('q_est.mat', 'Q')
+else
+Q = 3e-10*eye(size(L_aux,2));
 
-    end
-    % std_lhood
-    R = std_lhood^2 * eye(size(L_aux,1));
+end
+% std_lhood
+R = std_lhood^2 * eye(size(L_aux,1));
 
-    useGpu = false;
-    if useGpu
-        R = gpuArray(R);
-        A = gpuArray(A);
-        Q = gpuArray(Q);
-        P = gpuArray(P);
-        L_aux = gpuArray(L_aux);
-        m = gpuArray(m);
-    end
+useGpu = false;
+if useGpu
+R = gpuArray(R);
+A = gpuArray(A);
+Q = gpuArray(Q);
+P = gpuArray(P);
+L_aux = gpuArray(L_aux);
+m = gpuArray(m);
+end
 
 %% KALMAN FILTER
 %[P_store, z_inverse] = kalman_filter(m,P,A,Q,L_aux,R,timeSteps, number_of_frames);
@@ -137,7 +137,7 @@ for n_rep = 1:n_decompositions
 z_inverse = EnKF(m,A,P,Q,L_aux,R,timeSteps,number_of_frames, 100);
 
 for i= 1:number_of_frames
-    z_inverse_results{i}{n_rep} = z_inverse{i}(mr_ind);
+z_inverse_results{i}{n_rep} = z_inverse{i}(mr_ind);
 end
 
 %% RTS SMOOTHING
@@ -171,7 +171,7 @@ end
 
 %last
 for i = 1:size(z_inverse_results,2)
-    z_inverse_results{i} = z_inverse_results{i}{end};
+z_inverse_results{i} = z_inverse_results{i}{end};
 end
 
 %% POSTPROCESSING

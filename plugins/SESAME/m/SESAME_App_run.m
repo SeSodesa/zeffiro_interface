@@ -5,24 +5,24 @@ zef_init_SESAME;
 %Substitute values from zef to the app
 zef_fields = fields(zef);
 for zef_i = 1:length(zef_fields)
-    if isprop(zef.SESAME_App,strcat('h_',zef_fields{zef_i}))
-        if strcmp(zef.SESAME_App.(strcat('h_',zef_fields{zef_i})).Type,'uidropdown')
-            zef.SESAME_App.(strcat('h_',zef_fields{zef_i})).Value = zef.SESAME_App.(strcat('h_',zef_fields{zef_i})).ItemsData{zef.(zef_fields{zef_i})};
-        else
-            zef.SESAME_App.(strcat('h_',zef_fields{zef_i})).Value = num2str(zef.(zef_fields{zef_i}));
-        end
-    end
+if isprop(zef.SESAME_App,strcat('h_',zef_fields{zef_i}))
+if strcmp(zef.SESAME_App.(strcat('h_',zef_fields{zef_i})).Type,'uidropdown')
+zef.SESAME_App.(strcat('h_',zef_fields{zef_i})).Value = zef.SESAME_App.(strcat('h_',zef_fields{zef_i})).ItemsData{zef.(zef_fields{zef_i})};
+else
+zef.SESAME_App.(strcat('h_',zef_fields{zef_i})).Value = num2str(zef.(zef_fields{zef_i}));
+end
+end
 end
 
 %initialize fonts of the components
 props = properties(zef.SESAME_App);
 for zef_i = 1:length(props)
-    if isprop(zef.SESAME_App.(props{zef_i}),'FontSize')
-        zef.SESAME_App.(props{zef_i}).FontSize = zef.font_size;
-        if isprop(zef.SESAME_App.(props{zef_i}),'HorizontalAlignment') && strcmp(zef.SESAME_App.(props{zef_i}).Type,'uilabel')
-            zef.SESAME_App.(props{zef_i}).HorizontalAlignment = 'left';
-        end
-    end
+if isprop(zef.SESAME_App.(props{zef_i}),'FontSize')
+zef.SESAME_App.(props{zef_i}).FontSize = zef.font_size;
+if isprop(zef.SESAME_App.(props{zef_i}),'HorizontalAlignment') && strcmp(zef.SESAME_App.(props{zef_i}).Type,'uilabel')
+zef.SESAME_App.(props{zef_i}).HorizontalAlignment = 'left';
+end
+end
 end
 
 clear zef_fields props

@@ -47,12 +47,12 @@ aux_dir_mode = [];
 submesh_cell = cell(0);
 compartment_tags = evalin('base','zef.compartment_tags');
 for k = 1 : length(compartment_tags)
-        var_0 = ['zef.'  compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_sigma'];
-        var_2 = ['zef.' compartment_tags{k} '_priority'];
-        var_3 = ['zef.' compartment_tags{k} '_visible'];
-        var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
-    color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
+var_0 = ['zef.'  compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_sigma'];
+var_2 = ['zef.' compartment_tags{k} '_priority'];
+var_3 = ['zef.' compartment_tags{k} '_visible'];
+var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
+color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
 on_val = evalin('base',var_0);
 sigma_val = evalin('base',var_1);
 priority_val = evalin('base',var_2);
@@ -66,8 +66,8 @@ color_cell{i} = color_str;
 visible_vec(i,1) = i*visible_val;
 submesh_cell{i} = submesh_ind;
 if evalin('base',['zef.' compartment_tags{k} '_sources'])>0;
-    aux_brain_ind = [aux_brain_ind i];
-    aux_dir_mode = [aux_dir_mode evalin('base',['zef.' compartment_tags{k} '_sources'])-1];
+aux_brain_ind = [aux_brain_ind i];
+aux_dir_mode = [aux_dir_mode evalin('base',['zef.' compartment_tags{k} '_sources'])-1];
 end
 end
 end
@@ -170,9 +170,9 @@ I_aux = find(ismember(s_ind_0,I_aux));
 end
 
 if source_direction_mode == 2
-    roi_length = length(I_aux(:));
-    s_ind_5 = intersect(s_ind_4,I_aux(:));
-    s_ind_5 = find(ismember(I_aux(:),s_ind_5));
+roi_length = length(I_aux(:));
+s_ind_5 = intersect(s_ind_4,I_aux(:));
+s_ind_5 = find(ismember(I_aux(:),s_ind_5));
 end
 
 if source_direction_mode == 1 || source_direction_mode == 2
@@ -279,7 +279,7 @@ z_vec_aux(roi_aux_ind) = z_vec;
 z_vec = z_vec_aux;
 
 if ismember(source_direction_mode, [1,2])
-    z_aux(s_ind_1) = z_vec;
+z_aux(s_ind_1) = z_vec;
 end
 if source_direction_mode == 3
 z_aux(s_ind_2) = z_vec;
