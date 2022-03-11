@@ -1,6 +1,6 @@
 function [f] = zef_getFilteredData
 %zef_getFilteredData reads the datafrom zef.measurement and applies the
-%filter that are specified in zef.inv_low_cut_frequency and 
+%filter that are specified in zef.inv_low_cut_frequency and
 %zef.inv_low_cut_frequency at a sampling frequency of
 %zef.inv_sampling_frequency.
 % f has the same size as the measurement

@@ -20,11 +20,11 @@ source_points = evalin('base','zef.source_positions');
 source_points = source_points(s_ind,:);
 source_points = source_points';
 source_points_aux = source_points;
-size_center_points = size(source_points,2); 
+size_center_points = size(source_points,2);
 center_points = source_points;
 
 if n_rep == 1
-h = waitbar([0 0],['Dec: ' int2str(1) '/' int2str(n_decompositions) ', Level ' int2str(1) '/' int2str(n_levels) '.']); 
+h = waitbar([0 0],['Dec: ' int2str(1) '/' int2str(n_decompositions) ', Level ' int2str(1) '/' int2str(n_levels) '.']);
 end
 
 multires_dec{n_rep}{n_levels} = [1:size_center_points]';

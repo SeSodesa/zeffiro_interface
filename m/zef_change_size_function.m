@@ -21,12 +21,12 @@ if not(isempty(p_vec_window)) &&  not(isempty(current_size))
         h_aux = object_handle(i).Children;
         h = [h; h_aux];
     end
-    
+
     for i = 1 : length(exclude_type)
     h = setdiff(h, findobj(h,'Type',exclude_type{i}));
     h = setdiff(h, findobj(h,'Tag',exclude_type{i}));
     end
-    
+
 if isempty(relative_size)
     for i = 1 : length(h)
         p_vec_object = get(h(i),'Position');

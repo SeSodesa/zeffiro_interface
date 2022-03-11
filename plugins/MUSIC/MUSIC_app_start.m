@@ -8,7 +8,7 @@ zef.MUSIC = MUSIC_app;
 zef_MUSIC_names = {'Source projection',
                    'Noise out-projection'
                    };
-            
+
 zef.MUSIC.MUSIC_type.Items = zef_MUSIC_names;
 zef.MUSIC.MUSIC_type.ItemsData = strsplit(num2str(1:length(zef_MUSIC_names)));
 zef.MUSIC.MUSIC_type.Value = '1';
@@ -19,7 +19,7 @@ end
 %_ Names of leadfield regularization methods _
 zef_MUSIC_names = {'Basic',
                 'Pseudoinverse'};
-            
+
 zef.MUSIC.MUSIC_L_reg_type.Items = zef_MUSIC_names;
 zef.MUSIC.MUSIC_L_reg_type.ItemsData = strsplit(num2str(1:length(zef_MUSIC_names)));
 zef.MUSIC.MUSIC_L_reg_type.Value = '1';
@@ -44,7 +44,7 @@ if ~isfield(zef,'MUSIC_leadfield_lambda')
     zef.MUSIC_leadfield_lambda = 1e-3;
 end
 
-%set parameters if saved in ZI: 
+%set parameters if saved in ZI:
 %(Naming concept: zef.MUSIC."field" = zef."field")
 zef_props = properties(zef.MUSIC);
 for zef_i = 1:length(zef_props)

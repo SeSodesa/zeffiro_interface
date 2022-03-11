@@ -70,14 +70,14 @@ else
                     else
                         colors_num_aux(2) = str2num(colors{zef_j});
                     end
-                    
+
                     if sum(isnan(colors_num_aux)) == 0
                         colors{first_num_ind} = colors_num_aux;
                         colors(first_num_ind+1:last_num_ind) = [];
                         last_ind = length(colors);
                         colors_num_aux = nan(1,3);
                     end
-                end  
+                end
             end
         end
         if length(colors) < length(amp)

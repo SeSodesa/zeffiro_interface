@@ -22,14 +22,14 @@ end
 pos=nan(length(data.label), 3);
 
 for i=1:length(data.label)
-    
+
     for j=i:length(data.elec.label) %the labels are sorted the same way, only that some will be missing in the data
-        
+
         if strcmp(data.label{i}, data.elec.label{j})
             pos(i,:)=data.elec.chanpos(j,:);
             break;
         end
-        
+
         if j==length(data.elec.label)&& ~strcmp(data.label{i}, data.elec.label{j})
             error('label not found'); %I think this cannot happen
         end

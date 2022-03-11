@@ -63,7 +63,7 @@ for f_ind = 1 : number_of_frames
     end
     f=zef_getTimeStep(f_data, f_ind, false);
     z_vec = nan(size(L,2),1);
-    
+
     if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
         f = gpuArray(f);
     end
@@ -74,19 +74,19 @@ end
 
 %___ Calculations start ___
 
-    
+
     if method_type == 1 || method_type == 2
-        
+
             S_mat = (std_lhood^2/theta0)*eye(size(L,1));
     if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
 
         S_mat = gpuArray(S_mat);
     end
-    
+
     if size_f > 1
         f = mean(f,2);
     end
-        
+
     %__ dSPM __
     %Source covariance
     P = L'/(L*L'+S_mat);
@@ -100,12 +100,12 @@ end
         d = 1./sqrt(sum(P.'.*L,1))';
         z_vec = d.*P*f;
     end
-    if f_ind > 1;    
+    if f_ind > 1;
         waitbar(f_ind/number_of_frames,h,['Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
     end
-    
+
 elseif method_type == 3
-    
+
         S_mat = (std_lhood^2)*eye(size(L,1));
     if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
         S_mat = gpuArray(S_mat);
@@ -123,7 +123,7 @@ elseif method_type == 3
         const = gather(const);
         L = gather(L);
     end
-    
+
     for i = 1:size(L,2)
         const(i) = 1/(rank(L(:,i)*L(:,i)')*size(f,2));
     end
@@ -132,13 +132,13 @@ elseif method_type == 3
         gamma = gpuArray(gamma);
         L = gpuArray(L);
     end
-   
+
     for i = 1:n_iter
-        if f_ind > 1;    
+        if f_ind > 1;
             waitbar(i/n_iter,h,['Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
         else
             waitbar(i/n_iter,h,['SBL MAP iteration. Time step ' int2str(f_ind) ' of ' int2str(number_of_frames) '.' ]);
-        end;        
+        end;
         f_aux = inv_sqrt_C*f;
         L_aux = inv_sqrt_C*L;
         gamma = const.*gamma.*sum((L_aux'*f_aux).^2,2)./(size(L,2)-gamma.*sum(L_aux.^2,1)');
@@ -156,7 +156,7 @@ z_vec = gather(z_vec);
 end
 
 %-------------Calculations end---------------
-z{f_ind}=z_vec;   
+z{f_ind}=z_vec;
 end
 
 z = zef_postProcessInverse(z, procFile);

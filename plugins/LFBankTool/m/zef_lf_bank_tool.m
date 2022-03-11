@@ -1,10 +1,10 @@
 %Copyright © 2018- Sampsa Pursiainen & ZI Development Team
 %See: https://github.com/sampsapursiainen/zeffiro_interface
-zef_data = zeffiro_interface_lf_bank_tool; 
+zef_data = zeffiro_interface_lf_bank_tool;
 zef.fieldnames = fieldnames(zef_data);
 for zef_i = 1:length(zef.fieldnames)
 zef.(zef.fieldnames{zef_i}) = zef_data.(zef.fieldnames{zef_i});
-end        
+end
 clear zef_i zef_data;
 set(zef.h_lf_bank_tool,'Name','ZEFFIRO Interface: Multi lead field tool');
 set(findobj(zef.h_lf_bank_tool.Children,'-property','FontUnits'),'FontUnits','pixels')

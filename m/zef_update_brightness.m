@@ -23,7 +23,7 @@ contrast_val = evalin('base','zef.update_contrast');
 
 colormap_ind = evalin('base','zef.h_update_colormap.Value');
 
-colormap_vec = zef_brightness_and_contrast(zef_colormap(colormap_ind), brightness_val, contrast_val); 
+colormap_vec = zef_brightness_and_contrast(zef_colormap(colormap_ind), brightness_val, contrast_val);
 
 h.Colormap = colormap_vec;
 

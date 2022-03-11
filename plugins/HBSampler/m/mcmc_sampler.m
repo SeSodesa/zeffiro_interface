@@ -2,9 +2,9 @@
 %See: https://github.com/sampsapursiainen/zeffiro_interface
 function [z,rec_source] = mcmc_sampler(void)
 
-h = waitbar(0,['Sampling.']); 
+h = waitbar(0,['Sampling.']);
 
-n_sampler = evalin('base','zef.inv_n_sampler'); 
+n_sampler = evalin('base','zef.inv_n_sampler');
 n_burn_in = evalin('base','zef.inv_n_burn_in');
 
 [s_ind_1] = unique(evalin('base','zef.source_interpolation_ind{1}'));
@@ -17,7 +17,7 @@ roi_mode = evalin('base','zef.inv_roi_mode');
 roi_threshold = evalin('base','zef.inv_roi_threshold');
 roi_sphere = evalin('base', 'zef.inv_roi_sphere');
 rec_source = evalin('base', 'zef.inv_rec_source');
-r_roi = roi_sphere(:,4); 
+r_roi = roi_sphere(:,4);
 c_roi = roi_sphere(:,1:3)';
 beta = evalin('base','zef.inv_beta');
 theta0 = evalin('base','zef.inv_theta0');
@@ -34,7 +34,7 @@ source_directions = evalin('base','zef.source_directions');
 
 if source_direction_mode == 2
 
-[s_ind_3] = evalin('base','zef.source_interpolation_ind{3}'); 
+[s_ind_3] = evalin('base','zef.source_interpolation_ind{3}');
 
 i = 0;
 length_reuna = 0;
@@ -52,9 +52,9 @@ for k = 1 : length(compartment_tags)
         var_2 = ['zef.' compartment_tags{k} '_priority'];
         var_3 = ['zef.' compartment_tags{k} '_visible'];
         var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
-    color_str = evalin('base',['zef.' compartment_tags{k} '_color']);    
-on_val = evalin('base',var_0);      
-sigma_val = evalin('base',var_1);  
+    color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
+on_val = evalin('base',var_0);
+sigma_val = evalin('base',var_1);
 priority_val = evalin('base',var_2);
 visible_val = evalin('base',var_3);
 submesh_ind = evalin('base',var_4);
@@ -138,7 +138,7 @@ roi_ind_vec = [];
 
 if roi_mode == 1
 
-    
+
 for j = 1 : size(roi_sphere,1)
 
 r_aux = find(sqrt(sum((source_positions'-c_roi(:,j*ones(1,size(source_positions,1)))).^2))<=r_roi(j));
@@ -205,8 +205,8 @@ end
 
 tic;
 for f_ind = 1 : number_of_frames
-time_val = toc; 
-if f_ind > 1; 
+time_val = toc;
+if f_ind > 1;
 date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400));
 end;
 
@@ -219,7 +219,7 @@ end
 
 data_norm = 1;
 if evalin('base','zef.normalize_data')==1;
-data_norm = max(abs(f(:))); 
+data_norm = max(abs(f(:)));
 %std_lhood = std_lhood^2;
 elseif evalin('base','zef.normalize_data')==2;
 data_norm = max(sqrt(sum(abs(f).^2)));
@@ -240,19 +240,19 @@ if size(f,2) > 1 && high_pass > 0
 f = filter(hp_f_1,hp_f_2,f')';
 end
 
-if source_direction_mode == 1 || source_direction_mode == 2 
-z_aux = zeros(size(L,2),1); 
+if source_direction_mode == 1 || source_direction_mode == 2
+z_aux = zeros(size(L,2),1);
 end
-if source_direction_mode == 3 
+if source_direction_mode == 3
 z_aux = zeros(3*size(L,2),1);
 end
-z_vec = ones(size(L,2),1); 
+z_vec = ones(size(L,2),1);
 theta = theta0*ones(length(z_vec),1);
 %aux_norm = (sum(L.^2))';
 %aux_norm = aux_norm./max(aux_norm(:));
 %theta = theta0*aux_norm;
 
-if size(f,2) > 1  
+if size(f,2) > 1
 if evalin('base','zef.inv_time_2') >=0 0 && evalin('base','zef.inv_time_1') >= 0 & 1 + sampling_freq*evalin('base','zef.inv_time_1') <= size(f,2);
 f = f(:, max(1, 1 + floor(sampling_freq*evalin('base','zef.inv_time_1')+sampling_freq*(f_ind - 1)*evalin('base','zef.inv_time_3'))) : min(size(f,2), 1 + floor(sampling_freq*(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2'))+sampling_freq*(f_ind - 1)*evalin('base','zef.inv_time_3'))));
 end
@@ -277,8 +277,8 @@ gibbs_sampler;
 
 if ismember(source_direction_mode, [1,2])
 z_vec_aux = zeros(n_lead_field,1);
-else 
-z_vec_aux = zeros(3*n_lead_field,1); 
+else
+z_vec_aux = zeros(3*n_lead_field,1);
 end
 z_vec_aux(roi_aux_ind) = z_vec;
 z_vec = z_vec_aux;
@@ -307,7 +307,7 @@ for f_ind = 1 : number_of_frames;
 z{f_ind} = z{f_ind}./max(aux_norm_vec);
 end;
 else
-aux_norm_vec = sqrt(sum(reshape(z, 3, length(z)/3).^2)); 
+aux_norm_vec = sqrt(sum(reshape(z, 3, length(z)/3).^2));
 z = z./max(aux_norm_vec);
 end;
 close(h);

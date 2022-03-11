@@ -16,7 +16,7 @@ zef.source_interpolation_ind = zef.source_interpolation_ind_original_field;
 end
 
 else
-    
+
 zef.source_positions_original_field = zef.source_positions;
 zef.source_directions_original_field = zef.source_directions;
 zef.L_original_field = zef.L;

@@ -5,7 +5,7 @@ function [] = zef_dataBank_uiTreeDeleteHash(node, hashList)
 
 
 if isprop(node, 'NodeData')
-    
+
     for i=1:length(hashList)
         if strcmp(node.NodeData, hashList{i})
             node.delete;
@@ -21,7 +21,7 @@ if ~isempty(node.Children)
         zef_dataBank_uiTreeDeleteHash(node.Children(i), hashList);
     end
 end
-    
+
 
 
 

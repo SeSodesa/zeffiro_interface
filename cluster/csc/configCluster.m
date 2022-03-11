@@ -139,14 +139,14 @@ if isunix
     % directory gets cleared when the system is reboot, so for UNIX
     % in general, let's just use the user's local home directory.
     uh = java.lang.System.getProperty('user.home');
-    
+
     r = char(uh);
 else
     % If this returns an empty string (some how user name is not defined),
     % it's a no-op for FULLFILE, so there's no strong need to error out.
     un = java.lang.System.getProperty('user.name');
     un = char(un);
-    
+
     r = fullfile(tempdir,un);
 end
 

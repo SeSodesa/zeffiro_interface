@@ -24,20 +24,20 @@ tree.(firsthash).name=dataTree.node_1.name;
  end
 
      phash=str2double(regexp(parentHash, '(?<num>\d+)', 'match'));
-     
+
     firsthash=str2double(regexp(firsthash, '(?<num>\d+)', 'match'));
-    
-    
+
+
     hashList=fieldnames(dataTree);
-    
+
     correctionNumber=firsthash(end)-1;
  for i=2:length(hashList)
      hash=str2double(regexp(hashList{i}, '(?<num>\d+)', 'match'));
      hash(1)=hash(1)+correctionNumber;
-     hash=[phash, hash]; 
+     hash=[phash, hash];
      hash=zef_dataBank_number2hash(hash);
-     
-     
+
+
      tree.(hash)=dataTree.(hashList{i});
      tree.(hash).hash=hash;
      if strcmp(dataBank.save2disk, 'On')
@@ -46,14 +46,14 @@ tree.(firsthash).name=dataTree.node_1.name;
          save(folderName, '-struct', 'data');
          tree.(hash).data=matfile(folderName);
      end
-     
+
  end
-     
-     
-     
-     
-     
-     
+
+
+
+
+
+
 
 
 

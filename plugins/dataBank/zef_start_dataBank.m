@@ -20,7 +20,7 @@ end
 %zef.dataBank.DataTableHashList=cell(0,0);
 %zef.dataBank.workingHashes=cell(0,0);
 %set button functions
-    
+
 zef.dataBank.app.addButton.ButtonPushedFcn='zef_dataBank_addButtonPress;';
 zef.dataBank.app.combineButton.ButtonPushedFcn='[zef.L, zef.measurements] = zef_dataBank_combineLeadFields(zef.dataBank.tree, zef.dataBank.workingHashes,zef.dataBank.app.combineMenu.Value,zef.dataBank.var_starttime,zef.dataBank.var_endtime,zef.dataBank.var_sampling_frequency);';
 zef.dataBank.app.StarttimeSpinner.ValueChangedFcn = 'zef_dataBank_update;';
@@ -78,7 +78,7 @@ zef.dataBank.app.deleteMenuData.MenuSelectedFcn=strcat('zef.dataBank.selectMulti
                 'zef.dataBank.tree=zef_dataBank_delete(zef.dataBank.tree, zef.dataBank.hash, zef.dataBank.save2disk);','  zef_dataBank_refreshTree;', ...
                 'zef.dataBank.selectMultiple=false;', ...
                 '[zef.dataBank.app.DataTable.Data, zef.dataBank.app.DataTable.ColumnName, zef.dataBank.DataTableHashList]=zef_databank_showAll(zef.dataBank.tree, zef.dataBank.app.Entrytype.Value);');
-        
+
 zef.dataBank.app.modifyMenuData.MenuSelectedFcn=strcat('zef.dataBank.selectMultiple=true;', 'zef_dataBank_getHashForTableMenu;', ...
             'zef.dataBank.workingHashes=zef_dataBank_hashToWorkingSpace(zef.dataBank.hash, zef.dataBank.workingHashes);', ...
             '[zef.dataBank.app.currentTable.Data, zef.dataBank.app.currentTable.ColumnName]=zef_dataBank_WorkingSpaceInfo(zef.dataBank.tree, zef.dataBank.workingHashes);');

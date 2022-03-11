@@ -12,7 +12,7 @@ zef.reconstructionTool.currentInfo=zef.reconstructionTool.bankInfo(indexOfMinimu
 for indexOfMinimumTrueElement=1:zef.reconstructionTool.bankSize
 zef.reconstructionTool.bankInfo{indexOfMinimumTrueElement,7}=false;
 end
-    
+
 zef.reconstructionTool.app.BankTable.Data=zef.reconstructionTool.bankInfo;
 zef.reconstructionTool.app.current.Data=zef.reconstructionTool.currentInfo;
 

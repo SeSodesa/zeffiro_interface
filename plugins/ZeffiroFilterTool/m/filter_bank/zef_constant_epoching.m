@@ -3,13 +3,13 @@ function [processed_data] = zef_constant_epoching(f, first_epoch_point, epoch_st
 %See: https://github.com/sampsapursiainen/zeffiro_interface
 %This function processes the N-by-M data array f for N channels and M time
 %steps. The other arguments can be controlled via the ZI user interface.
-%The desctiption and argument definitions shown in ZI are listed below. 
+%The desctiption and argument definitions shown in ZI are listed below.
 %Description: Averaging over epochs with constant length
 %Input: 1 First epoch point [Default: 0],
-%2 Epoch step (s) [Default: 0], 
-%3 Number of epochs [Default: 0], 
-%4 Start time w.r.t. point (s) [Default: -0.18], 
-%5 End time w.r.t. point (s) [Default: 0.18], 
+%2 Epoch step (s) [Default: 0],
+%3 Number of epochs [Default: 0],
+%4 Start time w.r.t. point (s) [Default: -0.18],
+%5 End time w.r.t. point (s) [Default: 0.18],
 %6 Sampling frequency (Hz) [Default: filter_sampling_rate]
 %Output: Averaged data for epochs with constant length.
 
@@ -48,7 +48,7 @@ epoch_data = zeros(size(f,1), end_time_ind-start_time_ind+1);
 for i = 1 : length(epoch_points)
 
     epoch_data = epoch_data + f(:, start_time_ind+epoch_point_ind(i):end_time_ind+epoch_point_ind(i));
-    
+
 end
 
 epoch_data = epoch_data/length(epoch_points);

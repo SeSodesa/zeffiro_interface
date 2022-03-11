@@ -7,10 +7,10 @@ else
 end
 
 
- 
- 
+
+
 if isempty(zef.dataBank.app.Tree.SelectedNodes) %either no selected or no node in tree, either way start on first level
-    
+
     newNode= uitreenode(zef.dataBank.app.Tree);
     dbParentHash='node';
 
@@ -19,11 +19,11 @@ else
         disp('cannot add to multiple nodes!');
         return;
     end
-    
+
     newNode=uitreenode(zef.dataBank.app.Tree.SelectedNodes);
     dbParentHash=zef.dataBank.app.Tree.SelectedNodes.NodeData;
 
-end 
+end
 
 
 

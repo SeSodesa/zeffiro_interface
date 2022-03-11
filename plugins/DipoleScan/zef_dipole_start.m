@@ -9,7 +9,7 @@ appName='dipole_app';
 % zef_bf_names = {'Basic'
 %                 '2nd order Taylor minimum error'
 %                 'Pseudoinverse'};
-%             
+%
 % zef.beamformer.L_reg_type.Items = zef_bf_names;
 % zef.beamformer.L_reg_type.ItemsData = strsplit(num2str(1:length(zef_bf_names)));
 % zef.beamformer.L_reg_type.Value = '1';
@@ -35,7 +35,7 @@ end
 
 % % this is quite elegant
 %
-% %set parameters if saved in ZI: 
+% %set parameters if saved in ZI:
 % %(Naming concept: zef.(app)."field" = zef."field")
  zef_props = properties(zef.(appName));
 for zef_i = 1:length(zef_props)

@@ -14,10 +14,10 @@ set(zef.h_zeffiro,'papersize',[zef.snapshot_vertical_resolution/200 zef.snapshot
 if zef.clear_axes1
 zef.h_colorbar = findobj(evalin('base','zef.h_zeffiro'),'tag','Colorbar');
 if not(isempty(zef.h_colorbar))
-colorbar(zef.h_colorbar,'delete'); 
+colorbar(zef.h_colorbar,'delete');
 end
 else
-zef.clear_axes1 = 1;  
+zef.clear_axes1 = 1;
 end
 
 if isfield(zef,'zeffiro_current_size')

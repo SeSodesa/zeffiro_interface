@@ -47,7 +47,7 @@ colors = [colors;0.5*colors];
 line_style_cell = {'-','--','-.',':','o-','o--','o-.','o:','s-','s--','s-.','s:','d-','d--','d-.','d:','*-','*--','*-.','*:'};
 line_style_ind = 0;
 %Check if ground truth is setted and then do a plot loop that plot
-%line/bars for every color and then change line style to another if there 
+%line/bars for every color and then change line style to another if there
 %is more sources than colors.
 %_ Curve plot _
 if isempty(evalin('base','zef.fss_time_val'))

@@ -8,18 +8,18 @@ zef.(zef.fieldnames{zef_i}) = zef_data.(zef.fieldnames{zef_i});
 if find(ismember(properties(zef.(zef.fieldnames{zef_i})),'ValueChangedFcn'))
 zef.(zef.fieldnames{zef_i}).ValueChangedFcn = 'zef_update_forward_and_inverse_options;';
 end
-end  
+end
 
 zef = rmfield(zef,'fieldnames');
 
 clear zef_data;
 
-[~, ~,zef.aux_field] = zef_get_active_compartments('name'); 
-zef.h_as_opt_5.Items = {'Active compartments', zef.aux_field{:}}; 
-zef.h_refinement_volume_compartments.Items = {'Active compartments', zef.aux_field{:}}; 
-zef.h_refinement_volume_compartments_2.Items = {'Active compartments', zef.aux_field{:}}; 
-zef.h_adaptive_refinement_compartments.Items = {'Active compartments', zef.aux_field{:}}; 
-zef.h_refinement_surface_compartments.Items = {'Active compartments', zef.aux_field{:}}; 
+[~, ~,zef.aux_field] = zef_get_active_compartments('name');
+zef.h_as_opt_5.Items = {'Active compartments', zef.aux_field{:}};
+zef.h_refinement_volume_compartments.Items = {'Active compartments', zef.aux_field{:}};
+zef.h_refinement_volume_compartments_2.Items = {'Active compartments', zef.aux_field{:}};
+zef.h_adaptive_refinement_compartments.Items = {'Active compartments', zef.aux_field{:}};
+zef.h_refinement_surface_compartments.Items = {'Active compartments', zef.aux_field{:}};
 zef = rmfield(zef,'aux_field');
 
 zef.h_as_opt_1.ItemsData = [1:length(zef.h_as_opt_1.Items)];

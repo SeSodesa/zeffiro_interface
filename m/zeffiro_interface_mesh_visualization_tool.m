@@ -7,13 +7,13 @@ zef.(zef.fieldnames{zef_i}) = zef_data.(zef.fieldnames{zef_i});
 if isprop(zef.(zef.fieldnames{zef_i}),'ValueChangedFcn')
 set(zef.(zef.fieldnames{zef_i}),'ValueChangedFcn','zef_update_mesh_visualization_tool;');
 end
-end   
+end
 
 %*******
 
 set(zef.h_plot_graph,'ButtonPushedFcn','zef_plot_graph;');
 set(zef.h_pushbutton31,'ButtonPushedFcn','zef_visualize_volume;');
-set(zef.h_pushbutton20,'ButtonPushedFcn','zef_visualize_surfaces;'); 
+set(zef.h_pushbutton20,'ButtonPushedFcn','zef_visualize_surfaces;');
 set(zef.h_pushbutton22,'ButtonPushedFcn','zef_snapshot_movie;');
 set(zef.h_axes_popup,'ButtonPushedFcn','zef_axes_popup;');
 

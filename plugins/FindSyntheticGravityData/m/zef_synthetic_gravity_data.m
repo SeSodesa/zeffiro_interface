@@ -28,7 +28,7 @@ else
 zef.lf_param.pcg_tol = 1e-8;
 end
 zef.aux_vec = [];
-if isempty(zef.source_ind) || not(zef.n_sources == zef.n_sources_old) || not(zef.wm_sources == zef.wm_sources_old) 
+if isempty(zef.source_ind) || not(zef.n_sources == zef.n_sources_old) || not(zef.wm_sources == zef.wm_sources_old)
 if isempty(zef.non_source_ind)
 zef.aux_vec = zef.brain_ind;
 else

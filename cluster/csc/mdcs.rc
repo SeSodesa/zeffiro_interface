@@ -41,7 +41,7 @@ ClusterHost = puhti.csc.fi
 # If left empty, the user's home directory will be used, which is fine in most scenarios.
 # Specify an alternative path, if the user's home directory is not a good place to use as the job storage location.
 
-LocalJobStorageLocation = 
+LocalJobStorageLocation =
 
 
 # Directory on the cluster file system to be used as the remote job storage location.
@@ -53,4 +53,4 @@ RemoteJobStorageLocation = /users
 # Windows UNC Path to the cluster job storage location.
 # Required if type is remoteSubmission and MATLAB client is a PC.
 
-JobStorageLocationOnPC = 
+JobStorageLocationOnPC =

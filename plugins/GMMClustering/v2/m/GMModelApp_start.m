@@ -66,7 +66,7 @@ else
 end
 %time point for amplitude bar plot
 zef_GMM_values{20} = '';
-%amplitude estimation type 
+%amplitude estimation type
 zef_GMM_values{21} = '1';
 %Parameters to estimate via GMM
 zef_GMM_values{22} = '1';

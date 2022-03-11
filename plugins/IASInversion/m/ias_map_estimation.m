@@ -2,7 +2,7 @@
 %See: https://github.com/sampsapursiainen/zeffiro_interface
 if  ismac
 zef.h_ias_map_estimation = open('ias_map_estimation.fig');
-elseif ispc 
+elseif ispc
 zef.h_ias_map_estimation = open('ias_map_estimation.fig');
 else
 zef.h_ias_map_estimation = open('ias_map_estimation.fig');
@@ -19,8 +19,8 @@ set(zef.h_ias_start,'Callback','zef_update_ias; [zef.reconstruction, zef.reconst
 
 zef_init_ias;
 
-uistack(flipud([zef.h_ias_hyperprior ; 
-    zef.h_ias_snr ; zef.h_ias_n_map_iterations ; 
-    zef.h_ias_sampling_frequency ; zef.h_ias_low_cut_frequency ; 
-    zef.h_ias_high_cut_frequency ; zef.h_ias_time_1 ; zef.h_ias_time_2; zef.h_ias_number_of_frames; zef.h_ias_time_3 ; zef.h_ias_cancel ; 
-    zef.h_ias_apply; zef.h_ias_start  ]),'top'); 
+uistack(flipud([zef.h_ias_hyperprior ;
+    zef.h_ias_snr ; zef.h_ias_n_map_iterations ;
+    zef.h_ias_sampling_frequency ; zef.h_ias_low_cut_frequency ;
+    zef.h_ias_high_cut_frequency ; zef.h_ias_time_1 ; zef.h_ias_time_2; zef.h_ias_number_of_frames; zef.h_ias_time_3 ; zef.h_ias_cancel ;
+    zef.h_ias_apply; zef.h_ias_start  ]),'top');

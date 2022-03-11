@@ -47,8 +47,8 @@ for zef_j = 1 : length(zef.aux_data_2)
 
 zef.aux_data_1{zef_j,1} = zef.aux_data_2{zef_j}{1};
 zef.aux_data_1{zef_j,2} = evalin('base',['zef.' zef.current_sensors '_' zef.aux_data_2{zef_j}{2} '(' num2str(zef_i) ',' zef.aux_data_2{zef_j}{3} ')']);
-  
-end 
+
+end
 
 zef.h_parameters_table.Data = zef.aux_data_1;
 

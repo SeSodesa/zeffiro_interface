@@ -1,7 +1,7 @@
 function [relax_preconditioner, relax_preconditioner_permutation] = zef_relax_find_preconditioner
 
-relax_multires_sparsity = evalin('base','zef.relax_multires_sparsity');  
-relax_multires_n_decompositions = evalin('base','zef.relax_multires_n_decompositions'); 
+relax_multires_sparsity = evalin('base','zef.relax_multires_sparsity');
+relax_multires_n_decompositions = evalin('base','zef.relax_multires_n_decompositions');
 relax_multires_n_levels = evalin('base','zef.relax_multires_n_levels');
 relax_preconditioner_type = evalin('base','zef.relax_preconditioner_type');
 

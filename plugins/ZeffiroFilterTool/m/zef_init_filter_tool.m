@@ -30,25 +30,25 @@ if not(isfield(zef,'filter_sampling_rate'));
     zef.filter_sampling_rate = zef.inv_sampling_frequency;
 end
 
-if not(isfield(zef,'filter_tag')); 
+if not(isfield(zef,'filter_tag'));
    zef.filter_tag = 'Default tag';
 end;
 
-if not(isfield(zef,'filter_data_segment')); 
+if not(isfield(zef,'filter_data_segment'));
    zef.filter_data_segment = '0';
 end;
 
 
-if not(isfield(zef,'filter_pipeline')); 
-   zef.filter_pipeline = cell(0); 
+if not(isfield(zef,'filter_pipeline'));
+   zef.filter_pipeline = cell(0);
 end;
 
-if not(isfield(zef,'filter_pipeline_list')); 
+if not(isfield(zef,'filter_pipeline_list'));
 zef.filter_pipeline_list = cell(0);
 end;
 
-if not(isfield(zef,'filter_pipeline_selected')); 
-   zef.filter_pipeline_selected = cell(0); 
+if not(isfield(zef,'filter_pipeline_selected'));
+   zef.filter_pipeline_selected = cell(0);
 end;
 
 set(zef.h_filter_tag,'Value',zef.filter_tag);

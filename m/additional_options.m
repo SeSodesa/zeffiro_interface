@@ -3,12 +3,12 @@
 zef_init_options;
 
 if zef.mlapp == 1
-zeffiro_interface_additional_options; 
+zeffiro_interface_additional_options;
 else
 
 if ismac
 zef.h_additional_options = open('additional_options.fig');
-elseif ispc 
+elseif ispc
 zef.h_additional_options = open('additional_options.fig');
 else
 zef.h_additional_options = open('additional_options.fig');

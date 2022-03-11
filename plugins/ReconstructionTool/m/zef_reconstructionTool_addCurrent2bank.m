@@ -15,7 +15,7 @@ zef.reconstructionTool.bankReconstruction{zef.reconstructionTool.bankSize,1}.rec
 if ~isfield(zef.reconstructionTool.bankReconstruction{zef.reconstructionTool.bankSize,1}.reconstruction_information, 'tag')
     zef.reconstructionTool.bankReconstruction{zef.reconstructionTool.bankSize,1}.reconstruction_information.tag=zef.reconstructionTool.currentInfo{1};
 end
-    
+
 if ~isfield(zef.reconstructionTool.bankReconstruction{zef.reconstructionTool.bankSize,1}.reconstruction_information, 'lead_field_id')
     zef.reconstructionTool.bankReconstruction{zef.reconstructionTool.bankSize,1}.reconstruction_information.lead_field_id=zef.reconstructionTool.currentInfo{6};
 end

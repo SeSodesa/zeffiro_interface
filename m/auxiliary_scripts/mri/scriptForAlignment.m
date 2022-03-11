@@ -85,7 +85,7 @@ saveas(gcf, strcat('./presentation/', 'eeg', zef.reconstruction_information.tag,
 %% reconstruction
 saveas(gcf, strcat('./presentation/', 'eeg', zef.reconstruction_information.tag), 'jpg');
 
-%% 
+%%
 saveas(gcf, strcat('./presentation/', 'eeg', zef.reconstruction_information.tag, 'gmm'), 'jpg');
 
 
@@ -182,7 +182,7 @@ Trot= [      -0.9995  -0.0301  -0.0002   0
 %     -0.0301   0.9302   0.3657 0
 %     -0.0002  -0.3659   0.9306   0
 %     0.0000   0.0000   0.0000     1.0000];
-% 
+%
 % Trot=inv(Trot);
 
 Tmove=[1 0 0 128-32; 0 1 0 128; 0 0 1 128; 0 0 0 1];

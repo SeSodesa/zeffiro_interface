@@ -15,7 +15,7 @@ if ishandle(varargin{2})
      progress_bar_text = varargin{3};
     else
     h_text = findobj(h_waitbar.Children,'Tag','progress_bar_text');
-    progress_bar_text = h_text.String; 
+    progress_bar_text = h_text.String;
     end
 else
     if length(varargin) > 1
@@ -77,7 +77,7 @@ pause(1e-6)
 end
 
 if not(ishandle(varargin{2}))
-    
+
     set(findobj(h_waitbar.Children,'-property','FontUnits'),'FontUnits','pixels');
 set(findobj(h_waitbar.Children,'-property','FontSize'),'FontSize',evalin('base','zef.font_size'));
 

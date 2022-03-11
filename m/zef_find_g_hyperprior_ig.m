@@ -34,7 +34,7 @@ if isempty(L)
     snr_vec_limited = snr_vec;
     source_strength = 1e-2;
 else
-    
+
 if isequal(normalize_data,'maximum')
    signal_strength = size(L,2)*max(abs(L))'./sum(max(abs(L))');
 else
@@ -42,7 +42,7 @@ else
 end
    source_strength = size(L,2)./sum(max(abs(L))');
 
-if balance_snr 
+if balance_snr
 snr_vec = snr_val + db(signal_strength);
 else
 snr_vec = snr_val;
@@ -56,7 +56,7 @@ shape_param = zeros(size(snr_vec));
 scale_param = zeros(size(snr_vec));
 
 relative_noise_std = 10.^(-snr_vec_limited/20);
-    
+
 a = 1*ones(size(relative_noise_std));
 b = 200*ones(size(relative_noise_std));
 

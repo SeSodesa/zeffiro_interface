@@ -94,7 +94,7 @@ if ~isfield(zef,'GMM_comp_ord')
 end
 
 
-%set parameters if saved in ZI: 
+%set parameters if saved in ZI:
 %(Naming concept: zef.GMMclustering."field" = zef."field")
 zef_props = properties(zef.GMMclustering);
 for zef_i = 1:length(zef_props)

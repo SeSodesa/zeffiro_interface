@@ -31,7 +31,7 @@ ind_aux_2 = [3*(ind_aux_2'-1)+1; 3*(ind_aux_2'-1)+2; 3*ind_aux_2'];
 ind_aux_2 = ind_aux_2(:);
 LTL = L(:,ind_aux_2)'*L(:,ind_aux_2);
 
-M(ind_aux_2,ind_aux_2) = M(ind_aux_2,ind_aux_2) + LTL; 
+M(ind_aux_2,ind_aux_2) = M(ind_aux_2,ind_aux_2) + LTL;
 
 
 end
@@ -43,7 +43,7 @@ end
 
 [theta0] = zef_find_gaussian_prior(snr_val-pm_val,L,size(L,2),evalin('base','zef.relax_normalize_data'),0);
 
-M = M + (std_lhood.^2/theta0)*speye(size(M,1)); 
+M = M + (std_lhood.^2/theta0)*speye(size(M,1));
 
 
 

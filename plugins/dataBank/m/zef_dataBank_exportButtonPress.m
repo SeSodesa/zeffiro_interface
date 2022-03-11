@@ -5,7 +5,7 @@ zef_dataBank_getHashForMenu;
 [savefile,savepath] = uiputfile('*','Select a file');
 
 if strcmp(zef.dataBank.app.typeDropDown.Value, 'Node')
-    
+
     data=zef.dataBank.tree.(zef.dataBank.hash);
     if isobject(data.data)
         data.data=load(data.Properties.Source);

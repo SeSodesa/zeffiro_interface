@@ -29,11 +29,11 @@ for zef_ind=1:length(zef.compartment_tags)
 
     zef.LeadFieldProcessingTool.auxData.source_structure{zef_ind}=zef.(zef_name);
     %evalin('base', ['zef.' zef.compartment_tags{zef_ind} '_sources']);
-    
+
 end
         clear zef_ind zef_name;
 
-    
+
 zef_LeadFieldProcessingTool_aux2bank_new;
 zef_LeadfieldProcessingTool_updateTable;
 
