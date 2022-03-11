@@ -21,7 +21,6 @@ surface_triangles = 1;
            1 4 2 ;
            1 2 3 ];
 
-
 tetra_sort = [tetrahedra(:,[2 4 3]) ones(size(tetrahedra,1),1) [1:size(tetrahedra,1)]';
               tetrahedra(:,[1 3 4]) 2*ones(size(tetrahedra,1),1) [1:size(tetrahedra,1)]';
               tetrahedra(:,[1 4 2]) 3*ones(size(tetrahedra,1),1) [1:size(tetrahedra,1)]';

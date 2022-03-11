@@ -1,5 +1,4 @@
 
-
 %reads the current data into the aux field and adds it to the bank
 zef.LeadFieldProcessingTool.auxData.source_interpolation_ind = zef.source_interpolation_ind;
 zef.LeadFieldProcessingTool.auxData.parcellation_interp_ind = zef.parcellation_interp_ind;
@@ -24,12 +23,5 @@ for zef_ind=1:length(zef.compartment_tags)
 
 end
 
-
-
 zef_LeadFieldProcessingTool_aux2bank; %aux data is deleted in aux2bank
-
-
-
-
-
 

@@ -58,7 +58,6 @@ I = find(nodes(:,1) <= max_x & nodes(:,1) >= min_x & nodes(:,2) <= max_y & nodes
 
 length_I = length(I);
 
-
 tic;
 ones_vec = ones(length(aux_vec_1),1);
 ind_vec_aux = zeros(length_I,1);
@@ -109,5 +108,4 @@ ind_vec(I) = gather(ind_vec_aux);
 I = find(ind_vec > evalin('base','zef.meshing_threshold'));
 
 end
-
 

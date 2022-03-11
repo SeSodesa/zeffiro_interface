@@ -11,13 +11,11 @@ if nargin==2
 
 end
 
-
 if nargin==1
     OptionalSaveToFile0or1=1;
     OptionalNameForLabelFile='./electrodesLabel.dat';
     OptionalNameforElectrodeFile='./electrodes.dat';
 end
-
 
 pos=nan(length(data.label), 3);
 
@@ -36,7 +34,6 @@ for i=1:length(data.label)
     end
 end
 
-
 if sum(isnan(pos))~=0
     error('some position was not found');
 end
@@ -47,8 +44,6 @@ if OptionalSaveToFile0or1
     save(OptionalNameforElectrodeFile, 'pos', '-ascii');
     writecell(label, OptionalNameForLabelFile);
 end
-
-
 
 end
 

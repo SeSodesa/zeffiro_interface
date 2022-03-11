@@ -46,5 +46,4 @@ if not(isfield(zef,'h_create_dipolar_pair_tag'))
 zef.create_dipolar_pair_tag = 'Dipole ';
 end
 
-
 zef_create_dipolar_pair_update_table

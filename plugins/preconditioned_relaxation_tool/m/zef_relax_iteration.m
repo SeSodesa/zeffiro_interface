@@ -2,7 +2,6 @@
 %See: https://github.com/sampsapursiainen/zeffiro_interface
 function [z,reconstruction_information] = zef_relax_iteration(void)
 
-
 h = waitbar(0,['Relaxation iteration.']);
 n_multires = evalin('base','zef.relax_multires_n_levels');
 sparsity_factor = evalin('base','zef.relax_multires_sparsity');
@@ -23,7 +22,6 @@ perm_vec = evalin('base','zef.relax_preconditioner_permutation');
 gamma = 10^(-relax_db/20);
 tol_val = 10^(-(snr_val - relax_tolerance)/20);
 
-
 reconstruction_information.tag = 'Relaxation';
 reconstruction_information.inv_time_1 = evalin('base','zef.relax_time_1');
 reconstruction_information.inv_time_2 = evalin('base','zef.relax_time_2');
@@ -39,7 +37,6 @@ reconstruction_information.snr_val = evalin('base','zef.relax_snr');
 [L, n_interp, procFile] = zef_processLeadfields(source_direction_mode);
 
 [f_data] = zef_getFilteredData;
-
 
 tic;
 
@@ -137,9 +134,7 @@ z_inverse{f_ind} = z_vec;
 
 end
 
-
 close(h);
 
 end
-
 

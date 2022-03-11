@@ -16,13 +16,10 @@ for i=1:length(newHash)
             duplicate=1;
         end
 
-
     end
     if ~duplicate
             workingHashes{end+1}=newHash{i};
     end
-
-
 
 end
 

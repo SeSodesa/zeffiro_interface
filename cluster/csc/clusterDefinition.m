@@ -110,7 +110,6 @@ if strcmp(def.Type, 'remotesubmission')
     end
 end
 
-
 function out = lastCharacterCheck(in, machineType)
 
 % Verify that the last string is '/' or '\' and if not, append it

@@ -1,5 +1,4 @@
 
-
 function zef_filter_plot_data
 
 f = evalin('base','zef.processed_data');
@@ -8,7 +7,6 @@ sampling_freq = evalin('base','zef.filter_sampling_rate');
 if size(f,2) > 1
 t_vec = double([1:size(f,2)]-1)./sampling_freq;
 end
-
 
 axes(evalin('base','zef.h_axes1'));
 cla(evalin('base','zef.h_axes1'));
@@ -24,6 +22,5 @@ set(evalin('base','zef.h_axes1'),'fontsize',14);
 set(evalin('base','zef.h_axes1'),'linewidth',2);
 
 set(evalin('base','zef.h_axes1'),'xlim',get(evalin('base','zef.h_axes1'),'xlim')*evalin('base','zef.filter_zoom'));
-
 
 end

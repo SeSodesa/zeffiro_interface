@@ -13,5 +13,4 @@ y_vals = corr(time_series');
 y_vals(find(isnan(y_vals))) = 1;
 y_vals = D*y_vals*D;
 
-
 plot_mode = 2;

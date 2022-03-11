@@ -3,7 +3,6 @@
 %See: https://github.com/sampsapursiainen/zeffiro_interface
 function [source_interpolation_ind] = source_interpolation(void)
 
-
     if evalin('base','isequal(size(zef.L,2),size(zef.source_directions,1))')
     evalin('base','zef.source_directions=zef.source_directions(find(not(isnan(sum(abs(zef.L),1)))),:);');
     elseif evalin('base','isequal(size(zef.L,2),3*size(zef.source_directions,1))')
@@ -101,7 +100,6 @@ source_interpolation_ind{2}{ab_ind} = (s_ind_1{ab_ind}(source_interpolation_aux)
 triangles = evalin('base',['zef.reuna_t{' int2str(aux_brain_ind(ab_ind)) '}']);
 source_interpolation_ind{2}{ab_ind} = source_interpolation_ind{2}{ab_ind}(triangles);
 
-
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -131,8 +129,6 @@ end
 close(h)
 
 end
-
-
 
 end
 

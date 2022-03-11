@@ -49,7 +49,6 @@ source_positions = evalin('base','zef.source_positions');
 %check parcellation
 tag_ind = evalin('base','find(strcmp(zef.GMM.parameters.Tags,''domain''))');
 
-
 if strcmp(parameters{tag_ind},'2')
 source_ind_aux = evalin('base','zef.source_interpolation_ind{1}');
 p_ind_aux_1 = [];

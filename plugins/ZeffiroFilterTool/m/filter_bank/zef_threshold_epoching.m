@@ -39,10 +39,8 @@ end
 f_db = f/max(abs(f(:)));
 f_db = max(db(f_db));
 
-
 start_time_ind =  sign(start_time)*min(max(1,round(abs(start_time)*sampling_frequency)),length_f);
 end_time_ind =   sign(end_time)*min(max(1,round(abs(end_time)*sampling_frequency)),length_f);
-
 
 epoch_data = zeros(size(f,1), end_time_ind-start_time_ind+1);
 

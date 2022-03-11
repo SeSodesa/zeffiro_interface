@@ -104,7 +104,6 @@ else
     zef.GMM.apps.ModelingOpt.GMM_comp_prob.Enable = 'on';
 end
 
-
 zef.GMM.apps.ModelingOpt.GMM_model_criterion.ValueChangedFcn = 'zef.GMM.parameters{zef.GMM.meta{1}+1,2} = {zef.GMM.apps.ModelingOpt.GMM_model_criterion.Value};';
 zef.GMM.apps.ModelingOpt.GMM_initial_mode.ValueChangedFcn = 'zef.GMM.parameters{zef.GMM.meta{1}+2,2} = {zef.GMM.apps.ModelingOpt.GMM_initial_mode.Value}; if strcmp(zef.GMM.parameters{zef.GMM.meta{1}+2,2},''1''); zef.GMM.apps.ModelingOpt.GMM_replicates.Enable = ''on''; zef.GMM.apps.ModelingOpt.GMM_logpost_threshold.Enable = ''off''; zef.GMM.apps.ModelingOpt.GMM_comp_prob.Enable = ''off''; elseif strcmp(zef.GMM.parameters{zef.GMM.meta{1}+2,2},''2''); zef.GMM.apps.ModelingOpt.GMM_replicates.Enable = ''off''; zef.GMM.apps.ModelingOpt.GMM_logpost_threshold.Enable = ''on''; zef.GMM.apps.ModelingOpt.GMM_comp_prob.Enable = ''off''; else zef.GMM.apps.ModelingOpt.GMM_replicates.Enable = ''off''; zef.GMM.apps.ModelingOpt.GMM_logpost_threshold.Enable = ''off''; zef.GMM.apps.ModelingOpt.GMM_comp_prob.Enable = ''on''; end;';
 zef.GMM.apps.ModelingOpt.GMM_replicates.ValueChangedFcn = 'zef.GMM.parameters{zef.GMM.meta{1}+3,2} = {zef.GMM.apps.ModelingOpt.GMM_replicates.Value};';

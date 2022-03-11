@@ -66,11 +66,7 @@ for i = 1 : length(h_c)
 
     end
 
-
-
-
 end
-
 
 if isequal(last_frame,0)
            camorbit(h_axes,frame_step*evalin('base','zef.orbit_1')/movie_fps,frame_step*evalin('base','zef.orbit_2')/movie_fps);

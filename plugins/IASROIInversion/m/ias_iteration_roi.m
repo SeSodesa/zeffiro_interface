@@ -129,12 +129,10 @@ clear L_0 L_1 L_2 L_3 s_1 s_2 s_3;
 
 end
 
-
 I_aux = [];
 roi_ind_vec = [];
 
 if roi_mode == 1
-
 
 for j = 1 : size(roi_sphere,1)
 
@@ -168,7 +166,6 @@ I_aux = unique(source_ind_aux(p_ind_aux_1,:));
 I_aux = find(ismember(s_ind_0,I_aux));
 end
 
-
 if source_direction_mode == 2
     roi_length = length(I_aux(:));
     s_ind_5 = intersect(s_ind_4,I_aux(:));
@@ -184,7 +181,6 @@ roi_aux_ind = roi_aux_ind(:);
 
 n_lead_field = size(L,2);
 L = L(:,roi_aux_ind);
-
 
 source_count = n_interp;
 if evalin('base','zef.iasroi_normalize_data')==1;
@@ -203,7 +199,6 @@ elseif evalin('base','zef.inv_hyperprior') == 2
 [beta, theta0] = zef_find_g_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L,size(L,2),evalin('base','zef.iasroi_normalize_data'),balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
 end
 
-
 if evalin('base','zef.use_gpu') == 1 & gpuDeviceCount > 0
 L = gpuArray(L);
 end
@@ -219,13 +214,11 @@ else
 number_of_frames = 1;
 end
 
-
 if iscell(evalin('base','zef.measurements'));
 f = evalin('base',['zef.measurements{' int2str(evalin('base','zef.iasroi_data_segment')) '}']);
 else
 f = evalin('base','zef.measurements');
 end
-
 
 inverse_gamma_ind = [1:4]
 gamma_ind = [5:10];
@@ -263,7 +256,6 @@ if f_ind > 1;
 date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400));
 end;
 
-
 if source_direction_mode == 1 || source_direction_mode == 2
 z_aux = zeros(size(L,2),1);
 end
@@ -271,7 +263,6 @@ if source_direction_mode == 3
 z_aux = zeros(3*size(L,2),1);
 end
 z_vec = ones(size(L,2),1);
-
 
 if evalin('base','zef.inv_hyperprior') == 1
 if length(theta0) > 1  || length(beta) > 1
@@ -286,7 +277,6 @@ else
 theta = (theta0.*beta)*ones(size(L,2),1);
 end
 end
-
 
 %aux_norm = (sum(L.^2))';
 %aux_norm = aux_norm./max(aux_norm(:));
@@ -373,8 +363,6 @@ z_vec_aux = zeros(3*n_lead_field,1);
 end
 z_vec_aux(roi_aux_ind) = z_vec;
 z_vec = z_vec_aux;
-
-
 
 if ismember(source_direction_mode, [1,2])
     z_aux(s_ind_1) = z_vec;

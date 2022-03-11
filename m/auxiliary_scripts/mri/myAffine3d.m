@@ -11,18 +11,7 @@ point=matrix*point;
 
 point=point(1:3,:);
 
-
 point=point';
-
-
-
-
-
-
-
-
-
-
 
 end
 

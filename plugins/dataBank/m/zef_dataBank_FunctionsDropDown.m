@@ -1,8 +1,4 @@
 
-
-
-
-
 zef.dataBank.app.combinePanel.Visible='Off';
 zef.dataBank.app.importPanel.Visible='Off';
 zef.dataBank.app.mag2gragPanel.Visible='Off';
@@ -19,22 +15,4 @@ switch zef.dataBank.app.FunctionsDropDown.Value
     case 'mag2grad'
 
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

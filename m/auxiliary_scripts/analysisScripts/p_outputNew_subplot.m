@@ -3,29 +3,18 @@
 
 p='p1';
 
-
-
 load(strcat(p, '_resectionStuff.mat'));
 A=alphaShape(res_zef(:,1), res_zef(:,2), res_zef(:,3),3.4);
 [AF, AP]=alphaTriangulation(A);
-
-
 
 %%
 signal_pos=res_zef;
 alpha = str2num(evalin('base','zef.GMM.parameters.Values{6}'))/100;
 r = sqrt(chi2inv(alpha,3));
 
-
-
-
 SNR=[-30 -25 -20 -15 -10 -5];
 
-
 for nodeInde=1:3
-
-
-
 
 N=1; %levels of runs
 D_comp=4;  %number of max gmm components
@@ -34,8 +23,6 @@ SNR_number=1; %number of different SNR runs
 M_space=5; % space between methods
 GMM_space=2; %space between GMModels (ans maximum)
 GMM_number=2+1; %number of GMModels (plus 1 for the maximum)
-
-
 
 matBig=nan(N, M*(GMM_number*SNR_number+(GMM_number-1)*GMM_space)+(M-1)*M_space);
 matBig_imp=matBig;
@@ -50,9 +37,7 @@ matBig_vdWO=matBig;
 matBig_2max=matBig;
 matBig_disp=matBig;
 
-
  mat_color=[];
-
 
 matSuperBig=[];
 matSuperBig_imp=[];
@@ -67,31 +52,18 @@ matSuperBig_vdWO=[];
 matSuperBig_2max=[];
 matSuperBig_disp=[];
 
-
-
-
-
-
-
-
 for runIndex=1
-
-
-
 
 for snr_i=1:SNR_number
     allHashes=fieldnames(zef.dataBank.tree);
 
     allHashes=allHashes(startsWith(allHashes,strcat( 'node_', num2str(nodeInde))));
 
-
     snr_now=SNR(snr_i);
     %a=strcat('..\p2\treeAt_SNR_', num2str(snr_now), '.mat');
     %a=strcat('..\p2\tree\eegtreeAt_SNR_', num2str(snr_now),'_', num2str(runIndex),  '.mat');
     %load(a);
    % zef.dataBank.tree=tree;
-
-
 
 diff_ind=1;
 %open gmm tool first and set the parameters
@@ -108,12 +80,8 @@ diff_max=cell(0,0);
 diff_2max=cell(0,0);
 diff_disp=cell(0,0);
 
-
-
 for i=1:length(allHashes)
     if strcmp(zef.dataBank.tree.(allHashes{i}).type, 'data')
-
-
 
         for meth=1:M
 
@@ -127,8 +95,6 @@ for i=1:length(allHashes)
                 zef.dataBank.loadParents=false;
 
                 [amp, dip_ind_all]=maxk(sum(zef.GMM.dipoles.^2,2),10); %this is used by Joonas, so I
-
-
 
                 % find maximum of reconstruction
 
@@ -147,7 +113,6 @@ for i=1:length(allHashes)
                    posDiffmax_res=zef_distance_to_resection(zef.source_positions(ind, :),AP, AF);
 
                 %diff_array_max=[diff_array_max,posDiffmax]; %
-
 
                 diff_array=[];
                 diff_array_max=[];
@@ -172,7 +137,6 @@ for i=1:length(allHashes)
 
                     diff_array_max=[diff_array_max,posDiffmax_res];
 
-
                     [principal_axes,semi_axes]=eig(inv(zef.GMM.model.Sigma(1:3,1:3,j)));
                     semi_axes = transpose(r./sqrt(diag(semi_axes)));
                     [X,Y,Z]=ellipsoid(zef.GMM.model.mu(j,1),zef.GMM.model.mu(j,2),zef.GMM.model.mu(j,3),semi_axes(1),semi_axes(2),semi_axes(3),100);
@@ -184,10 +148,7 @@ for i=1:length(allHashes)
                     [vol_diff(j), vol_diffA(j), vol_diffO(j)]=zef_GMM_resection_volume(res_zef, FB,D, zef.GMM,dip_ind);
                    vol_diffWO(j)=vol_diffA(j)/(4/3*pi*semi_axes(1)*semi_axes(2)*semi_axes(3));
 
-
-
                 end
-
 
                 diff{diff_ind,meth, gmmInd}=diff_array;
                 diff_max{diff_ind,meth, gmmInd}=diff_array_max;
@@ -210,17 +171,7 @@ for i=1:length(allHashes)
     end
 end
 
-
-
-
-
-
-
-
-
-
     for meth=1:M
-
 
         for n=1:N
         matBig(n, snr_i+                                                           (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)    +            (meth-1)*M_space)=diff_max{n, meth, 1}(1);
@@ -228,16 +179,12 @@ end
 
         end
 
-
         for g=1:(GMM_number-1)
 
             for n=1:N
                 matBig    (n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff    {n, meth, g}(1);
 
-
                 matBig_imp    (n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=(diff{n, meth, g}(1)-min(diff    {n, meth, g}))/diff{n, meth, g}(1);
-
-
 
                 matBig_min    (n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=min(diff    {n, meth, g});
 
@@ -252,17 +199,13 @@ end
 
                 matBig_disp(n,snr_i+               (SNR_number+GMM_space)*g+          (meth-1)*(GMM_number*(SNR_number+GMM_space)-GMM_space)            +       (meth-1)*M_space)=diff_disp{n, meth, g};
 
-
             end
 
         end
 
-
     end
 
 end
-
-
 
 matSuperBig=[matSuperBig; matBig];
 matSuperBig_imp=[matSuperBig_imp; matBig_imp];
@@ -277,13 +220,7 @@ matSuperBig_vdWO=[matSuperBig_vdWO; matBig_vdWO];
 matSuperBig_2max=[matSuperBig_2max; matBig_2max];
 matSuperBig_disp=[matSuperBig_disp; matBig_disp];
 
-
-
 end
-
-
-
-
 
 %%
 mLab={'mne', 'sLoreta', 'RAMUS-4-10', 'DipScan', 'Beamformer'};
@@ -294,7 +231,6 @@ gColor={'black', 'blue', 'green'};
 myXticks=[];
 newTick=floor(SNR_number/2);
 for m=1:M
-
 
     for g=1:GMM_number
     newTick=newTick;
@@ -307,20 +243,16 @@ end
 
 for m=1:M
 
-
     myXLabel{(m-1)*3 +1}=gLab{1};
     myXLabel{(m-1)*3 +2}=strcat(gLab{2}, '\newline', mLab{m});
     myXLabel{(m-1)*3 +3}= gLab{3};
     %myXLabel{(m-1)*4 +4}= gLab{4};
-
 
 %     myXC{(m-1)*3 +1}=gColor{1};
 %     myXC{(m-1)*3 +2}=gColor{2};
 %     myXC{(m-1)*3 +3}= gColor{3};
 
 end
-
-
 
 %%
 
@@ -371,7 +303,6 @@ switch nodeInde
         nom='meeg';
 end
 
-
 plottingStuff.(nom).matSuperBig=matSuperBig;
 plottingStuff.(nom).matSuperBig_2max=matSuperBig_2max;
 plottingStuff.(nom).matSuperBig_vol=matSuperBig_vol;
@@ -380,10 +311,6 @@ plottingStuff.(nom).matSuperBig_exc=matSuperBig_exc;
 plottingStuff.(nom).matSuperBig_imp=matSuperBig_imp;
 plottingStuff.(nom).matSuperBig_min=matSuperBig_min;
 plottingStuff.(nom).matSuperBig_disp=matSuperBig_disp;
-
-
-
-
 
 %
 % figure;
@@ -446,7 +373,6 @@ end
 % plottingStuff.all.matSuperBig=thingOrNan(plottingStuff.('eeg').matSuperBig,[nan, plottingStuff.('meg').matSuperBig]);
 % plottingStuff.all.matSuperBig=thingOrNan(plottingStuff.('all').matSuperBig, [nan, nan, plottingStuff.('meeg').matSuperBig]);
 
-
 %determine colors
 c1=zeros(length(plottingStuff.eeg.matSuperBig), 3);
 col=zeros(length(plottingStuff.eeg.matSuperBig), 3);
@@ -472,14 +398,9 @@ for ci=1:length(plottingStuff.eeg.matSuperBig)
         iii=1;
         end
 
-
-
     end
 
 end
-
-
-
 
 %%
 %
@@ -538,8 +459,6 @@ end
 %
 %
 
-
-
 %%
 
 for nomIndex=1:3
@@ -575,7 +494,6 @@ for pIndex=1:length(plottingStuff.(nom).matSuperBig)
     %disp(colorIndex);
     %pause(0.5);
 
-
 end
 
 pbaspect([3,1,1]);
@@ -597,7 +515,6 @@ xticklabels(myXLabel);
 %
 %
 
-
 % figure('Position',[120,20, 1200, 800]);
 % hold on;
 % title(strcat(nom, '-','Minimal GMM Distance to resection'));
@@ -608,12 +525,9 @@ xticklabels(myXLabel);
 % xticklabels(myXLabel);
 %
 
-
 % name=strcat('./', p, '_', nom, '_MinimalDistance');
 % saveas(gca, name, 'epsc');
 % pause(2);
-
-
 
 %
 % figure('Position',[120,20, 1200, 800]);
@@ -649,15 +563,4 @@ xticklabels(myXLabel);
 %
 
 end
-
-
-
-
-
-
-
-
-
-
-
 

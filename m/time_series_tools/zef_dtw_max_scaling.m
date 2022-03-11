@@ -14,5 +14,4 @@ y_vals(i,j) = dtw(time_series(i,:),time_series(j,:));
     end
 end
 
-
 plot_mode = 2;

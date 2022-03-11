@@ -13,7 +13,6 @@ triangles = evalin('base','zef.reuna_t{end}');
 triangle_points = evalin('base','zef.reuna_p{end}');
 sensor_points = evalin('base','zef.sensors(:,1:3)');
 
-
 if number_of_frames > 1
 z = cell(number_of_frames,1);
 else
@@ -32,7 +31,6 @@ f = evalin('base',['zef.measurements{' int2str(evalin('base','zef.top_data_segme
 else
 f = evalin('base','zef.measurements');
 end
-
 
 data_norm = 1;
 if evalin('base','zef.normalize_data')==1;

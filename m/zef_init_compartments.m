@@ -1,6 +1,5 @@
  zef.h_compartment_table.Data = [];
 
-
 zef.compartment_tags = cell(0);
 zef.compartment_transform_name = cell(0);
 
@@ -32,16 +31,9 @@ for zef_i = 1 : length(zef.compartment_tags_aux)
 
 end
 
-
 zef = rmfield(zef,{'segmentation_profile_aux','compartment_structure_aux','compartment_tags_aux'});
 
 clear zef_i zef_j zef_k;
 
 end
-
-
-
-
-
-
 

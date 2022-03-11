@@ -112,7 +112,6 @@ end
 end
 end
 
-
 johtavuus_ind = uint32(johtavuus_ind);
 johtavuus_ind_2 = uint32(johtavuus_ind_2);
 nodes = [X(:) Y(:) Z(:)];
@@ -191,10 +190,7 @@ end
 priority_ind = sub2ind(size(johtavuus_ind),[1:size(johtavuus_ind,1)]',priority_ind);
 [johtavuus_ind] = johtavuus_ind(priority_ind);
 
-
-
 close(h);
 
 end
-
 

@@ -2,7 +2,6 @@
 %See: https://github.com/sampsapursiainen/zeffiro_interface
 function zef_make_butterfly_plot(void)
 
-
 sampling_freq = evalin('base','zef.bf_sampling_frequency');
 high_pass = evalin('base','zef.bf_low_cut_frequency');
 low_pass = evalin('base','zef.bf_high_cut_frequency');
@@ -12,7 +11,6 @@ f = evalin('base',['zef.measurements{' int2str(evalin('base','zef.bf_data_segmen
 else
 f = evalin('base','zef.measurements');
 end
-
 
 data_norm = 1;
 if evalin('base','zef.normalize_data')==1;
@@ -36,7 +34,6 @@ if size(f,2) > 1 && high_pass > 0
 [hp_f_1,hp_f_2] = ellip(filter_order,3,80,high_pass/(sampling_freq/2),'high');
 f = filter(hp_f_1,hp_f_2,f')';
 end
-
 
 if size(f,2) > 1
 if evalin('base','zef.bf_time_2') >=0 0 && evalin('base','zef.bf_time_1') >= 0 & 1 + sampling_freq*evalin('base','zef.bf_time_1') <= size(f,2);

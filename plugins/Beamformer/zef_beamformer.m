@@ -51,7 +51,6 @@ end
 
 f_data = zef_getFilteredData;
 
-
   if evalin('base','zef.cov_type') == 1
     C = (f_data-mean(f_data,2))*(f_data-mean(f_data,2))'/size(f_data,2);
     C = C+lambda_cov*trace(C)*eye(size(C))/size(f_data,1);
@@ -60,9 +59,6 @@ elseif evalin('base','zef.cov_type') == 2
     C = C + lambda_cov*eye(size(C));
 end
 
-
-
-
 tic;
 %------------------ TIME LOOP STARTS HERE ------------------------------
 for f_ind = 1 : number_of_frames
@@ -70,7 +66,6 @@ time_val = toc;
 if f_ind > 1
 date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400));
 end
-
 
 if ismember(source_direction_mode, [1,2])
 z_aux = zeros(size(L,2),1);
@@ -102,15 +97,12 @@ elseif evalin('base','zef.cov_type') == 4
     C = C + lambda_cov*eye(size(C));
 end
 
-
 if f_ind == 1
 waitbar(0,h,['Beamformer. Time step ' int2str(f_ind) ' of ' int2str(number_of_frames) '.']);
 end
 
-
 %---------------CALCULATIONS STARTS HERE----------------------------------
 %Data covariance matrix and its regularization
-
 
 if method_type == 1
    %__ LCMV Beamformer __
@@ -137,7 +129,6 @@ if method_type == 1
             time_val = toc;
             date_str = datestr(datevec(now+(nn/(n_iter-1) - 1)*time_val/86400));
         end
-
 
         %Normalized directions are calculated via scalar beamformer
         if source_direction_mode == 2
@@ -386,7 +377,6 @@ elseif method_type == 3
             date_str = datestr(datevec(now+(nn/(n_iter-1) - 1)*time_val/86400));
         end
 
-
         %Normalized directions are calculated via scalar beamformer
         if source_direction_mode == 2
             if ismember(L_ind(n_iter,1),procFile.s_ind_4)
@@ -459,14 +449,7 @@ elseif method_type == 3
         end
     end
 
-
-
-
 elseif method_type==4
-
-
-
-
 
     %determine indices of triplets (ind) and their total amount (nn)
     if source_direction_mode == 1  || source_direction_mode == 2
@@ -490,7 +473,6 @@ elseif method_type==4
             time_val = toc;
             date_str = datestr(datevec(now+(nn/(n_iter-1) - 1)*time_val/86400));
         end
-
 
         %Normalized directions are calculated via scalar beamformer
         if source_direction_mode == 2
@@ -545,7 +527,6 @@ elseif method_type==4
         opt_orientation = opt_orientation/norm(opt_orientation);
         L_aux = L_aux*opt_orientation;
 
-
         %Leadfield regularization
         if evalin('base','zef.L_reg_type')==1
             invSqrtLTinvC2L = sqrt(inv(L_aux'*L_aux+lambda_L*eye(size(L_aux,2))));
@@ -567,7 +548,6 @@ elseif method_type==4
             end;
         end
     end
-
 
 end
 % %location estimation:

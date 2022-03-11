@@ -32,7 +32,6 @@ zef.h_wireframe_regularization_parameter.Value = zef.wireframe_regularization_pa
 zef.h_wireframe_tolerance.Value = zef.wireframe_tolerance;
 zef.h_wireframe_n_iter.Value = zef.wireframe_n_iter;
 
-
 zef.h_wireframe_create.ButtonPushedFcn = 'zef.wireframe_filling_vec = zef_wireframe_filling_vec(zef.epsilon(:,1),zef.wireframe_relative_permittivity); [zef.wireframe_triangles,zef.wireframe_nodes,zef.wireframe_filling_vec_interp,zef.wireframe_w_vec,zef.wireframe_shape_vec] = wireframe(zef.tetra,zef.nodes,zef.domain_labels,zef.wireframe_filling_vec,zef.wireframe_printer_resolution,0,1,zef.wireframe_edge_threshold);zef.wireframe_permittivity_vec = zef_wireframe_permittivity_vec(zef.wireframe_filling_vec_interp,zef.wireframe_relative_permittivity);';
 zef.h_wireframe_plot.ButtonPushedFcn = 'zef_wireframe_plot(zef.wireframe_triangles,zef.wireframe_nodes);';
 

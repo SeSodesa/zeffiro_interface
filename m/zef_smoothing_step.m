@@ -60,7 +60,6 @@ K = unique(J);
 end
 end
 
-
 waitbar((1+length(priority_vec))/length_waitbar,h,'Smoothing operators.');
 surface_triangles = sort(surface_triangles,2);
 surface_triangles = unique(surface_triangles,'rows');
@@ -102,7 +101,6 @@ A_K = A(K,K);
 nodes(K,:) = nodes(K,:);
 
 end
-
 
 if smoothing_steps_vol(smoothing_repetition_ind) > 0
 for i = 1 : 4
@@ -342,7 +340,6 @@ end
 
 clear nodes_aux;
 
-
 if optimizer_flag == -1;
 smoothing_ok = 0;
 else
@@ -357,8 +354,6 @@ return;
 end
 
 clear A B;
-
-
 
 end
 

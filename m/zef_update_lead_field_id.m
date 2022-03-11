@@ -7,7 +7,6 @@ end
 
 switch lead_field_event
 
-
     case 'bank_replace'
         lead_field_id = lead_field_id;
         lead_field_id_max = lead_field_id_max;
@@ -32,15 +31,5 @@ switch lead_field_event
         error('event not specified');
 
 end
-
-
-
-
-
-
-
-
-
-
 
 end

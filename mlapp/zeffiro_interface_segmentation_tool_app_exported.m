@@ -130,7 +130,6 @@ classdef zeffiro_interface_segmentation_tool_app_exported < matlab.apps.AppBase
         h_menu_import_sensor_names      matlab.ui.container.Menu
     end
 
-
     methods (Access = private)
         function local_CreateFcn(app, hObject, eventdata, createfcn, appdata)
 
@@ -152,7 +151,6 @@ classdef zeffiro_interface_segmentation_tool_app_exported < matlab.apps.AppBase
         end
 
     end
-
 
     % Component initialization
     methods (Access = private)

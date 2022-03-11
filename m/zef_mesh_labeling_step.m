@@ -129,12 +129,9 @@ I_3 = find(I_3 >= 3);
 domain_labels(I_3) = compartment_counter;
 end
 
-
 end
 end
 end
-
-
 
 %**************************************************************
 elseif isequal(labeling_flag,3)
@@ -220,13 +217,11 @@ domain_labels(I_3) = compartment_counter;
 end
 end
 
-
 end
 end
 end
 
 end
-
 
 %**************************************************************
 

@@ -21,17 +21,9 @@ for zef_k =  1  : size(zef.parameter_profile,1)
     end
 end
 
-
 end
 
 zef.h_compartment_table.Data = zef.aux_field_1;
 zef = rmfield(zef,'aux_field_1');
 zef_update;
-
-
-
-
-
-
-
 

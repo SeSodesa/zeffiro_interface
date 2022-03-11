@@ -18,7 +18,6 @@ zef.aux_field_1 = zef.aux_field_1(zef.aux_field_2,:);
 
 zef.h_sensors_name_table.Data = zef.aux_field_1;
 
-
 evalin('base',['zef.' zef.current_sensors '_name_list = cell(0);'])
 evalin('base',['zef.' zef.current_sensors '_visible_list = [];'])
 

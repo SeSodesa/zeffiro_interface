@@ -38,7 +38,6 @@ zef.time_series_tools_dir = [fileparts(zef.time_series_tools_dir) '/' 'time_seri
 zef.time_series_tools_name_list = cell(0);
 zef.time_series_tools_file_list = cell(0);
 
-
 zef.aux_field = dir(zef.time_series_tools_dir);
 for zef_i = 1 : length(zef.aux_field)
 [~, zef.time_series_tools_file_list{zef_i}] = fileparts(zef.aux_field(zef_i).name);

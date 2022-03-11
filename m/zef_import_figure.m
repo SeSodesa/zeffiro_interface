@@ -81,7 +81,6 @@ end
 end
 % h_fig.Position(4) = h_fig.Position(4) - (1-scale_param)*figure_width/8;
 
-
 h_fig.Units = 'normalized';
 for i = 1 : length(h_c)
     if find(ismember(properties(h_c(i)),'Units'))
@@ -109,7 +108,6 @@ set(h_fig,'Tag',num2str(zef_fig_num));
 
 set(h_fig,'SizeChangedFcn','zef_set_figure_current_size;');
 
-
 h_fig.Name = [h_fig.Name ' ' '{' file_name '}'];
 h_aux_1 = findobj(h_fig.Children,'Style','listbox');
 h_aux_2 = findobj(h_aux_1,'Tag','system_information');
@@ -126,14 +124,4 @@ end
 evalin('base','zef = rmfield(zef,''zeffiro_current_size_aux'');');
 
 end
-
-
-
-
-
-
-
-
-
-
 

@@ -96,7 +96,6 @@ if evalin('base','zef.location_unit_current') == 3
 zef.parcellation_p = 1000*parcellation_p;
 end
 
-
 I_compartment = find(ismember(evalin('base','zef.sigma(:,2)'),cortex_ind_aux(1)));
 brain_cortex_ind = find(ismember(brain_ind,I_compartment));
 cortex_ind = brain_ind(brain_cortex_ind);
@@ -121,12 +120,10 @@ else
 
 if not(isempty(source_positions))
 
-
 MdlKDT = KDTreeSearcher(source_positions);
 source_interpolation_ind = knnsearch(MdlKDT,center_points);
 
 waitbar(p_counter/length(p_selected),h,['Interp. 1. ' num2str(p_counter) '/' num2str(length(p_selected))  '.' ]);
-
 
 source_interpolation_ind = source_interpolation_ind(:);
 
@@ -182,8 +179,6 @@ if not(isempty(source_positions))
 
 center_points = evalin('base',['zef.reuna_p{' int2str(aux_brain_ind(ab_ind)) '}']);
 
-
-
 size_center_points = size(center_points,2);
 
 tic;
@@ -202,7 +197,6 @@ distance_vec = sum((source_positions(source_interpolation_ind,:)-center_points).
 %end
 parcellation_interpolation_ind{p_ind-1}{2}{ab_ind} = find(mean(sqrt(distance_vec(triangles)),2)<p_tolerance);
 
-
 waitbar(1,h,['Interp. 2: ' num2str(p_counter) '/' num2str(length(p_selected)) '.']);
 
 end
@@ -214,6 +208,4 @@ end
 close(h)
 
 end
-
-
 

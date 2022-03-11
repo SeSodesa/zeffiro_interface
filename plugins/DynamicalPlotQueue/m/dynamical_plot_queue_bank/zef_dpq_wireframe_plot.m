@@ -21,7 +21,4 @@ h_t.Tag = 'additional';
 h_a.Visible = 'off';
 hold off;
 
-
-
-
 end

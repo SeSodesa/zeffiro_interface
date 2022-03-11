@@ -50,7 +50,6 @@ hold(evalin('base','zef.h_axes1'),'off');
 set(x_labels,'HorizontalAlignment','right','VerticalAlignment','top', 'Rotation',90, 'Fontsize', 8);
 set(y_label,'HorizontalAlignment','right','VerticalAlignment','top', 'Rotation',90, 'Fontsize', 8);
 
-
 end
 
 if plot_mode == 2

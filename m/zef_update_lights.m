@@ -34,7 +34,6 @@ light(h_1,'Position',[-1 0 0 ],'Style','infinite');
 
 lights_vec = [lights_vec ; 3];
 
-
 elseif h_2.Value == 4
 
 light(h_1,'Position',[0 1 0],'Style','infinite');

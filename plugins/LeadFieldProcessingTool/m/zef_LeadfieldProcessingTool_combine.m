@@ -1,6 +1,4 @@
 
-
-
 zef.LeadFieldProcessingTool.combineNew=true;
 zef.LeadFieldProcessingTool.combinePoints=zef.LeadFieldProcessingTool.app.NoisestartSpinner.Value:zef.LeadFieldProcessingTool.app.NoiseendSpinner.Value;
 zef.LeadFieldProcessingTool.combineData=[];
@@ -24,10 +22,8 @@ for zef_LeadFieldProcessingTool_index_combine=1:zef.LeadFieldProcessingTool.bank
             zef.LeadFieldProcessingTool.combineData.source_structure=zef.LeadFieldProcessingTool.bank{zef.LeadFieldProcessingTool.bank2auxIndex}.source_structure;
             zef.LeadFieldProcessingTool.combineData.compartment_tags=zef.LeadFieldProcessingTool.bank{zef.LeadFieldProcessingTool.bank2auxIndex}.compartment_tags;
 
-
             zef.LeadFieldProcessingTool.combineData.imaging_method = zef.LeadFieldProcessingTool.auxData.imaging_method;
             zef.LeadFieldProcessingTool.combineData.lf_tag = '';
-
 
             zef.LeadFieldProcessingTool.combineData.L = [];
             zef.LeadFieldProcessingTool.combineData.measurements = [];
@@ -35,19 +31,13 @@ for zef_LeadFieldProcessingTool_index_combine=1:zef.LeadFieldProcessingTool.bank
             zef.LeadFieldProcessingTool.combineData.sensors = [];
             zef.LeadFieldProcessingTool.combineData.noise=[];
 
-
-
         end
-
 
         %noise_par=std(data, 0, 2)
         zef.LeadFieldProcessingTool.combineData.noise=std(zef.LeadFieldProcessingTool.auxData.measurements(:, zef.LeadFieldProcessingTool.combinePoints), 0,2);
 
-
         zef.LeadFieldProcessingTool.combineData.L = vertcat(zef.LeadFieldProcessingTool.combineData.L, ...
             (1./zef.LeadFieldProcessingTool.combineData.noise).*zef.LeadFieldProcessingTool.auxData.L);
-
-
 
         zef.LeadFieldProcessingTool.combineData.measurements =vertcat( zef.LeadFieldProcessingTool.combineData.measurements, ...
             (1./zef.LeadFieldProcessingTool.combineData.noise).*zef.LeadFieldProcessingTool.auxData.measurements);
@@ -57,18 +47,15 @@ for zef_LeadFieldProcessingTool_index_combine=1:zef.LeadFieldProcessingTool.bank
                 (1./zef.LeadFieldProcessingTool.combineData.noise).*zef.LeadFieldProcessingTool.auxData.noise_data);
         end
 
-
         if isempty(zef.LeadFieldProcessingTool.combineData.sensors)
             zef.LeadFieldProcessingTool.combineData.sensors = vertcat(zef.LeadFieldProcessingTool.combineData.sensors, zef.LeadFieldProcessingTool.auxData.sensors(:,1:3));
         else
             zef.LeadFieldProcessingTool.combineData.sensors = vertcat(zef.LeadFieldProcessingTool.combineData.sensors(:,1:3) , zef.LeadFieldProcessingTool.auxData.sensors(:,1:3));
         end
 
-
     end
 
 end
-
 
         zef.LeadFieldProcessingTool.auxData=[];
         zef.LeadFieldProcessingTool.auxData=zef.LeadFieldProcessingTool.combineData;
@@ -79,23 +66,5 @@ end
         zef.LeadFieldProcessingTool.combineData=[];
         zef_LeadFieldProcessingTool_aux2bank_new;
 
-
-
         clear zef_LeadFieldProcessingTool_index_combine;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

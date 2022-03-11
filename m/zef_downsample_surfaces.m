@@ -34,7 +34,6 @@ evalin('base',['zef.' zef.temp_var_0 '_points_inf = [];']);
 evalin('base',['zef.' zef.temp_var_0 '_points = [];']);
 evalin('base',['zef.' zef.temp_var_0 '_triangles = [];']);
 
-
 if evalin('base',['not(isempty(zef.' zef.temp_var_0 '_submesh_ind));'])
     zef_i = 0;
     for zef_j = 1 : length(zef.temp_patch_data.submesh_ind)

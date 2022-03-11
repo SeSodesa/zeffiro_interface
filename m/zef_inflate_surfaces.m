@@ -43,7 +43,6 @@ nearest_neighbor_ind = knnsearch(MdlKDT,gather(nodes(node_list(:,1),:)),'K',n_ne
 
 waitbar([0 compartment_counter/length(reuna_p)], h, 'Inflating.');
 
-
 length_node_list = size(node_list,1);
 par_num = evalin('base','zef.parallel_processes');
 vec_num = evalin('base','zef.parallel_vectors');
@@ -76,7 +75,6 @@ nodes_ind_cell_aux{j} = zeros(length(block_ind),1);
 for k = 1 : length(block_ind)
 
 p_ind = node_list(block_ind(k),1);
-
 
 %if not(isempty(p_tetra))
     I = [];
@@ -137,8 +135,5 @@ if waitbar_opened
 close(h);
 end
 
-
 end
-
-
 

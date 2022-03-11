@@ -4,7 +4,6 @@ function [size1, size2] = zef_size(data, field)
 %the size
 %Works only with 2 dimensions!
 
-
 if isobject(data)
     sizeOfField=size(data, field);
 else
@@ -13,7 +12,6 @@ end
 
 size1=sizeOfField(1);
 size2=sizeOfField(2);
-
 
 end
 

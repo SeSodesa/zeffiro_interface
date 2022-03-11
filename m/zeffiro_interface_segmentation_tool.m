@@ -114,7 +114,6 @@ set(zef.h_menu_parameter_profile                  ,'MenuSelectedFcn','zef_open_p
 set(zef.h_menu_segmentation_profile                  ,'MenuSelectedFcn','zef_open_segmentation_profile;');
 set(zef.h_menu_init_profile                  ,'MenuSelectedFcn','zef_open_init_profile;');
 
-
 set(zef.h_menu_inverse_tools,'Tag','inverse_tools');
 set(zef.h_menu_forward_tools,'Tag','forward_tools');
 set(zef.h_menu_multi_tools,'Tag','multi_tools');

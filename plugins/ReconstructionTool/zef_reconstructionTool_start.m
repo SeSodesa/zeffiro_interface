@@ -1,5 +1,4 @@
 
-
 %reconstructionTool_start
 
 zef.reconstructionTool.app = zef_reconstructionTool_app;
@@ -7,9 +6,6 @@ zef.reconstructionTool.app = zef_reconstructionTool_app;
 if ~isfield(zef.reconstructionTool, 'current')
     zef.reconstructionTool.current=[];
 end
-
-
-
 
 %set initial values
 
@@ -32,7 +28,6 @@ else
                 zef.reconstructionTool.bankReconstruction{zef_index}.reconstruction_information.lead_field_id='noID';
             end
 
-
             zef.reconstructionTool.app.BankTable.Data{zef_index,7}=false;
         end
         clear zef_index;
@@ -42,13 +37,11 @@ else
     end
 end
 
-
 zef.reconstructionTool.bankSize=size(zef.reconstructionTool.bankInfo,1);
 
 if ~isfield(zef, 'reconstruction')
     zef.reconstruction=cell(0);
 end
-
 
 zef_reconstructionTool_refresh;
 
@@ -65,8 +58,6 @@ zef.reconstructionTool.app.ImportButton.ButtonPushedFcn='[zef.reconstruction, ze
 zef.reconstructionTool.app.current.CellEditCallback='zef.reconstructionTool.currentInfo=zef.reconstructionTool.app.current.Data;';
 zef.reconstructionTool.app.BankTable.CellEditCallback='zef.reconstructionTool.bankInfo=zef.reconstructionTool.app.BankTable.Data;';
 
-
-
 %the content of ./m/apply_funtions is given to a dropdown field. The
 %begining zef_reconstructionTool_ is cuttet for readability, .m as well
 zef.reconstructionTool.funtions=dir('./plugins/ReconstructionTool/m/apply_functions/*.m');
@@ -75,58 +66,6 @@ zef.reconstructionTool.funtions=zef.reconstructionTool.funtions(1,:);
 zef.reconstructionTool.app.FunctionDropDown.Items=zef.reconstructionTool.funtions;
 zef.reconstructionTool.app.FunctionDropDown.Items=extractBetween(zef.reconstructionTool.funtions, 'Tool_', '.m');
 
-
 %set fonts
 %set(findobj(zef.GMMclustering.UIFigure.Children,'-property','FontSize'),'FontSize',zef.font_size);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

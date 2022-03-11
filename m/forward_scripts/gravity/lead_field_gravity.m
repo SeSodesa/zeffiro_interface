@@ -91,7 +91,6 @@ if iscell(elements)
     source_ind = [1:size(tetrahedra,1)]';
     cholinc_tol = 1e-3;
 
-
     n_varargin = length(varargin);
     if n_varargin >= 1
     if not(isstruct(varargin{1}))
@@ -133,8 +132,6 @@ if iscell(elements)
     K3 = length(source_ind);
     K4 = length(gravity_ind);
 
-
-
 Aux_mat = [nodes(tetrahedra(:,1),:)'; nodes(tetrahedra(:,2),:)'; nodes(tetrahedra(:,3),:)'] - repmat(nodes(tetrahedra(:,4),:)',3,1);
 ind_m = [1 4 7; 2 5 8 ; 3 6 9];
 tilavuus = abs(Aux_mat(ind_m(1,1),:).*(Aux_mat(ind_m(2,2),:).*Aux_mat(ind_m(3,3),:)-Aux_mat(ind_m(2,3),:).*Aux_mat(ind_m(3,2),:)) ...
@@ -144,7 +141,6 @@ tilavuus = abs(Aux_mat(ind_m(1,1),:).*(Aux_mat(ind_m(2,2),:).*Aux_mat(ind_m(3,3)
 c_tet = 0.25*(nodes(tetrahedra(:,1),:) + nodes(tetrahedra(:,2),:) + nodes(tetrahedra(:,3),:) + nodes(tetrahedra(:,4),:));
 
 [eit_ind, eit_count] = make_gravity_dec(nodes,tetrahedra,gravity_ind,source_ind);
-
 
 h = waitbar(0,'Lead field.');
 

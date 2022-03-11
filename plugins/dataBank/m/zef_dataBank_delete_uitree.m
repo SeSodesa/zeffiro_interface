@@ -1,6 +1,4 @@
 
-
-
 if size(zef.dataBank.app.Tree.SelectedNodes,1)>1
 
     for dbk=1:size(zef.dataBank.app.Tree.SelectedNodes,1)
@@ -14,7 +12,4 @@ else
 end
 
 clear dbk;
-
-
-
 

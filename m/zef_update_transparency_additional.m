@@ -13,7 +13,6 @@ h_figure = evalin('base','zef.h_zeffiro');
 h_object = findobj(get(h_figure,'Children'),'Tag','transparency_additional_slider');
 end
 
-
 slider_value_new = h_object.Value;
 
 h = findobj(h,'-regexp','Tag','additional*');

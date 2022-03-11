@@ -73,7 +73,6 @@ end
 
 else
 
-
 if (isequal(attach_type,'geometry'))
 geometry_center_points_aux = (1/3)*(geometry_nodes(geometry_triangles(:,1),:) + ...
                            geometry_nodes(geometry_triangles(:,2),:) + ...

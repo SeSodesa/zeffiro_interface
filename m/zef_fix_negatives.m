@@ -5,11 +5,9 @@ fix_n_max = evalin('base','zef.mesh_optimization_repetitions');
 fix_param = 0.5;
 fix_it = 0;
 
-
 c = find(zef_condition_number(nodes,tetra)<0);
 fix_length = length(c);
 %condition_number_thresh = max(0,thresh_val*max(condition_number));
-
 
 if fix_length > 0
 
@@ -29,7 +27,6 @@ for i = 1 : length(c)
 
 [~,~,~,~,g] = zef_surface_mesh(tetra_c, [], c(i));
 
-
 g = g(find(g));
 
 fix_ind = 0;
@@ -46,10 +43,8 @@ tetra_ind = find(sum(ismember(tetra_c,tetra_c(c(i),j)),2));
 tri = zef_surface_mesh(tetra_c, [], tetra_ind);
 u_tri = unique(tri);
 
-
 u_tri_rand = randperm(length(u_tri));
 vec_3 = mean(nodes(u_tri(u_tri_rand(1:end-3)),:));
-
 
 p_in_c = zef_point_in_cluster(nodes,tri,vec_3);
 if isempty(p_in_c)
@@ -76,8 +71,6 @@ end
 end
 end
 
-
-
 nodes(tetra_c(c(i),j),:) = vec_3;
 
 end
@@ -87,17 +80,14 @@ if isempty(find(zef_condition_number(nodes,tetra_c([c(i);g(:)],:))<0))
 fix_ind = j;
 end
 
-
 if fix_ind == 0
 nodes(tetra_c(c(i),j),:) = vec_1;
 end
-
 
 end
 
 c = find(zef_condition_number(nodes,tetra)<0);
 fix_length = length(c);
-
 
 end
 

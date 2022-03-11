@@ -20,7 +20,6 @@ end
 end
 end
 
-
 clear A_part;
 K = unique(triangles(:));
 A = spones(A);
@@ -29,8 +28,6 @@ sum_A = full(sum(A(K,K)))';
 sum_A = sum_A(:,[1 1 1]);
 taubin_lambda = 1;
 taubin_mu = -1;
-
-
 
 for iter_ind_aux_1 = 1 : smoothing_steps_surf
 nodes_aux = A(K,K)*nodes(K,:);

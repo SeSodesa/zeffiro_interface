@@ -43,7 +43,6 @@ if not(isfield(zef,'inv_rec_source'))
     zef.inv_rec_source(1,9) = 1;
 end
 
-
 set(zef.SESAME_App.h_SESAME_snr ,'value',num2str(zef.SESAME_snr));
 set(zef.SESAME_App.h_SESAME_n_sampler ,'value',num2str(zef.SESAME_n_sampler));
 set(zef.SESAME_App.h_SESAME_sampling_frequency ,'value',num2str(zef.SESAME_sampling_frequency));

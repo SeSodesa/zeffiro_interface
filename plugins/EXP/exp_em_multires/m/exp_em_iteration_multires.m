@@ -158,7 +158,6 @@ if ismember(hyper_type,[1,2])
     end
 end
 
-
 %__ Initialization __
 n = size(L_aux_2,2);
 %L_aux = 1/std_lhood*L_aux_2;
@@ -215,8 +214,6 @@ end
 %theta = sum(theta_aux(:,1:j),2)/sum(w_vec_aux(1:j),2);
 %z_vec = sum(z_vec_aux(:,1:j),2)/sum(w_vec_aux(1:j),2);
 
-
-
 %theta_aux(:,j) = theta;
 %z_vec_aux(:,j) = z_vec;
 
@@ -230,7 +227,6 @@ z_vec_aux = z_vec_aux + z_vec;
 theta_vec_aux = theta_vec_aux + theta;
 %theta = theta_vec_aux/iter_ind;
 end
-
 
 end
 

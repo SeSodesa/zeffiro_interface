@@ -17,7 +17,6 @@ if not(isfield(zef,'filter_save_file_path'));
     zef.filter_save_file_path = './data';
 end
 
-
 if not(isfield(zef,'filter_save_file'));
     zef.filter_save_file = '';
 end
@@ -37,7 +36,6 @@ end;
 if not(isfield(zef,'filter_data_segment'));
    zef.filter_data_segment = '0';
 end;
-
 
 if not(isfield(zef,'filter_pipeline'));
    zef.filter_pipeline = cell(0);
@@ -85,7 +83,6 @@ zef.aux_field = zef.filter_pipeline{zef.filter_pipeline_selected(1)}.parameters;
 end
 
 set(zef.h_filter_parameter_list,'columneditable',[false true]);
-
 
 clear zef_i
 zef_update_filter_tool;

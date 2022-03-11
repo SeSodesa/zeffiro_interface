@@ -57,7 +57,6 @@ if n ~= 3
     end
 end
 
-
 h_barplot_ES = bar(y_ES,0.3);
 h_barplot_ES.FaceColor = [0.3 0.3 0.3];
 h_barplot_ES.LineWidth = 0.1;
@@ -87,7 +86,6 @@ if max(abs(y_ES)) == 0
 else
     p_max = max(abs(y_ES)); p_min = -p_max;
 end
-
 
 if p_max > max_current
     h_axes.YLim = [p_min p_max]*1.05;

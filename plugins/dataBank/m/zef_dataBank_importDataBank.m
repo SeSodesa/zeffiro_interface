@@ -1,6 +1,5 @@
 function [tree] = zef_dataBank_importDataBank(tree, savePath, saveFile, parentHash, dataBank)
 
-
 dataTree=load(strcat(savePath, saveFile));
 
 dataTree=zef_dataBank_sortTree(dataTree);
@@ -16,7 +15,6 @@ tree.(firsthash).name=dataTree.node_1.name;
             tree.(firsthash).data=matfile(folderName);
         end
 
-
  if strcmp(dataBank.save2disk, 'On')
     folderName=strcat(dataBank.folder, firsthash);
     save(folderName, '-struct', 'data');
@@ -27,7 +25,6 @@ tree.(firsthash).name=dataTree.node_1.name;
 
     firsthash=str2double(regexp(firsthash, '(?<num>\d+)', 'match'));
 
-
     hashList=fieldnames(dataTree);
 
     correctionNumber=firsthash(end)-1;
@@ -36,7 +33,6 @@ tree.(firsthash).name=dataTree.node_1.name;
      hash(1)=hash(1)+correctionNumber;
      hash=[phash, hash];
      hash=zef_dataBank_number2hash(hash);
-
 
      tree.(hash)=dataTree.(hashList{i});
      tree.(hash).hash=hash;
@@ -48,21 +44,6 @@ tree.(firsthash).name=dataTree.node_1.name;
      end
 
  end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 end
 

@@ -29,7 +29,6 @@ for i = 1 : size_f
   f_2(:,i) = aux_vec(:,1);
   waitbar(i/size_f,h,['Simple ICA filter.']);
 
-
 end
 
 close(h);

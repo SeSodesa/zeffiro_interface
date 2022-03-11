@@ -30,7 +30,6 @@ GMMdipoles = evalin('base','zef.GMModelDipoles');
 alpha = evalin('base','zef.GMMcluster_alpha')/100;
 r = sqrt(chi2inv(alpha,3));
 
-
 %colors for confidence ellipsoids:
 if ellip_coloring_type == 1
     colors = [1,0,0;0,1,0;0,0,1;1,0.5,0;0,1,1;0.5,0,1;1,0.5,0.5;0.4,1,0.8;0.2,0.6,1;1,0.8,0.6;0.8,1,0.6;0.6,1,1;0.8,0.6,1];
@@ -56,7 +55,6 @@ else
         end
     end
 end
-
 
 h = evalin('base','zef.h_axes1');
 %set temporarly transparencies stated in mesh visualization to temporary

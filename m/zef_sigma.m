@@ -28,7 +28,6 @@ compartment_tags = evalin('base','zef.compartment_tags');
 
 aux_compartment_ind = zeros(1,length(compartment_tags));
 
-
 if evalin('base','zef.import_mode')
 
    johtavuus = evalin('base','zef.sigma');
@@ -62,7 +61,6 @@ aux_compartment_ind(k) = i;
 
 end
 end
-
 
 n_compartments = 0;
 for k = 1 : evalin('base','length(zef.reuna_p)')
@@ -122,10 +120,8 @@ tetra_aux = evalin('base','zef.tetra_aux');
 tetra = tetra_aux;
 N = size(nodes, 1);
 
-
 zef_smoothing_step;
 zef_refinement_step
-
 
 if not(isempty(sigma_anisotropy))
 johtavuus = [johtavuus(:) johtavuus_aux(:) sigma_anisotropy] ;
@@ -141,8 +137,4 @@ end
 end
 
 end
-
-
-
-
 

@@ -67,7 +67,6 @@ if iscell(elements)
     source_ind = [1:size(tetrahedra,1)]';
     cholinc_tol = 1e-3;
 
-
     n_varargin = length(varargin);
     if n_varargin >= 1
     if not(isstruct(varargin{1}))
@@ -174,8 +173,6 @@ for i = 1 : 4
 grad_1 = cross(nodes(tetrahedra(:,ind_m(i,2)),:)'-nodes(tetrahedra(:,ind_m(i,1)),:)', nodes(tetrahedra(:,ind_m(i,3)),:)'-nodes(tetrahedra(:,ind_m(i,1)),:)')/2;
 grad_1 = repmat(sign(dot(grad_1,(nodes(tetrahedra(:,i),:)'-nodes(tetrahedra(:,ind_m(i,1)),:)'))),3,1).*grad_1;
 
-
-
 for j = i : 4
 
 if i == j
@@ -280,7 +277,6 @@ for i = 1 : 6
 grad_11 = repmat(1./(dot(normal_vecs_aux,(nodes(prisms(:,i),:)'-nodes(prisms(:,ind_m(i,1)),:)'))),3,1).*normal_vecs_aux;
 grad_12 = cross(nodes(prisms(:,ind_m(i,3)),:)'-nodes(prisms(:,ind_m(i,2)),:)', nodes(prisms(:,ind_m(i,4)),:)'-nodes(prisms(:,ind_m(i,2)),:)');
 grad_12 = repmat(1./dot(nodes(prisms(:,i),:)' - nodes(prisms(:,ind_m(i,2)),:)',grad_12),3,1).*grad_12;
-
 
 for j = 1 : L
 
@@ -448,7 +444,6 @@ iperm_vec = iperm_vec(:,2);
 A_aux = A(perm_vec,perm_vec);
 A = A_aux;
 clear A_aux;
-
 
 %Form G_fi and T_fi
 %*******************************
@@ -707,13 +702,11 @@ x_block(:,block_iter_sub) = x_block_cell{block_iter};
 relres_vec(block_iter_sub) = relres_cell{block_iter};
 end
 
-
 %Substitute matrices
 L_meg_fi(block_ind,:) = L_meg_fi(block_ind,:) + x_block'*G_fi;
 if source_model == 2
 L_meg_ew(block_ind,:) = L_meg_ew(block_ind,:) + x_block'*G_ew;
 end
-
 
 if not(isempty(find(tol_val < relres_vec)))
     close(h);
@@ -756,7 +749,6 @@ M2 = size(source_nonzero_ind,1);
 else
 L_meg = L_meg_fi;
 end
-
 
 if isequal(lower(direction_mode),'cartesian') || isequal(lower(direction_mode),'normal')
 
@@ -815,5 +807,4 @@ end
 waitbar(1,h);
 
 close(h);
-
 

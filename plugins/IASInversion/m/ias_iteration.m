@@ -37,7 +37,6 @@ reconstruction_information.pm_val = evalin('base','zef.inv_prior_over_measuremen
 
 [L,n_interp, procFile] = zef_processLeadfields(source_direction_mode);
 
-
 source_count = n_interp;
 if evalin('base','zef.ias_normalize_data')==1;
     normalize_data = 'maximum';
@@ -56,7 +55,6 @@ elseif evalin('base','zef.inv_hyperprior') == 2
 [beta, theta0] = zef_find_g_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L,size(L,2),evalin('base','zef.ias_normalize_data'),balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
 end
 
-
 if evalin('base','zef.use_gpu') == 1 & gpuDeviceCount > 0
 L = gpuArray(L);
 end
@@ -66,9 +64,7 @@ if evalin('base','zef.use_gpu') == 1 & gpuDeviceCount > 0
 S_mat = gpuArray(S_mat);
 end
 
-
 [f_data] = zef_getFilteredData;
-
 
 tic;
 
@@ -138,7 +134,6 @@ elseif evalin('base','zef.inv_hyperprior') == 2
 theta = theta0.*(beta-1.5 + sqrt((1./(2.*theta0)).*z_vec.^2 + (beta+1.5).^2));
 end
 end;
-
 
 z_inverse{f_ind} = z_vec;
 

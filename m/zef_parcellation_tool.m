@@ -5,7 +5,4 @@ set(zef.h_parcellation_tool,'Name','ZEFFIRO Interface: Parcellation tool');
 set(findobj(zef.h_parcellation_tool.Children,'-property','FontUnits'),'FontUnits','pixels')
 set(findobj(zef.h_parcellation_tool.Children,'-property','FontSize'),'FontSize',zef.font_size);
 
-
-
-
 zef_init_parcellation;

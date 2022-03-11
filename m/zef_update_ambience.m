@@ -13,7 +13,6 @@ h_figure = evalin('base','zef.h_zeffiro');
 h_object = findobj(get(h_figure,'Children'),'Tag','update_ambience_slider');
 end
 
-
 ambience_val = h_object.Value;
 h = h.Children;
 

@@ -1,6 +1,5 @@
 function [nodes] = inflate_surface(nodes, surface_triangles)
 
-
 N = size(nodes,1);
 smoothing_steps_surf = evalin('base','zef.inflate_n_iterations');
 smoothing_param = evalin('base','zef.inflate_strength');
@@ -34,7 +33,6 @@ if evalin('base','zef.use_gpu') && gpuDeviceCount > 0
     nodes = gpuArray(nodes);
 end
 
-
 for iter_ind_aux_1 = 1 : smoothing_steps_surf
 nodes_aux = A*nodes;
 nodes_aux = nodes_aux./sum_A;
@@ -46,7 +44,6 @@ nodes_aux = nodes_aux - nodes;
 nodes =  nodes + taubin_mu*smoothing_param*nodes_aux;
 
 end
-
 
 nodes = gather(nodes);
 

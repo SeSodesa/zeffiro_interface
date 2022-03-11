@@ -14,12 +14,10 @@ for iii=1:3
 
     dltType='gmm';
 
-
     onlyIn='node';
 
     allHashes=fieldnames(zef.dataBank.tree);
     allHashes=allHashes(startsWith(allHashes, onlyIn));
-
 
     i=1;
     while i<=length(allHashes)
@@ -36,9 +34,7 @@ for iii=1:3
             i=i+1;
         end
 
-
     end
-
 
     tree.(typ)=zef.dataBank.tree;
 
@@ -58,7 +54,6 @@ for iii=1:3
         case 3
             typ='kmeans';
     end
-
 
     zef.dataBank.tree=tree.(typ);
     p_outputNew_subplot;

@@ -84,7 +84,6 @@ zef.h_fix_outer_surface.Value = zef.fix_outer_surface;
 
 zef.h_adaptive_refinement_number.Value = num2str(zef.adaptive_refinement_number);
 
-
 zef.h_initial_mesh_mode.Items = {'Regular 1','Regular 2'};
 zef.h_initial_mesh_mode.ItemsData = [1:length(zef.h_initial_mesh_mode.Items)];
 zef.h_initial_mesh_mode.Value = zef.initial_mesh_mode;
@@ -100,7 +99,6 @@ zef.h_pml_max_size_unit.Value = zef.pml_max_size_unit;
 zef.h_pml_max_size.Value =  num2str(zef.pml_max_size);
 zef.h_mesh_relabeling.Value =  zef.mesh_relabeling;
 zef.h_exclude_box.Value =  zef.exclude_box;
-
 
 zef.h_adaptive_refinement_on.Value = zef.adaptive_refinement_on;
 zef.h_adaptive_refinement_thresh_val.Value = num2str(zef.adaptive_refinement_thresh_val);

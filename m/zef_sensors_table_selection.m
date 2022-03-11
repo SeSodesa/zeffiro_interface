@@ -12,7 +12,6 @@ current_tag = sensor_tags{sensors_selected};
 evalin('base', ['zef.current_sensors = ''' current_tag ''';']);
 evalin('base', ['zef.current_tag = ''' current_tag ''';']);
 
-
 evalin('base', ['zef.imaging_method = ''' imaging_method ''';']);
 evalin('base','zef.h_parameters_table.Data = [];');
 
@@ -36,6 +35,5 @@ sensor_sets_selected = eventdata.Indices(:,1);
 sensor_sets_selected = unique(sensor_sets_selected);
 sensor_sets_selected = sensor_sets_selected(:)';
 evalin('base',['zef.sensor_sets_selected =[' num2str(sensor_sets_selected) '];']);
-
 
 end

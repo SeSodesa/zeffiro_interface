@@ -1,12 +1,9 @@
 
-
 [~, indexOfMinimumTrueElement]=max(cell2mat( zef.reconstructionTool.bankInfo(:,7)));
 
 zef.reconstruction=zef.reconstructionTool.bankReconstruction{indexOfMinimumTrueElement,1}.reconstruction;
 
 zef.reconstructionTool.currentInfo=zef.reconstructionTool.bankInfo(indexOfMinimumTrueElement,1:6);
-
-
 
 %set every checkbox to false
 for indexOfMinimumTrueElement=1:zef.reconstructionTool.bankSize
@@ -16,11 +13,9 @@ end
 zef.reconstructionTool.app.BankTable.Data=zef.reconstructionTool.bankInfo;
 zef.reconstructionTool.app.current.Data=zef.reconstructionTool.currentInfo;
 
-
 zef.reconstruction_information=zef.reconstructionTool.bankReconstruction{indexOfMinimumTrueElement,1}.reconstruction_information;
 
 clear indexOfMinimumTrueElement;
-
 
 %% copy the information to the zef file
 

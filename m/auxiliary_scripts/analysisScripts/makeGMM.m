@@ -15,7 +15,6 @@ for gmm_opt=1:3
 
     for  ii=[0.25, 0.5, 0.75]
 
-
         %open gmm tool first and set the parameters
 
         zef.GMM.parameters{5,2}={num2str(ii)};
@@ -23,8 +22,6 @@ for gmm_opt=1:3
         allHashes=fieldnames(zef.dataBank.tree);
 
         allHashes=allHashes(startsWith(allHashes, 'node_'));
-
-
 
         for i=1:length(allHashes)
             if strcmp(zef.dataBank.tree.(allHashes{i}).type, 'reconstruction')
@@ -43,7 +40,6 @@ for gmm_opt=1:3
 
                     clear nodeData folderName
                 end
-
 
             end
         end

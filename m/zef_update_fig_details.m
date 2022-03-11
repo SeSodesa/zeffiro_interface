@@ -82,5 +82,4 @@ end
 set(zef.h_system_information, 'String',zef.aux_field);
 zef = rmfield(zef,'aux_field');
 
-
 clear zef_i;

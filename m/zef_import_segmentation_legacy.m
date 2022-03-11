@@ -54,8 +54,6 @@ sensor_points(:,1) = sensor_points(:,1) + str2num(ini_cell{1}{n_columns*(i-1)+10
 sensor_points(:,2) = sensor_points(:,2) + str2num(ini_cell{1}{n_columns*(i-1)+11});
 sensor_points(:,3) = sensor_points(:,3) + str2num(ini_cell{1}{n_columns*(i-1)+12});
 
-
-
 assignin('base','zef_data',sensor_points);
 evalin('base','zef.s_points = zef_data;');
 
@@ -117,7 +115,6 @@ compartment_count_vec(2) = compartment_count_vec(2) + 1;
 if compartment_count_vec(2) == 1
 
 file_name_1 = [folder_name ini_cell{1}{n_columns*(i-1)+1} '.dat'];
-
 
 sensor_directions = load(file_name_1);
 sensor_directions = double(sensor_directions);
@@ -221,7 +218,6 @@ stl_data = stlread(file_name_1);
 
 point_data = stl_data.Points;
 triangle_data = stl_data.ConnectivityList;
-
 
 elseif isequal(ini_cell{1}{n_columns*(i-1)+9},'VOL') || isequal(ini_cell{1}{n_columns*(i-1)+9},'vol')
 
@@ -370,13 +366,9 @@ end
 
 end
 
-
 %*****************************
 
-
 %*****************************
-
-
 
 end
 
@@ -387,11 +379,4 @@ close(h_waitbar);
 end
 
 end
-
-
-
-
-
-
-
 

@@ -47,12 +47,10 @@ aux_ind = randperm(size_center_points);
 source_points = source_points_aux(:,aux_ind(1:size_source_points));
 ones_vec = ones(size(source_points,2),1);
 
-
 multires_dec{n_rep}{k} = aux_ind(1:size_source_points)';
 
 MdlKDT = KDTreeSearcher(source_points');
 source_interpolation_aux = knnsearch(MdlKDT,center_points');
-
 
 waitbar([k/n_levels n_rep/n_decompositions],h,['Dec.: ' int2str(n_rep) '/' int2str(n_decompositions) ', Level ' int2str(k) '/' int2str(n_levels) '.']);
 

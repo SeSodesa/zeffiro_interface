@@ -72,7 +72,6 @@ for zef_i = 1:length(zef.lf_bank_storage)
         end
         end
 
-
 clear zef_i;
 
 zef_update_lf_bank_tool;

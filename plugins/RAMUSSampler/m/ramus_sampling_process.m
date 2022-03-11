@@ -153,7 +153,6 @@ else
 f = evalin('base','zef.measurements');
 end
 
-
 data_norm = 1;
 if evalin('base','zef.normalize_data')==1;
 data_norm = max(abs(f(:)));
@@ -298,7 +297,6 @@ if exp_arg_new - exp_arg_old >= log(rand(1))
 acceptance_counter = acceptance_counter+1;
 end
 
-
 if iter_ind > n_burn_in
 z_vec_aux = z_vec_aux + z_vec_current;
 end
@@ -306,12 +304,10 @@ end
 theta_vec_aux = theta_vec_aux + theta;
 theta = theta_vec_aux/iter_ind;
 
-
 end
 
 %acceptance_counter/iter_counter
 z_vec = z_vec_aux/(n_iterations-n_burn_in);
-
 
 if source_direction_mode == 2
 z_vec_aux = (z_vec(s_ind_4) + z_vec(n_interp+s_ind_4) + z_vec(2*n_interp+s_ind_4))/3;

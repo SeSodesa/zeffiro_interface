@@ -17,7 +17,6 @@ appName='dipole_app';
 %     zef.L_reg_type = 1;
 % end
 
-
 %Import or set initial values
 
 zef.inv_names={'inv_leadfield_lambda', 'inv_snr', 'inv_sampling_frequency', 'inv_low_cut_frequency',...
@@ -48,7 +47,6 @@ clear zef_props zef_i
 if zef.L_reg_type==2 || zef.L_reg_type==3
     zef.dipole.inv_leadfield_lambda.Enable = 'off';
 end
-
 
 %_ Functions _
 zef.dipole_app.dipole_type.ValueChangedFcn = 'zef.dipole_type = str2num(zef.dipole_app.dipole_type.Value);';

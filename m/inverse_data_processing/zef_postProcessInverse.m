@@ -14,18 +14,12 @@ z=cell(size(z_inverse));
 for f_ind=1:length(z_inverse)
 z_vec=z_inverse{f_ind};
 
-
     if ismember(source_direction_mode, [1,2])
         z_aux = zeros(sizeL2,1);
     end
     if source_direction_mode == 3
         z_aux = zeros(3*sizeL2,1);
     end
-
-
-
-
-
 
     if ismember(source_direction_mode,[2])
         z_vec_aux = (z_vec(s_ind_4) + z_vec(n_interp+s_ind_4) + z_vec(2*n_interp+s_ind_4))/3;%sould all be the same value
@@ -50,14 +44,6 @@ z_vec=z_inverse{f_ind};
 %     else
 %         z = z_aux;
 %     end
-
-
-
-
-
-
-
-
 
 end
 

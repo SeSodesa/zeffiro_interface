@@ -1,7 +1,6 @@
 %Copyright © 2018- Sampsa Pursiainen & ZI Development Team
 %See: https://github.com/sampsapursiainen/zeffiro_interface
 
-
 if not(isfield(zef,'smoothing_steps_ele'));
 zef.smoothing_steps_ele = 100;
 end
@@ -62,7 +61,6 @@ if not(isfield(zef,'mesh_relabeling'));
 zef.mesh_relabeling = 1;
 end
 
-
 if not(isfield(zef,'normalize_lead_field'));
 zef.normalize_lead_field = 4;
 end
@@ -74,7 +72,6 @@ end
 if not(isfield(zef,'n_streamline'));
 zef.n_streamline = 100;
 end
-
 
 if not(isfield(zef,'use_depth_electrodes'));
     zef.use_depth_electrodes = 0;

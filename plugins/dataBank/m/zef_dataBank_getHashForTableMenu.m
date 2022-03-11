@@ -11,12 +11,10 @@ else
             return;
         end
 
-
         for dbi=unique(zef.dataBank.app.DataTable.Selection(:,1))'
             zef.dataBank.hash{dbi}=zef.dataBank.DataTableHashList{dbi};
         end
     else
-
 
         zef.dataBank.hash=zef.dataBank.DataTableHashList(zef.dataBank.app.DataTable.Selection(1));
     end

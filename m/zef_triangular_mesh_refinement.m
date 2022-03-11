@@ -8,7 +8,6 @@ eps_val = 15;
 n_nodes = size(nodes,1);
 n_triangles = size(triangles,1);
 
-
 nodes = [nodes;
          (1/2)*(nodes(triangles(:,1),:) + nodes(triangles(:,2),:));
          (1/2)*(nodes(triangles(:,2),:) + nodes(triangles(:,3),:));
@@ -33,6 +32,5 @@ triangles = [t_aux_1 t_aux_4 t_aux_6 ;
 [~, unique_vec_2, unique_vec_3] = unique(round(nodes,eps_val),'rows');
 nodes = nodes(unique_vec_2,:);
 triangles = unique_vec_3(triangles);
-
 
 end

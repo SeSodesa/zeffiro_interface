@@ -2,6 +2,5 @@
 if isequal(zef.yesno,'Yes');
 zef_filter_raw_data;
 
-
 zef.noise_data = zef.processed_data;
 end

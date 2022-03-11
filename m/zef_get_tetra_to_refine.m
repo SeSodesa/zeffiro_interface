@@ -5,7 +5,6 @@ I_aux = find(sum(ismember(domain_labels,domain_ind),2));
 tetra = tetra(I_aux,:);
 domain_labels = domain_labels(I_aux);
 
-
 for i = 1 : length(domain_ind)
 
 u_t_ind = unique(reuna_t{domain_ind(i)});

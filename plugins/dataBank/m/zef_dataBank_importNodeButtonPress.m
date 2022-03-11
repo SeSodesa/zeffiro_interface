@@ -1,13 +1,9 @@
 
-
 if strcmp(zef.dataBank.app.typeDropDown.Value, 'Node')
     [savefile,savepath] = uigetfile('*','Select One or More Node Files','MultiSelect', 'on');
 else
     [savefile,savepath] = uigetfile('*','Select a dataBank file','MultiSelect', 'off');
 end
-
-
-
 
 if isempty(zef.dataBank.app.Tree.SelectedNodes) %either no selected or no node in tree, either way start on first level
 
@@ -25,9 +21,6 @@ else
 
 end
 
-
-
-
 if strcmp(zef.dataBank.app.typeDropDown.Value, 'Node')
      zef.dataBank.tree=zef_dataBank_importNode(zef.dataBank.tree, savepath, savefile, dbParentHash, zef.dataBank);
 else
@@ -37,24 +30,4 @@ end
  zef_dataBank_refreshTree;
 
 clear savefile savepath dbParentHash
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

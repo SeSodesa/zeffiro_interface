@@ -1,11 +1,9 @@
 function [newtree] = zef_dataBank_rebuildTree(tree)
 
-
 %nargin==1 means a normal tree that was not saved to disk. The other files
 %are needed to give a new savefile and an ordered hashList
 hashes=fieldnames(tree);
 newtree=struct;
-
 
 % list=cell(length(hashes));
 
@@ -41,14 +39,5 @@ if ~isempty(hashes)
 
 end
 
-
-
-
-
 end
-
-
-
-
-
 

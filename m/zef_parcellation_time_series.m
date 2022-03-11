@@ -19,7 +19,6 @@ time_series = zeros(length(selected_list), number_of_frames);
 
 h_waitbar = waitbar(0,['Time series.']);
 
-
 max_abs_reconstruction = 0;
 min_rec = Inf;
 max_rec = -Inf;
@@ -108,7 +107,6 @@ f_ind_aux = 1;
 tic;
 waitbar(0,h_waitbar,['Step ' int2str(f_ind_aux) ' of ' int2str(number_of_frames) '.']);
 
-
 i = 0;
 
 aux_brain_visible_ind = [];
@@ -184,7 +182,6 @@ end
 
 reconstruction = (max(reconstruction/max_abs_reconstruction,0));
 
-
 p_counter = 0;
 for p_ind = selected_list
 p_counter = p_counter + 1;
@@ -203,15 +200,10 @@ time_series(p_counter,f_ind_aux) = mean(reconstruction(p_i_ind{p_ind}{2}{ab_ind}
   end
 end
 
-
-
 end
 end
 end
 end
-
-
-
 
 for f_ind = frame_start + frame_step : frame_step : frame_stop
 
@@ -279,9 +271,7 @@ if ismember(evalin('base','zef.reconstruction_type'), [2 3 4 5 7])
 reconstruction = smooth_field(reuna_t{i}, reconstruction, size(reuna_p{i}(:,1),1),3);
 end
 
-
 reconstruction = (max(reconstruction/max_abs_reconstruction,0));
-
 
 p_counter = 0;
 for p_ind = selected_list
@@ -301,10 +291,6 @@ time_series(p_counter,f_ind_aux) =mean(reconstruction(p_i_ind{p_ind}{2}{ab_ind})
   end
 end
 
-
-
-
-
 end
 
 end
@@ -316,6 +302,4 @@ time_series = time_series.^2;
 close(h_waitbar);
 
 end
-
-
 

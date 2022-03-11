@@ -157,7 +157,6 @@ if iscell(elements)
 source_model = 1;
 end
 
-
 A = spalloc(N,N,0);
 
 Aux_mat = [nodes(tetrahedra(:,1),:)'; nodes(tetrahedra(:,2),:)'; nodes(tetrahedra(:,3),:)'] - repmat(nodes(tetrahedra(:,4),:)',3,1);
@@ -384,7 +383,6 @@ clear A_part grad_11 grad_12 grad_21 grad_22 ala korkeus prisms sigma_prisms gra
 
 end
 
-
 if isequal(electrode_model,'CEM')
 
     I_triangles = find(ele_ind(:,4)>0);
@@ -460,7 +458,6 @@ A(zero_ind,zero_ind) =  1;
     C = C + sparse(ele_ind(I_triangles,1), ele_ind(I_triangles,1), entry_vec, L, L);
 
 end
-
 
 if isequal(electrode_model,'PEM')
 
@@ -694,7 +691,6 @@ end
 %******************************************
 else
 
-
 %******************************************************
 %PCG CPU start
 %******************************************************
@@ -710,8 +706,6 @@ if isequal(electrode_model,'CEM')
 Aux_mat = zeros(L);
 end
 tol_val_eff = tol_val;
-
-
 
 %Define block size
 delete(gcp('nocreate'))
@@ -826,7 +820,6 @@ clear S r p x aux_vec inv_M_r a b;
 
 waitbar(0,h,'Interpolation.');
 
-
 if isequal(electrode_model,'CEM')
 Aux_mat = inv(Aux_mat);
 L_eeg_fi = Aux_mat*L_eeg_fi;
@@ -841,7 +834,6 @@ if source_model == 2
 L_eeg_ew = Aux_mat_2*L_eeg_ew;
 end
 
-
 if isequal(lower(direction_mode),'cartesian') || isequal(lower(direction_mode),'normal')
 
 if evalin('base','zef.surface_sources')
@@ -854,8 +846,6 @@ M2 = size(source_nonzero_ind,1);
 else
 L_eeg = L_eeg_fi;
 end
-
-
 
 if isequal(lower(direction_mode),'cartesian') || isequal(lower(direction_mode),'normal')
 
@@ -887,7 +877,6 @@ end
 end
 end
 
-
 if source_model == 1
 tic;
  for i = 1 : M2
@@ -914,5 +903,4 @@ end
 waitbar(1,h);
 
 close(h);
-
 

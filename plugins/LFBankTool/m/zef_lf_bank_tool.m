@@ -23,7 +23,6 @@ zef.h_lf_bank_update_noise_data.ButtonPushedFcn = '[zef.yesno] = questdlg(''Subs
 zef.h_lf_bank_make_all.ButtonPushedFcn = '[zef.yesno] = questdlg(''Create a mesh and calculate the lead field matrices for the selected items?'',''Yes'',''No''); if isequal(zef.yesno,''Yes''); zef.source_interpolation_on = 1; if isfield(zef,''h_source_interpolation_on''); if isvalid(''zef.h_source_interpolation_on''); set(zef.h_source_interpolation_on,''value'',1); end; end; zef_process_meshes; zef_create_fem_mesh; zef_postprocess_fem_mesh; zef.n_sources_mod = 1; zef.source_ind = []; zef_update_fig_details;zef_lf_bank_compute_lead_fields; end;';
 zef_init_lf_bank_tool;
 
-
 set(zef.h_lf_bank_tool,'AutoResizeChildren','off');
 zef.lf_bank_tool_current_size = get(zef.h_lf_bank_tool,'Position');
 set(zef.h_lf_bank_tool,'SizeChangedFcn','zef.lf_bank_tool_current_size = zef_change_size_function(zef.h_lf_bank_tool,zef.lf_bank_tool_current_size);');

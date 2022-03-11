@@ -44,10 +44,7 @@ end
 
 [zef.source_interpolation_ind] = source_interpolation([]);
 
-
 zef = rmfield(zef,'rand_vec_aux');
 
 end
-
-
 

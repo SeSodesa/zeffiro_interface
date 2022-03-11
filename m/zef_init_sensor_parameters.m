@@ -34,7 +34,6 @@ zef.aux_data_2 = {
     {'Z-gradient','directions','6'}};
 end
 
-
 for zef_j = 1 : size(zef.parameter_profile,1)
 
     if isequal(zef.parameter_profile{zef_j,8},'Sensors') && isequal(zef.parameter_profile{zef_j,6},'On') && isequal(zef.parameter_profile{zef_j,7},'On')

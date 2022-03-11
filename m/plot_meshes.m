@@ -137,7 +137,6 @@ if ismember(evalin('base','zef.visualization_type'), [3])
     end
 end
 
-
 if ismember(evalin('base','zef.visualization_type'), [5])
     max_abs_reconstruction = 0;
     min_rec = Inf;
@@ -177,7 +176,6 @@ if ismember(evalin('base','zef.visualization_type'), [5])
         max_rec = max_abs_reconstruction;
     end
 end
-
 
 cb_done = 0;
 i = 0;
@@ -342,7 +340,6 @@ if evalin('base','zef.cp3_on')
     clipped = 1;
 end
 
-
 if evalin('base','zef.cp_on') || evalin('base','zef.cp2_on') || evalin('base','zef.cp3_on')
     if evalin('base','zef.cp_mode') == 1
         sensors = sensors(aux_ind_1,:);
@@ -428,7 +425,6 @@ end
 aux_ind_1 = [];
 aux_ind_2 = cell(1,length(reuna_t));
 triangle_c = cell(1,length(reuna_t));
-
 
 if ismember(evalin('base','zef.imaging_method'), [1 4 5])  & size(sensors,2) == 6
     electrode_model = 2;
@@ -560,9 +556,6 @@ while loop_movie && loop_count <= evalin('base','zef.loop_movie_count')
         end
     end
 
-
-
-
     if ismember(evalin('base','zef.visualization_type'),[3,4,5])
 
         if ismember(evalin('base','zef.visualization_type'),[3,5])
@@ -584,14 +577,12 @@ while loop_movie && loop_count <= evalin('base','zef.loop_movie_count')
                         aux_brain_visible_ind = [aux_brain_visible_ind i];
                         ab_ind = find(aux_brain_ind==i);
 
-
                         colormap_size = evalin('base','zef.colormap_size');
                         colortune_param = evalin('base','zef.colortune_param');
                         colormap_cell = evalin('base','zef.colormap_cell');
                         set(evalin('base','zef.h_zeffiro'),'colormap', evalin('base',[colormap_cell{evalin('base','zef.inv_colormap')} '(' num2str(colortune_param) ',' num2str(colormap_size) ')']));
 
                         if ismember(evalin('base','zef.visualization_type'),[4])
-
 
                             if evalin('base','zef.use_parcellation')
                                 reconstruction = ones(size(reuna_t{i},1),1);
@@ -696,7 +687,6 @@ while loop_movie && loop_count <= evalin('base','zef.loop_movie_count')
                             %**********************************************
                             if ismember(i,aux_brain_ind) && evalin('base','zef.use_inflated_surfaces') && not(isempty(reuna_p_inf))
 
-
                             h_surf_2{ab_ind} = trisurf(reuna_t{i},reuna_p_inf{i}(:,1),reuna_p_inf{i}(:,2),reuna_p_inf{i}(:,3),reconstruction,'edgecolor','none');
                                 set(h_surf_2{ab_ind},'Tag','reconstruction');
                             else
@@ -740,7 +730,6 @@ while loop_movie && loop_count <= evalin('base','zef.loop_movie_count')
                             zef_plot_cone_field(evalin('base','zef.h_axes1'),f_ind);
                             end
 
-
                             if ismember(i,aux_brain_ind) && cb_done == 0 && ismember(evalin('base','zef.visualization_type'),[3])
                                 cb_done = 1;
                                 h_colorbar = colorbar('EastOutside','Position',colorbar_position,'Units','Normalized');
@@ -756,7 +745,6 @@ while loop_movie && loop_count <= evalin('base','zef.loop_movie_count')
                         end
 
                         lighting phong;
-
 
                     else
 
@@ -892,7 +880,6 @@ zef_plot_dpq('dynamical');
                 f_ind_aux = f_ind_aux + 1;
                 %waitbar(f_ind_aux/number_of_frames,h_waitbar,['Frame ' int2str(f_ind_aux) ' of ' int2str(number_of_frames) '.'])
 
-
                 if ismember(evalin('base','zef.visualization_type'),[3])
                     for i = intersect(aux_brain_ind,aux_brain_visible_ind)
                         ab_ind = find(aux_brain_ind == i);
@@ -986,7 +973,6 @@ zef_plot_dpq('dynamical');
                             zef_plot_cone_field(evalin('base','zef.h_axes1'),f_ind);
                         end
 
-
                         %set(gca,'CLim',[min_rec max_rec]);
                         %set(h_surf_2{ab_ind},'specularstrength',0.2);
                         %set(h_surf_2{ab_ind},'specularexponent',0.8);
@@ -1021,7 +1007,6 @@ zef_plot_dpq('dynamical');
                     end
                 elseif ismember(evalin('base','zef.visualization_type'),[5])
                     %Topography reconstruction.
-
 
                     reconstruction = single(evalin('base',['zef.top_reconstruction{' int2str(f_ind) '}']));
                     reconstruction = reconstruction(:);
@@ -1070,8 +1055,6 @@ zef_plot_dpq('dynamical');
                 zef_set_sliders_plot(2);
                 camorbit(frame_step*evalin('base','zef.orbit_1')/movie_fps,frame_step*evalin('base','zef.orbit_2')/movie_fps);
 
-
-
                 %delete(h_text);
                 %delete(h_axes_text);
                 axes(h_axes_text);% = axes('position',[0.0325 0.95 0.5 0.05],'visible','off');
@@ -1091,10 +1074,7 @@ zef_plot_dpq('dynamical');
 
         end
 
-
     else
-
-
 
         i = 0;
 
@@ -1132,16 +1112,13 @@ zef_plot_dpq('dynamical');
             set(evalin('base','zef.h_axes1'),'zGrid','off');
         end
 
-
         sensor_patches = findobj(evalin('base','zef.h_axes1'),'Type','Patch','Tag','sensor');
         uistack(sensor_patches,'top');
         zef_plot_dpq('static');
         zef_plot_dpq('dynamical');
         zef_set_sliders_plot(1);
 
-
     end
-
 
     if iscell(volumetric_distribution) && evalin('base','zef.visualization_type') == 3
         loop_movie = evalin('base','zef.loop_movie');

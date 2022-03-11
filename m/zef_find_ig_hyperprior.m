@@ -41,7 +41,6 @@ if isempty(L)
     source_strength = 1e-2;
 else
 
-
 if isequal(normalize_data,'maximum')
    source_strength = mean(1./((max(abs(L))').^w_param));
 else

@@ -21,5 +21,3 @@ if size(sensors_attached_volume,2) == 4
 end
 end
 
-
-

@@ -1,6 +1,4 @@
 
-
-
 %reads the data from the bank into the aux field.
 %zef.LeadFieldProcessingTool.bank2auxIndex has to be set before
 
@@ -28,25 +26,4 @@
 %
 
 zef.LeadFieldProcessingTool.auxData=zef.LeadFieldProcessingTool.bank{zef.LeadFieldProcessingTool.bank2auxIndex};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

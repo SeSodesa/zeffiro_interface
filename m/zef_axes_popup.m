@@ -46,5 +46,3 @@ zef = rmfield(zef,{'h_figure_aux','h_object_aux_new'});
 
 clear zef_i
 
-
-

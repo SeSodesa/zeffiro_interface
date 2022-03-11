@@ -1,6 +1,5 @@
 function [tree] = zef_dataBank_delete(tree, parentHash, save2disk)
 
-
 hashNames=fieldnames(tree);
 
 for i=1:length(hashNames)
@@ -22,17 +21,5 @@ if strcmp(save2disk, 'On')
     tree=zef_dataBank_rebuildTreeSaveFile(tree);
 end
 
-
-
-
 end
-
-
-
-
-
-
-
-
-
 

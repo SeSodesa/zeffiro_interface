@@ -35,7 +35,6 @@ if isempty(zef.GMM.parameters.Values{zef_n+6})
     zef.GMM.parameters.Values{zef_n+6} =  '0';
 end
 
-
 if isfield(zef.GMM.apps,'ModelingOpt')
     if isvalid(zef.GMM.apps.ModelingOpt)
         zef_props = properties(zef.GMM.apps.ModelingOpt);

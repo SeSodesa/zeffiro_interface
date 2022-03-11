@@ -1,8 +1,5 @@
 
-
 dbtype=zef.dataBank.app.Entrytype.Value;
-
-
 
 if isempty(zef.dataBank.app.Tree.SelectedNodes) %either no selected or no node in tree, either way start on first level
 
@@ -35,16 +32,7 @@ if strcmp(zef.dataBank.save2disk, 'On')
     clear nodeData folderName
 end
 
-
-
 newNode.ContextMenu=zef.dataBank.app.treeMenu;
-
-
-
-
-
-
-
 
 if isempty(zef.dataBank.app.Tree.SelectedNodes)
 expand(zef.dataBank.app.Tree, 'all');
@@ -53,17 +41,4 @@ expand(zef.dataBank.app.Tree.SelectedNodes);
 end
 
 clear dbtype dbParentHash newNode;
-
-
-
-
-
-
-
-
-
-
-
-
-
 

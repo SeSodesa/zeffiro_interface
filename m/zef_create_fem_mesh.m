@@ -54,7 +54,6 @@ h = waitbar(0,'Initial mesh.');
 
 if isequal(evalin('base','zef.initial_mesh_mode'),1)
 
-
 ind_mat_1{1}{2}{1} = [2 5 6 7; 7 5 4 2;  2 3 4 7; 1 2 4 5 ; 4 7 8 5];
 ind_mat_1{1}{2}{2} = [6 2 1 3; 1 3 8 6; 8 7 6 3;  5 8 6 1; 3 8 4 1 ];
 ind_mat_1{2}{2}{2} = [5 2 1 4; 4 2 7 5; 5 8 7 4;  5 7 6 2;  3 7 4 2];
@@ -63,7 +62,6 @@ ind_mat_1{1}{1}{2} = [4 3 7 2; 2 7 4 5;  5 7 6 2; 1 5 2 4;  8 7 5 4 ];
 ind_mat_1{2}{1}{2} = [3 6 8 1; 1 3 4 8; 5 8 6 1; 1 6 2 3  ; 8 7 6 3  ];
 ind_mat_1{1}{1}{1} = [7 8 3 6; 8 1 3 6; 2 3 1 6;  1 5 6 8 ; 1 3 4 8   ];
 ind_mat_1{2}{1}{1} = [ 7 8 4 5; 5 4 7 2;  2 4 1 5; 2 5 6 7   ;  2 3 4 7 ];
-
 
 tetra = zeros(5*n_cubes,4);
 if isequal(evalin('base','zef.mesh_labeling_approach'),1)
@@ -95,7 +93,6 @@ i = i + 5;
 end
 end
 end
-
 
 %************************************************************
 
@@ -138,7 +135,6 @@ i = i + 6;
 end
 end
 end
-
 
 end
 
@@ -201,7 +197,6 @@ end
 end
 end
 end
-
 
 end
 
@@ -268,13 +263,9 @@ waitbar(i/length(n_refinement(j)),h,'Volume refinement.');
 end
 end
 
-
-
-
 end
 
 end
-
 
 %*********************
 if evalin('base','zef.adaptive_refinement_on')
@@ -324,7 +315,6 @@ for i = 1 : n_refinement(j)
         [nodes,tetra,domain_labels,tetra_interp_vec] = zef_mesh_refinement(nodes,tetra,domain_labels,refinement_compartments(j),tetra_refine_ind);
   tetra_refine_ind = find(ismember(tetra_interp_vec,tetra_refine_ind));
 
-
 if evalin('base','zef.mesh_relabeling')
 
 pml_ind = [];
@@ -338,9 +328,6 @@ waitbar(i/length(n_refinement(j)),h,'Adaptive volume refinement.');
 
 end
 end
-
-
-
 
 end
 
@@ -357,5 +344,4 @@ evalin('base','zef_assign_data');
 end
 
 end
-
 

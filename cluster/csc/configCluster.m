@@ -110,7 +110,6 @@ lNotifyUserOfCluster(profile)
 
 end
 
-
 function cluster_name = lExtractPfile(cl)
 % Display profile listing to user to select from
 len = length(cl);
@@ -130,7 +129,6 @@ end
 cluster_name = cl(idx).name;
 
 end
-
 
 function r = lGetLocalRoot()
 
@@ -152,7 +150,6 @@ end
 
 end
 
-
 function un = lGetRemoteUserName(cluster)
 un = input(['Username on ' upper(cluster) ' (e.g. joe): '],'s');
 if isempty(un)
@@ -161,13 +158,11 @@ end
 
 end
 
-
 function user = lGetRootUsername()
 
 user = char(java.lang.System.getProperty('user.name'));
 
 end
-
 
 function assembleClusterProfile(jfolder, rjsl, cluster, user, profile, def)
 
@@ -233,7 +228,6 @@ c.saveProfile('Description', profile)
 parallel.defaultClusterProfile(profile);
 
 end
-
 
 function lNotifyUserOfCluster(profile)
 

@@ -21,7 +21,6 @@ while listIndex<=N
 
     if ~isempty(hashes)
 
-
         if length(hashes)==1
             %in this case, the node once had children, but now those are processed
             %Process this node and go up
@@ -40,7 +39,6 @@ while listIndex<=N
 
         else
             %the node has children. Sort them and process them one by one
-
 
             %find smallest number
             hashes=extractAfter( hashes,strcat(zef_dataBank_number2hash(array), '_'));
@@ -72,8 +70,6 @@ while listIndex<=N
                 arrayToGive(end)=arrayToGive(end)+1; %same level
             else %the node has children on its own.  Go one level deeper
 
-
-
                 array=[array min(numbers)];
                 arrayToGive=[arrayToGive, 1];
             end
@@ -86,17 +82,5 @@ while listIndex<=N
 
 end
 
-
-
-
 end
-
-
-
-
-
-
-
-
-
 

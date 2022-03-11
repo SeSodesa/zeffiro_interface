@@ -63,7 +63,6 @@
         zef.reconstructionTool.currentInfo{3}='';
     end
 
-
     if iscell(zef.reconstruction)
     zef.reconstructionTool.currentInfo{4}=size(zef.reconstruction, 1);
     else

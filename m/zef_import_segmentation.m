@@ -1,6 +1,5 @@
 function zef_import_segmentation(file_name, folder_name)
 
-
 if evalin('base','zef.use_display')
 if nargin < 2
 [file_name folder_name] = uigetfile({'*.zef'},'Segmentation data file and folder',evalin('base','zef.save_file_path'));
@@ -151,9 +150,6 @@ for i = 1 : size(ini_cell,1)
 
         end
 
-
-
-
     elseif isequal(type,'sensors')
 
         name = (ini_cell{i,find(ismember(ini_cell(i,:),'name'),1)+1});
@@ -219,7 +215,6 @@ for i = 1 : size(ini_cell,1)
             end
         end
 
-
        % evalin('base','zef_init_sensors_parameter_profile;');
         evalin('base','zef_apply_parameter_profile;');
 evalin('base','zef_build_sensors_table;');
@@ -228,16 +223,11 @@ evalin('base','zef_build_sensors_table;');
 
     end
 
-
-
-
 end
 
 %zef_data
 %assignin('base','zef_data',zef_data);
  %       evalin('base','zef_assign_data;');
-
-
 
 close(h);
 

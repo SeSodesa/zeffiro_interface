@@ -4,7 +4,6 @@ function [V, V_and, V_or] = zef_GMM_resection_volume(res_zef, FB,D, GMM,GMM_ind)
     %
 %the GMM-dipole is outside the resection
 
-
 %%
 % d=nan(size(points,1),1);
 % inside_index=tetra_in_compartment(mesh_points, mesh_edges, points);
@@ -27,7 +26,6 @@ c_points = 0.25*(nodes(tetrahedra(:,1),:)+ nodes(tetrahedra(:,2),:)+nodes(tetrah
 
 alpha = str2num(GMM.parameters.Values{6})/100;
 r = sqrt(chi2inv(alpha,3));
-
 
 c_points_inside=zef_insideGMM(GMM, c_points,inf);
 c_points_inside=c_points_inside(:, GMM_ind);
@@ -54,26 +52,7 @@ else
 
 end
 
-
 V=V_and/V_or;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 end
 

@@ -23,7 +23,6 @@ if not(isfield(zef,'bf_time_2'));
     zef.bf_time_2 =zef.inv_time_2;
 end;
 
-
 set(zef.h_bf_sampling_frequency ,'string',num2str(zef.bf_sampling_frequency));
 set(zef.h_bf_low_cut_frequency ,'string',num2str(zef.bf_low_cut_frequency));
 set(zef.h_bf_high_cut_frequency ,'string',num2str(zef.bf_high_cut_frequency));

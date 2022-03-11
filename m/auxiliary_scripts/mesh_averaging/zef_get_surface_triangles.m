@@ -1,6 +1,5 @@
 function [surface_triangles] = zef_get_surface_triangles(tetra,labels,compartment_ind)
 
-
 I = find(labels==compartment_ind);
 tetra = tetra(I,:);
 

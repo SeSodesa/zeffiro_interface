@@ -1,17 +1,11 @@
 pat='p1';
 
-
-
-
-
 load(strcat(pat, '_resectionStuff.mat'));
 A=alphaShape(res_zef(:,1), res_zef(:,2), res_zef(:,3),3.4);
 [AF, AP]=alphaTriangulation(A);
 
-
 %allHashes=fieldnames(zef.dataBank.tree);
 %allHashes=allHashes(startsWith(allHashes,strcat( 'node_3_3', num2str(nodeInde))));
-
 
 psnr=[-50 -40-30 -20 -10 -5 0 5 10 15 20 30 40 50 6070 80 90];
 
@@ -38,14 +32,12 @@ for mod=[1,2,4] %[1,2, 3]
                     zef.dataBank.hash=strcat('node_', num2str(mod),'_3_', num2str(index));
                 end
 
-
                 %zef.dataBank.loadParents=true;
 
                 zef_dataBank_setData;
                 %   zef.reconstruction_information
 
                 %zef.dataBank.loadParents=false;
-
 
                 % find maximum of reconstruction
 
@@ -88,8 +80,6 @@ for mod=[1,2,4] %[1,2, 3]
             case 3
                 title('sLoreta');
         end
-
-
 
     end
 end

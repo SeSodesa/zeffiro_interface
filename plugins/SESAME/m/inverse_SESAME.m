@@ -117,7 +117,6 @@ if isfield(cfg,'t_stop')
   t_stop = cfg.t_stop;
 end
 
-
 data = full_data;
 
 if isempty(noise_std)
@@ -190,7 +189,6 @@ end
 for i = 1:n_samples
   particle(i) = struct('nu',0,'dipole',dipole, 'prior', 1, 'log_like', 0, 'like_det',1);
 end
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%% Sampling from the prior %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -526,7 +524,6 @@ result.TODAY = date;
 toc
 end
 
-
 function particle = add_dipole_location(particle, Nvert)
 particle.nu = particle.nu+1;
 r = particle.nu;
@@ -642,7 +639,6 @@ for i = 1:size(neighbours,1)
   NProb(i,:) = NProb(i,:)/sum(NProb(i,:));
 end
 end
-
 
 function[neighbours]=compute_neighbours(vertices, radius)
 neighbours=[];

@@ -36,13 +36,11 @@ w_param = 0.5 - 0.05*(varargin{5}-1);
     end
 end
 
-
 if isempty(L)
     snr_vec = snr_val;
     snr_vec_limited = snr_vec;
     source_strength = 1e-2;
 else
-
 
      if isequal(normalize_data,'maximum')
 
@@ -50,7 +48,6 @@ else
 else
    source_strength = mean(1./(sqrt(sum(L.^2)').^w_param));
      end
-
 
 if balance_snr
       if isequal(normalize_data,'maximum')

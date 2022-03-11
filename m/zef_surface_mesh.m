@@ -73,7 +73,6 @@ if nargout > 4 && nargin > 2
 
     if nargout > 5  && nargin > 2
 
-
     node_ind = zeros(size(tetra_ind_diff,1),1);
     I_aux_1 = find(tetra_ind_diff);
     tetra_aux = tetra_diff(tetra_ind_diff(I_aux_1),:);
@@ -95,10 +94,5 @@ if nargout > 4 && nargin > 2
     tetra_ind_diff(I) = I_diff(tetra_ind_diff(I));
 
 end
-
-
-
-
-
 
 end

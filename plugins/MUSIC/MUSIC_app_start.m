@@ -27,7 +27,6 @@ if ~isfield(zef,'MUSIC_L_reg_type')
     zef.MUSIC_L_reg_type = 1;
 end
 
-
 %_ Initial values _
 zef.MUSIC.MUSIC_leadfield_lambda.Value = '1e-3';
 zef.MUSIC.inv_snr.Value = '30';
@@ -57,7 +56,6 @@ clear zef_props zef_i
 if zef.MUSIC_L_reg_type==2
     zef.MUSIC.MUSIC_leadfield_lambda.Enable = 'off';
 end
-
 
 %_ Functions _
 zef.MUSIC.MUSIC_type.ValueChangedFcn = 'zef.MUSIC_type = str2num(zef.MUSIC.MUSIC_type.Value);';

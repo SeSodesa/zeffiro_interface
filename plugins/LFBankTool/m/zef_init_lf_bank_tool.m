@@ -29,8 +29,6 @@ if not(isfield(zef,'lf_item_selected'));
    zef.lf_item_selected = [];
 end;
 
-
-
 zef.lf_normalization_functions_dir = which('zef_init_lf_bank_tool.m');
 zef.lf_normalization_functions_dir = [fileparts(zef.lf_normalization_functions_dir) '/' 'lead_field_normalization_functions/*.m'];
 

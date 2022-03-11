@@ -1,6 +1,5 @@
 function [nodes, tetra] = zef_optimize_mesh(nodes,tetra)
 
-
 nodes_old = nodes;
 tetra_old = tetra;
 

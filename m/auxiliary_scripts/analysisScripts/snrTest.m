@@ -12,10 +12,7 @@ for mmm=[3,1,2]
 
         zef.inv_prior_over_measurement_db=psnr;
 
-
-
         for snr=-40:10:50
-
 
             zef.inv_snr=snr;
             zef.ramus_snr=snr;

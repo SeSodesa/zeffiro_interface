@@ -1,9 +1,7 @@
 
-
 zef.dataBank.app=zef_dataBank_app;
 
 zef_dataBank_init;
-
 
 %intitial values
 
@@ -31,8 +29,6 @@ zef.dataBank.types={'data', 'noisedata', 'leadfield', 'reconstruction', 'gmm', '
 zef.dataBank.app.Entrytype.Items=zef.dataBank.types;
 zef.dataBank.app.Entrytype.ValueChangedFcn = '[zef.dataBank.app.DataTable.Data, zef.dataBank.app.DataTable.ColumnName, zef.dataBank.DataTableHashList]=zef_databank_showAll(zef.dataBank.tree, zef.dataBank.app.Entrytype.Value);';
 
-
-
 zef.dataBank.app.showButton.ButtonPushedFcn='[zef.dataBank.app.DataTable.Data, zef.dataBank.app.DataTable.ColumnName, zef.dataBank.DataTableHashList]=zef_databank_showAll(zef.dataBank.tree, zef.dataBank.app.Entrytype.Value);';
 zef.dataBank.app.showcurrentButton.ButtonPushedFcn='[zef.dataBank.app.currentTable.Data, zef.dataBank.app.currentTable.ColumnName]=zef_dataBank_showCurrent(zef, zef.dataBank.app.Entrytype.Value);';
 zef.dataBank.app.RefreshButton.ButtonPushedFcn='zef_dataBank_refreshTree;';
@@ -42,14 +38,6 @@ zef.dataBank.app.selectfolderButton.ButtonPushedFcn='zef_dataBank_saveFolderButt
 zef.dataBank.app.savetodiskSwitch.ValueChangedFcn='zef_dataBank_saveTreeNodeSwitchChange;';
 
 zef.dataBank.app.FunctionsDropDown.ValueChangedFcn='zef_dataBank_FunctionsDropDown;';
-
-
-
-
-
-
-
-
 
 %set functions for the import panel
 
@@ -83,12 +71,10 @@ zef.dataBank.app.modifyMenuData.MenuSelectedFcn=strcat('zef.dataBank.selectMulti
             'zef.dataBank.workingHashes=zef_dataBank_hashToWorkingSpace(zef.dataBank.hash, zef.dataBank.workingHashes);', ...
             '[zef.dataBank.app.currentTable.Data, zef.dataBank.app.currentTable.ColumnName]=zef_dataBank_WorkingSpaceInfo(zef.dataBank.tree, zef.dataBank.workingHashes);');
 
-
 set(zef.dataBank.app.DataBank,'AutoResizeChildren','off');
 zef.zeffiro_dataBank_current_size = get(zef.dataBank.app.DataBank,'Position');
 zef.zeffiro_dataBank_relative_size = zef_get_relative_size(zef.dataBank.app.DataBank);
 set(zef.dataBank.app.DataBank,'SizeChangedFcn','zef.zeffiro_dataBank_current_size = zef_change_size_function(zef.dataBank.app.DataBank,zef.zeffiro_dataBank_current_size,zef.zeffiro_dataBank_relative_size);');
-
 
 % load all data and stuff
 

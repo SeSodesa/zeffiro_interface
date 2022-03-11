@@ -1,6 +1,5 @@
 function [tetra, flag_val, nodes_ind] = zef_tetra_turn(nodes, tetra, thresh_val)
 
-
 flag_val = 1;
 
  h = waitbar(0,'Mesh optimization.');
@@ -114,7 +113,6 @@ end
 end
 
 end
-
 
 close(h)
 

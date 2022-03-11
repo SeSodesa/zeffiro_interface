@@ -7,7 +7,6 @@ text=fieldnames(tree);
 else
     text=properties(tree);
 
-
     for i=1:length(text)
         if strcmp(text{i}, 'Properties')
         text(i)=[];
@@ -42,11 +41,9 @@ end
         newText{i,1}=zef_dataBank_number2hash(tmp(i,:));
     end
 
-
     if isstruct(tree)
     tree=orderfields(tree, newText);
     end
-
 
 end
 

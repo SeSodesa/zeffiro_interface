@@ -380,13 +380,11 @@ else
 number_of_frames = 1;
 end
 
-
 if iscell(evalin('base','zef.measurements'));
 f = evalin('base',['zef.measurements{' int2str(evalin('base','zef.inv_data_segment')) '}']);
 else
 f = evalin('base','zef.measurements');
 end
-
 
 data_norm = 1;
 if evalin('base','zef.normalize_data')==1;
@@ -401,7 +399,6 @@ data_norm = sum(sqrt(sum(abs(f).^2)))/size(f,2);
 end;
 f = f/data_norm;
 
-
 filter_order = 3;
 if size(f,2) > 1 && low_pass > 0
 [lp_f_1,lp_f_2] = ellip(filter_order,3,80,low_pass/(sampling_freq/2));
@@ -415,11 +412,6 @@ end
 f_data = f;
 size_f = size(f,2);
 
-
-
-
-
-
 tic;
 %------------------ TIME LOOP STARTS HERE ------------------------------
 for f_ind = 1 : number_of_frames
@@ -427,7 +419,6 @@ time_val = toc;
 if f_ind > 1
 date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400));
 end
-
 
 if ismember(source_direction_mode, [1,2])
 z_aux = zeros(size(L,2),1);
@@ -467,7 +458,6 @@ elseif source_direction_mode == 3
 end
     nn = size(L_ind,1);
     update_waiting_bar = floor(0.1*(nn-2));
-
 
     [U,S,~] = svd(C);
     S=diag(S);
@@ -565,7 +555,6 @@ end
         end;
         end
     end
-
 
 if ismember(source_direction_mode,[2])
 z_vec_aux = (z_vec(s_ind_4) + z_vec(n_interp+s_ind_4) + z_vec(2*n_interp+s_ind_4))/3;

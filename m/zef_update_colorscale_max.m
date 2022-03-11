@@ -1,6 +1,5 @@
 function slider_value_new = zef_update_colorscale_max(varargin)
 
-
 if not(isempty(varargin))
 h_figure = varargin{1};
 else

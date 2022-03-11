@@ -10,12 +10,9 @@ onlyIn='node';
 allHashes=fieldnames(zef.dataBank.tree);
 allHashes=allHashes(startsWith(allHashes, onlyIn));
 
-
 i=1;
 
 while i<=length(allHashes)
-
-
 
     if strcmp(zef.dataBank.tree.(allHashes{i}).type, dltType)
         zef.dataBank.hash=allHashes{i};

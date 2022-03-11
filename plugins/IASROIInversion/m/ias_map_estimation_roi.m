@@ -13,7 +13,6 @@ set(zef.h_iasroi_map_estimation,'Name','ZEFFIRO Interface: IAS ROI MAP estimatio
 set(findobj(zef.h_iasroi_map_estimation.Children,'-property','FontUnits'),'FontUnits','pixels')
 set(findobj(zef.h_iasroi_map_estimation.Children,'-property','FontSize'),'FontSize',zef.font_size);
 
-
 zef_init_ias_roi;
 uistack(flipud([zef.h_iasroi_roi_mode; zef.h_iasroi_roi_sphere_1;  zef.h_iasroi_roi_sphere_2;  zef.h_iasroi_roi_sphere_3;
 zef.h_iasroi_roi_sphere_4;

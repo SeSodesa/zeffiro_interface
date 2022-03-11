@@ -41,7 +41,6 @@ for zef_i = 1 : length(zef.compartment_tags)
 evalin('base',['zef.' zef.compartment_tags{zef_i} '_sources_old = zef.' zef.compartment_tags{zef_i} '_sources;']);
 end
 
-
 zef.source_ind = zef.aux_vec(1:min(zef.n_sources,length(zef.aux_vec)));
 zef.n_sources_mod = 0;
 end
@@ -65,5 +64,4 @@ end
 end
 
 zef = rmfield(zef,{'nodes_aux','sensors_aux','aux_vec'});
-
 

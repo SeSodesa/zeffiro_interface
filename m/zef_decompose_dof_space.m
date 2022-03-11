@@ -29,7 +29,6 @@ center_points = center_points(brain_ind,:);
 
 if dof_decomposition_type == 1
 
-
 dof_positions = (nodes(tetrahedra(source_ind,1),:) + nodes(tetrahedra(source_ind,2),:) + nodes(tetrahedra(source_ind,3),:)+ nodes(tetrahedra(source_ind,4),:))/4;
 
 size_center_points = size(center_points,2);
@@ -37,7 +36,6 @@ size_source_points = size(center_points,2);
 
 MdlKDT = KDTreeSearcher(dof_positions);
 decomposition_ind  = knnsearch(MdlKDT,center_points);
-
 
 [aux_vec, i_a, i_c] = unique(decomposition_ind);
 decomposition_count = accumarray(i_c,1);
@@ -70,7 +68,6 @@ max_z = max_z - l_d_z;
 
 [X_lattice, Y_lattice, Z_lattice] = meshgrid(linspace(min_x,max_x,lattice_res_x),linspace(min_y,max_y,lattice_res_y),linspace(min_z,max_z,lattice_res_z));
 
-
 lattice_ind_aux = [max(1,round(lattice_res_x*(center_points(:,1)-min(center_points(:,1)))./(max(center_points(:,1))-min(center_points(:,1))))) ...
 max(1,round(lattice_res_y*(center_points(:,2)-min(center_points(:,2)))./(max(center_points(:,2))-min(center_points(:,2)))))...
 max(1,round(lattice_res_z*(center_points(:,3)-min(center_points(:,3)))./(max(center_points(:,3))-min(center_points(:,3)))))];
@@ -96,6 +93,4 @@ elseif dof_decomposition_type == 3
 
 end
 end
-
-
 

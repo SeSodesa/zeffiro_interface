@@ -38,7 +38,6 @@ end
 set(findobj(zef.h_zeffiro_window_main.Children,'-property','FontUnits'),'FontUnits','pixels')
 set(findobj(zef.h_zeffiro_window_main.Children,'-property','FontSize'),'FontSize',zef.font_size);
 
-
 zef.h_temp = findobj(zef.h_zeffiro_window_main,{'parent',zef.h_menu_forward_tools,'-or','parent',zef.h_menu_inverse_tools,'-or','parent',zef.h_menu_multi_tools});
 zef.menu_accelerator_vec = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -100,5 +99,4 @@ zef_figure_tool;
 zef_mesh_tool;
 zeffiro_interface_mesh_visualization_tool;
 zef_update;
-
 

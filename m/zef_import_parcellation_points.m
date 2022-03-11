@@ -6,7 +6,6 @@ else
 [zef.file zef.file_path zef.file_type] = uigetfile({'*.asc';'*.dat'},'Import parcellation points');
 end
 
-
 if not(isequal(zef.file,0));
 if not(zef.parcellation_merge)
     zef.parcellation_points = cell(0);
@@ -39,6 +38,4 @@ set(evalin('base','zef.h_zef_import_parcellation_points'),'foregroundcolor',[0 0
 end;
 
 end
-
-
 

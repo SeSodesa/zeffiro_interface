@@ -45,7 +45,6 @@ zef.nodes_aux = zef.nodes;
 
 zef.sensors_aux(:,1:3) = zef.sensors_aux(:,1:3);
 
-
 zef.lf_param.dipole_mode = 1;
 
 if ismember(zef.imaging_method, [1 2 3 4])
@@ -53,5 +52,4 @@ if ismember(zef.imaging_method, [1 2 3 4])
 end
 
 zef = rmfield(zef,{'nodes_aux','sensors_aux','aux_vec'});
-
 

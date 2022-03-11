@@ -40,7 +40,6 @@ reconstruction_information.number_of_frames = evalin('base','zef.number_of_frame
 reconstruction_information.leadfield_lambda = lambda_L;
 reconstruction_information.n_dipoles = n_dipoles;
 
-
 [L,n_interp, procFile] = zef_processLeadfields(source_direction_mode);
 
 if evalin('base','zef.inv_hyperprior') == 1
@@ -48,7 +47,6 @@ if evalin('base','zef.inv_hyperprior') == 1
 elseif evalin('base','zef.inv_hyperprior') == 2
 [~, theta0] = zef_find_g_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),[],size(L,2));
 end
-
 
 if number_of_frames > 1
 z = cell(number_of_frames,1);
@@ -66,7 +64,6 @@ time_val = toc;
 if f_ind > 1
 date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400));
 end
-
 
 if ismember(source_direction_mode, [1,2])
 z_aux = zeros(size(L,2),1);
@@ -165,7 +162,6 @@ end
     z_vec(reshape(L_ind(ind_space,:),[],1)) = reshape(z_amp'.*orj,[],1); %couple the amplitude with the orjentation.
     %Notice that L_ind(ind_space,:) and orj are structurally same, and
     %reshape form order similar with s_ind indexing.
-
 
 z{f_ind} = z_vec;
 end;

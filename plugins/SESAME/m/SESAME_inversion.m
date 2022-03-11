@@ -2,7 +2,6 @@
 %See: https://github.com/sampsapursiainen/zeffiro_interface
 function [z] = SESAME_inversion(void)
 
-
 h = waitbar(0,['SESAME iteration.']);
 [s_ind_1] = unique(evalin('base','zef.source_interpolation_ind{1}'));
 n_interp = length(s_ind_1);
@@ -441,7 +440,6 @@ z_aux = zeros(3*size(L_aux,2),1);
 end
 z_vec = ones(size(L_aux,2),1);
 
-
 if size(f_org,2) > 1
 if evalin('base','zef.SESAME_time_2') >=0 0 && evalin('base','zef.SESAME_time_1') >= 0 & 1 + sampling_freq*evalin('base','zef.SESAME_time_1') <= size(f_org,2);
 f = f_org(:, max(1, 1 + floor(sampling_freq*evalin('base','zef.SESAME_time_1')+sampling_freq*(f_ind - 1)*evalin('base','zef.SESAME_time_3'))) : min(size(f_org,2), 1 + floor(sampling_freq*(evalin('base','zef.SESAME_time_1') + evalin('base','zef.SESAME_time_2'))+sampling_freq*(f_ind - 1)*evalin('base','zef.SESAME_time_3'))));
@@ -504,7 +502,6 @@ if source_direction_mode == 3
 z_vec = [z_vec.*source_directions(:,1) ; z_vec.*source_directions(:,2) ;  z_vec.*source_directions(:,3)]';
 %z_vec = z_vec(:);
 end
-
 
 if source_direction_mode == 1 || source_direction_mode == 2
 z_aux(s_ind_1) = z_vec;

@@ -108,10 +108,8 @@ end
 
 %sensors end
 
-
 zef.aux_field_1 = cell(0);
 zef.aux_field_2 = zeros(length(zef.compartment_tags),1);
-
 
 for zef_i = 1 : length(zef.compartment_tags)
 
@@ -149,7 +147,6 @@ zef.h_aux = findall(groot, 'Type','figure','-regexp','Name','ZEFFIRO Interface:*
 zef.h_windows_open = zef.h_windows_open(find(ismember(zef.h_windows_open,zef.h_aux)));
 zef.h_windows_open = [zef.h_windows_open ; setdiff(zef.h_aux, zef.h_windows_open)];
 
-
 for zef_i = 1 : length(zef.h_windows_open)
 zef.aux_field_1 = sum(contains(get(zef.h_windows_open(1:zef_i),'Name'),get(zef.h_windows_open(zef_i),'Name')));
 if contains(zef.h_windows_open(zef_i).Name,'ZEFFIRO Interface: Figure tool')
@@ -162,7 +159,6 @@ if not(contains(zef.aux_field_2,'zef_update;'))
      zef.h_windows_open(zef_i).CloseRequestFcn = [zef.h_windows_open(zef_i).CloseRequestFcn '; zef_update;'];
 end
 end
-
 
 zef.h_project_information.Items = ...
     {['App folder: ' zef.program_path],...

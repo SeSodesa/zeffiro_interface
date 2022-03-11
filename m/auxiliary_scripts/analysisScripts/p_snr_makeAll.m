@@ -8,17 +8,11 @@
 meg_max=0.0078; %%%%%%%%%%%%%%%%%%%%
 eeg_max=0.6928; %%%%%%%%%%%
 
-
-
-
 %  eegnode=zef.dataBank.tree.node_1_1;
 %  megnode=zef.dataBank.tree.node_2_1;
 %  meegnode=zef.dataBank.tree.node_3_1;
 
-
 for BigIndex=1:3
-
-
 
  node_1=zef.dataBank.tree.node_1;
    node_1_1=zef.dataBank.tree.node_1_1;
@@ -39,16 +33,12 @@ Cnode='node_1';
 
 zef.L=eegnode.data.L;
 
-
-
 for snr_i=1:3
-
 
     SNR_now=SNR(snr_i);
     node_now=strcat('node_', num2str(snr_i));
     [zef.dataBank.tree, snr_node]=zef_dataBank_add(zef.dataBank.tree,Cnode , zef_dataBank_getData(zef, 'custom'));
     zef.dataBank.tree.(snr_node).name=strcat('SNR:_', num2str(SNR_now));
-
 
     %% make data
     zef.fss_bg_noise=SNR_now;
@@ -61,8 +51,6 @@ for snr_i=1:3
 
     end
 
-
-
     %% make all reconstructions for data
 
     %set all parameters!
@@ -70,19 +58,14 @@ for snr_i=1:3
     %choose node to add to
     %enjoy!
 
-
     allHashes=fieldnames(zef.dataBank.tree);
 
     allHashes=allHashes(startsWith(allHashes, snr_node));
-
-
 
     for i=1:length(allHashes)
         if strcmp(zef.dataBank.tree.(allHashes{i}).type, 'data')
             zef.dataBank.hash=allHashes{i};
             zef_dataBank_setData;
-
-
 
             %mne
             zef.mne_snr=abs(SNR_now);
@@ -94,21 +77,16 @@ for snr_i=1:3
             [zef.reconstruction, zef.reconstruction_information] = zef_CSM_iteration;
             zef.dataBank.tree=zef_dataBank_add(zef.dataBank.tree, zef.dataBank.hash, zef_dataBank_getData(zef, 'reconstruction'));
 
-
-
-
             %ramus
             zef.h_ramus_snr.String=num2str(abs(SNR_now));
             zef_update_ramus_inversion_tool;
             [zef.reconstruction, zef.reconstruction_information]  = zef_ramus_iteration([]);%dipole
             zef.dataBank.tree=zef_dataBank_add(zef.dataBank.tree, zef.dataBank.hash, zef_dataBank_getData(zef, 'reconstruction'));
 
-
             %dipole
             [zef.reconstruction, zef.reconstruction_information]=zef_dipoleScan;
             zef.dataBank.tree=zef_dataBank_add(zef.dataBank.tree, zef.dataBank.hash, zef_dataBank_getData(zef, 'reconstruction'));
             %beamformer
-
 
             if strcmp(zef.beamformer.estimation_attr.Value,'1')
                 [zef.reconstruction,~, zef.reconstruction_information] = zef_beamformer;
@@ -119,18 +97,14 @@ for snr_i=1:3
             end
             zef.dataBank.tree=zef_dataBank_add(zef.dataBank.tree, zef.dataBank.hash, zef_dataBank_getData(zef, 'reconstruction'));
 
-
-
         end
     end
-
 
     %% make gmm for every reconstruction
 
     for gmm_opt=1:3
 
         zef.GMM.paramters{23,2}={num2str(gmm_opt)};
-
 
                 switch gmm_opt
             case 1
@@ -142,7 +116,6 @@ for snr_i=1:3
         end
     for  ii=[0.25,0.5, 0.75]
 
-
         %open gmm tool first and set the parameters
 
         zef.GMM.parameters{5,2}={num2str(ii)};
@@ -150,8 +123,6 @@ for snr_i=1:3
         allHashes=fieldnames(zef.dataBank.tree);
 
         allHashes=allHashes(startsWith(allHashes, snr_node));
-
-
 
         for i=1:length(allHashes)
             if strcmp(zef.dataBank.tree.(allHashes{i}).type, 'reconstruction')
@@ -171,7 +142,6 @@ for snr_i=1:3
                     clear nodeData folderName
                 end
 
-
             end
         end
 
@@ -186,54 +156,7 @@ for snr_i=1:3
     zef.dataBank.tree.node_1=node_1;
     zef.dataBank.tree.node_1_1=node_1_1;
 
-
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 %load correct leadfield!
 
@@ -248,18 +171,12 @@ zef.L=megnode.data.L;
 
  zef.dipole_app.regType.Value='SVD';
 
-
-
-
-
 for snr_i=1:3
-
 
     SNR_now=SNR(snr_i);
     node_now=strcat('node_', num2str(snr_i));
     [zef.dataBank.tree, snr_node]=zef_dataBank_add(zef.dataBank.tree,Cnode , zef_dataBank_getData(zef, 'custom'));
     zef.dataBank.tree.(snr_node).name=strcat('SNR:_', num2str(SNR_now));
-
 
     %% make data
     zef.fss_bg_noise=SNR_now;
@@ -272,8 +189,6 @@ for snr_i=1:3
 
     end
 
-
-
     %% make all reconstructions for data
 
     %set all parameters!
@@ -281,19 +196,14 @@ for snr_i=1:3
     %choose node to add to
     %enjoy!
 
-
     allHashes=fieldnames(zef.dataBank.tree);
 
     allHashes=allHashes(startsWith(allHashes, snr_node));
-
-
 
     for i=1:length(allHashes)
         if strcmp(zef.dataBank.tree.(allHashes{i}).type, 'data')
             zef.dataBank.hash=allHashes{i};
             zef_dataBank_setData;
-
-
 
             %mne
             zef.mne_snr=abs(SNR_now);
@@ -305,21 +215,16 @@ for snr_i=1:3
             [zef.reconstruction, zef.reconstruction_information] = zef_CSM_iteration;
             zef.dataBank.tree=zef_dataBank_add(zef.dataBank.tree, zef.dataBank.hash, zef_dataBank_getData(zef, 'reconstruction'));
 
-
-
-
             %ramus
             zef.h_ramus_snr.String=num2str(abs(SNR_now));
             zef_update_ramus_inversion_tool;
             [zef.reconstruction, zef.reconstruction_information]  = zef_ramus_iteration([]);%dipole
             zef.dataBank.tree=zef_dataBank_add(zef.dataBank.tree, zef.dataBank.hash, zef_dataBank_getData(zef, 'reconstruction'));
 
-
             %dipole
             [zef.reconstruction, zef.reconstruction_information]=zef_dipoleScan;
             zef.dataBank.tree=zef_dataBank_add(zef.dataBank.tree, zef.dataBank.hash, zef_dataBank_getData(zef, 'reconstruction'));
             %beamformer
-
 
             if strcmp(zef.beamformer.estimation_attr.Value,'1')
                 [zef.reconstruction,~, zef.reconstruction_information] = zef_beamformer;
@@ -330,11 +235,8 @@ for snr_i=1:3
             end
             zef.dataBank.tree=zef_dataBank_add(zef.dataBank.tree, zef.dataBank.hash, zef_dataBank_getData(zef, 'reconstruction'));
 
-
-
         end
     end
-
 
     %% make gmm for every reconstruction
         for gmm_opt=1:3
@@ -352,7 +254,6 @@ for snr_i=1:3
 
     for  ii=[0.25,0.5, 0.75]
 
-
         %open gmm tool first and set the parameters
 
         zef.GMM.parameters{5,2}={num2str(ii)};
@@ -360,8 +261,6 @@ for snr_i=1:3
         allHashes=fieldnames(zef.dataBank.tree);
 
         allHashes=allHashes(startsWith(allHashes, snr_node));
-
-
 
         for i=1:length(allHashes)
             if strcmp(zef.dataBank.tree.(allHashes{i}).type, 'reconstruction')
@@ -381,7 +280,6 @@ for snr_i=1:3
                     clear nodeData folderName
                 end
 
-
             end
         end
 
@@ -396,36 +294,8 @@ for snr_i=1:3
     zef.dataBank.tree.node_1=node_1;
     zef.dataBank.tree.node_1_1=node_1_1;
 
-
 end
 clc
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 %load EEG and MEG leadfields
 
@@ -438,15 +308,11 @@ clc
 %bg_noise_level = 10^(evalin('base','zef.fss_bg_noise')/20);    %background noise
 %sensornoiseFactor=sqrt(10^(SNR/20))
 
-
 %%
 
 %save to databank
 
 %compute as before
-
-
-
 
   node_1=zef.dataBank.tree.node_1;
     %node_1_1=zef.dataBank.tree.node_1_1;
@@ -456,7 +322,6 @@ clc
 
  zef.dipole_app.regType.Value='1';
 
-
 %SNR=[-30 -25 -20 -15 -10 -5];
 SNR=[-30 -20 -10];
 
@@ -465,17 +330,14 @@ for snr_i=1:3
     std_eeg=sqrt(  10^(SNR(snr_i) /20)  *eeg_max                 );
     std_meg=sqrt(  10^(SNR(snr_i) /20)  *meg_max                 );
 
-
     snr_now=SNR(snr_i);
     a=strcat('./EegtreeAt_SNR_', num2str(snr_now),'_', num2str(BigIndex), '.mat'); %%%%%%%%%%%%%%%
     load(a);
     eeg_tree=tree;
 
-
     a=strcat('./MegtreeAt_SNR_', num2str(snr_now),'_',  num2str(BigIndex),'.mat');  %%%%%%%%%%%%%%%
     load(a);
     meg_tree=tree;
-
 
     L_eeg=eegnode.data.L/std_eeg;
     L_meg=megnode.data.L/std_meg;
@@ -493,12 +355,6 @@ for snr_i=1:3
 
     end
 
-
-
-
-
-
-
     %% make all reconstructions for data
 
     %set all parameters!
@@ -506,19 +362,14 @@ for snr_i=1:3
     %choose node to add to
     %enjoy!
 
-
     allHashes=fieldnames(zef.dataBank.tree);
 
     allHashes=allHashes(startsWith(allHashes, snr_node));
-
-
 
     for i=1:length(allHashes)
         if strcmp(zef.dataBank.tree.(allHashes{i}).type, 'data')
             zef.dataBank.hash=allHashes{i};
             zef_dataBank_setData;
-
-
 
             %mne
             zef.mne_snr=abs(SNR_now);
@@ -530,21 +381,16 @@ for snr_i=1:3
             [zef.reconstruction, zef.reconstruction_information] = zef_CSM_iteration;
             zef.dataBank.tree=zef_dataBank_add(zef.dataBank.tree, zef.dataBank.hash, zef_dataBank_getData(zef, 'reconstruction'));
 
-
-
-
             %ramus
             zef.h_ramus_snr.String=num2str(abs(SNR_now));
             zef_update_ramus_inversion_tool;
             [zef.reconstruction, zef.reconstruction_information]  = zef_ramus_iteration([]);%dipole
             zef.dataBank.tree=zef_dataBank_add(zef.dataBank.tree, zef.dataBank.hash, zef_dataBank_getData(zef, 'reconstruction'));
 
-
             %dipole
             [zef.reconstruction, zef.reconstruction_information]=zef_dipoleScan;
             zef.dataBank.tree=zef_dataBank_add(zef.dataBank.tree, zef.dataBank.hash, zef_dataBank_getData(zef, 'reconstruction'));
             %beamformer
-
 
             if strcmp(zef.beamformer.estimation_attr.Value,'1')
                 [zef.reconstruction,~, zef.reconstruction_information] = zef_beamformer;
@@ -555,11 +401,8 @@ for snr_i=1:3
             end
             zef.dataBank.tree=zef_dataBank_add(zef.dataBank.tree, zef.dataBank.hash, zef_dataBank_getData(zef, 'reconstruction'));
 
-
-
         end
     end
-
 
     %% make gmm for every reconstruction
 
@@ -576,9 +419,7 @@ for snr_i=1:3
                 meth='_maxComp_';
         end
 
-
     for  ii=[0.25, 0.5, 0.75]
-
 
         %open gmm tool first and set the parameters
 
@@ -587,8 +428,6 @@ for snr_i=1:3
         allHashes=fieldnames(zef.dataBank.tree);
 
         allHashes=allHashes(startsWith(allHashes, snr_node));
-
-
 
         for i=1:length(allHashes)
             if strcmp(zef.dataBank.tree.(allHashes{i}).type, 'reconstruction')
@@ -608,7 +447,6 @@ for snr_i=1:3
                     clear nodeData folderName
                 end
 
-
             end
         end
 
@@ -623,46 +461,7 @@ for snr_i=1:3
     zef.dataBank.tree.node_1=node_1;
     %zef.dataBank.tree.node_1_1=node_1_1;
 
-
-
-
-
-
-
-
-
-
-
-
 end
 
-
-
-
-
-
-
-
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

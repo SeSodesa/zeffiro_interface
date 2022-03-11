@@ -4,19 +4,14 @@ function [L,n_interp, procFile] = zef_processLeadfields(source_direction_mode)
 %L is the leadfield, the procFile has all information needed for the
 %postProcessing step, but should not be needed in the inverse method
 
-
-
 source_directions = evalin('base','zef.source_directions');
-
 
 s_ind_2=[];
 s_ind_3=[];
 s_ind_4=[];
 
-
 [s_ind_1] = unique(evalin('base','zef.source_interpolation_ind{1}'));
 n_interp = length(s_ind_1);
-
 
 if source_direction_mode == 2
 
@@ -99,8 +94,6 @@ end
 
 s_ind_1 = s_ind_1(:);
 
-
-
 L = evalin('base','zef.L');
 L = L(:,s_ind_1);
 
@@ -130,9 +123,6 @@ procFile.s_ind_4=s_ind_4;
 procFile.n_interp=n_interp;
 procFile.sizeL2=size(L,2);
 procFile.s_ind_0=s_ind_0;
-
-
-
 
 end
 

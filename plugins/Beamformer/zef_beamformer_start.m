@@ -33,7 +33,6 @@ if ~isfield(zef,'cov_type')
     zef.cov_type = 1;
 end
 
-
 %_ Names of leadfield regularization methods _
 zef_bf_names = {'Basic'
                 'Pseudoinverse'};
@@ -57,8 +56,6 @@ zef.beamformer.normalize_leadfield.Value = '1';
 if ~isfield(zef,'normalize_leadfield')
     zef.normalize_leadfield = 1;
 end
-
-
 
 %_ Initial values _
 zef.beamformer.inv_cov_lambda.Value = '5e-2';
@@ -93,7 +90,6 @@ clear zef_props zef_i zef_bf_names
 if zef.L_reg_type==2 || zef.L_reg_type==3
     zef.beamformer.inv_leadfield_lambda.Enable = 'off';
 end
-
 
 %_ Functions _
 zef.beamformer.bf_type.ValueChangedFcn = 'zef.bf_type = str2num(zef.beamformer.bf_type.Value);';

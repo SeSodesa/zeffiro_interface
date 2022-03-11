@@ -5,11 +5,9 @@ if zef.mlapp == 1
 zeffiro_interface_mesh_tool;
 else
 
-
 zef.h_mesh_tool = open('zeffiro_interface_mesh_tool.fig');
 set(findobj(zef.h_mesh_tool.Children,'-property','FontUnits'),'FontUnits','pixels')
 set(findobj(zef.h_mesh_tool.Children,'-property','FontSize'),'FontSize',zef.font_size);
-
 
 zef.aux_handle_vec = [zef.h_pushbutton31;
 zef.h_pushbutton20;
@@ -79,8 +77,4 @@ set(zef.h_edit76,'string',num2str(zef.solver_tolerance));
 zef_update_mesh_tool;
 
 end
-
-
-
-
 

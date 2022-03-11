@@ -10,9 +10,7 @@ for zef_i = 1 : size(zef.aux_field_1,1)
 
 end
 
-
 elseif isequal(zef.current_parameters,'sensor')
-
 
 if ismember(evalin('base',['zef.'  zef.current_sensors '_imaging_method_name']),evalin('base',['zef.imaging_method_cell{1}']))
 zef.aux_field_2 = {

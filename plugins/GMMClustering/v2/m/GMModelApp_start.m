@@ -13,7 +13,6 @@ end
 end
 zef.GMM.apps.main = GMModelApp;
 
-
 if ~isfield(zef.GMM,'parameters')
 %_ Initial values _
 zef_GMM_values = cell(2,1);
@@ -146,7 +145,6 @@ else
     zef_GMM_tags = zef.GMM.parameters{:,3};
     zef.GMM.meta{1} = length(findobj(zef.GMM.apps.main.UIFigure,{'Type','uieditfield','-or','Type','uidropdown'}));
 end
-
 
 zef_props = properties(zef.GMM.apps.main);
 zef_n=0;

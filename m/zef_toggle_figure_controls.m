@@ -63,6 +63,5 @@ end
 
  set(h_axes,'units','pixels');
 
-
 end
 

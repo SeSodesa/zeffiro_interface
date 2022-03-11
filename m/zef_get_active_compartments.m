@@ -40,7 +40,6 @@ if ismember(evalin('base',var_4),[1 2])
     aux_brain_ind(k) = i;
 end
 
-
 end
 
 end

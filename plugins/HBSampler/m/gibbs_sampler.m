@@ -15,7 +15,6 @@ t_res = 20;
 %One-dimensional sampling tolerance (constant c in the slides).
 t_tol = 7;
 
-
 if evalin('base','zef.inv_hyperprior') == 1
 hypermodel = 'Gamma';
 else
@@ -41,7 +40,6 @@ size_A_aux = size(A_aux,1);
 size_x = size(x,1);
 
 i = 0;
-
 
 tic;
 for i = 1 : n_iter
@@ -131,7 +129,6 @@ if strcmp(hypermodel,'Gamma')
         end
 
     elseif strcmp(hypermodel,'InverseGamma')
-
 
         for j = 1 : n_dimensions
 

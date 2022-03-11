@@ -260,7 +260,6 @@ end
 end
 end
 
-
 i = 0;
 length_reuna = 0;
 sigma_vec = [];
@@ -632,9 +631,7 @@ end
 end
 end
 
-
 if ismember(evalin('base','zef.visualization_type'),[2,4])
-
 
 if not(ismember(evalin('base','zef.visualization_type'),[4]))
 if evalin('base','zef.use_parcellation')
@@ -718,7 +715,6 @@ end
 
 %**************************************************************************
 
-
 for i = 1 : n_compartments
 
 if visible_vec(i)
@@ -785,7 +781,6 @@ zef_plot_dpq('dynamical');
 
 %&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 %&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-
 
 for f_ind = frame_start + frame_step : frame_step : frame_stop
               evalin('base',['zef.h_slider.Value=' num2str(f_ind*frame_step/(frame_stop-frame_start+frame_step)) ';']);
@@ -907,7 +902,6 @@ end
 reconstruction = reconstruction.*reconstruction_p_2;
 end
 
-
 %h_surf_2 = trimesh(surface_triangles(I_3_rec,:),nodes(:,1),nodes(:,2),nodes(:,3),reconstruction);
 set(h_surf_2,'CData',reconstruction);
 if ismember(evalin('base','zef.volumetric_distribution_mode'),[1, 3])
@@ -973,11 +967,9 @@ end
 %&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 %&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-
 rotate3d on;
 
 %if  iscell(volumetric_distribution) &  evalin('base','zef.visualization_type') == 2
 %close(h_waitbar);
 %end
-
 

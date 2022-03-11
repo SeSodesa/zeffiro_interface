@@ -145,7 +145,6 @@ set(h_cone_field,'Tag','cones');
 
 end
 
-
 if evalin('base','zef.streamline_draw')
 h_streamline = streamline(stream3(X_lattice,Y_lattice,Z_lattice,X_field,Y_field,Z_field,s_p(I,1),s_p(I,2),s_p(I,3)));
 set(h_streamline,'linewidth',evalin('base','zef.streamline_linewidth'));
@@ -163,11 +162,6 @@ h_colorbar = colorbar('SouthOutside','Position',position_vec);
 set(h_colorbar,'limits',[min(norm_cone_field(:)) max(norm_cone_field(:))]);
 axes(h_axes);
 
-
 end
 end
-
-
-
-
 

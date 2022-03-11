@@ -22,4 +22,3 @@ set(zef.h_parcellation_list,'value',[]);
 zef_update_parcellation;
 end
 
-

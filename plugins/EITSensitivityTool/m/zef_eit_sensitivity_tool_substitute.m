@@ -1,5 +1,4 @@
 
-
 if isequal(zef.h_eit_sensitivity_tool_distribution.Value,zef.h_eit_sensitivity_tool_distribution.Items{1})
     %Sigma 1
 
@@ -318,9 +317,7 @@ zef.reconstruction = repmat(zef.reconstruction,3,1)./sqrt(3);
 zef.reconstruction = zef.reconstruction(:);
    %    end
 
-
 elseif    isequal(zef.h_eit_sensitivity_tool_distribution.Value,zef.h_eit_sensitivity_tool_distribution.Items{17})
-
 
      %EEG lead field error, parallel
  %    if isequal(questdlg(['Apply: ' zef.h_eit_sensitivity_tool_distribution.Items{17} '?']),'Yes')
@@ -340,7 +337,6 @@ zef.reconstruction = zef.reconstruction(:);
  %    end
 
 elseif    isequal(zef.h_eit_sensitivity_tool_distribution.Value,zef.h_eit_sensitivity_tool_distribution.Items{18})
-
 
      %EEG lead field error, mag
     % if isequal(questdlg(['Apply: ' zef.h_eit_sensitivity_tool_distribution.Items{18} '?']),'Yes')
@@ -453,7 +449,6 @@ zef.reconstruction = repmat(zef.reconstruction,3,1)./sqrt(3);
 zef.reconstruction = zef.reconstruction(:);
 %end
 
-
 elseif    isequal(zef.h_eit_sensitivity_tool_distribution.Value,zef.h_eit_sensitivity_tool_distribution.Items{24})
 
  if isequal(questdlg([zef.h_eit_sensitivity_tool_distribution.Items{24} '?']),'Yes')
@@ -501,7 +496,4 @@ zef.parcellation_interp_ind = zef.eit_sensitivity_tool_L_EEG_parcellation_interp
       %end
 
 end
-
-
-
 

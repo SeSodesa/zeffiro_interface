@@ -25,7 +25,6 @@ set(zef.h_edit82,'value',zef.cam_va);
 set(zef.h_cone_draw,'value',zef.cone_draw);
 set(zef.h_streamline_draw,'value',zef.streamline_draw);
 
-
 set(zef.h_mesh_visualization_parameter_list,'Items',zef_get_profile_parameters);
 zef.h_mesh_visualization_parameter_list.ItemsData = [1:length(zef.h_mesh_visualization_parameter_list.Items)];
 
@@ -42,12 +41,10 @@ end
 set(zef.h_mesh_visualization_graph_list,'Items',zef.mesh_visualization_graph_list{1});
 zef.h_mesh_visualization_graph_list.ItemsData = [1:length(zef.h_mesh_visualization_graph_list.Items)];
 
-
 if not(isfield(zef,'mesh_visualization_graph_selected'))
     zef.mesh_visualization_graph_selected = 1;
 end
 set(zef.h_mesh_visualization_graph_list,'value',zef.mesh_visualization_graph_selected);
-
 
 set(zef.h_visualization_type,'Items',{'Domain labels','Distribution (volume)','Distribution (surface)','Parcellation','Topography'});
 zef.h_visualization_type.ItemsData = [1:length(zef.h_visualization_type.Items)];
@@ -106,11 +103,9 @@ set(zef.h_inv_dynamic_range,'value',num2str(1./zef.inv_dynamic_range));
 
 set(zef.h_submesh_num,'value',num2str(zef.submesh_num));
 
-
 zef.h_mesh_visualization_tool.Units = 'normalized';
 zef.h_mesh_visualization_tool.Position = [0.3 0.3 zef.h_mesh_visualization_tool.Position(3:4)];
 zef.h_mesh_visualization_tool.Units = 'pixels';
-
 
 set(findobj(zef.h_mesh_visualization_tool.Children,'-property','FontSize'),'FontSize',zef.font_size);
 
@@ -118,13 +113,5 @@ set(zef.h_mesh_visualization_tool,'AutoResizeChildren','off');
 zef.mesh_visualization_tool_current_size = get(zef.h_mesh_visualization_tool,'Position');
 set(zef.h_mesh_visualization_tool,'SizeChangedFcn','zef.mesh_visualization_tool_current_size = zef_change_size_function(zef.h_mesh_visualization_tool,zef.mesh_visualization_tool_current_size);');
 
-
-
 clear zef_data;
-
-
-
-
-
-
 

@@ -1,6 +1,5 @@
 function zef_wireframe_plot(w_t,w_n)
 
-
 h_a = evalin('base','zef.h_axes1');
 axes(h_a);
 
@@ -16,8 +15,5 @@ axis equal;
 h_t.Tag = 'surface';
 
 h_a.Visible = 'off';
-
-
-
 
 end

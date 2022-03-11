@@ -28,7 +28,6 @@ if ~isequal(zef_aux_file,0) && ~isequal(zef_aux_path,0)
         zef_GMM.reconstruction = evalin('base','zef.reconstruction');
     end
 
-
     save(fullfile(zef_aux_path,zef_aux_file),'zef_GMM','-v7.3');
 end
 

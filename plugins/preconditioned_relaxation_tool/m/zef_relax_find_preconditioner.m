@@ -21,7 +21,6 @@ waitbar(zef_i/relax_multires_n_decompositions,h,'RAMUS preconditioner');
 end
 close(h)
 
-
 elseif relax_preconditioner_type == 2
 relax_preconditioner = cell(0);
 relax_preconditioner_permutation = cell(0);
@@ -45,11 +44,9 @@ h = waitbar(0,'RAMUS preconditioner');
 
 [~,n_interp] = zef_processLeadfields(evalin('base','zef.source_direction_mode'));
 
-
 relax_preconditioner{1} = speye(3*n_interp);
 relax_preconditioner_permutation{1}{1} = [1:3*n_interp]';
 relax_preconditioner_permutation{1}{2} = [1:3*n_interp]';
 close(h);
-
 
 end

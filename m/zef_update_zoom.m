@@ -16,5 +16,4 @@ end
 kappa = h_object.Value;
 h.CameraViewAngle = kappa;
 
-
 end

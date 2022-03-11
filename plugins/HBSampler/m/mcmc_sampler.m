@@ -132,12 +132,10 @@ clear L_0 L_1 L_2 L_3 s_1 s_2 s_3;
 
 end
 
-
 I_aux = [];
 roi_ind_vec = [];
 
 if roi_mode == 1
-
 
 for j = 1 : size(roi_sphere,1)
 
@@ -170,7 +168,6 @@ p_ind_aux_1 = unique(p_ind_aux_1);
 I_aux = unique(source_ind_aux(p_ind_aux_1,:));
 I_aux = find(ismember(s_ind_0,I_aux));
 end
-
 
 if source_direction_mode == 2
     roi_length = length(I_aux(:));
@@ -215,7 +212,6 @@ f = evalin('base',['zef.measurements{' int2str(evalin('base','zef.inv_data_segme
 else
 f = evalin('base','zef.measurements');
 end
-
 
 data_norm = 1;
 if evalin('base','zef.normalize_data')==1;
@@ -274,7 +270,6 @@ end
 
 gibbs_sampler;
 
-
 if ismember(source_direction_mode, [1,2])
 z_vec_aux = zeros(n_lead_field,1);
 else
@@ -282,8 +277,6 @@ z_vec_aux = zeros(3*n_lead_field,1);
 end
 z_vec_aux(roi_aux_ind) = z_vec;
 z_vec = z_vec_aux;
-
-
 
 if ismember(source_direction_mode, [1,2])
     z_aux(s_ind_1) = z_vec;

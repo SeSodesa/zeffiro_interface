@@ -3,7 +3,6 @@
 
 zef.lf_item_selected = get(zef.h_lf_item_list,'value');
 
-
 for zef_i = 1:length(zef.lf_bank_storage)
 
     if ismember(zef_i,zef.lf_item_selected)
@@ -13,7 +12,6 @@ for zef_i = 1:length(zef.lf_bank_storage)
     end
 
 end
-
 
 clear zef_i;
 

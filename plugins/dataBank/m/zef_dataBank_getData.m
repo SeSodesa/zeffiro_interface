@@ -11,7 +11,6 @@ switch type
             case 'noisedata'
         data.noisedata=zef.noise_data;
 
-
     case 'reconstruction'
         if iscell(zef.reconstruction)
            data.reconstruction=zef.reconstruction;
@@ -19,7 +18,6 @@ switch type
             data.reconstruction={zef.reconstruction};
         end
         data.reconstruction_information=zef.reconstruction_information;
-
 
     case 'leadfield'
         data.source_interpolation_ind = zef.source_interpolation_ind;
@@ -37,7 +35,6 @@ switch type
             data.source_structure{zef_ind}=zef.(zef_name);
         end
 
-
     case 'gmm'
         data.model = zef.GMM.model;
         data.dipoles = zef.GMM.dipoles;
@@ -45,16 +42,7 @@ switch type
         data.time_variables = zef.GMM.time_variables;
         data.parameters = zef.GMM.parameters;
 
-
-
 end
-
-
-
-
-
-
-
 
 end
 

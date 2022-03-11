@@ -38,7 +38,6 @@ n_multires = evalin('base','zef.inv_multires_n_levels');
 sparsity_factor = evalin('base','zef.inv_multires_sparsity');
 n_decompositions = evalin('base','zef.inv_multires_n_decompositions');
 
-
 weight_vec_aux = (sparsity_factor.^[0:n_multires-1]');
 
 norms = [];
@@ -118,7 +117,6 @@ for n_rep = 1:n_decompositions
     else
         Q = 3e-10*eye(size(L_aux,2));
 
-
     end
     % std_lhood
     R = std_lhood^2 * eye(size(L_aux,1));
@@ -138,11 +136,9 @@ for n_rep = 1:n_decompositions
 
 z_inverse = EnKF(m,A,P,Q,L_aux,R,timeSteps,number_of_frames, 100);
 
-
 for i= 1:number_of_frames
     z_inverse_results{i}{n_rep} = z_inverse{i}(mr_ind);
 end
-
 
 %% RTS SMOOTHING
 smoothing = evalin('base','zef.kf_smoothing');
@@ -153,7 +149,6 @@ Q = gather(Q);
 A = gather(A);
 [P_s_store, m_s_store, G_store] = RTS_smoother(P_store, z_inverse, A, Q, number_of_frames);
 %z_inverse = m_s_store;
-
 
 %% Q ESTIMATION
 [sigma, phi, B, C, D] =Q_quantities(P_s_store,m_s_store,G_store,timeSteps);
@@ -167,7 +162,6 @@ end
 
 end
 
-
 %% COMPOSITIONS
 
 % average
@@ -179,7 +173,6 @@ end
 for i = 1:size(z_inverse_results,2)
     z_inverse_results{i} = z_inverse_results{i}{end};
 end
-
 
 %% POSTPROCESSING
 [z] = zef_postProcessInverse(z_inverse_results, procFile);

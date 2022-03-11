@@ -13,9 +13,6 @@ function [posOri, magnetometerLabel, gradiometerLabel, tra] = getMagnetometerPos
 %If not set,     OptionalPlace='', so the current matlab folder
 %                OptionalName='magnetometer'
 
-
-
-
 if nargin==1
     OptionalSaveToFile0or1=1;
     OptionalName='magnetometer';
@@ -31,31 +28,9 @@ if nargin==3
     OptionalSaveToFile0or1=1;
 end
 
-
-
-
-
-
     tra=MEGdata.grad.tra;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 posOri=horzcat(MEGdata.grad.coilpos, MEGdata.grad.coilori);
-
-
-
 
 gradiometerLabel=MEGdata.grad.label;
 
@@ -67,7 +42,6 @@ for i=1:271
 magnetometerLabel{i}=strcat(gradiometerLabel{i}, '_mag1');
 magnetometerLabel{i+271}=strcat(gradiometerLabel{i}, '_mag2');
 end
-
 
 i=543;
 for j=272:298
@@ -95,16 +69,10 @@ index=find(tra(1,:));
 
 index=horzcat(1:271*2, index(3:end)); %the first 271*2 coils are for measurement, the rest as ref
 
-
 posOri=posOri(index, :);
 gradiometerLabel=gradiometerLabel(1:271);
 tra=tra(1:271, index);
 magnetometerLabel=magnetometerLabel(index);
-
-
-
-
-
 
 %
 %
@@ -114,14 +82,12 @@ if OptionalSaveToFile0or1
 
     disp(strcat({'writing data to '}, name, '*.dat'));
 
-
     writecell(magnetometerLabel, strcat(name, 'magnetometerLabel.dat')) ;
     writecell(gradiometerLabel, strcat(name, 'gradiometerLabel.dat'));
     writematrix(tra, strcat(name, 'tra.dat')) ;
     writematrix(posOri, strcat(name, 'posOri.dat')) ;
 end
 %
-
 
 end
 

@@ -59,7 +59,6 @@ reconstruction_information.exp_multires_n_decompositions = n_decompositions;
 reconstruction_information.exp_multires_n_levels = n_multires;
 reconstruction_information.exp_multires_sparsity = sparsity_factor;
 
-
 [L,n_interp, procFile] = zef_processLeadfields(source_direction_mode);
 
 if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
@@ -87,7 +86,6 @@ for f_ind = 1 : number_of_frames
 z_vec = ones(size(L,2),1);
 theta = zeros(length(z_vec),1)+(beta+1/q-1)./theta0;
 
-
 if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
     f = gpuArray(f);
 end
@@ -108,7 +106,6 @@ if f_ind > 1
 else
         waitbar(n_rep/n_decompositions,h,['IAS MAP iteration. Dec. ' int2str(n_rep) ' of ' int2str(n_decompositions) ', Time step ' int2str(f_ind) ' of ' int2str(number_of_frames) '.' ]);
 end
-
 
 for j = 1 : n_multires
 
@@ -196,7 +193,6 @@ end
 if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
 z_vec = gather(z_vec);
 end
-
 
 if n_iter(j) > 0
 theta = theta(mr_ind);

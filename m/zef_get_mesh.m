@@ -69,7 +69,6 @@ end
     end
 end
 
-
 if merge_on
     submesh_data = [submesh_data size(mesh_data_2,1)];
 else
@@ -77,7 +76,6 @@ else
 end;
 
 end
-
 
 if isequal(file_type,'stl')
 
@@ -90,7 +88,6 @@ mesh_data_1 = [l1_points; l2_points];
 else
 mesh_data_1 = stl_data.Points;
 end
-
 
 if merge_on
 l1_triangles = evalin('base',['zef.' field_id '_triangles']);
@@ -110,12 +107,10 @@ else
 
 mesh_data_2 = stl_data.ConnectivityList;
 
-
 if invert_on
     mesh_data_2 = mesh_data_1(:,[2 1 3]);
 end
     end
-
 
 if merge_on
     submesh_data = [submesh_data size(mesh_data_2,1)];
@@ -123,10 +118,7 @@ else
    submesh_data = [size(mesh_data_2,1)];
 end;
 
-
-
 end
-
 
 if isequal(file_type,'asc')
 
@@ -181,12 +173,10 @@ else
 
 mesh_data_2 = triangle_data;
 
-
 if invert_on
     mesh_data_2 = mesh_data_1(:,[2 1 3]);
 end
     end
-
 
 if merge_on
     submesh_data = [submesh_data size(mesh_data_2,1)];

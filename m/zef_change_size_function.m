@@ -1,6 +1,5 @@
 function [p_vec_window] = zef_change_size_function(object_handle, current_size, varargin)
 
-
 relative_size = [];
 exclude_type = cell(0);
 if not(isempty(varargin))

@@ -51,7 +51,6 @@ noise_data{noisedata_ind} = tree.(workingHashes{i}).data.noisedata;
  L_aux{lf_ind} = tree.(workingHashes{i}).data.L;
  end
 
-
 end
 
 if noisedata_ind == 0

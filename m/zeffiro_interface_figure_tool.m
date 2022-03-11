@@ -28,7 +28,6 @@ zef.h_zeffiro = figure(...
 'InvertHardcopy',get(0,'defaultfigureInvertHardcopy'),...
 'ScreenPixelsPerInchMode','manual' );
 
-
 zef.h_zeffiro.ContextMenu = uicontextmenu(zef.h_zeffiro);
 uimenu(zef.h_zeffiro.ContextMenu,'Text','Axes pop-up','MenuSelectedFcn','zef_axes_popup;');
 
@@ -39,7 +38,6 @@ zef.h_axes1 = uiaxes('Parent',zef.h_zeffiro,'visible','on','Units','normalized',
 uicontrol('Style','text','Parent',zef.h_zeffiro,'Units','normalized','String','Loop on/count:','HorizontalAlignment','left','Position',[0.68 0.10 0.12 0.03]);
 
 uicontrol('Style','text','Parent',zef.h_zeffiro,'Units','normalized','String','','HorizontalAlignment','left','Position',[0.03 0.95 0.3 0.03],'Tag','time_text');
-
 
 uicontrol('Tag','slidertext','Style','text','Parent',zef.h_zeffiro,'Units','normalized','String','Time:','HorizontalAlignment','left','Position',[0.68 0.90 0.12 0.03]);
 uicontrol('Tag','slidertext','Style','text','Parent',zef.h_zeffiro,'Units','normalized','String','Color min:','HorizontalAlignment','left','Position',[0.68 0.85 0.12 0.03]);
@@ -69,12 +67,10 @@ zef.h_update_diffusion = uicontrol('Tag','update_diffusion_slider','Style','slid
 zef.h_update_specular = uicontrol('Tag','update_specular_slider','Style','slider','Parent',zef.h_zeffiro,'Units','normalized','Position',[0.80 0.25 0.17 0.03],'Min',0,'Max',1,'Value',zef.update_specular,'Sliderstep',[0.01 0.01],'Callback','if isequal(get(gca,''Parent''), zef.h_zeffiro); zef.update_specular = zef_update_specular; else; zef_update_specular(gcf);end');
 zef.h_update_lights = uicontrol('Tag','lightsselection','Style','popupmenu','Parent',zef.h_zeffiro,'Units','normalized','Position',[0.80 0.20 0.17 0.03],'string',{'Default (vertical)','Lights off','Add x-lights','Add y-lights','Add z-lights','Add headlight'},'Callback','if isequal(get(gca,''Parent''), zef.h_zeffiro); zef.update_lights = zef_update_lights; else; zef.update_lights = zef_update_lights(gcf);end');
 
-
 zef.h_reset_figure_tool_sliders = uicontrol('Style','togglebutton','Parent',zef.h_zeffiro,'visible','on','Units','normalized','Position',[0.68 0.03 0.065 0.05],'String','Reset','Callback','zef_set_figure_tool_sliders(0);zef.h_reset_figure_tool_sliders.Value=0;');
 zef.h_play_movie = uicontrol('Style','pushbutton','Parent',zef.h_zeffiro,'visible','on','Units','normalized','Position',[0.755 0.03 0.065 0.05],'String','Play','Callback','zef_play_cdata(max(1,double(get(findobj(get(gcf,''Children''),''Tag'',''loop_movie''),''UserData''))*get(findobj(get(gcf,''Children''),''Tag'',''loop_count''),''UserData'')));');
 zef.h_stop_movie = uicontrol('Style','togglebutton','Parent',zef.h_zeffiro,'visible','on','Units','normalized','Position',[0.83 0.03 0.065 0.05],'String','Stop','Callback',@zef_callbackstop);
 zef.h_pause_movie = uicontrol('Style','togglebutton','Parent',zef.h_zeffiro,'visible','on','Units','normalized','Position',[0.905 0.03 0.065 0.05],'String','Pause','Callback',@zef_callbackpause);
-
 
 zef.h_slider=uicontrol('Tag','slider','Style','slider','Parent',zef.h_zeffiro,'Units','normalized','Position',[0.80 0.90 0.17 0.03],'Min',1e-6,'Max',1,'Value',1e-5,'Sliderstep',[0.01 0.01],'Callback','zef_slidding_callback;');
 zef.h_loop_movie = uicontrol('Style','Checkbox','Parent',zef.h_zeffiro,'visible','on','Units','normalized','Position',[0.89 0.10 0.03 0.03],'Callback','if isequal(get(gca,''Parent''), zef.h_zeffiro); zef.loop_movie = get(gcbo,''value''); end;  set(gcbo,''UserData'',get(gcbo,''value''));','HorizontalAlignment','left','Tag','loop_movie');
@@ -139,8 +135,6 @@ uicontrol(...
 'Children',[],'FontSize',0.461256944444443);
 
 uicontrol('Style','text','Parent',zef.h_zeffiro,'Units','normalized','String','Copyright © 2018- Sampsa Pursiainen & ZI Development Team. See: https://github.com/sampsapursiainen/zeffiro_interface','HorizontalAlignment','left','Position',[0.03 0.005 0.6 0.02],'Tag','copyright_text');
-
-
 
 zef_update_fig_details;
 

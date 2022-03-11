@@ -6,8 +6,6 @@ if ~iscell(hash)
 end
 info=cell(length(hash), 3);
 
-
-
 for i=1:length(hash)
 
     info{i,1}=hash{i};

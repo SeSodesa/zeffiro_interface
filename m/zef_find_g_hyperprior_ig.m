@@ -28,7 +28,6 @@ if length(varargin) > 3
 balance_snr = varargin{4};
 end
 
-
 if isempty(L)
     snr_vec = snr_val;
     snr_vec_limited = snr_vec;

@@ -119,7 +119,6 @@ else
 zef.enable_str = 'off';
 end;
 
-
 set(zef.h_edit9007, 'enable', zef.enable_str);
 set(zef.h_edit229, 'enable', zef.enable_str);
 set(zef.h_edit270, 'enable', zef.enable_str);
@@ -141,7 +140,6 @@ zef.enable_str = 'on';
 else
 zef.enable_str = 'off';
 end;
-
 
 set(zef.h_edit9008, 'enable', zef.enable_str);
 set(zef.h_edit329, 'enable', zef.enable_str);
@@ -576,85 +574,4 @@ set(zef.h_d22_button_1,'enable', zef.enable_str);
 if not(isequal(zef.mlapp,1))
 set(zef.h_d22_button_2,'enable', zef.enable_str);
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

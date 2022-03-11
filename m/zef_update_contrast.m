@@ -23,5 +23,4 @@ colormap_vec = zef_brightness_and_contrast(zef_colormap(colormap_ind), brightnes
 
 h.Colormap = colormap_vec;
 
-
 end

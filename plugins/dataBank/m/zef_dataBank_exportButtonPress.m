@@ -1,6 +1,4 @@
 
-
-
 zef_dataBank_getHashForMenu;
 [savefile,savepath] = uiputfile('*','Select a file');
 
@@ -15,6 +13,5 @@ else
     tree=zef.dataBank.tree;
     save(strcat(savepath, savefile), '-struct', 'tree');
 end
-
 
 clear data savefile savepath tree

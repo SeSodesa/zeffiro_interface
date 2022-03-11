@@ -2,7 +2,6 @@
 %See: https://github.com/sampsapursiainen/zeffiro_interface
 function [z,reconstruction_information] = zef_ramus_iteration(void)
 
-
 h = waitbar([0 0 0],['RAMUS iteration.']);
 [s_ind_1] = unique(evalin('base','zef.source_interpolation_ind{1}'));
 n_interp = length(s_ind_1);
@@ -39,9 +38,7 @@ reconstruction_information.ias_hyperprior = evalin('base','zef.ramus_hyperprior'
 reconstruction_information.snr_val = evalin('base','zef.ramus_snr');
 reconstruction_information.pm_val = evalin('base','zef.inv_prior_over_measurement_db');
 
-
 [L,n_interp, procFile] = zef_processLeadfields(source_direction_mode);
-
 
 if evalin('base','zef.use_gpu') == 1 & gpuDeviceCount > 0
 L = gpuArray(L);
@@ -72,7 +69,6 @@ if source_direction_mode == 3
 z_aux = zeros(3*size(L_aux,2),1);
 end
 z_vec = ones(size(L_aux,2),1);
-
 
 [f] = zef_getTimeStep(f_data, f_ind, true);
 
@@ -143,7 +139,6 @@ elseif evalin('base','zef.inv_hyperprior') == 2
 [beta, theta0] = zef_find_g_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L_aux_2,source_count,evalin('base','zef.ramus_normalize_data'),balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
 end
 
-
 if n_rep == 1 || evalin('base','zef.ramus_init_guess_mode') == 2
 if evalin('base','zef.inv_hyperprior') == 1
 if length(theta0) > 1  || length(beta) > 1
@@ -161,7 +156,6 @@ end
 else
 theta = theta(mr_dec);
 end
-
 
 for i = 1 : n_iter(j)
 if f_ind > 1;
@@ -209,10 +203,7 @@ end
 z_vec = z_vec_aux/(n_multires*n_decompositions*sum(weight_vec_aux));
 z_inverse{f_ind} = z_vec;
 
-
-
 end;
-
 
 [z] = zef_postProcessInverse(z_inverse, procFile);
 [z] = zef_normalizeInverseReconstruction(z);
@@ -220,5 +211,4 @@ end;
 close(h);
 
 end
-
 

@@ -23,7 +23,6 @@ for i = 1 : length(h)
 
 h(i).FaceAlpha = min(1,kappa);
 
-
 end
 
 end

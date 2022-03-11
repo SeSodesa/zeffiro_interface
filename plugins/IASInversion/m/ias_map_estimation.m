@@ -10,7 +10,6 @@ end
 
 set(zef.h_ias_map_estimation,'Position',[ 0.5764    0.2944    0.15    0.40]);
 
-
 set(zef.h_ias_map_estimation,'Name','ZEFFIRO Interface: IAS MAP estimation');
 set(findobj(zef.h_ias_map_estimation.Children,'-property','FontUnits'),'FontUnits','pixels')
 set(findobj(zef.h_ias_map_estimation.Children,'-property','FontSize'),'FontSize',zef.font_size);

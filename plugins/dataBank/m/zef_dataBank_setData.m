@@ -1,17 +1,11 @@
 
-
-
-
 dbFieldNames=fieldnames(zef.dataBank.tree.(zef.dataBank.hash).data);
-
 
 for dbi=1:length(dbFieldNames)
      if strcmp(zef.dataBank.tree.(zef.dataBank.hash).type, 'gmm')
 
           zef_load_GMM(zef.dataBank.tree.(zef.dataBank.hash).data);
           zef_GMM_update;
-
-
 
      else
 
@@ -34,15 +28,4 @@ if zef.dataBank.loadParents
         end
 
 end
-
-
-
-
-
-
-
-
-
-
-
 

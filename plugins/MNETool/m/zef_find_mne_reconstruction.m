@@ -38,12 +38,9 @@ info.time_step = evalin('base','zef.mne_time_3');
 info.source_direction_mode = evalin('base','zef.source_direction_mode');
 info.source_directions = evalin('base','zef.source_directions');
 
-
-
 if source_direction_mode == 2
 
 [s_ind_3] = evalin('base','zef.source_interpolation_ind{3}');
-
 
 i = 0;
 length_reuna = 0;
@@ -176,7 +173,6 @@ clear L_0 L_1 L_2 L_3 s_1 s_2 s_3;
 
 end
 
-
 source_count = n_interp;
 if evalin('base','zef.mne_normalize_data')==1;
     normalize_data = 'maximum';
@@ -191,7 +187,6 @@ else
 end
 
 [theta0] = zef_find_gaussian_prior(snr_val-pm_val,L,size(L,2),evalin('base','zef.mne_normalize_data'),0);
-
 
 if evalin('base','zef.use_gpu') == 1 & gpuDeviceCount > 0
 L = gpuArray(L);
@@ -208,13 +203,11 @@ else
 number_of_frames = 1;
 end
 
-
 if iscell(evalin('base','zef.measurements'));
 f = evalin('base',['zef.measurements{' int2str(evalin('base','zef.mne_data_segment')) '}']);
 else
 f = evalin('base','zef.measurements');
 end
-
 
 data_norm = 1;
 if evalin('base','zef.mne_normalize_data')==1;
@@ -249,7 +242,6 @@ if f_ind > 1;
 date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400));
 end;
 
-
 if ismember(source_direction_mode, [1,2])
 z_aux = zeros(size(L,2),1);
 end
@@ -257,9 +249,6 @@ if source_direction_mode == 3
 z_aux = zeros(3*size(L,2),1);
 end
 z_vec = ones(size(L,2),1);
-
-
-
 
 %aux_norm = (sum(L.^2))';
 %aux_norm = aux_norm./max(aux_norm(:));
@@ -284,8 +273,6 @@ if evalin('base','zef.use_gpu') == 1 & gpuDeviceCount > 0
 f = gpuArray(f);
 end
 
-
-
 if f_ind > 1;
 waitbar(f_ind/number_of_frames,h,['Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
 else
@@ -304,7 +291,6 @@ d_sqrt = gpuArray(d_sqrt);
 end
 L_inv = L.*repmat(d_sqrt',size(L,1),1);
 L_inv = d_sqrt.*(L_inv'*(inv(L_inv*L_inv' + S_mat)));
-
 
 if isequal(mne_type,2)
 % dSPM

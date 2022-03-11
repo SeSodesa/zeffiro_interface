@@ -17,7 +17,6 @@ h_object_2 = findobj(get(h_figure,'Children'),'Tag','update_brightness_slider');
 h_object_3 = findobj(get(h_figure,'Children'),'Tag','colormapselection');
 end
 
-
 slider_value_new = h_object_1.Value;
 
 contrast_val = slider_value_new;
@@ -28,6 +27,5 @@ colormap_ind = h_object_3.Value;
 colormap_vec = zef_brightness_and_contrast(zef_colormap(colormap_ind), brightness_val, contrast_val);
 
 h.Colormap = colormap_vec;
-
 
 end

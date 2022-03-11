@@ -1,6 +1,5 @@
 function x = EM_Lasso(L,sigma,y,gamma,x0)
 
-
 %MAP estimate using EM algorithm
 %L1 norm minimization problem (LASSO):
 %0.5|1/sigma(Lx-y)\|_2^2+0.5*\sum_i [gamma_i |x_i|]
@@ -50,13 +49,11 @@ while (converged==0)
 
     log_new = log_prob_lap(x,gamma);
 
-
     % % We have converged if the slope of the function falls below 'threshold',
     % % i.e., |f(t) - f(t-1)| / avg < threshold,
     % % where avg = (|f(t)| + |f(t-1)|)/2
     % % 'threshold' defaults to 1e-4.
     % % This stopping criterion is from Numerical Recipes in C p423
-
 
     delta_log = abs(log_new-log_old);
     avg_neg_log = (abs(log_new)+abs(log_old)+eps)/2;

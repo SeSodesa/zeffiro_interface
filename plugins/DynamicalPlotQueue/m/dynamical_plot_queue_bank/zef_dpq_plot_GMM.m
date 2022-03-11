@@ -38,7 +38,6 @@ GMMdipoles = evalin('base','zef.GMM.dipoles');
 alpha = str2num(parameters{6})/100;
 r = sqrt(chi2inv(alpha,3));
 
-
 %colors for confidence ellipsoids:
 if strcmp(ellip_coloring_type,'1')
     colors = [1,0,0;0,1,0;0,0,1;1,0.5,0;0,1,1;0.5,0,1;1,0.5,0.5;0.4,1,0.8;0.2,0.6,1;1,0.8,0.6;0.8,1,0.6;0.6,1,1;0.8,0.6,1];
@@ -99,7 +98,6 @@ else
         end
     end
 end
-
 
 h = evalin('caller','h_axes_image');
 hold(h,'on');
@@ -186,7 +184,6 @@ hold(h,'off')%set old time parameters back to their places:
 
 %If time serie exists:
 else
-
 
     if isempty(GMModel{t})
         error(['There is no Gaussian mixture model for the frame ',num2str(t),'.'])

@@ -584,7 +584,6 @@ a_hist = max(0,real(log10(a_hist)));
 length_reconstruction = length(reconstruction);
 %******************************************************
 
-
 %******************************************************
 if iscell(volumetric_distribution)
 reconstruction = evalin('base',['zef.reconstruction{' int2str(frame_start) '}']);
@@ -731,7 +730,6 @@ colortune_param = evalin('base','zef.colortune_param');
 colormap_cell = evalin('base','zef.colormap_cell');
 set(h_fig_aux,'colormap', evalin('base',[colormap_cell{evalin('base','zef.inv_colormap')} '(' num2str(colortune_param) ',' num2str(colormap_size) ')']));
 
-
 axes(h_axes_image); set(h_fig_aux,'visible','on');
 h_surf_2 = trimesh(surface_triangles(I_3,:),nodes(:,1),nodes(:,2),nodes(:,3),reconstruction);
 set(h_surf_2,'Tag','sensor');
@@ -838,13 +836,11 @@ set(gca,'yGrid','off');
 set(gca,'zGrid','off');
 end
 
-
   if evalin('base','zef.visualization_type') == 2
   h_axes_text = axes('position',[0.03 0.94 0.01 0.05],'visible','off');
   h_text = text(0, 0.5, ['Time: ' num2str(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2')/2 + frame_step*(f_ind - 1)*evalin('base','zef.inv_time_3'),'%0.6f') ' s, Frame: ' num2str(f_ind) ' / ' num2str(length_reconstruction_cell) '.']);
   set(h_text,'visible','on','fontsize',1500);
   end
-
 
 camva(c_va);
 campos(c_pos);
@@ -915,7 +911,6 @@ delete(h_text);
 axes(h_axes_image);set(h_fig_aux,'visible','on');
 delete(h_surf_2);
 hold on;
-
 
 %******************************************************
 if iscell(volumetric_distribution)
@@ -1042,7 +1037,6 @@ if ismember(evalin('base','zef.volumetric_distribution_mode'),[1, 3])
 zef_plot_cone_field(h_axes_image, f_ind, 2);
 end
 
-
 set(h_surf_2,'edgecolor','none','facecolor','flat','facelighting','flat','CDataMapping','scaled');
 set(gca,'CLim',[min_rec max_rec]);
 %set(h_surf_2,'specularstrength',0.2);
@@ -1078,9 +1072,6 @@ zef_plot_dpq('dynamical');
 zef_set_sliders_print(1,h_axes_image);
 camorbit(frame_step*evalin('base','zef.orbit_1')/movie_fps,frame_step*evalin('base','zef.orbit_2')/movie_fps);
 
-
-
-
 if evalin('base','zef.visualization_type') == 2
 h_bar = bar(h_axes_hist,b_hist+(max_rec-min_rec)/(2*50),a_hist,'hist');
 set(h_bar,'facecolor',[0.5 0.5 0.5]);
@@ -1095,7 +1086,6 @@ set(h_axes_hist,'ticklength',[0 0]);
   axes(h_axes_text);set(h_fig_aux,'visible','on');
   h_text = text(0, 0.5, ['Time: ' num2str(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2')/2 + frame_step*(f_ind - 1)*evalin('base','zef.inv_time_3'),'%0.6f') ' s, Frame: ' num2str(f_ind) ' / ' num2str(length_reconstruction_cell) '.']);
   set(h_text,'visible','on','fontsize',1500);
-
 
 end
 
@@ -1115,11 +1105,8 @@ end
 
 end
 
-
 %&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 %&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-
-
 
 if iscell(volumetric_distribution) &  evalin('base','zef.visualization_type') == 2 & is_video & file_index == 4
 close(h_aviobj);
@@ -1166,7 +1153,6 @@ is_video = 0;
 end
 end
 
-
 if ismember(evalin('base','zef.visualization_type'),[5])
 if iscell(evalin('base','zef.top_reconstruction'))
 length_reconstruction_cell = length(evalin('base','zef.top_reconstruction'));
@@ -1192,8 +1178,6 @@ else
 is_video = 0;
 end
 end
-
-
 
 if iscell(volumetric_distribution) &  evalin('base','zef.visualization_type') == 3 & is_video & file_index == 4
 avi_file_temp = [file_path file_name(1:end-4) '_temp.avi'];
@@ -1311,7 +1295,6 @@ end
 end
 end
 
-
 if ismember(evalin('base','zef.visualization_type'),[5])
 max_abs_reconstruction = 0;
 min_rec = Inf;
@@ -1387,7 +1370,6 @@ end
 end
 end
 
-
 snapshot_resolution = round([evalin('base','zef.snapshot_vertical_resolution') evalin('base','zef.snapshot_horizontal_resolution')]);
 
 h_fig_aux = figure;set(h_fig_aux,'visible','on');
@@ -1413,7 +1395,6 @@ if not(isempty(sensors_visible))
       sensors_color_table = sensors_color_table(sensors_visible,:);
 end
 %April 2021
-
 
 [X_s, Y_s, Z_s] = sphere(50);
 sphere_scale = aux_scale_val;
@@ -1471,7 +1452,6 @@ end
 clipped = 1;
 end
 
-
 if evalin('base','zef.cp2_on')
 cp2_a = evalin('base','zef.cp2_a');
 cp2_b = evalin('base','zef.cp2_b');
@@ -1521,7 +1501,6 @@ aux_ind_2{i} = zef_clipping_plane(tetra_c{i},clipping_plane);
 end
 clipped = 1;
 end
-
 
 if evalin('base','zef.cp_on') || evalin('base','zef.cp2_on') || evalin('base','zef.cp3_on')
 if evalin('base','zef.cp_mode') == 1
@@ -1609,7 +1588,6 @@ aux_ind_1 = [];
 aux_ind_2 = cell(1,length(reuna_t));
 triangle_c = cell(1,length(reuna_t));
 
-
 if ismember(evalin('base','zef.imaging_method'), [1 4 5])  & size(sensors,2) == 6
     electrode_model = 2;
 elseif ismember(evalin('base','zef.imaging_method'), [1 4 5])
@@ -1649,7 +1627,6 @@ sensors_patch_like_index = setdiff(1:size(sensors,1),sensors_point_like_index);
 else
     electrode_model = 1;
 end
-
 
 if evalin('base',['zef.' sensor_tag '_visible'])
 if electrode_model == 1 | not(ismember(evalin('base','zef.imaging_method'),[1,4,5]))
@@ -1733,7 +1710,6 @@ end
 end
 end
 
-
 if ismember(evalin('base','zef.visualization_type'),[3,4,5])
 
     if ismember(evalin('base','zef.visualization_type'),[3,5])
@@ -1769,9 +1745,7 @@ colortune_param = evalin('base','zef.colortune_param');
 colormap_cell = evalin('base','zef.colormap_cell');
 set(h_fig_aux,'colormap', evalin('base',[colormap_cell{evalin('base','zef.inv_colormap')} '(' num2str(colortune_param) ',' num2str(colormap_size) ')']));
 
-
 if ismember(evalin('base','zef.visualization_type'),[4])
-
 
 if evalin('base','zef.use_parcellation')
 reconstruction = ones(size(reuna_t{i},1),1);
@@ -1807,7 +1781,6 @@ end
 a_hist = max(0,real(log10(a_hist)));
 length_reconstruction = length(reconstruction);
 %******************************************************
-
 
 if iscell(volumetric_distribution)
 reconstruction = single(evalin('base',['zef.reconstruction{' int2str(frame_start) '}']));
@@ -1874,7 +1847,6 @@ reconstruction = sqrt(max(reconstruction,max_abs_reconstruction/evalin('base','z
 end
 end
 
-
 if evalin('base','zef.use_parcellation')
 reconstruction_aux = zeros(size(reconstruction));
 p_rec_aux =  ones(size(reuna_p{i},1),1).*evalin('base','zef.layer_transparency');
@@ -1908,7 +1880,6 @@ end
 if ismember(evalin('base','zef.volumetric_distribution_mode'),[1, 3])
 zef_plot_cone_field(h_axes_image, f_ind, 2);
 end
-
 
 %marker here
 set(h_surf_2{ab_ind},'edgecolor','none','facecolor','flat','facelighting','flat','CDataMapping','scaled');
@@ -1969,31 +1940,25 @@ end
 %set(h_colorbar,'layer','bottom');
 lighting phong;
 
-
-
 else
 
     if ismember(evalin('base','zef.visualization_type'),[5]) && i == length(reuna_p)
 %%%%%Topography reconstruction.
 
-
 if  iscell(evalin('base','zef.top_reconstruction'))
 h_waitbar = waitbar(1/number_of_frames,['Frame ' int2str(1) ' of ' int2str(number_of_frames) '.']);
 set(h_waitbar,'handlevisibility','off');
 end
 
-
 if  iscell(evalin('base','zef.top_reconstruction'))
 h_waitbar = waitbar(1/number_of_frames,['Frame ' int2str(1) ' of ' int2str(number_of_frames) '.']);
 set(h_waitbar,'handlevisibility','off');
 end
-
 
 colormap_size = 4096;
 colortune_param = evalin('base','zef.colortune_param');
 colormap_cell = evalin('base','zef.colormap_cell');
 set(h_fig_aux,'colormap', evalin('base',[colormap_cell{evalin('base','zef.inv_colormap')} '(' num2str(colortune_param) ',' num2str(colormap_size) ')']));
-
 
 if iscell(evalin('base','zef.top_reconstruction'))
 reconstruction = single(evalin('base',['zef.top_reconstruction{' int2str(frame_start) '}']));
@@ -2071,7 +2036,6 @@ set(h_surf,'facealpha',evalin('base','zef.layer_transparency'));
 lighting phong;
 %end
 end
-
 
 end
 end
@@ -2183,7 +2147,6 @@ elseif file_index ==3;
 print(h_fig_aux,[file_path file_name],'-dpng','-r1');
 end;
 end
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2324,7 +2287,6 @@ if ismember(evalin('base','zef.volumetric_distribution_mode'),[1, 3])
 zef_plot_cone_field(h_axes_image, f_ind, 2);
 end
 
-
 set(h_surf_2{ab_ind},'edgecolor','none','facecolor','flat','facelighting','flat','CDataMapping','scaled');
 set(gca,'CLim',[min_rec max_rec]);
 %set(h_surf_2{ab_ind},'specularstrength',0.2);
@@ -2357,13 +2319,11 @@ set(h_surf_2{ab_ind},'FaceAlpha','interp');
 set(h_surf_2{ab_ind},'AlphaDataMapping','none');
 end
 
-
 end
 
 elseif ismember(evalin('base','zef.visualization_type'),[5])
 
     %Topography reconstruction.
-
 
 reconstruction = single(evalin('base',['zef.top_reconstruction{' int2str(f_ind) '}']));
 reconstruction = reconstruction(:);
@@ -2382,8 +2342,6 @@ end
 if ismember(evalin('base','zef.volumetric_distribution_mode'),[1, 3])
 zef_plot_cone_field(h_axes_image, f_ind, 2);
 end
-
-
 
 set(h_surf_2{i},'edgecolor','none','facecolor','flat','facelighting','flat','CDataMapping','scaled');
 set(gca,'CLim',[min_rec max_rec]);
@@ -2449,9 +2407,6 @@ set(h_axes_hist,'linewidth',200);
 set(h_axes_hist,'ticklength',[0 0]);
 end
 
-
-
-
   if file_index == 1;
   print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
   elseif file_index ==2;
@@ -2469,7 +2424,6 @@ end
 end
 
 end
-
 
 else
 
@@ -2532,9 +2486,7 @@ elseif file_index ==3;
 print(h_fig_aux,[file_path file_name],'-dpng','-r1');
 end;
 
-
 end
-
 
 if iscell(volumetric_distribution) &  evalin('base','zef.visualization_type') == 3 & is_video & file_index == 4
 close(h_aviobj);
@@ -2558,10 +2510,5 @@ end
 
 end
 
-
-
-
 end
-
-
 
