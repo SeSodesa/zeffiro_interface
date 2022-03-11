@@ -14,72 +14,72 @@ methIndex=[1, 55, 109];
 figure;
 pInd=1;
 for mod=[1,2,3] %[1,2, 3]
-    index=1;
+index=1;
 
-    for ind=1:3
+for ind=1:3
 
-        %index=methIndex(ind);
+%index=methIndex(ind);
 
-        distances=nan(12,6);
-        % clc;
-        for p=1:16
-            for s=1:10
+distances=nan(12,6);
+% clc;
+for p=1:16
+for s=1:10
 
-               % if mod~=4
+% if mod~=4
 
-                zef.dataBank.hash=strcat('node_', num2str(mod),'_3_', num2str(index));
-                %else
-                 %   zef.dataBank.hash=strcat('node_', num2str(mod),'_3_', num2str(index));
-                %end
+zef.dataBank.hash=strcat('node_', num2str(mod),'_3_', num2str(index));
+%else
+%   zef.dataBank.hash=strcat('node_', num2str(mod),'_3_', num2str(index));
+%end
 
-                %zef.dataBank.loadParents=true;
+%zef.dataBank.loadParents=true;
 
-                zef_dataBank_setData;
-                %   zef.reconstruction_information
+zef_dataBank_setData;
+%   zef.reconstruction_information
 
-                %zef.dataBank.loadParents=false;
+%zef.dataBank.loadParents=false;
 
-                % find maximum of reconstruction
+% find maximum of reconstruction
 
-                values=nan(length(zef.reconstruction{1})/3,1);
-                j=1;
-                for k=1:3:length(zef.reconstruction{1})
-                    values(j)=zef.reconstruction{1}(k)^2+zef.reconstruction{1}(k+1)^2+zef.reconstruction{1}(k+2)^2;
-                    j=j+1;
-                end
+values=nan(length(zef.reconstruction{1})/3,1);
+j=1;
+for k=1:3:length(zef.reconstruction{1})
+values(j)=zef.reconstruction{1}(k)^2+zef.reconstruction{1}(k+1)^2+zef.reconstruction{1}(k+2)^2;
+j=j+1;
+end
 
-                [~, Maxind]=max(values);
+[~, Maxind]=max(values);
 
-                %[~, posDiffmax]=knnsearch(signal_pos, zef.source_positions(ind, :));
-                %[~, posDiffmax_res]=knnsearch(AP, zef.source_positions(ind, :));
-                %nearestNeighbor(A,zef.source_positions(ind, 1),zef.source_positions(ind, 2),zef.source_positions(ind, 3) );
-                distances(p,s)=zef_distance_to_resection(zef.source_positions(Maxind, :),AP, AF);
+%[~, posDiffmax]=knnsearch(signal_pos, zef.source_positions(ind, :));
+%[~, posDiffmax_res]=knnsearch(AP, zef.source_positions(ind, :));
+%nearestNeighbor(A,zef.source_positions(ind, 1),zef.source_positions(ind, 2),zef.source_positions(ind, 3) );
+distances(p,s)=zef_distance_to_resection(zef.source_positions(Maxind, :),AP, AF);
 
-                index=index+1;
-            end
-        end
-        disp(index);
+index=index+1;
+end
+end
+disp(index);
 
-        %%
-        subplot(3,3,pInd)
-        pInd=pInd+1;
-        imagesc(distances');
-              xticks(1:length(psnr));
-        yticks(1:length(snr))
-        xticklabels(psnr);
-        xlabel('psnr');
-        yticklabels(snr);
-        ylabel('snr');
-        caxis([0, 50]);
+%%
+subplot(3,3,pInd)
+pInd=pInd+1;
+imagesc(distances');
+xticks(1:length(psnr));
+yticks(1:length(snr))
+xticklabels(psnr);
+xlabel('psnr');
+yticklabels(snr);
+ylabel('snr');
+caxis([0, 50]);
 
-        switch ind
-            case 1
-                title('Ramus');
-            case 2
-                title('mne');
-            case 3
-                title('sLoreta');
-        end
+switch ind
+case 1
+title('Ramus');
+case 2
+title('mne');
+case 3
+title('sLoreta');
+end
 
-    end
+end
 end

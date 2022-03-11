@@ -36,7 +36,7 @@ epoch_data = zeros(size(f,1), end_time_ind-start_time_ind+1);
 
 for i = 1 : length(epoch_points)
 
-    epoch_data = epoch_data + f(:, start_time_ind+epoch_point_ind(i):end_time_ind+epoch_point_ind(i));
+epoch_data = epoch_data + f(:, start_time_ind+epoch_point_ind(i):end_time_ind+epoch_point_ind(i));
 
 end
 

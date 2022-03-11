@@ -11,11 +11,11 @@ function SESAME_core_check
 program_path = evalin("base","zef.program_path");
 
 if ~isfile(fullfile(program_path,'plugins','SESAME','m','inverse_SESAME.m'))
-    SESAME_script = webread("https://raw.githubusercontent.com/i-am-sorri/SESAME_core/master/inverse_SESAME.m");
-    filename = fullfile(program_path,'plugins','SESAME','m','inverse_SESAME.m');
-    file_id = fopen(filename,'w');
-    fprintf(file_id,'%s',SESAME_script);
-    fclose(file_id);
+SESAME_script = webread("https://raw.githubusercontent.com/i-am-sorri/SESAME_core/master/inverse_SESAME.m");
+filename = fullfile(program_path,'plugins','SESAME','m','inverse_SESAME.m');
+file_id = fopen(filename,'w');
+fprintf(file_id,'%s',SESAME_script);
+fclose(file_id);
 end
 
 end

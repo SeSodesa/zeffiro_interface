@@ -64,9 +64,9 @@ zef.lf_param.dipole_mode = 1;
 % end
 % end
 %
- if ismember(zef.gravity_field_type,[1,2])
+if ismember(zef.gravity_field_type,[1,2])
 [zef.L, zef.inv_bg_data, zef.source_positions, zef.source_directions] = lead_field_gravity_grad(zef.nodes_aux,zef.tetra,zef.rho(:,1),zef.sensors_aux,zef.brain_ind,zef.source_ind,zef.lf_param);
- end
+end
 
 % if zef.imaging_method == 3;
 % if evalin('base','zef.prism_layers') && not(isempty(zef.prisms))

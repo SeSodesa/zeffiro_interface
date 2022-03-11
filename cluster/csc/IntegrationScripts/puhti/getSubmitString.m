@@ -4,8 +4,8 @@ function submitString = getSubmitString(jobName, quotedLogFile, quotedCommand, a
 % Copyright 2010-2019 The MathWorks, Inc.
 
 if ~isempty(jobArrayString)
-    jobArrayString = strcat(' --array=''[', jobArrayString, ']''');
+jobArrayString = strcat(' --array=''[', jobArrayString, ']''');
 end
 
 submitString = sprintf('sbatch --job-name=%s%s --output=%s %s %s', ...
-    jobName, jobArrayString, quotedLogFile, additionalSubmitArgs, quotedCommand);
+jobName, jobArrayString, quotedLogFile, additionalSubmitArgs, quotedCommand);

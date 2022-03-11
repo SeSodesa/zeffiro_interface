@@ -5,10 +5,10 @@ if evalin('base','zef.cone_draw') || evalin('base','zef.streamline_draw')
 rec_ind = 1;
 position_case = 1;
 if not(isempty(varargin))
-    rec_ind = varargin{1};
-    if length(varargin) > 1
-        position_case = varargin{2};
-    end
+rec_ind = varargin{1};
+if length(varargin) > 1
+position_case = varargin{2};
+end
 end
 
 lattice_res = evalin('base','zef.cone_lattice_resolution');
@@ -117,8 +117,8 @@ Z_field = zeros(size(Z_lattice));
 C_field = X_lattice;
 
 lattice_ind_aux = [max(1,ceil(lattice_res_x*(s_p(:,1)-min(s_p(:,1)))./(max(s_p(:,1))-min(s_p(:,1))))) ...
-    max(1,ceil(lattice_res_y*(s_p(:,2)-min(s_p(:,2)))./(max(s_p(:,2))-min(s_p(:,2)))))...
-    max(1,ceil(lattice_res_z*(s_p(:,3)-min(s_p(:,3)))./(max(s_p(:,3))-min(s_p(:,3)))))];
+max(1,ceil(lattice_res_y*(s_p(:,2)-min(s_p(:,2)))./(max(s_p(:,2))-min(s_p(:,2)))))...
+max(1,ceil(lattice_res_z*(s_p(:,3)-min(s_p(:,3)))./(max(s_p(:,3))-min(s_p(:,3)))))];
 
 lattice_ind_aux = (lattice_ind_aux(:,3)-1)*lattice_res_x*lattice_res_y + (lattice_ind_aux(:,1)-1)*lattice_res_y + lattice_ind_aux(:,2);
 

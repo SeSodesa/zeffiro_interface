@@ -47,11 +47,11 @@ reconstruction_information.inv_n_L1_iterations = n_L1_iter;
 reconstruction_information.exp_multires_n_iter = n_iter;
 
 if ismember(hyper_type,[1,2])
-    reconstruction_information.inv_hyperprior = evalin('base','zef.inv_hyperprior');
-    reconstruction_information.pm_val = evalin('base','zef.inv_prior_over_measurement_db');
+reconstruction_information.inv_hyperprior = evalin('base','zef.inv_hyperprior');
+reconstruction_information.pm_val = evalin('base','zef.inv_prior_over_measurement_db');
 else
-    reconstruction_information.exp_em_multires_theta0 = theta0;
-    reconstruction_information.exp_em_multires_beta = beta;
+reconstruction_information.exp_em_multires_theta0 = theta0;
+reconstruction_information.exp_em_multires_beta = beta;
 end
 
 reconstruction_information.exp_multires_n_decompositions = n_decompositions;
@@ -61,11 +61,11 @@ reconstruction_information.exp_multires_sparsity = sparsity_factor;
 [L,n_interp, procFile] = zef_processLeadfields(source_direction_mode);
 
 if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
-    L = gpuArray(L);
+L = gpuArray(L);
 end
 
 if length(n_iter) < n_multires
-    n_iter = n_iter(1)*ones(1,n_multires);
+n_iter = n_iter(1)*ones(1,n_multires);
 end
 
 z = cell(number_of_frames,1);
@@ -74,20 +74,20 @@ f_data = zef_getFilteredData;
 tic;
 for f_ind = 1 : number_of_frames
 
-        time_val = toc;
-    if f_ind > 1
-        date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400)); %what does that do?
-        waitbar(100,h,['Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
+time_val = toc;
+if f_ind > 1
+date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400)); %what does that do?
+waitbar(100,h,['Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
 
-    end
+end
 
-    f=zef_getTimeStep(f_data, f_ind, true);
-    z_vec = ones(size(L,2),1);
-    theta = zeros(length(z_vec),1)+(beta+1/q)./theta0;
+f=zef_getTimeStep(f_data, f_ind, true);
+z_vec = ones(size(L,2),1);
+theta = zeros(length(z_vec),1)+(beta+1/q)./theta0;
 
-    if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
-        f = gpuArray(f);
-    end
+if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
+f = gpuArray(f);
+end
 
 % inversion starts here
 
@@ -104,9 +104,9 @@ theta =zeros(size(L,2),1)+(beta+1/q)./theta0;
 end
 
 if f_ind > 1
-    waitbar(n_rep/n_decompositions,h,['Dec. ' int2str(n_rep) ' of ' int2str(n_decompositions) ', Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
+waitbar(n_rep/n_decompositions,h,['Dec. ' int2str(n_rep) ' of ' int2str(n_decompositions) ', Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
 else
-    waitbar(n_rep/n_decompositions,h,['EM MAP iteration. Dec. ' int2str(n_rep) ' of ' int2str(n_decompositions) ', Time step ' int2str(f_ind) ' of ' int2str(number_of_frames) '.' ]);
+waitbar(n_rep/n_decompositions,h,['EM MAP iteration. Dec. ' int2str(n_rep) ' of ' int2str(n_decompositions) ', Time step ' int2str(f_ind) ' of ' int2str(number_of_frames) '.' ]);
 end
 
 for j = 1 : n_multires
@@ -137,25 +137,25 @@ source_count = size(L_aux_2,2);
 end
 
 if ismember(hyper_type,[1,2])
-    if evalin('base','zef.normalize_data')==1;
-        normalize_data = 'maximum';
-    else
-        normalize_data = 'average';
-    end
+if evalin('base','zef.normalize_data')==1;
+normalize_data = 'maximum';
+else
+normalize_data = 'average';
+end
 
-    if hyper_type == 1
-        balance_spatially = 1;
-    else
-        balance_spatially = 0;
-    end
-    if evalin('base','zef.inv_hyperprior') == 1
-    [beta, theta0] = zef_find_ig_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L_aux_2,source_count,normalize_data,balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
-    elseif evalin('base','zef.inv_hyperprior') == 2
-    [beta, theta0] = zef_find_g_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L_aux_2,source_count,normalize_data,balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
-    end
-    if q == 1
-        theta0 = sqrt(theta0);
-    end
+if hyper_type == 1
+balance_spatially = 1;
+else
+balance_spatially = 0;
+end
+if evalin('base','zef.inv_hyperprior') == 1
+[beta, theta0] = zef_find_ig_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L_aux_2,source_count,normalize_data,balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
+elseif evalin('base','zef.inv_hyperprior') == 2
+[beta, theta0] = zef_find_g_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L_aux_2,source_count,normalize_data,balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
+end
+if q == 1
+theta0 = sqrt(theta0);
+end
 end
 
 %__ Initialization __
@@ -168,21 +168,21 @@ if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
 z_vec = gather(z_vec);
 end
 if q == 1
-    x_old = ones(n,1);
-    for i = 1 : n_iter(j)
-        z_vec = L1_optimization(L_aux_2,std_lhood,f,theta,x_old,n_L1_iter);
-        theta = (beta+1)./(theta0+0.5*abs(z_vec));
+x_old = ones(n,1);
+for i = 1 : n_iter(j)
+z_vec = L1_optimization(L_aux_2,std_lhood,f,theta,x_old,n_L1_iter);
+theta = (beta+1)./(theta0+0.5*abs(z_vec));
 
-        x_old = z_vec;
+x_old = z_vec;
 
-    end
+end
 else
-    for i = 1 : n_iter(j)
-        w = 1./(theta*std_lhood^2*max(f)^2);
+for i = 1 : n_iter(j)
+w = 1./(theta*std_lhood^2*max(f)^2);
 
-        z_vec = w.*(L_aux_2'*((L_aux_2*(w.*L_aux_2') + eye(size(L_aux_2,1)))\f));
-       theta = (beta+1/q)./(theta0+0.5*abs(z_vec).^q);
-    end
+z_vec = w.*(L_aux_2'*((L_aux_2*(w.*L_aux_2') + eye(size(L_aux_2,1)))\f));
+theta = (beta+1/q)./(theta0+0.5*abs(z_vec).^q);
+end
 end
 
 if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0

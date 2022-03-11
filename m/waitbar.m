@@ -9,17 +9,17 @@ progress_bar_text = '';
 visible_value = evalin('base','zef.h_zeffiro.Visible');
 
 if ishandle(varargin{2})
-    h_waitbar = varargin{2};
-    if length(varargin)>2
-     progress_bar_text = varargin{3};
-    else
-    h_text = findobj(h_waitbar.Children,'Tag','progress_bar_text');
-    progress_bar_text = h_text.String;
-    end
+h_waitbar = varargin{2};
+if length(varargin)>2
+progress_bar_text = varargin{3};
 else
-    if length(varargin) > 1
-    progress_bar_text = varargin{2};
-    end
+h_text = findobj(h_waitbar.Children,'Tag','progress_bar_text');
+progress_bar_text = h_text.String;
+end
+else
+if length(varargin) > 1
+progress_bar_text = varargin{2};
+end
 h_waitbar = figure(...
 'PaperUnits',get(0,'defaultfigurePaperUnits'),...
 'Units','normalized',...
@@ -73,13 +73,13 @@ end
 
 if not(ishandle(varargin{2}))
 
-    set(findobj(h_waitbar.Children,'-property','FontUnits'),'FontUnits','pixels');
+set(findobj(h_waitbar.Children,'-property','FontUnits'),'FontUnits','pixels');
 set(findobj(h_waitbar.Children,'-property','FontSize'),'FontSize',evalin('base','zef.font_size'));
 
-  %  set(h_waitbar,'AutoResizeChildren','off');
+%  set(h_waitbar,'AutoResizeChildren','off');
 %h_waitbar.UserData = get(h_waitbar,'Position');
 %set(h_waitbar,'SizeChangedFcn','set(gcf,''UserData'', zef_change_size_function(gcf,get(gcf,''UserData'')));');
 
-    end
+end
 
 end

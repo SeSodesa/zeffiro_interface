@@ -53,12 +53,12 @@ aux_dir_mode = [];
 submesh_cell = cell(0);
 compartment_tags = evalin('base','zef.compartment_tags');
 for k = 1 : length(compartment_tags)
-        var_0 = ['zef.'  compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_sigma'];
-        var_2 = ['zef.' compartment_tags{k} '_priority'];
-        var_3 = ['zef.' compartment_tags{k} '_visible'];
-        var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
-    color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
+var_0 = ['zef.'  compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_sigma'];
+var_2 = ['zef.' compartment_tags{k} '_priority'];
+var_3 = ['zef.' compartment_tags{k} '_visible'];
+var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
+color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
 on_val = evalin('base',var_0);
 sigma_val = evalin('base',var_1);
 priority_val = evalin('base',var_2);
@@ -72,8 +72,8 @@ color_cell{i} = color_str;
 visible_vec(i,1) = i*visible_val;
 submesh_cell{i} = submesh_ind;
 if evalin('base',['zef.' compartment_tags{k} '_sources'])>0;
-    aux_brain_ind = [aux_brain_ind i];
-    aux_dir_mode = [aux_dir_mode evalin('base',['zef.' compartment_tags{k} '_sources'])-1];
+aux_brain_ind = [aux_brain_ind i];
+aux_dir_mode = [aux_dir_mode evalin('base',['zef.' compartment_tags{k} '_sources'])-1];
 end
 end
 end
@@ -88,12 +88,12 @@ aux_brain_ind = [];
 aux_dir_mode = [];
 submesh_cell = cell(0);
 for k = 1 : length(compartment_tags)
-        var_0 = ['zef.'  compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_sigma'];
-        var_2 = ['zef.' compartment_tags{k} '_priority'];
-        var_3 = ['zef.' compartment_tags{k} '_visible'];
-        var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
-    color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
+var_0 = ['zef.'  compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_sigma'];
+var_2 = ['zef.' compartment_tags{k} '_priority'];
+var_3 = ['zef.' compartment_tags{k} '_visible'];
+var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
+color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
 on_val = evalin('base',var_0);
 sigma_val = evalin('base',var_1);
 priority_val = evalin('base',var_2);
@@ -107,8 +107,8 @@ color_cell{i} = color_str;
 visible_vec(i,1) = i*visible_val;
 submesh_cell{i} = submesh_ind;
 if evalin('base',['zef.' compartment_tags{k} '_sources'])>0;
-    aux_brain_ind = [aux_brain_ind i];
-    aux_dir_mode = [aux_dir_mode evalin('base',['zef.' compartment_tags{k} '_sources'])-1];
+aux_brain_ind = [aux_brain_ind i];
+aux_dir_mode = [aux_dir_mode evalin('base',['zef.' compartment_tags{k} '_sources'])-1];
 end
 end
 end
@@ -175,15 +175,15 @@ end
 
 source_count = n_interp;
 if evalin('base','zef.mne_normalize_data')==1;
-    normalize_data = 'maximum';
+normalize_data = 'maximum';
 else
-    normalize_data = 'average';
+normalize_data = 'average';
 end
 
 if mne_prior == 1
-    balance_spatially = 1;
+balance_spatially = 1;
 else
-    balance_spatially = 0;
+balance_spatially = 0;
 end
 
 [theta0] = zef_find_gaussian_prior(snr_val-pm_val,L,size(L,2),evalin('base','zef.mne_normalize_data'),0);
@@ -284,7 +284,7 @@ z_vec = zeros(length(z_vec),1);
 if length(theta0)==1
 d_sqrt = sqrt(theta0)*ones(size(z_vec));
 else
-    d_sqrt = sqrt(theta0);
+d_sqrt = sqrt(theta0);
 end
 if evalin('base','zef.use_gpu') == 1 & gpuDeviceCount > 0
 d_sqrt = gpuArray(d_sqrt);
@@ -294,9 +294,9 @@ L_inv = d_sqrt.*(L_inv'*(inv(L_inv*L_inv' + S_mat)));
 
 if isequal(mne_type,2)
 % dSPM
-    aux_vec = sum(L_inv.^2, 2);
-    aux_vec = sqrt(aux_vec);
-    L_inv = L_inv./aux_vec(:,ones(size(L_inv,2),1));
+aux_vec = sum(L_inv.^2, 2);
+aux_vec = sqrt(aux_vec);
+L_inv = L_inv./aux_vec(:,ones(size(L_inv,2),1));
 
 elseif isequal(mne_type, 3)
 %'sLORETA'

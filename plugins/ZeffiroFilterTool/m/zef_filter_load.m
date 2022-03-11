@@ -12,12 +12,12 @@ zef.filter_save_file = zef.file;
 zef.filter_save_file_path = zef.file_path;
 load([zef.file_path zef.file]);
 
- zef.fieldnames = fieldnames(zef_data);
- for zef_i = 1:length(zef.fieldnames)
- zef.(zef.fieldnames{zef_i}) = zef_data.(zef.fieldnames{zef_i});
- end
- clear zef_i;
- zef = rmfield(zef,'fieldnames');
+zef.fieldnames = fieldnames(zef_data);
+for zef_i = 1:length(zef.fieldnames)
+zef.(zef.fieldnames{zef_i}) = zef_data.(zef.fieldnames{zef_i});
+end
+clear zef_i;
+zef = rmfield(zef,'fieldnames');
 
 clear zef_data;
 zef_update_filter_tool;

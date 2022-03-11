@@ -6,55 +6,55 @@ zef.beamformer = beamformer_app;
 
 %_ Names of methods that are included in app _
 zef_bf_names = {'Linearly constraint minimum variance (LCMV)'
-                'Unit noise gain beamformer'
-                'Unit-gain constraint beamformer'
-                'Unit nosie gain scalar beamformer'
-                };
+'Unit noise gain beamformer'
+'Unit-gain constraint beamformer'
+'Unit nosie gain scalar beamformer'
+};
 
 zef.beamformer.bf_type.Items = zef_bf_names;
 zef.beamformer.bf_type.ItemsData = strsplit(num2str(1:length(zef_bf_names)));
 zef.beamformer.bf_type.Value = '1';
 if ~isfield(zef,'bf_type')
-    zef.bf_type = 1;
+zef.bf_type = 1;
 end
 
 %_ Covariance calculation types _
 %_ Covariance calculation types _
 zef_bf_names = {'Full data, measurement based',
-                'Full data, basic',
-                'Pointwise, measurement based',
-                'Pointwise, basic'
-                };
+'Full data, basic',
+'Pointwise, measurement based',
+'Pointwise, basic'
+};
 
 zef.beamformer.cov_type.Items = zef_bf_names;
 zef.beamformer.cov_type.ItemsData = strsplit(num2str(1:length(zef_bf_names)));
 zef.beamformer.cov_type.Value = '1';
 if ~isfield(zef,'cov_type')
-    zef.cov_type = 1;
+zef.cov_type = 1;
 end
 
 %_ Names of leadfield regularization methods _
 zef_bf_names = {'Basic'
-                'Pseudoinverse'};
+'Pseudoinverse'};
 
 zef.beamformer.L_reg_type.Items = zef_bf_names;
 zef.beamformer.L_reg_type.ItemsData = strsplit(num2str(1:length(zef_bf_names)));
 zef.beamformer.L_reg_type.Value = '1';
 if ~isfield(zef,'L_reg_type')
-    zef.L_reg_type = 1;
+zef.L_reg_type = 1;
 end
 
 %_ Names of leadfield normalizations _
 zef_bf_names = {'Matrix norm'
-                'Column norm'
-                'Row norm'
-                'None'};
+'Column norm'
+'Row norm'
+'None'};
 
 zef.beamformer.normalize_leadfield.Items = zef_bf_names;
 zef.beamformer.normalize_leadfield.ItemsData = strsplit(num2str(1:length(zef_bf_names)));
 zef.beamformer.normalize_leadfield.Value = '1';
 if ~isfield(zef,'normalize_leadfield')
-    zef.normalize_leadfield = 1;
+zef.normalize_leadfield = 1;
 end
 
 %_ Initial values _
@@ -71,24 +71,24 @@ zef.beamformer.inv_time_3.Value = '0';
 zef.beamformer.inv_data_segment.Value = '1';
 
 if ~isfield(zef,'inv_cov_lambda')
-    zef.inv_cov_lambda = 5e-2;
+zef.inv_cov_lambda = 5e-2;
 end
 if ~isfield(zef,'inv_leadfield_lambda')
-    zef.inv_leadfield_lambda = 1e-3;
+zef.inv_leadfield_lambda = 1e-3;
 end
 
 %set parameters if saved in ZI:
 %(Naming concept: zef.beamformer."field" = zef."field")
 zef_props = properties(zef.beamformer);
 for zef_i = 1:length(zef_props)
-    if isfield(zef,zef_props{zef_i})
-        zef.beamformer.(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
-    end
+if isfield(zef,zef_props{zef_i})
+zef.beamformer.(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
+end
 end
 clear zef_props zef_i zef_bf_names
 
 if zef.L_reg_type==2 || zef.L_reg_type==3
-    zef.beamformer.inv_leadfield_lambda.Enable = 'off';
+zef.beamformer.inv_leadfield_lambda.Enable = 'off';
 end
 
 %_ Functions _

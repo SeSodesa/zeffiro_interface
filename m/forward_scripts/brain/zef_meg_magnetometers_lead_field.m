@@ -1,7 +1,7 @@
 warning('off');
 zef.lead_field_type = 2;
 if zef.downsample_surfaces == 1;
-    zef_downsample_surfaces;
+zef_downsample_surfaces;
 end;
 zef.source_interpolation_on = 1;
 set(zef.h_source_interpolation_on,'value',1);

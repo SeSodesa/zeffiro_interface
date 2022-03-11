@@ -3,11 +3,11 @@
 
 for zef_i = 1:length(zef.lf_bank_storage)
 
-    if ismember(zef_i,zef.lf_item_selected)
+if ismember(zef_i,zef.lf_item_selected)
 
-        zef.lf_bank_storage{zef_i}.noise_data = zef.noise_data;
+zef.lf_bank_storage{zef_i}.noise_data = zef.noise_data;
 
-    end
+end
 
 end
 

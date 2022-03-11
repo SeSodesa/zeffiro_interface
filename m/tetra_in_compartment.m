@@ -3,21 +3,21 @@
 function [I] = tetra_in_compartment(reuna_p,reuna_t,nodes,varargin)
 
 if evalin('base','exist(''zef'')')
-    if evalin('base','isfield(zef,''meshing_threshold'')')
-    meshing_threshold = evalin('base','zef.meshing_threshold');
-    else
-        meshing_threshold = 0.5;
-    end
+if evalin('base','isfield(zef,''meshing_threshold'')')
+meshing_threshold = evalin('base','zef.meshing_threshold');
 else
-    meshing_threshold = 0.5;
+meshing_threshold = 0.5;
+end
+else
+meshing_threshold = 0.5;
 end
 
 compartment_info = [];
 if not(isempty(varargin))
-    compartment_info = varargin{1};
-    if length(varargin) > 1
-        meshing_threshold = varargin{2};
-    end
+compartment_info = varargin{1};
+if length(varargin) > 1
+meshing_threshold = varargin{2};
+end
 end
 
 max_x = max(reuna_p(:,1));

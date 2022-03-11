@@ -331,7 +331,7 @@ set(zef.h_d11_invert,'enable', zef.enable_str);
 set(zef.h_d11_button_1,'enable', zef.enable_str);
 if not(isequal(zef.mlapp,1))
 set(zef.h_d11_button_2,'enable', zef.enable_str);
- end
+end
 
 if zef.d12_on
 zef.enable_str = 'on';

@@ -18,17 +18,17 @@ end
 
 for zef_i = 1 : size(zef.parameter_profile,1)
 
-    if isequal(zef.parameter_profile{zef_i,8},'Sensors') && isequal(zef.parameter_profile{zef_i,6},'On') && isequal(zef.parameter_profile{zef_i,7},'On')
-        if isequal(zef.parameter_profile{zef_i,3},'Scalar')
-        evalin('base',['zef.' zef.current_sensors '_' zef.parameter_profile{zef_i,2} '(size(zef.' zef.current_sensors '_' zef.parameter_profile{zef_i,2} ',1)+1) =' num2str(zef.parameter_profile{zef_i,4}) ';']);
-        elseif isequal(zef.parameter_profile{zef_i,3},'String')
-        evalin('base',['zef.' zef.current_sensors '_' zef.parameter_profile{zef_i,2} '(size(zef.' zef.current_sensors '_' zef.parameter_profile{zef_i,2} ',1)+1) =' zef.parameter_profile{zef_i,4} ';']);
-        end
-    end
+if isequal(zef.parameter_profile{zef_i,8},'Sensors') && isequal(zef.parameter_profile{zef_i,6},'On') && isequal(zef.parameter_profile{zef_i,7},'On')
+if isequal(zef.parameter_profile{zef_i,3},'Scalar')
+evalin('base',['zef.' zef.current_sensors '_' zef.parameter_profile{zef_i,2} '(size(zef.' zef.current_sensors '_' zef.parameter_profile{zef_i,2} ',1)+1) =' num2str(zef.parameter_profile{zef_i,4}) ';']);
+elseif isequal(zef.parameter_profile{zef_i,3},'String')
+evalin('base',['zef.' zef.current_sensors '_' zef.parameter_profile{zef_i,2} '(size(zef.' zef.current_sensors '_' zef.parameter_profile{zef_i,2} ',1)+1) =' zef.parameter_profile{zef_i,4} ';']);
+end
+end
 
 end
 
-    clear zef_i;
+clear zef_i;
 
 zef_init_sensors_name_table;
 

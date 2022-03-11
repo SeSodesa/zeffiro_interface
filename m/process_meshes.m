@@ -6,9 +6,9 @@ reuna_p_inf = [];
 
 explode_param = 1;
 if not(isempty(varargin))
-  if not(isempty(varargin{1}))
+if not(isempty(varargin{1}))
 explode_param = varargin{1};
-    end
+end
 end
 
 i = 0;
@@ -19,18 +19,18 @@ reuna_t = cell(0);
 compartment_tags = evalin('base','zef.compartment_tags');
 for k = 1 : length(compartment_tags)
 
-        var_0 = ['zef.' compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_scaling'];
-        var_2 = ['zef.' compartment_tags{k} '_x_correction'];
-        var_3 = ['zef.' compartment_tags{k} '_y_correction'];
-        var_4 = ['zef.' compartment_tags{k} '_z_correction'];
-        var_5 = ['zef.' compartment_tags{k} '_xy_rotation'];
-        var_6 = ['zef.' compartment_tags{k} '_yz_rotation'];
-        var_7 = ['zef.' compartment_tags{k} '_zx_rotation'];
-        var_8 = ['zef.' compartment_tags{k} '_points_inf'];
-        var_9 = ['zef.' compartment_tags{k} '_points'];
-        var_10 = ['zef.' compartment_tags{k} '_triangles'];
-        var_11 = ['zef.' compartment_tags{k} '_submesh_ind'];
+var_0 = ['zef.' compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_scaling'];
+var_2 = ['zef.' compartment_tags{k} '_x_correction'];
+var_3 = ['zef.' compartment_tags{k} '_y_correction'];
+var_4 = ['zef.' compartment_tags{k} '_z_correction'];
+var_5 = ['zef.' compartment_tags{k} '_xy_rotation'];
+var_6 = ['zef.' compartment_tags{k} '_yz_rotation'];
+var_7 = ['zef.' compartment_tags{k} '_zx_rotation'];
+var_8 = ['zef.' compartment_tags{k} '_points_inf'];
+var_9 = ['zef.' compartment_tags{k} '_points'];
+var_10 = ['zef.' compartment_tags{k} '_triangles'];
+var_11 = ['zef.' compartment_tags{k} '_submesh_ind'];
 
 on_val = evalin('base',var_0);
 
@@ -58,12 +58,12 @@ reuna_p_inf{i} = scaling_val*reuna_p_inf{i};
 end
 for j = 1 : 3
 switch j
-    case 1
-        axes_ind = [1 2];
-    case 2
-        axes_ind = [2 3];
-    case 3
-        axes_ind = [3 1];
+case 1
+axes_ind = [1 2];
+case 2
+axes_ind = [2 3];
+case 3
+axes_ind = [3 1];
 end
 
 if theta_angle_vec(j) ~= 0
@@ -85,19 +85,19 @@ end
 
 if explode_param ~= 1
 for s_ind = 1 : length(reuna_submesh_ind{i})
-    if s_ind == 1
-        t_ind_1 = 1;
-    else
-        t_ind_1 = reuna_submesh_ind{i}(s_ind-1)+1;
-    end
-    t_ind_2 = reuna_submesh_ind{i}(s_ind);
-    p_ind = unique(reuna_t{i}(t_ind_1:t_ind_2,:));
-    mean_aux = mean(reuna_p{i}(p_ind,:),1);
-            reuna_p{i}(p_ind,:) = reuna_p{i}(p_ind,:) + (explode_param-1)*repmat(mean_aux,length(p_ind),1);
-    if not(isempty(reuna_p_inf{i}))
- mean_aux = mean(reuna_p_inf{i}(p_ind,:),1);
-        reuna_p_inf{i}(p_ind,:) = reuna_p_inf{i}(p_ind,:) + (explode_param-1)*repmat(mean_aux,length(p_ind),1);
-    end
+if s_ind == 1
+t_ind_1 = 1;
+else
+t_ind_1 = reuna_submesh_ind{i}(s_ind-1)+1;
+end
+t_ind_2 = reuna_submesh_ind{i}(s_ind);
+p_ind = unique(reuna_t{i}(t_ind_1:t_ind_2,:));
+mean_aux = mean(reuna_p{i}(p_ind,:),1);
+reuna_p{i}(p_ind,:) = reuna_p{i}(p_ind,:) + (explode_param-1)*repmat(mean_aux,length(p_ind),1);
+if not(isempty(reuna_p_inf{i}))
+mean_aux = mean(reuna_p_inf{i}(p_ind,:),1);
+reuna_p_inf{i}(p_ind,:) = reuna_p_inf{i}(p_ind,:) + (explode_param-1)*repmat(mean_aux,length(p_ind),1);
+end
 end
 end
 end
@@ -154,18 +154,18 @@ sensors(:,1:3) = scaling_val*sensors(:,1:3);
 end
 for j = 1 : 3
 switch j
-    case 1
-        axes_ind_1 = [1 2];
-        axes_ind_2 = [4 5];
-        axes_ind_3 = [7 8];
-    case 2
-        axes_ind_1 = [2 3];
-        axes_ind_2 = [5 6];
-        axes_ind_3 = [8 9];
-    case 3
-        axes_ind_1 = [3 1];
-        axes_ind_2 = [6 4];
-        axes_ind_3 = [9 7];
+case 1
+axes_ind_1 = [1 2];
+axes_ind_2 = [4 5];
+axes_ind_3 = [7 8];
+case 2
+axes_ind_1 = [2 3];
+axes_ind_2 = [5 6];
+axes_ind_3 = [8 9];
+case 3
+axes_ind_1 = [3 1];
+axes_ind_2 = [6 4];
+axes_ind_3 = [9 7];
 end
 if theta_angle_vec(j) ~= 0
 theta_angle = theta_angle_vec(j)*pi/180;
@@ -199,7 +199,7 @@ sensors = [sensors s_data_aux];
 end
 
 else
-    sensors = [NaN NaN NaN];
+sensors = [NaN NaN NaN];
 end
 
 if use_pem

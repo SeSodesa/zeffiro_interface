@@ -30,28 +30,28 @@ balance_snr = varargin{4};
 end
 
 if length(varargin) > 4
-    if balance_snr
+if balance_snr
 w_param = 0.5 - 0.05*(varargin{5}-1);
-    end
+end
 end
 
 if isempty(L)
-    snr_vec = snr_val;
-    snr_vec_limited = snr_vec;
-    source_strength = 1e-2;
+snr_vec = snr_val;
+snr_vec_limited = snr_vec;
+source_strength = 1e-2;
 else
 
 if isequal(normalize_data,'maximum')
-   source_strength = mean(1./((max(abs(L))').^w_param));
+source_strength = mean(1./((max(abs(L))').^w_param));
 else
-   source_strength = mean(1./(sqrt(sum(L.^2)').^w_param));
+source_strength = mean(1./(sqrt(sum(L.^2)').^w_param));
 end
 
 if balance_snr
-    if isequal(normalize_data,'maximum')
-   signal_strength = (size(L,2)*(max(abs(L))')./sum(max(abs(L))')).^(w_param);
+if isequal(normalize_data,'maximum')
+signal_strength = (size(L,2)*(max(abs(L))')./sum(max(abs(L))')).^(w_param);
 else
-   signal_strength = (size(L,2).*(sqrt(sum(L.^2))')./sum(sqrt(sum(L.^2))')).^(w_param);
+signal_strength = (size(L,2).*(sqrt(sum(L.^2))')./sum(sqrt(sum(L.^2))')).^(w_param);
 end
 snr_vec = snr_val + db(signal_strength);
 else
@@ -69,9 +69,9 @@ a = 1*ones(size(relative_noise_std));
 b = 170*ones(size(relative_noise_std));
 
 if evalin('base','zef.use_gpu') == 1 & gpuDeviceCount > 0
-    relative_noise_std = gpuArray(relative_noise_std);
-    a = gpuArray(a);
-    b = gpuArray(b);
+relative_noise_std = gpuArray(relative_noise_std);
+a = gpuArray(a);
+b = gpuArray(b);
 end
 
 for j = 1 : 10

@@ -2,15 +2,15 @@ function nodes = zef_inflate_surfaces(nodes,tetra,domain_labels)
 
 waitbar_opened = 0;
 if evalin('caller','exist(''h'')')
-    if evalin('caller','isvalid(h)')
+if evalin('caller','isvalid(h)')
 h = evalin('caller','h');
-    else
-        h = waitbar([0 0],'Inflating.');
-        waitbar_opened = 1;
-    end
 else
-      h = waitbar([0 0],'Inflating.');
-      waitbar_opened = 1;
+h = waitbar([0 0],'Inflating.');
+waitbar_opened = 1;
+end
+else
+h = waitbar([0 0],'Inflating.');
+waitbar_opened = 1;
 end
 
 inflation_strength = evalin('base','zef.fem_mesh_inflation_strength');
@@ -77,13 +77,13 @@ for k = 1 : length(block_ind)
 p_ind = node_list(block_ind(k),1);
 
 %if not(isempty(p_tetra))
-    I = [];
-    test_ind = 0;
-    p = nodes(p_ind,:);
-  %  [~, sort_ind] = min(sqrt(sum((nodes(p_tetra,:) - p).^2,2)));
- %   [~, sort_ind] = sort(sqrt(sum((nodes(p_tetra,:) - p).^2,2)));
- %while isempty(I) && test_ind < length(p_tetra)
- test_ind = test_ind + 1;
+I = [];
+test_ind = 0;
+p = nodes(p_ind,:);
+%  [~, sort_ind] = min(sqrt(sum((nodes(p_tetra,:) - p).^2,2)));
+%   [~, sort_ind] = sort(sqrt(sum((nodes(p_tetra,:) - p).^2,2)));
+%while isempty(I) && test_ind < length(p_tetra)
+test_ind = test_ind + 1;
 
 p_min = node_list(block_ind(k),2);
 vec_1_aux = nodes(p_min,:) - p;
@@ -113,9 +113,9 @@ nodes_ind_cell{restart_ind} = nodes_ind_cell_aux;
 
 time_val = toc;
 
-    if isequal(mod(restart_ind,ceil(n_restarts/50)),0)
+if isequal(mod(restart_ind,ceil(n_restarts/50)),0)
 waitbar([restart_ind/n_restarts compartment_counter/length(reuna_p)],h,['Inflating compartment ' int2str(compartment_counter) ' of ' int2str(length(reuna_p)) '. Ready: ' datestr(datevec(now+(n_restarts/restart_ind - 1)*time_val/86400)) '.']);
-    end
+end
 
 end
 

@@ -94,17 +94,17 @@ z_vec = z_vec + gamma*L_aux_2*(f - L*z_vec);
 relres_vec = norm(L'*(L*z_vec - f))/norm_f;
 
 elseif isequal(evalin('base','zef.relax_iteration_type'),2)
-  a = L * p;
-  a = L' * a;
-  a_dot_p = sum(a.*p);
-  aux_val = sum(r.*p);
-  lambda = aux_val ./ a_dot_p;
-  z_vec = z_vec + lambda * p;
-  r = r - lambda * a;
-  inv_M_r = M{n_rep}\r;
-  aux_val = sum(inv_M_r.*a);
-  gamma = aux_val ./ a_dot_p;
-  p = inv_M_r - gamma * p;
+a = L * p;
+a = L' * a;
+a_dot_p = sum(a.*p);
+aux_val = sum(r.*p);
+lambda = aux_val ./ a_dot_p;
+z_vec = z_vec + lambda * p;
+r = r - lambda * a;
+inv_M_r = M{n_rep}\r;
+aux_val = sum(inv_M_r.*a);
+gamma = aux_val ./ a_dot_p;
+p = inv_M_r - gamma * p;
 
 relres_vec = gather(norm(r)/norm_b);
 
@@ -117,7 +117,7 @@ end
 end
 
 if tol_val < relres_vec
-    'Error: iteration did not converge.'
+'Error: iteration did not converge.'
 end
 
 z_vec = z_vec(perm_vec{n_rep}{2});

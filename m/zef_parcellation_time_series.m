@@ -75,11 +75,11 @@ aux_dir_mode = [];
 compartment_tags = evalin('base','zef.compartment_tags');
 for k = 1 : length(compartment_tags)
 
-        var_0 = ['zef.' compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_sigma'];
-        var_2 = ['zef.' compartment_tags{k} '_priority'];
-        var_3 = ['zef.' compartment_tags{k} '_sources'];
-    color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
+var_0 = ['zef.' compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_sigma'];
+var_2 = ['zef.' compartment_tags{k} '_priority'];
+var_3 = ['zef.' compartment_tags{k} '_sources'];
+color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
 
 on_val = evalin('base',var_0);
 sigma_val = evalin('base',var_1);
@@ -92,7 +92,7 @@ priority_vec(i,1) = priority_val;
 color_cell{i} = color_str;
 visible_vec(i,1) = i*visible_val;
 if evalin('base',['zef.' compartment_tags{k} '_sources'])>0;
-    aux_brain_ind = [aux_brain_ind i];
+aux_brain_ind = [aux_brain_ind i];
 end
 
 end
@@ -113,9 +113,9 @@ aux_brain_visible_ind = [];
 
 for k = 1 : length(compartment_tags)
 
-        on_val = evalin('base',['zef.' compartment_tags{k} '_on']);
-        visible_val = evalin('base',['zef.' compartment_tags{k} '_sources'])>0;
-        color_str =  evalin('base',['zef.' compartment_tags{k} '_color']);
+on_val = evalin('base',['zef.' compartment_tags{k} '_on']);
+visible_val = evalin('base',['zef.' compartment_tags{k} '_sources'])>0;
+color_str =  evalin('base',['zef.' compartment_tags{k} '_color']);
 
 if on_val
 i = i + 1;
@@ -185,19 +185,19 @@ reconstruction = (max(reconstruction/max_abs_reconstruction,0));
 p_counter = 0;
 for p_ind = selected_list
 p_counter = p_counter + 1;
-  if not(isempty(reconstruction(p_i_ind{p_ind}{2}{ab_ind})))
- if evalin('base','zef.parcellation_type') == 1
+if not(isempty(reconstruction(p_i_ind{p_ind}{2}{ab_ind})))
+if evalin('base','zef.parcellation_type') == 1
 time_series(p_counter,f_ind_aux) = quantile(reconstruction(p_i_ind{p_ind}{2}{ab_ind}),1);
 elseif evalin('base','zef.parcellation_type') == 2
 time_series(p_counter,f_ind_aux) = quantile(reconstruction(p_i_ind{p_ind}{2}{ab_ind}),evalin('base','zef.parcellation_quantile'));
-  elseif evalin('base','zef.parcellation_type') == 3
+elseif evalin('base','zef.parcellation_type') == 3
 time_series(p_counter,f_ind_aux) = quantile(sqrt(reconstruction(p_i_ind{p_ind}{2}{ab_ind})),evalin('base','zef.parcellation_quantile'));
 elseif evalin('base','zef.parcellation_type') == 4
 time_series(p_counter,f_ind_aux) = quantile((reconstruction(p_i_ind{p_ind}{2}{ab_ind}).^(1/3)),evalin('base','zef.parcellation_quantile'));
 elseif evalin('base','zef.parcellation_type') == 5;
 time_series(p_counter,f_ind_aux) = mean(reconstruction(p_i_ind{p_ind}{2}{ab_ind}));
- end
-  end
+end
+end
 end
 
 end
@@ -210,11 +210,11 @@ for f_ind = frame_start + frame_step : frame_step : frame_stop
 pause(0.01);
 stop_movie = evalin('base','zef.stop_movie');
 if stop_movie
-    if get(evalin('base','zef.h_pause_movie'),'value') == 1
-    waitfor(evalin('base','zef.h_pause_movie'),'value');
-    else
+if get(evalin('base','zef.h_pause_movie'),'value') == 1
+waitfor(evalin('base','zef.h_pause_movie'),'value');
+else
 return;
-    end
+end
 end
 f_ind_aux = f_ind_aux + 1;
 time_val = toc;
@@ -243,7 +243,7 @@ rec_x = sum(rec_x(s_i_ind{ab_ind}),2)/3;
 rec_y = sum(rec_y(s_i_ind{ab_ind}),2)/3;
 rec_z = sum(rec_z(s_i_ind{ab_ind}),2)/3;
 n_vec_aux = cross(reuna_p{i}(reuna_t{i}(:,2),:)' - reuna_p{i}(reuna_t{i}(:,1),:)',...
- reuna_p{i}(reuna_t{i}(:,3),:)' - reuna_p{i}(reuna_t{i}(:,1),:)')';
+reuna_p{i}(reuna_t{i}(:,3),:)' - reuna_p{i}(reuna_t{i}(:,1),:)')';
 n_vec_aux = n_vec_aux./repmat(sqrt(sum(n_vec_aux.^2,2)),1,3);
 end
 
@@ -275,20 +275,20 @@ reconstruction = (max(reconstruction/max_abs_reconstruction,0));
 
 p_counter = 0;
 for p_ind = selected_list
-  p_counter = p_counter + 1;
-  if not(isempty(reconstruction(p_i_ind{p_ind}{2}{ab_ind})))
- if evalin('base','zef.parcellation_type') == 1
+p_counter = p_counter + 1;
+if not(isempty(reconstruction(p_i_ind{p_ind}{2}{ab_ind})))
+if evalin('base','zef.parcellation_type') == 1
 time_series(p_counter,f_ind_aux) = quantile(reconstruction(p_i_ind{p_ind}{2}{ab_ind}),1);
-    elseif evalin('base','zef.parcellation_type') == 2
+elseif evalin('base','zef.parcellation_type') == 2
 time_series(p_counter,f_ind_aux) = quantile(reconstruction(p_i_ind{p_ind}{2}{ab_ind}),evalin('base','zef.parcellation_quantile'));
-  elseif evalin('base','zef.parcellation_type') == 3
+elseif evalin('base','zef.parcellation_type') == 3
 time_series(p_counter,f_ind_aux) = quantile(sqrt(reconstruction(p_i_ind{p_ind}{2}{ab_ind})),evalin('base','zef.parcellation_quantile'));
 elseif evalin('base','zef.parcellation_type') == 4
 time_series(p_counter,f_ind_aux) = quantile((reconstruction(p_i_ind{p_ind}{2}{ab_ind}).^(1/3)),evalin('base','zef.parcellation_quantile'));
 elseif evalin('base','zef.parcellation_type') == 5
 time_series(p_counter,f_ind_aux) =mean(reconstruction(p_i_ind{p_ind}{2}{ab_ind}));
- end
-  end
+end
+end
 end
 
 end

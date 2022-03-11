@@ -18,6 +18,6 @@ set(zef.h_ramus_start,'Callback','zef_update_ramus_inversion_tool; [zef.reconstr
 
 zef_init_ramus_inversion_tool;
 uistack(flipud([zef.h_ramus_multires_n_levels; zef.h_ramus_multires_sparsity; zef.h_ramus_make_multires_dec; zef.h_ramus_hyperprior; zef.h_ramus_snr ; zef.h_ramus_multires_n_iter ;
-    zef.h_ramus_sampling_frequency; zef.h_ramus_low_cut_frequency;
-    zef.h_ramus_high_cut_frequency; zef.h_ramus_time_1 ; zef.h_ramus_time_2; zef.h_ramus_number_of_frames; zef.h_ramus_time_3; zef.h_ramus_normalize_data; zef.h_ramus_init_guess_mode; zef.h_ramus_cancel ;
-    zef.h_ramus_apply; zef.h_ramus_start  ]),'top');
+zef.h_ramus_sampling_frequency; zef.h_ramus_low_cut_frequency;
+zef.h_ramus_high_cut_frequency; zef.h_ramus_time_1 ; zef.h_ramus_time_2; zef.h_ramus_number_of_frames; zef.h_ramus_time_3; zef.h_ramus_normalize_data; zef.h_ramus_init_guess_mode; zef.h_ramus_cancel ;
+zef.h_ramus_apply; zef.h_ramus_start  ]),'top');

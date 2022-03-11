@@ -53,7 +53,7 @@ MPI_VERBOSE=-l
 
 # Increase the verbosity of mpiexec if PARALLEL_SERVER_DEBUG is true
 if [ "X${PARALLEL_SERVER_DEBUG}X" = "XtrueX" ] ; then
-    MPI_VERBOSE="${MPI_VERBOSE} -v -print-all-exitcodes"
+MPI_VERBOSE="${MPI_VERBOSE} -v -print-all-exitcodes"
 fi
 
 # Construct the command to run.
@@ -67,10 +67,10 @@ eval $CMD
 
 MPIEXEC_EXIT_CODE=${?}
 if [ ${MPIEXEC_EXIT_CODE} -eq 42 ] ; then
-    # Get here if user code errored out within MATLAB. Overwrite this to zero in
-    # this case.
-    echo "Overwriting MPIEXEC exit code from 42 to zero (42 indicates a user-code failure)"
-    MPIEXEC_EXIT_CODE=0
+# Get here if user code errored out within MATLAB. Overwrite this to zero in
+# this case.
+echo "Overwriting MPIEXEC exit code from 42 to zero (42 indicates a user-code failure)"
+MPIEXEC_EXIT_CODE=0
 fi
 echo "Exiting with code: ${MPIEXEC_EXIT_CODE}"
 exit ${MPIEXEC_EXIT_CODE}

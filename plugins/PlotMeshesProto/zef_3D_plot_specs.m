@@ -9,14 +9,14 @@ compartment_tags = {'d1','d2','d3','d4','d5','d6','d7','d8','d9','d10','d11','d1
 i = 0;
 aux_brain_ind = [];
 for k = 1 : length(compartment_tags)
-        var_0 = ['zef.'  compartment_tags{k} '_on'];
-        var_3 = ['zef.' compartment_tags{k} '_visible'];
+var_0 = ['zef.'  compartment_tags{k} '_on'];
+var_3 = ['zef.' compartment_tags{k} '_visible'];
 on_val = evalin('base',var_0);
 visible_val = evalin('base',var_3);
 if on_val
 i = i + 1;
 if evalin('base',['zef.' compartment_tags{k} '_sources'])>0  && visible_val;
-    aux_brain_ind = [aux_brain_ind i];
+aux_brain_ind = [aux_brain_ind i];
 end
 end
 end
@@ -38,23 +38,23 @@ y_scale = 10^floor(log10(max(abs(h.YAxis.Limits))));
 z_scale = 10^floor(log10(max(abs(h.ZAxis.Limits))));
 %check exception of values on multiple scale
 if floor(max(abs(h.XAxis.Limits))/x_scale) < 2
-    x_scale = 0.1*x_scale;
+x_scale = 0.1*x_scale;
 end
 if floor(max(abs(h.YAxis.Limits))/y_scale) < 2
-    y_scale = 0.1*y_scale;
+y_scale = 0.1*y_scale;
 end
 if floor(max(abs(h.ZAxis.Limits))/z_scale) < 2
-    z_scale = 0.1*z_scale;
+z_scale = 0.1*z_scale;
 end
 %check exception of too tight interval length
 if x_scale == 1
-    x_scale = 5;
+x_scale = 5;
 end
 if y_scale == 1
-    y_scale = 5;
+y_scale = 5;
 end
 if z_scale == 1
-    z_scale = 5;
+z_scale = 5;
 end
 %Set tick sparsity
 mult_x = ceil((ceil(h.XAxis.Limits(2)/x_scale)-floor(h.XAxis.Limits(1)/x_scale))/tick_number_limit);
@@ -90,8 +90,8 @@ h.YAxis.TickDirection = 'in';
 h.ZAxis.TickDirection = 'in';
 
 if isprop(h,'Legend')
-    %h.Legend.Visible = 'off';
-    delete(h.Legend);
+%h.Legend.Visible = 'off';
+delete(h.Legend);
 end
 
 h.PlotBoxAspectRatio = [1.0349,1.2555,1];

@@ -23,13 +23,13 @@ zef.LeadFieldProcessingTool.auxData.compartment_tags=zef.compartment_tags;
 
 for zef_ind=1:length(zef.compartment_tags)
 
-    zef_name=strcat(zef.compartment_tags{zef_ind}, '_sources');
+zef_name=strcat(zef.compartment_tags{zef_ind}, '_sources');
 
-    zef.LeadFieldProcessingTool.auxData.source_structure{zef_ind}=zef.(zef_name);
-    %evalin('base', ['zef.' zef.compartment_tags{zef_ind} '_sources']);
+zef.LeadFieldProcessingTool.auxData.source_structure{zef_ind}=zef.(zef_name);
+%evalin('base', ['zef.' zef.compartment_tags{zef_ind} '_sources']);
 
 end
-        clear zef_ind zef_name;
+clear zef_ind zef_name;
 
 zef_LeadFieldProcessingTool_aux2bank_new;
 zef_LeadfieldProcessingTool_updateTable;

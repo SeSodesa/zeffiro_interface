@@ -27,7 +27,7 @@ if evalin('base','zef.update_transparency_additional');
 zef_update_transparency_additional(h_figure);
 end;
 if evalin('base','zef.update_transparency_cones');
- zef_update_transparency_cones(h_figure);
+zef_update_transparency_cones(h_figure);
 end
 if not(isequal(evalin('base','zef.update_zoom'),evalin('base','zef.cam_va')));
 zef_update_zoom(h_figure);

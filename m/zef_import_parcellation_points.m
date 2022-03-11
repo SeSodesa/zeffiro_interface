@@ -8,7 +8,7 @@ end
 
 if not(isequal(zef.file,0));
 if not(zef.parcellation_merge)
-    zef.parcellation_points = cell(0);
+zef.parcellation_points = cell(0);
 end
 
 if zef.file_type == 1

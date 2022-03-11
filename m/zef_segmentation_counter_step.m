@@ -16,12 +16,12 @@ compartment_tags = evalin('base','zef.compartment_tags');
 
 for k = 1 : length(compartment_tags)
 
-        var_0 = ['zef.' compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_sigma'];
-        var_2 = ['zef.' compartment_tags{k} '_priority'];
-        var_3 = ['zef.' compartment_tags{k} '_submesh_ind'];
-        var_4 = ['zef.' compartment_tags{k} '_name'];
-         var_5 = ['zef.' compartment_tags{k} '_sources'];
+var_0 = ['zef.' compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_sigma'];
+var_2 = ['zef.' compartment_tags{k} '_priority'];
+var_3 = ['zef.' compartment_tags{k} '_submesh_ind'];
+var_4 = ['zef.' compartment_tags{k} '_name'];
+var_5 = ['zef.' compartment_tags{k} '_sources'];
 
 on_val = evalin('base',var_0);
 sigma_val = evalin('base',var_1);

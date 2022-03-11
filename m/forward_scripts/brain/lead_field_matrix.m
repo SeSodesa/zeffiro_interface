@@ -52,7 +52,7 @@ zef.lf_tag = zef.forward_simulation_table{zef.forward_simulation_selected(1), 1}
 [~,~,~,zef.source_ind] = zef_decompose_dof_space(zef.nodes,zef.tetra,zef.aux_vec,[],zef.n_sources,2);
 zef.n_sources_aux = zef.n_sources;
 for zef_i = 1 : zef.source_space_creation_iterations
-    zef.n_sources_aux = round(zef.n_sources*zef.n_sources_aux/length(zef.source_ind));
+zef.n_sources_aux = round(zef.n_sources*zef.n_sources_aux/length(zef.source_ind));
 [~,~,~,zef.source_ind] = zef_decompose_dof_space(zef.nodes,zef.tetra,zef.aux_vec,[],zef.n_sources_aux,2);
 end
 zef = rmfield(zef,'n_sources_aux');

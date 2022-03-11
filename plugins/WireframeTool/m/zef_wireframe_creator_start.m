@@ -2,27 +2,27 @@ zef_data = zef_wireframe_creator_app;
 zef_assign_data;
 
 if not(isfield(zef,'wireframe_edge_threshold'))
-    zef.wireframe_edge_threshold = 1.2;
+zef.wireframe_edge_threshold = 1.2;
 end
 
 if not(isfield(zef,'wireframe_printer_resolution'))
-    zef.wireframe_printer_resolution = 0.15;
+zef.wireframe_printer_resolution = 0.15;
 end
 
 if not(isfield(zef,'wireframe_relative_permittivity'))
-    zef.wireframe_relative_permittivity = 6.5;
+zef.wireframe_relative_permittivity = 6.5;
 end
 
 if not(isfield(zef,'wireframe_tolerance'))
-    zef.wireframe_tolerance = 0.05;
+zef.wireframe_tolerance = 0.05;
 end
 
 if not(isfield(zef,'wireframe_regularization_parameter'))
-    zef.wireframe_regularization_parameter = 0.05;
+zef.wireframe_regularization_parameter = 0.05;
 end
 
 if not(isfield(zef,'wireframe_n_iter'))
-    zef.wireframe_n_iter = 1000;
+zef.wireframe_n_iter = 1000;
 end
 
 zef.h_wireframe_edge_threshold.Value = zef.wireframe_edge_threshold;

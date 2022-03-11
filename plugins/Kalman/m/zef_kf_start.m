@@ -22,11 +22,11 @@ zef.KF.inv_multires_n_decompositions.Value = '1';
 %(Naming concept: zef.KF."field" = zef."field")
 zef_props = properties(zef.KF);
 for zef_i = 1:length(zef_props)
-    if isfield(zef,zef_props{zef_i})
-        zef.KF.(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
-    elseif isprop(zef.KF.(zef_props{zef_i}),'Value')
-        zef.(zef_props{zef_i}) = str2num(zef.KF.(zef_props{zef_i}).Value);
-    end
+if isfield(zef,zef_props{zef_i})
+zef.KF.(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
+elseif isprop(zef.KF.(zef_props{zef_i}),'Value')
+zef.(zef_props{zef_i}) = str2num(zef.KF.(zef_props{zef_i}).Value);
+end
 end
 clear zef_props zef_i
 

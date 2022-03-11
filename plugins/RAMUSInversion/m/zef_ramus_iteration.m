@@ -86,7 +86,7 @@ multires_ind =  evalin('base','zef.ramus_multires_ind');
 multires_count = evalin('base','zef.ramus_multires_count');
 n_iter = evalin('base','zef.ramus_multires_n_iter');
 if length(n_iter) < n_multires
-    n_iter = n_iter(1)*ones(1,n_multires);
+n_iter = n_iter(1)*ones(1,n_multires);
 end
 mr_sparsity = evalin('base','zef.ramus_multires_sparsity');
 
@@ -123,15 +123,15 @@ source_count = size(L_aux_2,2);
 source_count_aux = 1;
 end
 if evalin('base','zef.ramus_normalize_data')==1;
-    normalize_data = 'maximum';
+normalize_data = 'maximum';
 else
-    normalize_data = 'average';
+normalize_data = 'average';
 end
 
 if ramus_hyperprior == 1
-    balance_spatially = 1;
+balance_spatially = 1;
 else
-    balance_spatially = 0;
+balance_spatially = 0;
 end
 if evalin('base','zef.inv_hyperprior') == 1
 [beta, theta0] = zef_find_ig_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L_aux_2,source_count,evalin('base','zef.ramus_normalize_data'),balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
@@ -191,8 +191,8 @@ end
 theta = theta(mr_ind);
 z_vec = z_vec(mr_ind);
 else
-    z_vec = zeros(length(mr_ind),1);
-    weight_vec_aux(j) = 0;
+z_vec = zeros(length(mr_ind),1);
+weight_vec_aux(j) = 0;
 end
 
 z_vec_aux = z_vec_aux + z_vec;

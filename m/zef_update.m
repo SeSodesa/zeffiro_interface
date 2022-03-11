@@ -15,7 +15,7 @@ zef_j = length(zef.compartment_tags) - zef_i + 1;
 if not(isnan(zef.aux_field_1{zef_i,1}))
 evalin('base',['zef.' zef.compartment_tags{zef_j}, '_priority = ' num2str(zef.aux_field_1{zef_i,1}) ';']);
 zef.aux_field_2(zef_j) = 1;
- zef.aux_field_3(zef_i) = 1;
+zef.aux_field_3(zef_i) = 1;
 elseif isnan(zef.aux_field_1{zef_i,1}) && zef.aux_field_1{zef_i,2}
 evalin('base',['zef.' zef.compartment_tags{zef_j}, '_priority = ' num2str(zef_i) ';']);
 zef.aux_field_2(zef_j) = 1;
@@ -27,18 +27,18 @@ end
 
 if zef.aux_field_2(zef_j)
 
-    zef_get_data_compartment_table;
+zef_get_data_compartment_table;
 
 zef_n = 0;
 for zef_k =  1  : size(zef.parameter_profile,1)
-     if isequal(zef.parameter_profile{zef_k,8},'Segmentation') && isequal(zef.parameter_profile{zef_k,6},'On') && isequal(zef.parameter_profile{zef_k,7},'On')
- zef_n = zef_n + 1;
- if isequal(zef.parameter_profile{zef_k,3},'Scalar')
-  evalin('base',['zef.' zef.compartment_tags{zef_j} '_' zef.parameter_profile{zef_k,2} '='  num2str(zef.aux_field_1{zef_i, zef.compartment_table_size+zef_n}) ';']);
-   elseif isequal(zef.parameter_profile{zef_k,3},'String')
-  evalin('base',['zef.' zef.compartment_tags{zef_j} '_' zef.parameter_profile{zef_k,2} '='  (zef.aux_field_1{zef_i, zef.compartment_table_size+zef_n}) ';']);
- end
-    end
+if isequal(zef.parameter_profile{zef_k,8},'Segmentation') && isequal(zef.parameter_profile{zef_k,6},'On') && isequal(zef.parameter_profile{zef_k,7},'On')
+zef_n = zef_n + 1;
+if isequal(zef.parameter_profile{zef_k,3},'Scalar')
+evalin('base',['zef.' zef.compartment_tags{zef_j} '_' zef.parameter_profile{zef_k,2} '='  num2str(zef.aux_field_1{zef_i, zef.compartment_table_size+zef_n}) ';']);
+elseif isequal(zef.parameter_profile{zef_k,3},'String')
+evalin('base',['zef.' zef.compartment_tags{zef_j} '_' zef.parameter_profile{zef_k,2} '='  (zef.aux_field_1{zef_i, zef.compartment_table_size+zef_n}) ';']);
+end
+end
 end
 else
 zef.aux_field_4 = fieldnames(zef);
@@ -60,8 +60,8 @@ zef.aux_field_3 = [];
 if not(isempty(zef.aux_field_1))
 for zef_i = 1 : size(zef.aux_field_1,1)
 if not(isnan(zef.aux_field_1{zef_i,1})) ||  zef.aux_field_1{zef_i,4}
-    zef.aux_field_2 = [zef.aux_field_2 zef_i];
-    zef.aux_field_3 = [zef.aux_field_3 zef.aux_field_1{zef_i,1}];
+zef.aux_field_2 = [zef.aux_field_2 zef_i];
+zef.aux_field_3 = [zef.aux_field_3 zef.aux_field_1{zef_i,1}];
 else
 zef.aux_field_4 = fieldnames(zef);
 zef.aux_field_4 = zef.aux_field_4(find(startsWith(zef.aux_field_4,[zef.sensor_tags{zef_i} '_'])));
@@ -84,26 +84,26 @@ zef.aux_field_3{zef_i,8} = evalin('base',['not(isempty(zef.' zef.sensor_tags{zef
 end
 zef.h_sensors_table.Data = zef.aux_field_3;
 for zef_i = 1 : length(zef.sensor_tags)
-    evalin('base',['zef.' zef.sensor_tags{zef_i} '_name = zef.aux_field_3{zef_i,2};']);
-     evalin('base',['zef.' zef.sensor_tags{zef_i} '_imaging_method_name = zef.aux_field_3{zef_i,3};']);
-    evalin('base',['zef.' zef.sensor_tags{zef_i} '_on = zef.aux_field_3{zef_i,4};']);
-    evalin('base',['zef.' zef.sensor_tags{zef_i} '_visible = zef.aux_field_3{zef_i,5};']);
-   evalin('base',['zef.' zef.sensor_tags{zef_i} '_names_visible = zef.aux_field_3{zef_i,6};']);
+evalin('base',['zef.' zef.sensor_tags{zef_i} '_name = zef.aux_field_3{zef_i,2};']);
+evalin('base',['zef.' zef.sensor_tags{zef_i} '_imaging_method_name = zef.aux_field_3{zef_i,3};']);
+evalin('base',['zef.' zef.sensor_tags{zef_i} '_on = zef.aux_field_3{zef_i,4};']);
+evalin('base',['zef.' zef.sensor_tags{zef_i} '_visible = zef.aux_field_3{zef_i,5};']);
+evalin('base',['zef.' zef.sensor_tags{zef_i} '_names_visible = zef.aux_field_3{zef_i,6};']);
 end
 else
-    zef.aux_field_1 = cell(0);
-    for zef_i = 1 : length(zef.sensor_tags)
-    zef.aux_field_1{zef_i,1} = zef_i;
-    zef.aux_field_1{zef_i,2} = evalin('base',['zef.' zef.sensor_tags{zef_i} '_name']);
-    zef.aux_field_1{zef_i,3} = evalin('base',['zef.' zef.sensor_tags{zef_i} '_imaging_method_name']);
-    zef.aux_field_1{zef_i,4} = evalin('base',['zef.' zef.sensor_tags{zef_i} '_on']);
-    zef.aux_field_1{zef_i,5} = evalin('base',['zef.' zef.sensor_tags{zef_i} '_visible']);
-        zef.aux_field_1{zef_i,6} = evalin('base',['zef.' zef.sensor_tags{zef_i} '_names_visible']);
-    zef.aux_field_1{zef_i,7} = evalin('base',['not(isempty(zef.' zef.sensor_tags{zef_i} '_points))']);
-    zef.aux_field_1{zef_i,8} = evalin('base',['not(isempty(zef.' zef.sensor_tags{zef_i} '_directions))']);
-    end
+zef.aux_field_1 = cell(0);
+for zef_i = 1 : length(zef.sensor_tags)
+zef.aux_field_1{zef_i,1} = zef_i;
+zef.aux_field_1{zef_i,2} = evalin('base',['zef.' zef.sensor_tags{zef_i} '_name']);
+zef.aux_field_1{zef_i,3} = evalin('base',['zef.' zef.sensor_tags{zef_i} '_imaging_method_name']);
+zef.aux_field_1{zef_i,4} = evalin('base',['zef.' zef.sensor_tags{zef_i} '_on']);
+zef.aux_field_1{zef_i,5} = evalin('base',['zef.' zef.sensor_tags{zef_i} '_visible']);
+zef.aux_field_1{zef_i,6} = evalin('base',['zef.' zef.sensor_tags{zef_i} '_names_visible']);
+zef.aux_field_1{zef_i,7} = evalin('base',['not(isempty(zef.' zef.sensor_tags{zef_i} '_points))']);
+zef.aux_field_1{zef_i,8} = evalin('base',['not(isempty(zef.' zef.sensor_tags{zef_i} '_directions))']);
+end
 
-    zef.h_sensors_table.Data = zef.aux_field_1;
+zef.h_sensors_table.Data = zef.aux_field_1;
 end
 
 %sensors end
@@ -113,7 +113,7 @@ zef.aux_field_2 = zeros(length(zef.compartment_tags),1);
 
 for zef_i = 1 : length(zef.compartment_tags)
 
-    zef.aux_field_2(zef_i) =  evalin('base',['zef.' zef.compartment_tags{zef_i} '_priority']);
+zef.aux_field_2(zef_i) =  evalin('base',['zef.' zef.compartment_tags{zef_i} '_priority']);
 
 end
 
@@ -128,7 +128,7 @@ zef.h_aux = allchild(zef.h_menu_window);
 
 for zef_i = 1 : length(zef.h_aux)
 if contains(zef.h_aux(zef_i).Label,'ZEFFIRO Interface:')
-    delete(zef.h_aux(zef_i));
+delete(zef.h_aux(zef_i));
 end
 end
 
@@ -156,17 +156,17 @@ uimenu(zef.h_menu_window,'label',[zef.h_windows_open(zef_i).Name ' ' num2str(zef
 end
 zef.aux_field_2 = zef.h_windows_open(zef_i).CloseRequestFcn;
 if not(contains(zef.aux_field_2,'zef_update;'))
-     zef.h_windows_open(zef_i).CloseRequestFcn = [zef.h_windows_open(zef_i).CloseRequestFcn '; zef_update;'];
+zef.h_windows_open(zef_i).CloseRequestFcn = [zef.h_windows_open(zef_i).CloseRequestFcn '; zef_update;'];
 end
 end
 
 zef.h_project_information.Items = ...
-    {['App folder: ' zef.program_path],...
-    ['Current path: ' pwd],...
-    ['Project file: ' zef.save_file], ...
-    ['Project folder: ' zef.save_file_path],...
-    ['Project size (MB): ' num2str(round(getfield(whos('zef'),'bytes')/1000000))], ...
-    ['Number of windows: ' num2str(length(zef.h_windows_open))]};
+{['App folder: ' zef.program_path],...
+['Current path: ' pwd],...
+['Project file: ' zef.save_file], ...
+['Project folder: ' zef.save_file_path],...
+['Project size (MB): ' num2str(round(getfield(whos('zef'),'bytes')/1000000))], ...
+['Number of windows: ' num2str(length(zef.h_windows_open))]};
 
 zef = rmfield(zef,{'aux_field_1','aux_field_2','aux_field_3','aux_field_4','h_aux'});
 
@@ -177,13 +177,13 @@ zef.project_notes = zef.h_project_notes.Value;
 end
 
 if isempty(zef.sensor_tags)
-    zef.current_sensors = [];
-    zef.h_sensors_name_table.Data = [];
-    zef.h_parameters_table.Data = [];
+zef.current_sensors = [];
+zef.h_sensors_name_table.Data = [];
+zef.h_parameters_table.Data = [];
 elseif not(ismember(zef.current_sensors,zef.sensor_tags))
-    zef.current_sensors = [];
-    zef.h_sensors_name_table.Data = [];
-    zef.h_parameters_table.Data = [];
+zef.current_sensors = [];
+zef.h_sensors_name_table.Data = [];
+zef.h_parameters_table.Data = [];
 else
 zef.imaging_method = find(ismember(zef.imaging_method_cell,evalin('base',['zef.' zef.current_sensors '_imaging_method_name'])),1);
 zef_init_sensors_name_table;
@@ -203,9 +203,9 @@ clear zef_i zef_j zef_k zef_n;
 end
 
 if isvalid(zef.h_mesh_visualization_tool)
-    zef_update_mesh_visualization_tool;
+zef_update_mesh_visualization_tool;
 end
 
 if isvalid(zef.h_mesh_tool)
-    zef_update_mesh_tool;
+zef_update_mesh_tool;
 end

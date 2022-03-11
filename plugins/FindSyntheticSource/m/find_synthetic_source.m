@@ -40,53 +40,53 @@ zef.synth_source_init{15,2} = '1';
 zef.synth_source_init{16,2} = '1';
 
 if isfield(zef,'synth_source_data')
-    %Display elements on synth_source_data
-    zef.find_synth_source.h_source_list.Data=[];
-    if ~iscell(zef.synth_source_data)
-       zef_aux_data = zef.synth_source_data;
-       zef.synth_source_data = [];
-       zef_aux_fields = fields(zef_aux_data);
-       for zef_n = 1:length(zef_aux_fields)
-          zef.synth_source_data{zef_n} = zef_aux_data.(zef_aux_fields{zef_n});
-        end
-        clear zef_aux_fields zef_aux_data;
-        zef.fss_time_val = [];
-    end
-    for zef_j = 1:length(zef.synth_source_data)
-        zef.find_synth_source.h_source_list.Data{zef_j,1}=zef.synth_source_data{zef_j}.name;
-    end
-     %If FSS uses Noise STD instead of signal to noise ratio
-    for zef_n = 1:length(zef.synth_source_data)
-        if strcmp(zef.synth_source_data{zef_n}.parameters{8,1},'Noise STD w.r.t. amplitude')
-            zef.synth_source_data{zef_n}.parameters{8,1} = 'Noise STD w.r.t. amplitude (dB)';
-            zef.synth_source_data{zef_n}.parameters{8,2} = num2str(db(str2num(zef.synth_source_data{zef_n}.parameters{8,2})));
-        end
-    end
+%Display elements on synth_source_data
+zef.find_synth_source.h_source_list.Data=[];
+if ~iscell(zef.synth_source_data)
+zef_aux_data = zef.synth_source_data;
+zef.synth_source_data = [];
+zef_aux_fields = fields(zef_aux_data);
+for zef_n = 1:length(zef_aux_fields)
+zef.synth_source_data{zef_n} = zef_aux_data.(zef_aux_fields{zef_n});
+end
+clear zef_aux_fields zef_aux_data;
+zef.fss_time_val = [];
+end
+for zef_j = 1:length(zef.synth_source_data)
+zef.find_synth_source.h_source_list.Data{zef_j,1}=zef.synth_source_data{zef_j}.name;
+end
+%If FSS uses Noise STD instead of signal to noise ratio
+for zef_n = 1:length(zef.synth_source_data)
+if strcmp(zef.synth_source_data{zef_n}.parameters{8,1},'Noise STD w.r.t. amplitude')
+zef.synth_source_data{zef_n}.parameters{8,1} = 'Noise STD w.r.t. amplitude (dB)';
+zef.synth_source_data{zef_n}.parameters{8,2} = num2str(db(str2num(zef.synth_source_data{zef_n}.parameters{8,2})));
+end
+end
 elseif isfield(zef,'inv_synth_source')
-    %Statement that "updates" field construction of zef
-    zef_N=size(zef.inv_synth_source,1);
-    for zef_n = 1:zef_N
-        zef.find_synth_source.h_source_list.Data{end+1,1} = ['Source(',num2str(zef_n),')'];
-        zef.synth_source_data{zef_n}.parameters = zef.synth_source_init;
-        zef.synth_source_data{zef_n}.name = zef.find_synth_source.h_source_list.Data{end,1};
-        for zef_i = 1:7
-            zef.synth_source_data{zef_n}.parameters{zef_i,2} = num2str(evalin('base',['zef.inv_synth_source(',num2str(zef_n),',',num2str(zef_i),')']));
-        end
-        zef.synth_source_data{zef_n}.parameters{8,2} = num2str(evalin('base',['db(zef.inv_synth_source(',num2str(zef_n),',8))']));
-        zef.synth_source_data{zef_n}.parameters{15,2} = num2str(evalin('base',['zef.inv_synth_source(',num2str(zef_n),',9)']));
-        zef.synth_source_data{zef_n}.parameters{16,2} = num2str(evalin('base',['zef.inv_synth_source(',num2str(zef_n),',10)']));
-    end
+%Statement that "updates" field construction of zef
+zef_N=size(zef.inv_synth_source,1);
+for zef_n = 1:zef_N
+zef.find_synth_source.h_source_list.Data{end+1,1} = ['Source(',num2str(zef_n),')'];
+zef.synth_source_data{zef_n}.parameters = zef.synth_source_init;
+zef.synth_source_data{zef_n}.name = zef.find_synth_source.h_source_list.Data{end,1};
+for zef_i = 1:7
+zef.synth_source_data{zef_n}.parameters{zef_i,2} = num2str(evalin('base',['zef.inv_synth_source(',num2str(zef_n),',',num2str(zef_i),')']));
+end
+zef.synth_source_data{zef_n}.parameters{8,2} = num2str(evalin('base',['db(zef.inv_synth_source(',num2str(zef_n),',8))']));
+zef.synth_source_data{zef_n}.parameters{15,2} = num2str(evalin('base',['zef.inv_synth_source(',num2str(zef_n),',9)']));
+zef.synth_source_data{zef_n}.parameters{16,2} = num2str(evalin('base',['zef.inv_synth_source(',num2str(zef_n),',10)']));
+end
 
-    zef.find_synth_source.selected_source=1;
-    zef.synth_source_updated_true = false;
-    zef.fss_time_val = [];
-    zef_update_fss;
+zef.find_synth_source.selected_source=1;
+zef.synth_source_updated_true = false;
+zef.fss_time_val = [];
+zef_update_fss;
 else
-    zef.synth_source_updated_true = false;
-    zef.fss_time_val = [];
+zef.synth_source_updated_true = false;
+zef.fss_time_val = [];
 end
 if ~isfield(zef,'fss_bg_noise')
-    zef.fss_bg_noise = [];
+zef.fss_bg_noise = [];
 end
 zef.find_synth_source.h_time_val.Value = num2str(zef.fss_time_val);
 zef.find_synth_source.h_bg_noise.Value = num2str(zef.fss_bg_noise);

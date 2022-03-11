@@ -15,10 +15,10 @@ for zef_j = 1 : size(zef.aux_field,1)
 zef.filter_parameter_list{zef_j,1} = strtrim(zef.aux_field{zef_j}(1:strfind(zef.aux_field{zef_j},'[Default:')-1));
 zef.filter_parameter_list{zef_j,2} = strtrim(zef.aux_field{zef_j}(strfind(zef.aux_field{zef_j},'[Default:')+9:strfind(zef.aux_field{zef_j},']')-1));
 if isfield(zef,zef.filter_parameter_list{zef_j,2})
-    zef.filter_parameter_list{zef_j,2} = evalin('base',['zef.' zef.filter_parameter_list{zef_j,2}]);
- if isnumeric(zef.filter_parameter_list{zef_j,2})
-     zef.filter_parameter_list{zef_j,2} = num2str(zef.filter_parameter_list{zef_j,2});
- end
+zef.filter_parameter_list{zef_j,2} = evalin('base',['zef.' zef.filter_parameter_list{zef_j,2}]);
+if isnumeric(zef.filter_parameter_list{zef_j,2})
+zef.filter_parameter_list{zef_j,2} = num2str(zef.filter_parameter_list{zef_j,2});
+end
 end
 end
 

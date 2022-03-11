@@ -17,19 +17,19 @@ zef.RAPMUSIC.number_of_frames.Value = '0';
 zef.RAPMUSIC.inv_time_3.Value = '0';
 
 if ~isfield(zef,'RAPMUSIC_leadfield_lambda')
-    zef.RAPMUSIC_leadfield_lambda = 1e-3;
+zef.RAPMUSIC_leadfield_lambda = 1e-3;
 end
 if ~isfield(zef,'RAPMUSIC_n_dipoles')
-    zef.RAPMUSIC_n_dipoles = 8;
+zef.RAPMUSIC_n_dipoles = 8;
 end
 
 %set parameters if saved in ZI:
 %(Naming concept: zef.RAPMUSIC."field" = zef."field")
 zef_props = properties(zef.RAPMUSIC);
 for zef_i = 1:length(zef_props)
-    if isfield(zef,zef_props{zef_i})
-        zef.RAPMUSIC.(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
-    end
+if isfield(zef,zef_props{zef_i})
+zef.RAPMUSIC.(zef_props{zef_i}).Value = num2str(zef.(zef_props{zef_i}));
+end
 end
 clear zef_props zef_i
 

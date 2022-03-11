@@ -1,4 +1,4 @@
-    if not(evalin('base','zef.lock_transforms_on'))
+if not(evalin('base','zef.lock_transforms_on'))
 
 zef_i = 1 + evalin('base',['length(zef.' zef.current_tag '_transform_name)']);
 
@@ -15,4 +15,4 @@ clear zef_i;
 
 zef_init_transform;
 
-    end
+end

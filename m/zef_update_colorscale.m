@@ -16,9 +16,9 @@ end
 colorscale_val = h_object.Value;
 
 if isequal(colorscale_val,1)
-    h.ColorScale = 'linear';
+h.ColorScale = 'linear';
 elseif isequal(colorscale_val,2)
-    h.ColorScale = 'log';
+h.ColorScale = 'log';
 end
 
 end

@@ -19,11 +19,11 @@ compartment_tags = evalin('base','zef.compartment_tags');
 
 for k = 1 : length(compartment_tags)
 
-        var_0 = ['zef.' compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_sigma'];
-        var_2 = ['zef.' compartment_tags{k} '_priority'];
-        var_3 = ['zef.' compartment_tags{k} '_submesh_ind'];
-        var_4 = ['zef.' compartment_tags{k} '_name'];
+var_0 = ['zef.' compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_sigma'];
+var_2 = ['zef.' compartment_tags{k} '_priority'];
+var_3 = ['zef.' compartment_tags{k} '_submesh_ind'];
+var_4 = ['zef.' compartment_tags{k} '_name'];
 
 on_val = evalin('base',var_0);
 sigma_val = evalin('base',var_1);
@@ -82,11 +82,11 @@ size_xyz = size(X);
 n_cubes = (length(x_vec)-1)*(length(y_vec)-1)*(length(z_vec)-1);
 
 ind_mat_1 = [     3     4     1     7 ;
-                  2     3     1     7 ;
-                  1     2     7     6 ;
-                  7     1     6     5 ;
-                  7     4     1     8 ;
-                  7     8     1     5  ];
+2     3     1     7 ;
+1     2     7     6 ;
+7     1     6     5 ;
+7     4     1     8 ;
+7     8     1     5  ];
 
 tetra = zeros(6*n_cubes,4);
 johtavuus_ind = zeros(6*n_cubes,8);
@@ -160,15 +160,15 @@ I_2 = zeros(size(nodes,1),1);
 I_2(I_1) = [1 : length(I_1)];
 tetra = I_2(tetra);
 
- ind_m = [ 2 4 3 ;
-           1 3 4 ;
-           1 4 2 ;
-           1 2 3 ];
+ind_m = [ 2 4 3 ;
+1 3 4 ;
+1 4 2 ;
+1 2 3 ];
 
 tetra_sort = [tetra(:,[2 4 3]) ones(size(tetra,1),1) [1:size(tetra,1)]';
-              tetra(:,[1 3 4]) 2*ones(size(tetra,1),1) [1:size(tetra,1)]';
-              tetra(:,[1 4 2]) 3*ones(size(tetra,1),1) [1:size(tetra,1)]';
-              tetra(:,[1 2 3]) 4*ones(size(tetra,1),1) [1:size(tetra,1)]';];
+tetra(:,[1 3 4]) 2*ones(size(tetra,1),1) [1:size(tetra,1)]';
+tetra(:,[1 4 2]) 3*ones(size(tetra,1),1) [1:size(tetra,1)]';
+tetra(:,[1 2 3]) 4*ones(size(tetra,1),1) [1:size(tetra,1)]';];
 tetra_sort(:,1:3) = sort(tetra_sort(:,1:3),2);
 tetra_sort = sortrows(tetra_sort,[1 2 3]);
 tetra_ind = zeros(size(tetra_sort,1),1);
@@ -183,7 +183,7 @@ surface_triangles = surface_triangles(:,[1 3 2]);
 nodes_b = nodes;
 
 if isequal(evalin('base','zef.mesh_labeling_approach'),2)
-    johtavuus_ind = johtavuus_ind_2;
+johtavuus_ind = johtavuus_ind_2;
 end
 
 [priority_val priority_ind] = min(priority_vec_aux(johtavuus_ind),[],2);

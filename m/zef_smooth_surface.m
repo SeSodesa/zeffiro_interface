@@ -45,7 +45,7 @@ smoothed_nodes = nodes;
 
 else
 
-    smoothed_nodes = [];
+smoothed_nodes = [];
 
 end
 

@@ -19,31 +19,31 @@ h_c = h_axes.Children;
 
 for i = 1 : length(h_c)
 
-    if find(ismember(properties(h_c(i)),'CData'))
-        if isequal(data_status,1)
-            h_c(i).UserData = [];
-        end
+if find(ismember(properties(h_c(i)),'CData'))
+if isequal(data_status,1)
+h_c(i).UserData = [];
+end
 
-        data_ind = length(h_c(i).UserData)+1;
+data_ind = length(h_c(i).UserData)+1;
 
-        if evalin('base','zef.store_cdata')
+if evalin('base','zef.store_cdata')
 
-        h_c(i).UserData(data_ind).CData = h_c(i).CData;
-        h_c(i).UserData(data_ind).inv_time_1 = evalin('base','zef.inv_time_1');
-        h_c(i).UserData(data_ind).inv_time_2 = evalin('base','zef.inv_time_2');
-        h_c(i).UserData(data_ind).inv_time_3 = evalin('base','zef.inv_time_3');
-        h_c(i).UserData(data_ind).frame_start = cdata_info.frame_start;
-        h_c(i).UserData(data_ind).frame_stop = cdata_info.frame_stop;
-        h_c(i).UserData(data_ind).frame_step = cdata_info.frame_step;
-        frame_vec = [cdata_info.frame_start : cdata_info.frame_step : cdata_info.frame_stop];
-        h_c(i).UserData(data_ind).frame_vec = frame_vec;
-        h_c(i).UserData(data_ind).number_of_frames = length(frame_vec);
-        if isvalid(h_time_text)
-        h_c(i).UserData(data_ind).time_string = h_time_text.String;
-        end
+h_c(i).UserData(data_ind).CData = h_c(i).CData;
+h_c(i).UserData(data_ind).inv_time_1 = evalin('base','zef.inv_time_1');
+h_c(i).UserData(data_ind).inv_time_2 = evalin('base','zef.inv_time_2');
+h_c(i).UserData(data_ind).inv_time_3 = evalin('base','zef.inv_time_3');
+h_c(i).UserData(data_ind).frame_start = cdata_info.frame_start;
+h_c(i).UserData(data_ind).frame_stop = cdata_info.frame_stop;
+h_c(i).UserData(data_ind).frame_step = cdata_info.frame_step;
+frame_vec = [cdata_info.frame_start : cdata_info.frame_step : cdata_info.frame_stop];
+h_c(i).UserData(data_ind).frame_vec = frame_vec;
+h_c(i).UserData(data_ind).number_of_frames = length(frame_vec);
+if isvalid(h_time_text)
+h_c(i).UserData(data_ind).time_string = h_time_text.String;
+end
 
-        end
-        end
+end
+end
 
 end
 

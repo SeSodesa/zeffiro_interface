@@ -34,65 +34,65 @@ reconstruction_information.inv_n_L1_iterations = n_L1_iter;
 reconstruction_information.inv_n_map_iterations = n_ias_map_iter;
 
 if ismember(hyper_type,[1,2])
-    reconstruction_information.inv_hyperprior = evalin('base','zef.inv_hyperprior');
-    reconstruction_information.pm_val = evalin('base','zef.inv_prior_over_measurement_db');
+reconstruction_information.inv_hyperprior = evalin('base','zef.inv_hyperprior');
+reconstruction_information.pm_val = evalin('base','zef.inv_prior_over_measurement_db');
 else
-    reconstruction_information.exp_em_theta0 = theta0;
-    reconstruction_information.exp_em_beta = beta;
+reconstruction_information.exp_em_theta0 = theta0;
+reconstruction_information.exp_em_beta = beta;
 end
 
 [L,n_interp, procFile] = zef_processLeadfields(source_direction_mode);
 
 if ismember(hyper_type,[1,2])
-    %source_count = n_interp;
-    if evalin('base','zef.normalize_data')==1
-        normalize_data = 'maximum';
-    else
-        normalize_data = 'average';
-    end
+%source_count = n_interp;
+if evalin('base','zef.normalize_data')==1
+normalize_data = 'maximum';
+else
+normalize_data = 'average';
+end
 
-    if hyper_type == 1
-        balance_spatially = 1;
-    else
-        balance_spatially = 0;
-    end
-    if evalin('base','zef.inv_hyperprior') == 1
-        [beta, theta0] = zef_find_ig_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L,size(L,2),normalize_data,balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
-    elseif evalin('base','zef.inv_hyperprior') == 2
-        [beta, theta0] = zef_find_g_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L,size(L,2),normalize_data,balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
-    end
-    if q == 1
-        theta0 = sqrt(theta0);
-    end
-    reconstruction_information.exp_em_theta0 = gather(theta0(1));
-    reconstruction_information.exp_em_beta = gather(beta(1));
+if hyper_type == 1
+balance_spatially = 1;
+else
+balance_spatially = 0;
+end
+if evalin('base','zef.inv_hyperprior') == 1
+[beta, theta0] = zef_find_ig_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L,size(L,2),normalize_data,balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
+elseif evalin('base','zef.inv_hyperprior') == 2
+[beta, theta0] = zef_find_g_hyperprior(snr_val-pm_val,evalin('base','zef.inv_hyperprior_tail_length_db'),L,size(L,2),normalize_data,balance_spatially,evalin('base','zef.inv_hyperprior_weight'));
+end
+if q == 1
+theta0 = sqrt(theta0);
+end
+reconstruction_information.exp_em_theta0 = gather(theta0(1));
+reconstruction_information.exp_em_beta = gather(beta(1));
 end
 
 if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
-    L = gpuArray(L);
+L = gpuArray(L);
 end
 
-    z = cell(number_of_frames,1);
+z = cell(number_of_frames,1);
 f_data = zef_getFilteredData;
 n = size(L,2);
 
 tic;
 for f_ind = 1 : number_of_frames
 
-        time_val = toc;
-    if f_ind > 1
-        date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400)); %what does that do?
-        waitbar(100,h,['Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
+time_val = toc;
+if f_ind > 1
+date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400)); %what does that do?
+waitbar(100,h,['Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
 
-    end
+end
 
-    f=zef_getTimeStep(f_data, f_ind, true);
+f=zef_getTimeStep(f_data, f_ind, true);
 
-    z_vec = nan(size(L,2),1);
+z_vec = nan(size(L,2),1);
 
-    if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
-        f = gpuArray(f);
-    end
+if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0
+f = gpuArray(f);
+end
 
 % inversion starts here
 if f_ind == 1
@@ -117,42 +117,42 @@ gamma =zeros(length(z_vec),1)+(beta+1/q)./theta0;
 %z_vec = d_sqrt.*(L'*((L*L' + S_mat)\f));
 
 %__Update theta__
-    if q==2
-        for i = 1 : n_ias_map_iter
-        %_Draw waitbar_
-        if f_ind > 1;
-        waitbar(i/n_ias_map_iter,h,['Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
-        else
-        waitbar(i/n_ias_map_iter,h,['EM MAP iteration. Time step ' int2str(f_ind) ' of ' int2str(number_of_frames) '.' ]);
-        end;
-        w = 1./(gamma*std_lhood^2*max(f)^2);
+if q==2
+for i = 1 : n_ias_map_iter
+%_Draw waitbar_
+if f_ind > 1;
+waitbar(i/n_ias_map_iter,h,['Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
+else
+waitbar(i/n_ias_map_iter,h,['EM MAP iteration. Time step ' int2str(f_ind) ' of ' int2str(number_of_frames) '.' ]);
+end;
+w = 1./(gamma*std_lhood^2*max(f)^2);
 
-        z_vec = w.*(L'*((L*(w.*L') + eye(size(L,1)))\f));
-        %_ gamma update _
+z_vec = w.*(L'*((L*(w.*L') + eye(size(L,1)))\f));
+%_ gamma update _
 
-        %--------------------------------------------------------------------------
-        gamma = (beta+1/q)./(theta0+0.5*abs(z_vec).^q);
-        %--------------------------------------------------------------------------
-        end
-    else
-        %gamma = 0.5*max((At*b));
-        %betas = (alpha+1)/gamma;
-        % gamma = min(gamma,0.4*norm((At*b),inf));
-        x_old = zeros(n,1)+1e-10;%it seems sensitive to initialization!
+%--------------------------------------------------------------------------
+gamma = (beta+1/q)./(theta0+0.5*abs(z_vec).^q);
+%--------------------------------------------------------------------------
+end
+else
+%gamma = 0.5*max((At*b));
+%betas = (alpha+1)/gamma;
+% gamma = min(gamma,0.4*norm((At*b),inf));
+x_old = zeros(n,1)+1e-10;%it seems sensitive to initialization!
 
-        for i = 1 : n_ias_map_iter
-        %_Draw waitbar_
-        if f_ind > 1;
-        waitbar(i/n_ias_map_iter,h,['Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
-        else
-        waitbar(i/n_ias_map_iter,h,['EM MAP iteration. Time step ' int2str(f_ind) ' of ' int2str(number_of_frames) '.' ]);
-        end;
-        %focal activity
-        z_vec = L1_optimization(L,std_lhood,f,gamma,x_old,n_L1_iter);
+for i = 1 : n_ias_map_iter
+%_Draw waitbar_
+if f_ind > 1;
+waitbar(i/n_ias_map_iter,h,['Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
+else
+waitbar(i/n_ias_map_iter,h,['EM MAP iteration. Time step ' int2str(f_ind) ' of ' int2str(number_of_frames) '.' ]);
+end;
+%focal activity
+z_vec = L1_optimization(L,std_lhood,f,gamma,x_old,n_L1_iter);
 
-        gamma = (beta+1)./(theta0+0.5*abs(z_vec));
-        end
-    end
+gamma = (beta+1)./(theta0+0.5*abs(z_vec));
+end
+end
 
 %end;
 if evalin('base','zef.use_gpu') == 1 && gpuDeviceCount > 0

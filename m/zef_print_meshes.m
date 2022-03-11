@@ -5,7 +5,7 @@ function [void] = zef_print_meshes(void);
 f_ind = 1;
 
 if isequal(evalin('base','zef.volumetric_distribution_mode'),1)
-    volumetric_distribution = evalin('base','zef.reconstruction');
+volumetric_distribution = evalin('base','zef.reconstruction');
 elseif isequal(evalin('base','zef.volumetric_distribution_mode'),2)
 variable_index_aux = evalin('base','zef.mesh_visualization_parameter_selected');
 [~, variable_name_aux]  = zef_get_profile_parameters(variable_index_aux);
@@ -84,10 +84,10 @@ frame_stop = evalin('base','zef.frame_stop');
 frame_step = evalin('base','zef.frame_step');
 frame_step = max(frame_step,1);
 if frame_start == 0
-    frame_start = 1;
+frame_start = 1;
 end
 if frame_stop == 0
-    frame_stop = length_reconstruction_cell;
+frame_stop = length_reconstruction_cell;
 end
 frame_start = max(frame_start,1);
 frame_start = min(length_reconstruction_cell,frame_start);
@@ -115,9 +115,9 @@ sensors_color_table = evalin('base',['zef.' sensor_tag '_color_table']);
 sensors_name = evalin('base',['zef.' sensor_tag '_name_list']);
 aux_scale_val = evalin('base','zef.sensors_visual_size');
 if not(isempty(sensors_visible))
-    sensors = sensors(sensors_visible,:);
-     sensors_name = sensors_name(sensors_visible);
-      sensors_color_table = sensors_color_table(sensors_visible,:);
+sensors = sensors(sensors_visible,:);
+sensors_name = sensors_name(sensors_visible);
+sensors_color_table = sensors_color_table(sensors_visible,:);
 end
 %April 2021
 
@@ -130,9 +130,9 @@ surface_triangles = evalin('base','zef.surface_triangles');
 nodes = evalin('base','zef.nodes');
 
 if size(sensors,2) == 6 & ismember(evalin('base','zef.imaging_method'), [1 4 5])
-    electrode_model = 2;
+electrode_model = 2;
 else
-    electrode_model = 1;
+electrode_model = 1;
 end
 
 aux_ind = [];
@@ -183,7 +183,7 @@ aux_ind = [];
 
 %April 2021
 if not(evalin('base','zef.attach_electrodes'))
-    sensors_name_points = sensors(:,1:3);
+sensors_name_points = sensors(:,1:3);
 end
 sensors_aux = sensors;
 %April 2021
@@ -202,11 +202,11 @@ sensors_point_like_id = find(sensors(:,4)==0);
 for spl_ind = 1 : length(unique_sensors_point_like)
 spl_aux_ind = find(sensors(sensors_point_like_index,1)==unique_sensors_point_like(spl_ind));
 sensors_point_like(spl_ind,:) = mean(nodes(sensors(sensors_point_like_index(spl_aux_ind),2),:),1);
-  end
+end
 sensors_patch_like_index = setdiff(1:size(sensors,1),sensors_point_like_index);
-  sensors = sensors(sensors_patch_like_index,:);
+sensors = sensors(sensors_patch_like_index,:);
 else
-    electrode_model = 1;
+electrode_model = 1;
 end
 
 if electrode_model == 1 | not(ismember(evalin('base','zef.imaging_method'),[1,4,5]))
@@ -239,8 +239,8 @@ if not(isempty(sensors))
 unique_sensors_aux_1 = unique(sensors(:,1));
 h = zeros(length(unique_sensors_aux_1),1);
 for i = 1 : length(unique_sensors_aux_1)
-    unique_sensors_aux_2 = find(sensors(:,1)==unique_sensors_aux_1(i));
-    [min_n_aux, min_t_aux] = zef_minimal_mesh(nodes,sensors(unique_sensors_aux_2,2:4));
+unique_sensors_aux_2 = find(sensors(:,1)==unique_sensors_aux_1(i));
+[min_n_aux, min_t_aux] = zef_minimal_mesh(nodes,sensors(unique_sensors_aux_2,2:4));
 h(i) = trisurf(min_t_aux,min_n_aux(:,1),min_n_aux(:,2),min_n_aux(:,3));
 set(h(i),'Tag','sensor');
 set(h(i),'facecolor',sensors_color_table(unique_sensors_aux_1(i),:));
@@ -251,7 +251,7 @@ set(h,'edgecolor','none');
 % set(h,'ambientstrength',0.7);
 set(h,'facealpha',evalin('base','zef.layer_transparency'));
 set(h,'edgealpha',evalin('base','zef.layer_transparency'));
-    end
+end
 if not(isempty(sensors_point_like))
 h = zeros(size(sensors_point_like,1),1);
 for i = 1 : size(sensors_point_like,1)
@@ -299,12 +299,12 @@ aux_active_compartment_ind = [];
 aux_dir_mode = [];
 submesh_cell = cell(0);
 for k = 1 : length(compartment_tags)
-        var_0 = ['zef.'  compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_sigma'];
-        var_2 = ['zef.' compartment_tags{k} '_priority'];
-        var_3 = ['zef.' compartment_tags{k} '_visible'];
-        var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
-    color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
+var_0 = ['zef.'  compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_sigma'];
+var_2 = ['zef.' compartment_tags{k} '_priority'];
+var_3 = ['zef.' compartment_tags{k} '_visible'];
+var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
+color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
 on_val = evalin('base',var_0);
 sigma_val = evalin('base',var_1);
 priority_val = evalin('base',var_2);
@@ -318,7 +318,7 @@ color_cell{i} = color_str;
 visible_vec(i,1) = i*visible_val;
 submesh_cell{i} = submesh_ind;
 if evalin('base',['zef.' compartment_tags{k} '_sources'])>0;
-    aux_active_compartment_ind = [aux_active_compartment_ind i];
+aux_active_compartment_ind = [aux_active_compartment_ind i];
 end
 end
 end
@@ -377,15 +377,15 @@ aux_ind = [1:size(tetra,1)]';
 end;
 I_aux = I(aux_ind);
 
- ind_m = [ 2 3 4;
-           1 4 3;
-           1 2 4;
-           1 3 2];
+ind_m = [ 2 3 4;
+1 4 3;
+1 2 4;
+1 3 2];
 
 tetra_sort = [tetra(:,[2 3 4]) ones(size(tetra,1),1) [1:size(tetra,1)]';
-              tetra(:,[1 4 3]) 2*ones(size(tetra,1),1) [1:size(tetra,1)]';
-              tetra(:,[1 2 4]) 3*ones(size(tetra,1),1) [1:size(tetra,1)]';
-              tetra(:,[1 3 2]) 4*ones(size(tetra,1),1) [1:size(tetra,1)]';];
+tetra(:,[1 4 3]) 2*ones(size(tetra,1),1) [1:size(tetra,1)]';
+tetra(:,[1 2 4]) 3*ones(size(tetra,1),1) [1:size(tetra,1)]';
+tetra(:,[1 3 2]) 4*ones(size(tetra,1),1) [1:size(tetra,1)]';];
 tetra_sort(:,1:3) = sort(tetra_sort(:,1:3),2);
 
 if evalin('base','zef.use_gpu_graphic') == 1 & evalin('base','zef.use_gpu') == 1 & gpuDeviceCount > 0
@@ -414,12 +414,12 @@ frame_stop = 1;
 frame_step = 1;
 
 if ismember(evalin('base','zef.visualization_type'), [2,4])
-    if ismember(evalin('base','zef.volumetric_distribution_mode'), [1,3])
+if ismember(evalin('base','zef.volumetric_distribution_mode'), [1,3])
 s_i_ind = evalin('base','zef.source_interpolation_ind{1}');
-    elseif ismember(evalin('base','zef.volumetric_distribution_mode'), [2,4])
-     s_i_ind = [1:evalin('base','size(zef.tetra,1)')]';
-    end
-    end
+elseif ismember(evalin('base','zef.volumetric_distribution_mode'), [2,4])
+s_i_ind = [1:evalin('base','size(zef.tetra,1)')]';
+end
+end
 
 if evalin('base','zef.use_parcellation')
 selected_list = evalin('base','zef.parcellation_selected');
@@ -432,10 +432,10 @@ frame_start = evalin('base','zef.frame_start');
 frame_stop = evalin('base','zef.frame_stop');
 frame_step = evalin('base','zef.frame_step');
 if frame_start == 0
-    frame_start = 1;
+frame_start = 1;
 end
 if frame_stop == 0
-    frame_stop = length_reconstruction_cell;
+frame_stop = length_reconstruction_cell;
 end
 frame_start = max(frame_start,1);
 frame_start = min(length_reconstruction_cell,frame_start);
@@ -830,11 +830,11 @@ set(gca,'yGrid','off');
 set(gca,'zGrid','off');
 end
 
-  if evalin('base','zef.visualization_type') == 2
-  h_axes_text = axes('position',[0.03 0.94 0.01 0.05],'visible','off');
-  h_text = text(0, 0.5, ['Time: ' num2str(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2')/2 + frame_step*(f_ind - 1)*evalin('base','zef.inv_time_3'),'%0.6f') ' s, Frame: ' num2str(f_ind) ' / ' num2str(length_reconstruction_cell) '.']);
-  set(h_text,'visible','on','fontsize',1500);
-  end
+if evalin('base','zef.visualization_type') == 2
+h_axes_text = axes('position',[0.03 0.94 0.01 0.05],'visible','off');
+h_text = text(0, 0.5, ['Time: ' num2str(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2')/2 + frame_step*(f_ind - 1)*evalin('base','zef.inv_time_3'),'%0.6f') ' s, Frame: ' num2str(f_ind) ' / ' num2str(length_reconstruction_cell) '.']);
+set(h_text,'visible','on','fontsize',1500);
+end
 
 camva(c_va);
 campos(c_pos);
@@ -852,30 +852,30 @@ zef_set_sliders_print(1,h_axes_image);
 
 if iscell(volumetric_distribution) &  evalin('base','zef.visualization_type') == 2
 
-  if is_video
-  if file_index == 1;
-  print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
-  elseif file_index ==2;
-  print(h_fig_aux,'-dtiff','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
-  elseif file_index ==3;
-  print(h_fig_aux,'-dpng','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
-  elseif file_index ==4;
-  bmp_file_temp = [file_path  file_name(1:end-4) '_temp.bmp'];
-  print(h_fig_aux,'-dbmp','-r1',bmp_file_temp);
-  [movie_frame] = imread(bmp_file_temp,'bmp');
-  h_frame = im2frame(movie_frame);
-  writeVideo(h_aviobj,h_frame);
-  delete(bmp_file_temp);
-  end;
-  else
-  if file_index == 1;
-  print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name]);
-  elseif file_index ==2;
-  print(h_fig_aux,'-dtiff','-r1',[file_path  file_name]);
-  elseif file_index==3;
-  print(h_fig_aux,'-dpng','-r1',[file_path  file_name]);
-  end;
-  end;
+if is_video
+if file_index == 1;
+print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
+elseif file_index ==2;
+print(h_fig_aux,'-dtiff','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
+elseif file_index ==3;
+print(h_fig_aux,'-dpng','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
+elseif file_index ==4;
+bmp_file_temp = [file_path  file_name(1:end-4) '_temp.bmp'];
+print(h_fig_aux,'-dbmp','-r1',bmp_file_temp);
+[movie_frame] = imread(bmp_file_temp,'bmp');
+h_frame = im2frame(movie_frame);
+writeVideo(h_aviobj,h_frame);
+delete(bmp_file_temp);
+end;
+else
+if file_index == 1;
+print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name]);
+elseif file_index ==2;
+print(h_fig_aux,'-dtiff','-r1',[file_path  file_name]);
+elseif file_index==3;
+print(h_fig_aux,'-dpng','-r1',[file_path  file_name]);
+end;
+end;
 
 else
 
@@ -1077,25 +1077,25 @@ set(h_axes_hist,'xlim',[min_rec max_rec]);
 set(h_axes_hist,'linewidth',200);
 set(h_axes_hist,'ticklength',[0 0]);
 
-  axes(h_axes_text);set(h_fig_aux,'visible','on');
-  h_text = text(0, 0.5, ['Time: ' num2str(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2')/2 + frame_step*(f_ind - 1)*evalin('base','zef.inv_time_3'),'%0.6f') ' s, Frame: ' num2str(f_ind) ' / ' num2str(length_reconstruction_cell) '.']);
-  set(h_text,'visible','on','fontsize',1500);
+axes(h_axes_text);set(h_fig_aux,'visible','on');
+h_text = text(0, 0.5, ['Time: ' num2str(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2')/2 + frame_step*(f_ind - 1)*evalin('base','zef.inv_time_3'),'%0.6f') ' s, Frame: ' num2str(f_ind) ' / ' num2str(length_reconstruction_cell) '.']);
+set(h_text,'visible','on','fontsize',1500);
 
 end
 
-  if file_index == 1;
-  print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
-  elseif file_index ==2;
-  print(h_fig_aux,'-dtiff','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
-  elseif file_index ==3;
-  print(h_fig_aux,'-dpng','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
-  elseif file_index == 4;
-  print(h_fig_aux,'-dbmp','-r1',bmp_file_temp);
-  [movie_frame] = imread(bmp_file_temp,'bmp');
-  h_frame = im2frame(movie_frame);
-  writeVideo(h_aviobj,h_frame);
-  delete(bmp_file_temp);
-  end;
+if file_index == 1;
+print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
+elseif file_index ==2;
+print(h_fig_aux,'-dtiff','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
+elseif file_index ==3;
+print(h_fig_aux,'-dpng','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
+elseif file_index == 4;
+print(h_fig_aux,'-dbmp','-r1',bmp_file_temp);
+[movie_frame] = imread(bmp_file_temp,'bmp');
+h_frame = im2frame(movie_frame);
+writeVideo(h_aviobj,h_frame);
+delete(bmp_file_temp);
+end;
 
 end
 
@@ -1142,10 +1142,10 @@ frame_start = evalin('base','zef.frame_start');
 frame_stop = evalin('base','zef.frame_stop');
 frame_step = evalin('base','zef.frame_step');
 if frame_start == 0
-    frame_start = 1;
+frame_start = 1;
 end
 if frame_stop == 0
-    frame_stop = length_reconstruction_cell;
+frame_stop = length_reconstruction_cell;
 end
 frame_start = max(frame_start,1);
 frame_start = min(length_reconstruction_cell,frame_start);
@@ -1168,10 +1168,10 @@ frame_start = evalin('base','zef.frame_start');
 frame_stop = evalin('base','zef.frame_stop');
 frame_step = evalin('base','zef.frame_step');
 if frame_start == 0
-    frame_start = 1;
+frame_start = 1;
 end
 if frame_stop == 0
-    frame_stop = length_reconstruction_cell;
+frame_stop = length_reconstruction_cell;
 end
 frame_start = max(frame_start,1);
 frame_start = min(length_reconstruction_cell,frame_start);
@@ -1207,12 +1207,12 @@ end
 submesh_num = evalin('base','zef.submesh_num');
 
 if ismember(evalin('base','zef.visualization_type'), [3,4])
-    s_i_ind = evalin('base','zef.source_interpolation_ind{2}');
-        if ismember(evalin('base','zef.volumetric_distribution_mode'), [1,3])
+s_i_ind = evalin('base','zef.source_interpolation_ind{2}');
+if ismember(evalin('base','zef.volumetric_distribution_mode'), [1,3])
 s_i_ind_2 = evalin('base','zef.source_interpolation_ind{1}');
-    elseif ismember(evalin('base','zef.volumetric_distribution_mode'), [2,4])
-    s_i_ind_2 = evalin('base','zef.active_compartment_ind');
-        end
+elseif ismember(evalin('base','zef.volumetric_distribution_mode'), [2,4])
+s_i_ind_2 = evalin('base','zef.active_compartment_ind');
+end
 end
 
 if evalin('base','zef.use_parcellation')
@@ -1351,12 +1351,12 @@ aux_active_compartment_ind = [];
 aux_dir_mode = [];
 submesh_cell = cell(0);
 for k = 1 : length(compartment_tags)
-        var_0 = ['zef.'  compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_sigma'];
-        var_2 = ['zef.' compartment_tags{k} '_priority'];
-        var_3 = ['zef.' compartment_tags{k} '_visible'];
-        var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
-    color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
+var_0 = ['zef.'  compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_sigma'];
+var_2 = ['zef.' compartment_tags{k} '_priority'];
+var_3 = ['zef.' compartment_tags{k} '_visible'];
+var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
+color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
 on_val = evalin('base',var_0);
 sigma_val = evalin('base',var_1);
 priority_val = evalin('base',var_2);
@@ -1370,7 +1370,7 @@ color_cell{i} = color_str;
 visible_vec(i,1) = i*visible_val;
 submesh_cell{i} = submesh_ind;
 if evalin('base',['zef.' compartment_tags{k} '_sources'])>0;
-    aux_active_compartment_ind = [aux_active_compartment_ind i];
+aux_active_compartment_ind = [aux_active_compartment_ind i];
 end
 end
 end
@@ -1395,9 +1395,9 @@ sensors_color_table = evalin('base',['zef.' sensor_tag '_color_table']);
 sensors_name = evalin('base',['zef.' sensor_tag '_name_list']);
 aux_scale_val = evalin('base','zef.sensors_visual_size');
 if not(isempty(sensors_visible))
-    sensors = sensors(sensors_visible,:);
-     sensors_name = sensors_name(sensors_visible);
-      sensors_color_table = sensors_color_table(sensors_visible,:);
+sensors = sensors(sensors_visible,:);
+sensors_name = sensors_name(sensors_visible);
+sensors_color_table = sensors_color_table(sensors_visible,:);
 end
 %April 2021
 
@@ -1407,24 +1407,24 @@ X_s = sphere_scale*X_s;
 Y_s = sphere_scale*Y_s;
 Z_s = sphere_scale*Z_s;
 if evalin('base','zef.cp_on') || evalin('base','zef.cp2_on') || evalin('base','zef.cp3_on')
-    for i = 1 : length(reuna_t)
-        reuna_t{i} = uint32(reuna_t{i});
+for i = 1 : length(reuna_t)
+reuna_t{i} = uint32(reuna_t{i});
 triangle_c{i} = (1/3)*(reuna_p{i}(reuna_t{i}(:,1),:) + reuna_p{i}(reuna_t{i}(:,2),:) + reuna_p{i}(reuna_t{i}(:,3),:));
-    end
+end
 end
 
 aux_ind_1 = [];
 aux_ind_2 = cell(1,length(reuna_t));
 if submesh_num > 0
-    for i = 1 : length(reuna_t)
-    if submesh_num <= length(submesh_cell{i})
-        if submesh_num == 1
-        aux_ind_2{i} = [1:submesh_cell{i}(submesh_num)]';
-        else
-        aux_ind_2{i} = [submesh_cell{i}(submesh_num-1)+1:submesh_cell{i}(submesh_num)]';
-    end
-    end
-    end
+for i = 1 : length(reuna_t)
+if submesh_num <= length(submesh_cell{i})
+if submesh_num == 1
+aux_ind_2{i} = [1:submesh_cell{i}(submesh_num)]';
+else
+aux_ind_2{i} = [submesh_cell{i}(submesh_num-1)+1:submesh_cell{i}(submesh_num)]';
+end
+end
+end
 end
 
 clipped = 0;
@@ -1445,11 +1445,11 @@ else
 aux_ind_1 = zef_clipping_plane(sensors(:,1:3),clipping_plane);
 end
 for i = 1 : length(reuna_t)
-    if clipped
+if clipped
 aux_ind_2{i} = zef_clipping_plane(triangle_c{i},clipping_plane,aux_ind_2{i});
 else
 aux_ind_2{i} = zef_clipping_plane(tetra_c{i},clipping_plane);
-    end
+end
 end
 clipped = 1;
 end
@@ -1470,11 +1470,11 @@ else
 aux_ind_1 = zef_clipping_plane(sensors(:,1:3),clipping_plane);
 end
 for i = 1 : length(reuna_t)
-    if clipped
+if clipped
 aux_ind_2{i} = zef_clipping_plane(triangle_c{i},clipping_plane,aux_ind_2{i});
 else
 aux_ind_2{i} = zef_clipping_plane(tetra_c{i},clipping_plane);
-    end
+end
 end
 clipped = 1;
 end
@@ -1495,11 +1495,11 @@ else
 aux_ind_1 = zef_clipping_plane(sensors(:,1:3),clipping_plane);
 end
 for i = 1 : length(reuna_t)
-    if clipped
+if clipped
 aux_ind_2{i} = zef_clipping_plane(triangle_c{i},clipping_plane,aux_ind_2{i});
 else
 aux_ind_2{i} = zef_clipping_plane(tetra_c{i},clipping_plane);
-    end
+end
 end
 clipped = 1;
 end
@@ -1568,7 +1568,7 @@ end
 end
 elseif submesh_num > 0
 for i = 1 : length(reuna_t)
-    if not(isempty(aux_ind_2{i}))
+if not(isempty(aux_ind_2{i}))
 reuna_t{i} = reuna_t{i}(aux_ind_2{i},:);
 if ismember(evalin('base','zef.visualization_type'),[3 4])
 if ismember(i, aux_active_compartment_ind)
@@ -1591,25 +1591,25 @@ aux_ind_2 = cell(1,length(reuna_t));
 triangle_c = cell(1,length(reuna_t));
 
 if ismember(evalin('base','zef.imaging_method'), [1 4 5])  & size(sensors,2) == 6
-    electrode_model = 2;
+electrode_model = 2;
 elseif ismember(evalin('base','zef.imaging_method'), [1 4 5])
-    electrode_model = 1;
+electrode_model = 1;
 else
-    electrode_model = 0;
+electrode_model = 0;
 end
 
 %April 2021
 if not(evalin('base','zef.attach_electrodes'))
-    sensors_name_points = sensors(:,1:3);
+sensors_name_points = sensors(:,1:3);
 end
 %April 2021
 
 if evalin('base','zef.attach_electrodes') & electrode_model == 1
 sensors = zef_attach_sensors_volume(sensors,'geometry');
 elseif evalin('base','zef.attach_electrodes') & electrode_model == 2
-  sensors_aux = zef_attach_sensors_volume(sensors,'geometry');
-  sensors_point_like_index = find(sensors_aux(:,4)==0);
-  sensors_point_like = zeros(length(sensors_point_like_index),3);
+sensors_aux = zef_attach_sensors_volume(sensors,'geometry');
+sensors_point_like_index = find(sensors_aux(:,4)==0);
+sensors_point_like = zeros(length(sensors_point_like_index),3);
 
 %April 2021
 sensors_name_points = zef_attach_sensors_volume(sensors,'points');
@@ -1622,12 +1622,12 @@ sensors_point_like(spl_ind,:) = sensors(sensors_aux(sensors_point_like_index(spl
 else
 sensors_point_like(spl_ind,:) = reuna_p{end}(sensors_aux(sensors_point_like_index(spl_ind),2),:);
 end
-  end
+end
 sensors = sensors_aux;
 sensors_patch_like_index = setdiff(1:size(sensors,1),sensors_point_like_index);
-  sensors = sensors(sensors_patch_like_index,:);
+sensors = sensors(sensors_patch_like_index,:);
 else
-    electrode_model = 1;
+electrode_model = 1;
 end
 
 if evalin('base',['zef.' sensor_tag '_visible'])
@@ -1649,7 +1649,7 @@ set(h,'edgecolor','none');
 set(h,'facealpha',evalin('base','zef.layer_transparency'));
 end
 elseif electrode_model == 2
- %April 2021
+%April 2021
 if evalin('base',['zef.' evalin('base','zef.current_sensors') '_names_visible'])
 for i = 1 : size(sensors_name_points,1)
 h_text = text(sensors_name_points(i,1),sensors_name_points(i,2),sensors_name_points(i,3),sensors_name{i});
@@ -1714,7 +1714,7 @@ end
 
 if ismember(evalin('base','zef.visualization_type'),[3,4,5])
 
-    if ismember(evalin('base','zef.visualization_type'),[3,5])
+if ismember(evalin('base','zef.visualization_type'),[3,5])
 f_ind = frame_start;
 end
 
@@ -1723,9 +1723,9 @@ i = 0;
 aux_brain_visible_ind = [];
 
 for k = 1 : length(compartment_tags)
-        on_val = evalin('base',['zef.' compartment_tags{k} '_on']);
-        visible_val = evalin('base',['zef.' compartment_tags{k} '_visible']);
-        color_str =  evalin('base',['zef.' compartment_tags{k} '_color']);
+on_val = evalin('base',['zef.' compartment_tags{k} '_on']);
+visible_val = evalin('base',['zef.' compartment_tags{k} '_visible']);
+color_str =  evalin('base',['zef.' compartment_tags{k} '_color']);
 if on_val
 i = i + 1;
 if visible_val
@@ -1853,17 +1853,17 @@ if evalin('base','zef.use_parcellation')
 reconstruction_aux = zeros(size(reconstruction));
 p_rec_aux =  ones(size(reuna_p{i},1),1).*evalin('base','zef.layer_transparency');
 for p_ind = selected_list
-    if evalin('base','zef.parcellation_type') == 1
-        reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = reconstruction(p_i_ind{p_ind}{2}{ab_ind});
-    elseif evalin('base','zef.parcellation_type') == 2
-        reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = quantile(reconstruction(p_i_ind{p_ind}{2}{ab_ind}),evalin('base','zef.parcellation_quantile'));
-    elseif evalin('base','zef.parcellation_type') == 3
-    reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = quantile(sqrt(reconstruction(p_i_ind{p_ind}{2}{ab_ind})),evalin('base','zef.parcellation_quantile'));
-   elseif evalin('base','zef.parcellation_type') == 4
-      reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = quantile((reconstruction(p_i_ind{p_ind}{2}{ab_ind}).^(1/3)),evalin('base','zef.parcellation_quantile'));
-    elseif evalin('base','zef.parcellation_type') == 5
-      reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = mean(reconstruction(p_i_ind{p_ind}{2}{ab_ind}));
-    end
+if evalin('base','zef.parcellation_type') == 1
+reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = reconstruction(p_i_ind{p_ind}{2}{ab_ind});
+elseif evalin('base','zef.parcellation_type') == 2
+reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = quantile(reconstruction(p_i_ind{p_ind}{2}{ab_ind}),evalin('base','zef.parcellation_quantile'));
+elseif evalin('base','zef.parcellation_type') == 3
+reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = quantile(sqrt(reconstruction(p_i_ind{p_ind}{2}{ab_ind})),evalin('base','zef.parcellation_quantile'));
+elseif evalin('base','zef.parcellation_type') == 4
+reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = quantile((reconstruction(p_i_ind{p_ind}{2}{ab_ind}).^(1/3)),evalin('base','zef.parcellation_quantile'));
+elseif evalin('base','zef.parcellation_type') == 5
+reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = mean(reconstruction(p_i_ind{p_ind}{2}{ab_ind}));
+end
 p_rec_aux(unique(reuna_t{i}(p_i_ind{p_ind}{2}{ab_ind},:))) = evalin('base','zef.brain_transparency');
 end
 reconstruction = reconstruction_aux;
@@ -1936,7 +1936,7 @@ axes(h_axes_image); set(h_fig_aux,'visible','on');
 
 h_axes_text = axes('position',[0.03 0.94 0.01 0.05],'visible','off');
 h_text = text(0, 0.5, ['Time: ' num2str(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2')/2 + frame_step*(f_ind - 1)*evalin('base','zef.inv_time_3'),'%0.6f') ' s, Frame: ' num2str(f_ind) ' / ' num2str(length_reconstruction_cell) '.']);
-  set(h_text,'visible','on','fontsize',1500);
+set(h_text,'visible','on','fontsize',1500);
 axes(h_axes_image); set(h_fig_aux,'visible','on');
 end
 %set(h_colorbar,'layer','bottom');
@@ -1944,7 +1944,7 @@ lighting phong;
 
 else
 
-    if ismember(evalin('base','zef.visualization_type'),[5]) && i == length(reuna_p)
+if ismember(evalin('base','zef.visualization_type'),[5]) && i == length(reuna_p)
 %%%%%Topography reconstruction.
 
 if  iscell(evalin('base','zef.top_reconstruction'))
@@ -2019,14 +2019,14 @@ axes(h_axes_image); set(h_fig_aux,'visible','on');
 
 h_axes_text = axes('position',[0.03 0.94 0.01 0.05],'visible','off');
 h_text = text(0, 0.5, ['Time: ' num2str(evalin('base','zef.inv_time_1') + evalin('base','zef.inv_time_2')/2 + frame_step*(f_ind - 1)*evalin('base','zef.inv_time_3'),'%0.6f') ' s, Frame: ' num2str(f_ind) ' / ' num2str(length_reconstruction_cell) '.']);
-  set(h_text,'visible','on','fontsize',1500);
+set(h_text,'visible','on','fontsize',1500);
 axes(h_axes_image); set(h_fig_aux,'visible','on');
 
 lighting phong;
 
 %%%% End of topography reconstruction
 
-    else
+else
 [min_n_aux, min_t_aux] = zef_minimal_mesh(reuna_p{i},reuna_t{i});
 h_surf = trimesh(min_t_aux,min_n_aux(:,1),min_n_aux(:,2),min_n_aux(:,3),'edgecolor','none','facecolor',color_str);
 set(h_surf,'Tag','surface');
@@ -2074,11 +2074,11 @@ camtarget(c_ta);
 camproj(c_p);
 camup(c_u);
 
-        sensor_patches = findobj(h_axes_image,'Type','Patch','Tag','sensor');
-        uistack(sensor_patches,'top');
+sensor_patches = findobj(h_axes_image,'Type','Patch','Tag','sensor');
+uistack(sensor_patches,'top');
 zef_plot_dpq('static');
 zef_plot_dpq('dynamical');
-        zef_set_sliders_print(1,h_axes_image);
+zef_set_sliders_print(1,h_axes_image);
 if not(evalin('base','zef.axes_visible'))
 set(h_axes_image,'visible','off');
 end
@@ -2087,57 +2087,57 @@ end
 
 if iscell(volumetric_distribution) &&  ismember(evalin('base','zef.visualization_type'),[3])
 
-  if is_video
-  if file_index == 1;
-  print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name(1:end-4) '_' int2str(frame_start) file_name(end-3:end)]);
-  elseif file_index ==2;
-  print(h_fig_aux,'-dtiff','-r1',[file_path  file_name(1:end-4) '_' int2str(frame_start) file_name(end-3:end)]);
-  elseif file_index ==3;
-  print(h_fig_aux,'-dpng','-r1',[file_path  file_name(1:end-4) '_' int2str(frame_start) file_name(end-3:end)]);
-  elseif file_index ==4;
-  bmp_file_temp = [file_path  file_name(1:end-4) '_temp.bmp'];
-  print(h_fig_aux,'-dbmp','-r1',bmp_file_temp);
-  [movie_frame] = imread(bmp_file_temp,'bmp');
-  h_frame = im2frame(movie_frame);
-  writeVideo(h_aviobj,h_frame);
-   delete(bmp_file_temp);
-  end;
-  else
-  if file_index == 1;
-  print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name]);
-  elseif file_index ==2;
-  print(h_fig_aux,'-dtiff','-r1',[file_path  file_name]);
-  elseif file_index==3;
-  print(h_fig_aux,'-dpng','-r1',[file_path  file_name]);
-  end;
-  end;
+if is_video
+if file_index == 1;
+print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name(1:end-4) '_' int2str(frame_start) file_name(end-3:end)]);
+elseif file_index ==2;
+print(h_fig_aux,'-dtiff','-r1',[file_path  file_name(1:end-4) '_' int2str(frame_start) file_name(end-3:end)]);
+elseif file_index ==3;
+print(h_fig_aux,'-dpng','-r1',[file_path  file_name(1:end-4) '_' int2str(frame_start) file_name(end-3:end)]);
+elseif file_index ==4;
+bmp_file_temp = [file_path  file_name(1:end-4) '_temp.bmp'];
+print(h_fig_aux,'-dbmp','-r1',bmp_file_temp);
+[movie_frame] = imread(bmp_file_temp,'bmp');
+h_frame = im2frame(movie_frame);
+writeVideo(h_aviobj,h_frame);
+delete(bmp_file_temp);
+end;
+else
+if file_index == 1;
+print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name]);
+elseif file_index ==2;
+print(h_fig_aux,'-dtiff','-r1',[file_path  file_name]);
+elseif file_index==3;
+print(h_fig_aux,'-dpng','-r1',[file_path  file_name]);
+end;
+end;
 
 elseif iscell(evalin('base','zef.top_reconstruction')) &&  ismember(evalin('base','zef.visualization_type'),[5])
 
-    if is_video
-  if file_index == 1;
-  print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name(1:end-4) '_' int2str(frame_start) file_name(end-3:end)]);
-  elseif file_index ==2;
-  print(h_fig_aux,'-dtiff','-r1',[file_path  file_name(1:end-4) '_' int2str(frame_start) file_name(end-3:end)]);
-  elseif file_index ==3;
-  print(h_fig_aux,'-dpng','-r1',[file_path  file_name(1:end-4) '_' int2str(frame_start) file_name(end-3:end)]);
-  elseif file_index ==4;
-  bmp_file_temp = [file_path  file_name(1:end-4) '_temp.bmp'];
-  print(h_fig_aux,'-dbmp','-r1',bmp_file_temp);
-  [movie_frame] = imread(bmp_file_temp,'bmp');
-  h_frame = im2frame(movie_frame);
-  writeVideo(h_aviobj,h_frame);
-   delete(bmp_file_temp);
-  end;
-  else
-  if file_index == 1;
-  print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name]);
-  elseif file_index ==2;
-  print(h_fig_aux,'-dtiff','-r1',[file_path  file_name]);
-  elseif file_index==3;
-  print(h_fig_aux,'-dpng','-r1',[file_path  file_name]);
-  end;
-  end;
+if is_video
+if file_index == 1;
+print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name(1:end-4) '_' int2str(frame_start) file_name(end-3:end)]);
+elseif file_index ==2;
+print(h_fig_aux,'-dtiff','-r1',[file_path  file_name(1:end-4) '_' int2str(frame_start) file_name(end-3:end)]);
+elseif file_index ==3;
+print(h_fig_aux,'-dpng','-r1',[file_path  file_name(1:end-4) '_' int2str(frame_start) file_name(end-3:end)]);
+elseif file_index ==4;
+bmp_file_temp = [file_path  file_name(1:end-4) '_temp.bmp'];
+print(h_fig_aux,'-dbmp','-r1',bmp_file_temp);
+[movie_frame] = imread(bmp_file_temp,'bmp');
+h_frame = im2frame(movie_frame);
+writeVideo(h_aviobj,h_frame);
+delete(bmp_file_temp);
+end;
+else
+if file_index == 1;
+print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name]);
+elseif file_index ==2;
+print(h_fig_aux,'-dtiff','-r1',[file_path  file_name]);
+elseif file_index==3;
+print(h_fig_aux,'-dpng','-r1',[file_path  file_name]);
+end;
+end;
 
 else
 
@@ -2214,7 +2214,7 @@ rec_x = sum(rec_x(s_i_ind{ab_ind}),2)/3;
 rec_y = sum(rec_y(s_i_ind{ab_ind}),2)/3;
 rec_z = sum(rec_z(s_i_ind{ab_ind}),2)/3;
 n_vec_aux = cross(reuna_p{i}(reuna_t{i}(:,2),:)' - reuna_p{i}(reuna_t{i}(:,1),:)',...
- reuna_p{i}(reuna_t{i}(:,3),:)' - reuna_p{i}(reuna_t{i}(:,1),:)')';
+reuna_p{i}(reuna_t{i}(:,3),:)' - reuna_p{i}(reuna_t{i}(:,1),:)')';
 n_vec_aux = n_vec_aux./repmat(sqrt(sum(n_vec_aux.^2,2)),1,3);
 end
 
@@ -2258,17 +2258,17 @@ if evalin('base','zef.use_parcellation')
 reconstruction_aux = zeros(size(reconstruction));
 p_rec_aux =  ones(size(reuna_p{i},1),1).*evalin('base','zef.layer_transparency');
 for p_ind = selected_list
-    if evalin('base','zef.parcellation_type') == 1
-        reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = reconstruction(p_i_ind{p_ind}{2}{ab_ind});
-    elseif evalin('base','zef.parcellation_type') == 2
-        reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = quantile(reconstruction(p_i_ind{p_ind}{2}{ab_ind}),evalin('base','zef.parcellation_quantile'));
-    elseif evalin('base','zef.parcellation_type') == 3
-    reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = quantile(sqrt(reconstruction(p_i_ind{p_ind}{2}{ab_ind})),evalin('base','zef.parcellation_quantile'));
-   elseif evalin('base','zef.parcellation_type') == 4
-      reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = quantile((reconstruction(p_i_ind{p_ind}{2}{ab_ind}).^(1/3)),evalin('base','zef.parcellation_quantile'));
-    elseif evalin('base','zef.parcellation_type') == 5
-      reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = mean(reconstruction(p_i_ind{p_ind}{2}{ab_ind}));
-    end
+if evalin('base','zef.parcellation_type') == 1
+reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = reconstruction(p_i_ind{p_ind}{2}{ab_ind});
+elseif evalin('base','zef.parcellation_type') == 2
+reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = quantile(reconstruction(p_i_ind{p_ind}{2}{ab_ind}),evalin('base','zef.parcellation_quantile'));
+elseif evalin('base','zef.parcellation_type') == 3
+reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = quantile(sqrt(reconstruction(p_i_ind{p_ind}{2}{ab_ind})),evalin('base','zef.parcellation_quantile'));
+elseif evalin('base','zef.parcellation_type') == 4
+reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = quantile((reconstruction(p_i_ind{p_ind}{2}{ab_ind}).^(1/3)),evalin('base','zef.parcellation_quantile'));
+elseif evalin('base','zef.parcellation_type') == 5
+reconstruction_aux(p_i_ind{p_ind}{2}{ab_ind}) = mean(reconstruction(p_i_ind{p_ind}{2}{ab_ind}));
+end
 p_rec_aux(unique(reuna_t{i}(p_i_ind{p_ind}{2}{ab_ind},:))) = evalin('base','zef.brain_transparency');
 end
 reconstruction = reconstruction_aux;
@@ -2325,7 +2325,7 @@ end
 
 elseif ismember(evalin('base','zef.visualization_type'),[5])
 
-    %Topography reconstruction.
+%Topography reconstruction.
 
 reconstruction = single(evalin('base',['zef.top_reconstruction{' int2str(f_ind) '}']));
 reconstruction = reconstruction(:);
@@ -2409,19 +2409,19 @@ set(h_axes_hist,'linewidth',200);
 set(h_axes_hist,'ticklength',[0 0]);
 end
 
-  if file_index == 1;
-  print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
-  elseif file_index ==2;
-  print(h_fig_aux,'-dtiff','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
-  elseif file_index ==3;
-  print(h_fig_aux,'-dpng','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
-  elseif file_index == 4;
-  print(h_fig_aux,'-dbmp','-r1',bmp_file_temp);
-  [movie_frame] = imread(bmp_file_temp,'bmp');
-  h_frame = im2frame(movie_frame);
-  writeVideo(h_aviobj,h_frame);
-   delete(bmp_file_temp);
-  end;
+if file_index == 1;
+print(h_fig_aux,'-djpeg95','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
+elseif file_index ==2;
+print(h_fig_aux,'-dtiff','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
+elseif file_index ==3;
+print(h_fig_aux,'-dpng','-r1',[file_path  file_name(1:end-4) '_' int2str(f_ind) file_name(end-3:end)]);
+elseif file_index == 4;
+print(h_fig_aux,'-dbmp','-r1',bmp_file_temp);
+[movie_frame] = imread(bmp_file_temp,'bmp');
+h_frame = im2frame(movie_frame);
+writeVideo(h_aviobj,h_frame);
+delete(bmp_file_temp);
+end;
 
 end
 
@@ -2432,9 +2432,9 @@ else
 i = 0;
 
 for k = 1 : length(compartment_tags)
-        on_val = evalin('base',['zef.' compartment_tags{k} '_on']);
-        visible_val = evalin('base',['zef.' compartment_tags{k} '_visible']);
-        color_str =  evalin('base',['zef.' compartment_tags{k} '_color']);
+on_val = evalin('base',['zef.' compartment_tags{k} '_on']);
+visible_val = evalin('base',['zef.' compartment_tags{k} '_visible']);
+color_str =  evalin('base',['zef.' compartment_tags{k} '_color']);
 if on_val
 i = i + 1;
 if visible_val
@@ -2474,11 +2474,11 @@ camtarget(c_ta);
 camproj(c_p);
 camup(c_u);
 
-        sensor_patches = findobj(evalin('base','zef.h_axes1'),'Type','Patch','Tag','sensor');
-        uistack(sensor_patches,'top');
+sensor_patches = findobj(evalin('base','zef.h_axes1'),'Type','Patch','Tag','sensor');
+uistack(sensor_patches,'top');
 zef_plot_dpq('static');
 zef_plot_dpq('dynamical');
-        zef_set_sliders_print(1,h_axes_image);
+zef_set_sliders_print(1,h_axes_image);
 
 %drawnow;
 

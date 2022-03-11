@@ -7,31 +7,31 @@ zef.streamline_linestyle = '-';
 end
 
 if not(isfield(zef,'cone_alpha'));
-    zef.cone_alpha = 1;
+zef.cone_alpha = 1;
 end;
 
 if not(isfield(zef,'cone_lattice_resolution'));
-    zef.cone_field_lattice_resolution = 10;
+zef.cone_field_lattice_resolution = 10;
 end;
 if not(isfield(zef,'cone_scale'));
-    zef.cone_scale = 0.5;
+zef.cone_scale = 0.5;
 end;
 if not(isfield(zef,'parcellation_type'));
-    zef.parcellation_type = 1;
+zef.parcellation_type = 1;
 end;
 
 if not(isfield(zef,'parcellation_quantile'));
-    zef.parcellation_quantile = 0.98;
+zef.parcellation_quantile = 0.98;
 end;
 
 if not(isfield(zef,'sensors_visual_size'));
-    zef.sensors_visual_size = 3.5;
+zef.sensors_visual_size = 3.5;
 end;
 
 if not(isfield(zef,'use_gpu_graphic'));
-    zef.use_gpu_graphic = 1;
+zef.use_gpu_graphic = 1;
 end;
 
 if not(isfield(zef,'colortune_param'));
-    zef.colortune_param = 1;
+zef.colortune_param = 1;
 end;

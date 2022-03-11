@@ -26,11 +26,11 @@ taubin_lambda = 1;
 taubin_mu = -1;
 
 if evalin('base','zef.use_gpu') && gpuDeviceCount > 0
-    A = gpuArray(A);
-    sum_A = gpuArray(sum_A);
-    taubin_lambda = gpuArray(taubin_lambda);
-    smoothing_param = gpuArray(smoothing_param);
-    nodes = gpuArray(nodes);
+A = gpuArray(A);
+sum_A = gpuArray(sum_A);
+taubin_lambda = gpuArray(taubin_lambda);
+smoothing_param = gpuArray(smoothing_param);
+nodes = gpuArray(nodes);
 end
 
 for iter_ind_aux_1 = 1 : smoothing_steps_surf

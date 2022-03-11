@@ -1,35 +1,35 @@
 %Copyright © 2018- Sampsa Pursiainen & ZI Development Team
 %See: https://github.com/sampsapursiainen/zeffiro_interface
 if not(isfield(zef,'parcellation_name'));
-    zef.parcellation_name = '';
+zef.parcellation_name = '';
 end;
 
 if not(isfield(zef,'parcellation_plot_type'));
-    zef.parcellation_plot_type = 1;
+zef.parcellation_plot_type = 1;
 end;
 
 if not(isfield(zef,'parcellation_colortable'));
-    zef.parcellation_colortable = cell(0);
+zef.parcellation_colortable = cell(0);
 end;
 
 if not(isfield(zef,'parcellation_segment'));
-    zef.parcellation_segment = 'LH';
+zef.parcellation_segment = 'LH';
 end;
 
 if not(isfield(zef,'parcellation_plot_type'));
-    zef.parcellation_plot_type = 1;
+zef.parcellation_plot_type = 1;
 end;
 
 if not(isfield(zef,'parcellation_points'));
-    zef.parcellation_points = cell(0);
+zef.parcellation_points = cell(0);
 end;
 
 if not(isfield(zef,'parcellation_merge'));
-    zef.parcellation_merge = 1;
+zef.parcellation_merge = 1;
 end;
 
 if not(isfield(zef,'use_parcellation'));
-    zef.use_parcellation = 0;
+zef.use_parcellation = 0;
 end;
 
 zef.time_series_tools_dir = which('zef_init_parcellation.m');

@@ -40,12 +40,12 @@ aux_dir_mode = [];
 submesh_cell = cell(0);
 compartment_tags = evalin('base','zef.compartment_tags');
 for k = 1 : length(compartment_tags)
-        var_0 = ['zef.'  compartment_tags{k} '_on'];
-        var_1 = ['zef.' compartment_tags{k} '_sigma'];
-        var_2 = ['zef.' compartment_tags{k} '_priority'];
-        var_3 = ['zef.' compartment_tags{k} '_visible'];
-        var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
-    color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
+var_0 = ['zef.'  compartment_tags{k} '_on'];
+var_1 = ['zef.' compartment_tags{k} '_sigma'];
+var_2 = ['zef.' compartment_tags{k} '_priority'];
+var_3 = ['zef.' compartment_tags{k} '_visible'];
+var_4 = ['zef.' compartment_tags{k} '_submesh_ind'];
+color_str = evalin('base',['zef.' compartment_tags{k} '_color']);
 on_val = evalin('base',var_0);
 sigma_val = evalin('base',var_1);
 priority_val = evalin('base',var_2);
@@ -59,8 +59,8 @@ color_cell{i} = color_str;
 visible_vec(i,1) = i*visible_val;
 submesh_cell{i} = submesh_ind;
 if evalin('base',['zef.' compartment_tags{k} '_sources'])>0;
-    aux_brain_ind = [aux_brain_ind i];
-    aux_dir_mode = [aux_dir_mode evalin('base',['zef.' compartment_tags{k} '_sources'])-1];
+aux_brain_ind = [aux_brain_ind i];
+aux_dir_mode = [aux_dir_mode evalin('base',['zef.' compartment_tags{k} '_sources'])-1];
 end
 end
 end
@@ -209,7 +209,7 @@ multires_dec =  evalin('base','zef.inv_multires_dec');
 multires_ind =  evalin('base','zef.inv_multires_ind');
 n_iter = evalin('base','zef.inv_multires_n_iter');
 if length(n_iter) < n_multires
-    n_iter = n_iter(1)*ones(1,n_multires);
+n_iter = n_iter(1)*ones(1,n_multires);
 end
 mr_sparsity = evalin('base','zef.inv_multires_sparsity');
 
@@ -285,15 +285,15 @@ z_vec = z_vec(mr_ind);
 
 resid_vec = f - L_aux*z_vec;
 if evalin('base','zef.inv_hyperprior') == 1;
-    exp_arg_new = - 0.5*resid_vec'*resid_vec/(std_lhood.^2) - 0.5*z_vec'*(z_vec./theta) - sum(theta./theta0) + (kappa-3)*sum(log(theta));
+exp_arg_new = - 0.5*resid_vec'*resid_vec/(std_lhood.^2) - 0.5*z_vec'*(z_vec./theta) - sum(theta./theta0) + (kappa-3)*sum(log(theta));
 else
-    exp_arg_new = - 0.5*resid_vec'*resid_vec/(std_lhood.^2) - 0.5*z_vec'*(z_vec./theta) - sum(theta0./theta) - kappa*sum(log(theta));
+exp_arg_new = - 0.5*resid_vec'*resid_vec/(std_lhood.^2) - 0.5*z_vec'*(z_vec./theta) - sum(theta0./theta) - kappa*sum(log(theta));
 end
-    iter_counter = iter_counter + 1;
+iter_counter = iter_counter + 1;
 
 if exp_arg_new - exp_arg_old >= log(rand(1))
-    exp_arg_old = exp_arg_new;
-    z_vec_current = z_vec;
+exp_arg_old = exp_arg_new;
+z_vec_current = z_vec;
 acceptance_counter = acceptance_counter+1;
 end
 

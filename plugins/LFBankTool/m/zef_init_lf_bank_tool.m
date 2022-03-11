@@ -2,23 +2,23 @@
 %See: https://github.com/sampsapursiainen/zeffiro_interface
 
 if not(isfield(zef,'lf_bank_scaling_factor'));
-   zef.lf_bank_scaling_factor = 1;
+zef.lf_bank_scaling_factor = 1;
 end;
 
 if not(isfield(zef,'lf_item_type'));
-   zef.lf_item_type = '';
+zef.lf_item_type = '';
 end;
 
 if not(isfield(zef,'lf_tag'));
-   zef.lf_tag = 'EEG';
+zef.lf_tag = 'EEG';
 end;
 
 if not(isfield(zef,'lf_normalization'));
-   zef.lf_normalization = 1;
+zef.lf_normalization = 1;
 end;
 
 if not(isfield(zef,'lf_bank_storage'));
-   zef.lf_bank_storage = cell(0);
+zef.lf_bank_storage = cell(0);
 end;
 
 if not(isfield(zef,'lf_bank_storage'));
@@ -26,7 +26,7 @@ zef.lf_item_list = cell(0);
 end;
 
 if not(isfield(zef,'lf_item_selected'));
-   zef.lf_item_selected = [];
+zef.lf_item_selected = [];
 end;
 
 zef.lf_normalization_functions_dir = which('zef_init_lf_bank_tool.m');
@@ -52,12 +52,12 @@ set(zef.h_lf_normalization,'items',zef.lf_normalization_functions_name_list);
 end
 
 if isfield(zef,'h_lf_bank_tool')
-    if isvalid(zef.h_lf_bank_tool)
+if isvalid(zef.h_lf_bank_tool)
 set(zef.h_lf_tag,'Value',zef.lf_tag);
 set(zef.h_lf_bank_scaling_factor,'Value',num2str(zef.lf_bank_scaling_factor));
 zef.aux_field = get(zef.h_lf_normalization,'items');
 set(zef.h_lf_normalization,'Value',zef.aux_field(zef.lf_normalization));
-    end
+end
 end
 
 zef_update_lf_bank_tool;

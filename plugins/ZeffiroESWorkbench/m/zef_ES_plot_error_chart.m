@@ -1,22 +1,22 @@
 function zef_ES_plot_error_chart
 %% Variables and parameters setup
 try
-    load_aux = evalin('base','zef.y_ES_interval');
+load_aux = evalin('base','zef.y_ES_interval');
 catch
-    if not(isfield(evalin('base','zef'),'y_ES_interval'))
-        error('There are no values calculated yet...')
-    end
+if not(isfield(evalin('base','zef'),'y_ES_interval'))
+error('There are no values calculated yet...')
+end
 end
 [loader, sr, sc] = zef_ES_objective_function;
 %% Figure and Axes
 if isempty(findobj('type','figure','Name','ZEFFIRO Interface: Error chart tool'))
-    f = figure('Name','ZEFFIRO Interface: Error chart tool','NumberTitle','off', ...
-        'ToolBar','figure','MenuBar','none');
-    set(f,'Position',[800 400 800 600]);
+f = figure('Name','ZEFFIRO Interface: Error chart tool','NumberTitle','off', ...
+'ToolBar','figure','MenuBar','none');
+set(f,'Position',[800 400 800 600]);
 else
-    f = findobj('type','figure','Name','ZEFFIRO Interface: Error chart tool');
-    axes(f.CurrentAxes);
-    clf(f.CurrentAxes);
+f = findobj('type','figure','Name','ZEFFIRO Interface: Error chart tool');
+axes(f.CurrentAxes);
+clf(f.CurrentAxes);
 end
 
 f.Color      = [1 1 1];
@@ -30,8 +30,8 @@ set(tab1,'BackgroundColor',[1 1 1])
 axes('parent', tab1);
 fieldnames_table = fieldnames(loader);
 for w = 1:4
-    sp_var = cell2mat(loader{1,w});
-    printing_imagesc(w);
+sp_var = cell2mat(loader{1,w});
+printing_imagesc(w);
 end
 
 tab2 = uitab(h, 'title', 'Volumetric');
@@ -39,8 +39,8 @@ set(tab2,'BackgroundColor',[1 1 1])
 axes('parent', tab2);
 fieldnames_table = fieldnames(loader(:,[5:8]));
 for w = 1:4
-    sp_var = cell2mat(loader{1,w+4});
-    printing_imagesc(w);
+sp_var = cell2mat(loader{1,w+4});
+printing_imagesc(w);
 end
 %% Wrapping up, functions and return of variables
 function printing_imagesc(w,varargin)
@@ -67,11 +67,11 @@ ax.XTick               = 1:length(load_aux.reg_param);
 ax.XTickLabelRotation  = 0;
 
 if evalin('base','zef.ES_search_method') == 1
-    %ax.YLabel.String = 'Optimizer tolerance';
-    param_val_aux = load_aux.optimizer_tolerance;
+%ax.YLabel.String = 'Optimizer tolerance';
+param_val_aux = load_aux.optimizer_tolerance;
 elseif evalin('base','zef.ES_search_method') == 2
-    %ax.YLabel.String = 'Weighted k-value';
-    param_val_aux = load_aux.k_val;
+%ax.YLabel.String = 'Weighted k-value';
+param_val_aux = load_aux.k_val;
 end
 
 ax.YLabel.FontSize     = fnt_sz;
@@ -89,7 +89,7 @@ cb                = colorbar;
 cb.TickLabelInterpreter = 'Latex';
 colormap(cb, jet(length(sp_var(:,1:end))-1))
 if w ~= 6
-    cb.Ruler.Exponent = -3;
+cb.Ruler.Exponent = -3;
 end
 
 % ax.XTick = [];
@@ -103,9 +103,9 @@ lgd = legend('Location','SouthWest', 'FontName', 'FixedWidth');
 lgd.Interpreter = 'Latex';
 lgd.String(1) = {['$\alpha$ : ' num2str(load_aux.reg_param(sc), '%1.2g')]};
 if evalin('base','zef.ES_search_method') == 1
-    lgd.String(2) = {['t : ' num2str(param_val_aux(sr), '%1.2g')]};
+lgd.String(2) = {['t : ' num2str(param_val_aux(sr), '%1.2g')]};
 else
-    lgd.String(2) = {['k : ' num2str(param_val_aux(sr), '%1.2g')]};
+lgd.String(2) = {['k : ' num2str(param_val_aux(sr), '%1.2g')]};
 end
 lgd.AutoUpdate = 'off';
 
@@ -119,15 +119,15 @@ hold off
 title(fieldnames_table(w));
 end
 function printing_heatmap(w)
-    subplot(2,2,w)
-    h_map = heatmap(num2str(load_aux.reg_param, '%1.2e'), num2str(load_aux.optimizer_tolerance, '%1.2e'), sp_var);
-    if load_aux.reg_param(1) == 1
-        h_map.XData(1) = cellstr('1');
-    end
-    colormap('jet');
-    set(h_map.NodeChildren(3), 'XTickLabelRotation', 90)
-    xlabel('Regularization parameter');
-    ylabel('Optimizer tolerance');
-    title(fieldnames_table(w));
+subplot(2,2,w)
+h_map = heatmap(num2str(load_aux.reg_param, '%1.2e'), num2str(load_aux.optimizer_tolerance, '%1.2e'), sp_var);
+if load_aux.reg_param(1) == 1
+h_map.XData(1) = cellstr('1');
+end
+colormap('jet');
+set(h_map.NodeChildren(3), 'XTickLabelRotation', 90)
+xlabel('Regularization parameter');
+ylabel('Optimizer tolerance');
+title(fieldnames_table(w));
 end
 end

@@ -99,11 +99,11 @@ end
 elseif isequal(evalin('base','zef.initial_mesh_mode'),2)
 
 ind_mat_1 = [     3     4     1     7 ;
-                  2     3     1     7 ;
-                  1     2     7     6 ;
-                  7     1     6     5 ;
-                  7     4     1     8 ;
-                  7     8     1     5  ];
+2     3     1     7 ;
+1     2     7     6 ;
+7     1     6     5 ;
+7     4     1     8 ;
+7     8     1     5  ];
 
 tetra = zeros(6*n_cubes,4);
 if isequal(evalin('base','zef.mesh_labeling_approach'),1)
@@ -179,10 +179,10 @@ zef_mesh_labeling_step;
 end
 end
 
-    else
+else
 
 for j_surface_refinement = 1 : length(n_surface_refinement)
- for i_surface_refinement = 1 : n_surface_refinement(j_surface_refinement)
+for i_surface_refinement = 1 : n_surface_refinement(j_surface_refinement)
 
 zef_refinement_step;
 
@@ -286,8 +286,8 @@ if length(n_refinement) == 1
 waitbar(0,h,'Adaptive volume refinement.');
 
 for i = 1 : n_refinement
-        k_param = evalin('base','zef.adaptive_refinement_k_param');
-         thresh_val  = evalin('base','zef.adaptive_refinement_thresh_val');
+k_param = evalin('base','zef.adaptive_refinement_k_param');
+thresh_val  = evalin('base','zef.adaptive_refinement_thresh_val');
 tetra_refine_ind = zef_get_tetra_to_refine(refinement_compartments, thresh_val, k_param, nodes, tetra,domain_labels,reuna_p,reuna_t);
 [nodes,tetra,domain_labels,tetra_interp_vec] = zef_mesh_refinement(nodes,tetra,domain_labels,refinement_compartments, tetra_refine_ind);
 tetra_refine_ind = find(ismember(tetra_interp_vec,tetra_refine_ind));
@@ -296,7 +296,7 @@ if evalin('base','zef.mesh_relabeling')
 
 pml_ind = [];
 label_ind = uint32(tetra);
-    labeling_flag = 3;
+labeling_flag = 3;
 zef_mesh_labeling_step;
 
 end
@@ -309,17 +309,17 @@ waitbar(0/length(n_refinement),h,'Adaptive volume refinement.');
 for j = 1 : length(n_refinement)
 for i = 1 : n_refinement(j)
 
-        k_param = evalin('base','zef.adaptive_refinement_k_param');
-         thresh_val  = evalin('base','zef.adaptive_refinement_thresh_val');
-         tetra_refine_ind = zef_get_tetra_to_refine(refinement_compartments(j), thresh_val, k_param, nodes, tetra,domain_labels,reuna_p,reuna_t);
-        [nodes,tetra,domain_labels,tetra_interp_vec] = zef_mesh_refinement(nodes,tetra,domain_labels,refinement_compartments(j),tetra_refine_ind);
-  tetra_refine_ind = find(ismember(tetra_interp_vec,tetra_refine_ind));
+k_param = evalin('base','zef.adaptive_refinement_k_param');
+thresh_val  = evalin('base','zef.adaptive_refinement_thresh_val');
+tetra_refine_ind = zef_get_tetra_to_refine(refinement_compartments(j), thresh_val, k_param, nodes, tetra,domain_labels,reuna_p,reuna_t);
+[nodes,tetra,domain_labels,tetra_interp_vec] = zef_mesh_refinement(nodes,tetra,domain_labels,refinement_compartments(j),tetra_refine_ind);
+tetra_refine_ind = find(ismember(tetra_interp_vec,tetra_refine_ind));
 
 if evalin('base','zef.mesh_relabeling')
 
 pml_ind = [];
 label_ind = uint32(tetra);
-    labeling_flag = 3;
+labeling_flag = 3;
 zef_mesh_labeling_step;
 
 end

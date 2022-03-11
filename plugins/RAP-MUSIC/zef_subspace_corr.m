@@ -22,7 +22,7 @@ orj = X(:,1)/norm(X(:,1));
 S_C = diag(S_C);
 
 if strcmp(chararcter,'max')
-    S_C = max(S_C);
+S_C = max(S_C);
 end
 
 end
