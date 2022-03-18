@@ -121,8 +121,13 @@ if iscell(elements)
     K = length(brain_ind);
     K3 = length(source_ind);
     clear electrodes;
-    A = spalloc(N,N,0);
     D_A = zeros(K,10);
+
+% Construct stiffness matrix
+
+A = zef_stiffness_matrix(nodes, tetrahedra, sigma_tetrahedra);
+
+% Construct matrix D_A
 
 tilavuus = zef_tetra_volume(nodes, tetrahedra, true);
 
@@ -130,75 +135,64 @@ h=waitbar(0,'System matrices.');
 waitbar_ind = 0;
 
 D_A_count = 0;
+
 for i = 1 : 4
 
-grad_1 = zef_volume_gradient(nodes, tetrahedra, i);
+    grad_1 = zef_volume_gradient(nodes, tetrahedra, i);
 
-for j = i : 4
+    for j = i : 4
 
-D_A_count = D_A_count + 1;
+        D_A_count = D_A_count + 1;
 
-if i == j
-grad_2 = grad_1;
-else
-grad_2 = zef_volume_gradient(nodes, tetrahedra, j);
-end
+        if i == j
+            grad_2 = grad_1;
+        else
+            grad_2 = zef_volume_gradient(nodes, tetrahedra, j);
+        end
 
-entry_vec = zeros(1,size(tetrahedra,1));
-entry_vec_2 = zeros(1,size(tetrahedra,1));
-for k = 1 : 6
-   switch k
-       case 1
-           k_1 = 1;
-           k_2 = 1;
-       case 2
-           k_1 = 2;
-           k_2 = 2;
-       case 3
-           k_1 = 3;
-           k_2 = 3;
-       case 4
-           k_1 = 1;
-           k_2 = 2;
-       case 5
-           k_1 = 1;
-           k_2 = 3;
-       case 6
-           k_1 = 2;
-           k_2 = 3;
-end
+        entry_vec_D_A = zeros(1,size(tetrahedra,1));
 
-if k <= 3
-entry_vec = entry_vec + sigma_tetrahedra(k,:).*grad_1(k_1,:).*grad_2(k_2,:)./(9*tilavuus);
-entry_vec_2 = entry_vec_2 + grad_1(k_1,:).*grad_2(k_2,:)./(9*tilavuus);
+        for k = 1 : 6
+           switch k
+               case 1
+                   k_1 = 1;
+                   k_2 = 1;
+               case 2
+                   k_1 = 2;
+                   k_2 = 2;
+               case 3
+                   k_1 = 3;
+                   k_2 = 3;
+               case 4
+                   k_1 = 1;
+                   k_2 = 2;
+               case 5
+                   k_1 = 1;
+                   k_2 = 3;
+               case 6
+                   k_1 = 2;
+                   k_2 = 3;
+            end
 
-else
-entry_vec = entry_vec + sigma_tetrahedra(k,:).*(grad_1(k_1,:).*grad_2(k_2,:) + grad_1(k_2,:).*grad_2(k_1,:))./(9*tilavuus);
-entry_vec_2 = entry_vec_2 + grad_1(k_1,:).*grad_2(k_2,:)./(9*tilavuus);
-end
+            if k <= 3
+                entry_vec_D_A = entry_vec_D_A + grad_1(k_1,:).*grad_2(k_2,:)./(9*tilavuus);
+            else
+                entry_vec_D_A = entry_vec_D_A + grad_1(k_1,:).*grad_2(k_2,:)./(9*tilavuus);
+            end
+        end
 
-end
+    D_A(:, D_A_count) = D_A(:, D_A_count) + entry_vec_D_A(brain_ind)';
 
-D_A(:, D_A_count) = D_A(:, D_A_count) + entry_vec_2(brain_ind)';
+    clear entry_vec;
 
-A_part = sparse(tetrahedra(:,i),tetrahedra(:,j), entry_vec',N,N);
-clear entry_vec;
+    end
 
-if i == j
-A = A + A_part;
-else
-A = A + A_part ;
-A = A + A_part';
-end
+    waitbar_ind = waitbar_ind + 1;
+    waitbar(waitbar_ind/waitbar_length,h);
 
 end
 
-waitbar_ind = waitbar_ind + 1;
-waitbar(waitbar_ind/waitbar_length,h);
-
-end
-
-clear A_part grad_1 grad_2 ala sigma_tetrahedra;
+clear grad_1 grad_2 ala sigma_tetrahedra;
 
 if not(isempty(prisms))
 

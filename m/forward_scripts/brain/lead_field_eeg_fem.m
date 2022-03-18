@@ -185,87 +185,14 @@ if not(isequal(lower(direction_mode),'cartesian') || isequal(lower(direction_mod
     source_model = 1;
 end
 
-% Begin constructing the stiffness matrix 𝐴
-
-A = spalloc(N,N,0);
-
-tilavuus = zef_tetra_volume(nodes, tetrahedra, true);
+% Create the stiffness matrix 𝐴
 
 h=waitbar(0,'System matrices.');
 waitbar_ind = 0;
 
-for i = 1 : 4
+A = zef_stiffness_matrix(nodes, tetrahedra, sigma_tetrahedra);
 
-    grad_1 = zef_volume_gradient(nodes, tetrahedra, i);
-
-    for j = i : 4
-
-        if i == j
-            grad_2 = grad_1;
-        else
-            grad_2 = zef_volume_gradient(nodes, tetrahedra, j);
-        end
-
-        entry_vec = zeros(1,size(tetrahedra,1));
-
-        for k = 1 : 6
-            switch k
-                case 1
-                   k_1 = 1;
-                   k_2 = 1;
-                case 2
-                   k_1 = 2;
-                   k_2 = 2;
-                case 3
-                   k_1 = 3;
-                   k_2 = 3;
-                case 4
-                   k_1 = 1;
-                   k_2 = 2;
-                case 5
-                   k_1 = 1;
-                   k_2 = 3;
-                case 6
-                   k_1 = 2;
-                   k_2 = 3;
-            end
-
-            if k <= 3
-                entry_vec = entry_vec ...
-                    + sigma_tetrahedra(k,:) ...
-                    .* grad_1(k_1,:) ...
-                    .* grad_2(k_2,:) ...
-                    ./ (9*tilavuus); ...
-            else
-                entry_vec = entry_vec ...
-                    + sigma_tetrahedra(k,:) ...
-                    .* (grad_1(k_1,:) ...
-                    .* grad_2(k_2,:) ...
-                    + grad_1(k_2,:) ...
-                    .* grad_2(k_1,:)) ...
-                    ./ (9*tilavuus); ...
-            end
-        end
-
-        A_part = sparse(tetrahedra(:,i),tetrahedra(:,j), entry_vec',N,N);
-
-        clear entry_vec;
-
-        if i == j
-            A = A + A_part;
-        else
-            A = A + A_part ;
-            A = A + A_part';
-        end
-    end
-
-    waitbar_ind = waitbar_ind + 1;
-
-    waitbar(waitbar_ind/waitbar_length,h);
-
-end
-
-clear A_part grad_1 grad_2 tilavuus ala sigma_tetrahedra;
+% TODO: remove this prism code.
 
 if not(isempty(prisms))
 
@@ -419,6 +346,8 @@ if not(isempty(prisms))
     clear A_part grad_11 grad_12 grad_21 grad_22 ala korkeus prisms sigma_prisms grad_vec_aux entry_vec;
 
 end
+
+% TODO END: remove this prism code.
 
 if isequal(electrode_model,'CEM')
 
