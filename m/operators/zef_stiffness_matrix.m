@@ -44,7 +44,13 @@ function A = zef_stiffness_matrix(nodes, tetrahedra, volume, tensor)
 
             entry_vec = zeros(1,size(tetrahedra,1));
 
+            % Go over tensor rows k
+
             for k = 1 : 6
+
+                % Choose combinations of gradient rows to be multiplied by kth
+                % row of tensor 𝑇
+
                 switch k
                     case 1
                        k_1 = 1;
@@ -66,7 +72,7 @@ function A = zef_stiffness_matrix(nodes, tetrahedra, volume, tensor)
                        k_2 = 3;
                 end
 
-                % Calculate the integrand times a volume element ∇ψⱼ⋅(σ∇ψᵢ) d𝑉
+                % Calculate the integrand times a volume element ∇ψⱼ⋅(𝑇∇ψᵢ) d𝑉
 
                 if k <= 3
                     entry_vec =         ...
@@ -108,7 +114,7 @@ function A = zef_stiffness_matrix(nodes, tetrahedra, volume, tensor)
 
             if i == j
 
-                % On the diagonal, no need to do anthing special
+                % On the diagonal, no need to do anything special
 
                 A = A + A_part;
 
