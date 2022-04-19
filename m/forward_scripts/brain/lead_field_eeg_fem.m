@@ -171,27 +171,12 @@ clear tilavuus ala sigma_tetrahedra;
 
 [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec, impedance_inf, ele_ind, A, N, L);
 
+% Adjacency and divergence matrices T and G
+
 % Titles for waitbar
 
 fititle = 'Face-intersecting G and L';
 ewtitle = 'Edgewise G and L';
-
-% Transfer matrix with preconditioned conjugate gradient (PCG) iteration
-
-if isequal(permutation,'symamd')
-perm_vec = symamd(A)';
-elseif isequal(permutation,'symmmd')
-perm_vec = symmmd(A)';
-elseif isequal(permutation,'symrcm')
-perm_vec = symrcm(A)';
-else
-perm_vec = [1:N]';
-end
-iperm_vec = sortrows([ perm_vec [1:N]' ]);
-iperm_vec = iperm_vec(:,2);
-A_aux = A(perm_vec,perm_vec);
-A = A_aux;
-clear A_aux A_part;
 
 % Form dipole sign matrix G_fi and arrangement stencil T_fi
 
@@ -231,7 +216,24 @@ if source_model == 2
 L_eeg_ew = zeros(L,M_ew);
 end
 
+% Transfer matrix with preconditioned conjugate gradient (PCG) iteration
+
 waitbar(0,h,'PCG iteration.');
+
+if isequal(permutation,'symamd')
+perm_vec = symamd(A)';
+elseif isequal(permutation,'symmmd')
+perm_vec = symmmd(A)';
+elseif isequal(permutation,'symrcm')
+perm_vec = symrcm(A)';
+else
+perm_vec = [1:N]';
+end
+iperm_vec = sortrows([ perm_vec [1:N]' ]);
+iperm_vec = iperm_vec(:,2);
+A_aux = A(perm_vec,perm_vec);
+A = A_aux;
+clear A_aux A_part;
 
 if evalin('base','zef.use_gpu')==1 && gpuDeviceCount > 0
 precond_vec = gpuArray(1./full(diag(A)));
@@ -287,23 +289,23 @@ relres_vec(i) = gather(norm(r)/norm_b);
 r = gather(x(iperm_vec));
 x = r;
 if isequal(electrode_model,'PEM')
-L_eeg_fi(i+1,:) = - x'*G_fi;
-if source_model == 2
-L_eeg_ew(i+1,:) = - x'*G_ew;
-end
-end
-if isequal(electrode_model,'CEM')
-L_eeg_fi(i,:) = - x'*G_fi;
-if source_model == 2
-L_eeg_ew(i,:) = - x'*G_ew;
-end
+    L_eeg_fi(i+1,:) = - x'*G_fi;
+    if source_model == 2
+        L_eeg_ew(i+1,:) = - x'*G_ew;
+    end
 end
 if isequal(electrode_model,'CEM')
-if impedance_inf == 0
-Aux_mat(:,i) = B'*x - C(:,i);
-else
-Aux_mat(:,i) = - C(:,i);
+    L_eeg_fi(i,:) = - x'*G_fi;
+    if source_model == 2
+        L_eeg_ew(i,:) = - x'*G_ew;
+    end
 end
+if isequal(electrode_model,'CEM')
+    if impedance_inf == 0
+        Aux_mat(:,i) = B'*x - C(:,i);
+    else
+        Aux_mat(:,i) = - C(:,i);
+    end
 end
 if tol_val < relres_vec(i)
     close(h);
@@ -313,10 +315,10 @@ if tol_val < relres_vec(i)
 end
 time_val = toc;
 if isequal(electrode_model,'PEM')
-waitbar(i/(L-1),h,['PCG iteration. Ready: ' datestr(datevec(now+((L-1)/i - 1)*time_val/86400)) '.']);
+    waitbar(i/(L-1),h,['PCG iteration. Ready: ' datestr(datevec(now+((L-1)/i - 1)*time_val/86400)) '.']);
 end
 if isequal(electrode_model,'CEM')
-waitbar(i/L,h,['PCG iteration. Ready: ' datestr(datevec(now+(L/i - 1)*time_val/86400)) '.']);
+    waitbar(i/L,h,['PCG iteration. Ready: ' datestr(datevec(now+(L/i - 1)*time_val/86400)) '.']);
 end
 end
 
@@ -412,37 +414,42 @@ end
 
 %Substitute matrices
 if isequal(electrode_model,'PEM')
-L_eeg_fi(block_ind+1,:) = - x_block'*G_fi;
-if source_model == 2
-L_eeg_ew(block_ind+1,:) = - x_block'*G_ew;
-end
+    L_eeg_fi(block_ind+1,:) = - x_block'*G_fi;
+    if source_model == 2
+        L_eeg_ew(block_ind+1,:) = - x_block'*G_ew;
+    end
 elseif isequal(electrode_model,'CEM')
-L_eeg_fi(block_ind,:) = - x_block'*G_fi;
-if source_model == 2
-L_eeg_ew(block_ind,:) = - x_block'*G_ew;
-end
+    L_eeg_fi(block_ind,:) = - x_block'*G_fi;
+    if source_model == 2
+        L_eeg_ew(block_ind,:) = - x_block'*G_ew;
+    end
 end
 
 if isequal(electrode_model,'CEM')
-if impedance_inf == 0
-Aux_mat(:,block_ind) = B'*x_block - C(:,block_ind);
-else
-Aux_mat(:,block_ind) = - C(:,block_ind);
+    if impedance_inf == 0
+        Aux_mat(:,block_ind) = B'*x_block - C(:,block_ind);
+    else
+        Aux_mat(:,block_ind) = - C(:,block_ind);
+    end
 end
-end
+
 if not(isempty(find(tol_val < relres_vec)))
     close(h);
     'Error: PCG iteration did not converge.'
     L_eeg = [];
     return
 end
+
 time_val = toc;
-if isequal(electrode_model,'PEM')
-waitbar((i+length(block_ind)-1)/L,h,['PCG iteration. Ready: ' datestr(datevec(now+((L-1)/(i+length(block_ind)-1) - 1)*time_val/86400)) '.']);
-end
-if isequal(electrode_model,'CEM')
-waitbar((i+length(block_ind)-1)/L,h,['PCG iteration. Ready: ' datestr(datevec(now+(L/(i+length(block_ind)-1) - 1)*time_val/86400)) '.']);
-end
+
+waitbar( ...
+    (i+length(block_ind)-1)/L ...
+, ...
+    h ...
+, ...
+    ['PCG iteration. Ready: ' datestr(datevec(now+(max_ind/(i+length(block_ind)-1) - 1)*time_val/86400)) '.'] ...
+);
+
 end
 
 %******************************************************
