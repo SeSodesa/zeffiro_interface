@@ -208,7 +208,7 @@ waitbar(1, h);
 
 waitbar(0,h,ewtitle);
 
-if source_model == 2
+if source_model == ZefSourceModel.Hdiv
 
 [T_ew, G_ew, ew_source_moments, ew_source_directions, ew_source_locations, M_ew] = zef_ew_dipoles(nodes, tetrahedra, brain_ind);
 
@@ -227,7 +227,7 @@ end
 %%
 
 L_eeg_fi = zeros(L,M_fi);
-if source_model == 2
+if source_model == ZefSourceModel.Hdiv
 L_eeg_ew = zeros(L,M_ew);
 end
 
@@ -288,13 +288,13 @@ r = gather(x(iperm_vec));
 x = r;
 if isequal(electrode_model,'PEM')
 L_eeg_fi(i+1,:) = - x'*G_fi;
-if source_model == 2
+if source_model == ZefSourceModel.Hdiv
 L_eeg_ew(i+1,:) = - x'*G_ew;
 end
 end
 if isequal(electrode_model,'CEM')
 L_eeg_fi(i,:) = - x'*G_fi;
-if source_model == 2
+if source_model == ZefSourceModel.Hdiv
 L_eeg_ew(i,:) = - x'*G_ew;
 end
 end
@@ -413,12 +413,12 @@ end
 %Substitute matrices
 if isequal(electrode_model,'PEM')
 L_eeg_fi(block_ind+1,:) = - x_block'*G_fi;
-if source_model == 2
+if source_model == ZefSourceModel.Hdiv
 L_eeg_ew(block_ind+1,:) = - x_block'*G_ew;
 end
 elseif isequal(electrode_model,'CEM')
 L_eeg_fi(block_ind,:) = - x_block'*G_fi;
-if source_model == 2
+if source_model == ZefSourceModel.Hdiv
 L_eeg_ew(block_ind,:) = - x_block'*G_ew;
 end
 end
@@ -459,19 +459,33 @@ waitbar(0,h,'Interpolation.');
 if isequal(electrode_model,'CEM')
 Schur_complement = inv(Schur_complement);
 L_eeg_fi = Schur_complement * L_eeg_fi;
-if source_model == 2
+if source_model == ZefSourceModel.Hdiv
 L_eeg_ew = Schur_complement * L_eeg_ew;
 end
 end
 
 Schur_complement_2 = eye(L,L) - (1/L)*ones(L,L);
 L_eeg_fi = Schur_complement_2*L_eeg_fi;
-if source_model == 2
+if source_model == ZefSourceModel.Hdiv
 L_eeg_ew = Schur_complement_2*L_eeg_ew;
 end
 
 
 if isequal(lower(direction_mode),'cartesian') || isequal(lower(direction_mode),'normal')
+
+% Pick set of tetrahedral indices, where sources are placed, at least 2mm
+% inside the brain. Neighbours are non-zero, if there are 4 neighbours.
+%
+% Might be replaced by taking the surface mesh from the brain indices and
+% placing sources that are at least at 3mm depth in the brain (rangesearch).
+% This would depend on the resolution used.
+
+% Question: if system resolution is increased, are the number of outliers
+% increased, because sources are moved towards the surface.
+
+% Question: does the interpolation affect the ...
+
+% Depth condition, can source be placed in the first place.
 
 if evalin('base','zef.surface_sources')
 source_nonzero_ind = full(find(sum(T_fi)>=0))';
@@ -484,8 +498,6 @@ else
 L_eeg = L_eeg_fi;
 end
 
-
-
 if isequal(lower(direction_mode),'cartesian') || isequal(lower(direction_mode),'normal')
 
 c_tet = (nodes(tetrahedra(:,1),:) + nodes(tetrahedra(:,2),:) + nodes(tetrahedra(:,3),:)+ nodes(tetrahedra(:,4),:))/4;
@@ -493,7 +505,9 @@ dipole_locations = c_tet(source_nonzero_ind,:);
 dipole_directions = [];
 L_eeg = zeros(L,3*M2);
 
-if source_model == 2
+% Interpolation
+
+if source_model == ZefSourceModel.Hdiv
 tic;
  for i = 1 : M2
 
@@ -516,8 +530,9 @@ end
 end
 end
 
+% Whitney (only uses face intersecting case)
 
-if source_model == 1
+if source_model == ZefSourceModel.Whitney
 tic;
  for i = 1 : M2
 
@@ -532,8 +547,8 @@ tic;
         L_eeg(:,3*(i-1)+1:3*i) = L_eeg_fi(:,ind_vec_aux_fi)*Coeff_mat(1:n_coeff_fi,:);
 
 if mod(i,floor(M2/50))==0
-time_val = toc;
-waitbar(i/M2,h,['Interpolation. Ready: ' datestr(datevec(now+(M2/i - 1)*time_val/86400)) '.']);
+    time_val = toc;
+    waitbar(i/M2,h,['Interpolation. Ready: ' datestr(datevec(now+(M2/i - 1)*time_val/86400)) '.']);
 end
 end
 end
