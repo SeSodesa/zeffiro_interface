@@ -500,58 +500,25 @@ end
 
 if isequal(lower(direction_mode),'cartesian') || isequal(lower(direction_mode),'normal')
 
-c_tet = (nodes(tetrahedra(:,1),:) + nodes(tetrahedra(:,2),:) + nodes(tetrahedra(:,3),:)+ nodes(tetrahedra(:,4),:))/4;
+c_tet = zef_tetra_barycentra(nodes, tetrahedra);
 dipole_locations = c_tet(source_nonzero_ind,:);
 dipole_directions = [];
-L_eeg = zeros(L,3*M2);
 
-% Interpolation
-
-if source_model == ZefSourceModel.Hdiv
-tic;
- for i = 1 : M2
-
-        ind_vec_aux_fi = full(find(T_fi(:,source_nonzero_ind(i))));
-        ind_vec_aux_ew = full(find(T_ew(:,source_nonzero_ind(i))));
-        n_coeff_fi = length(ind_vec_aux_fi);
-        n_coeff_ew = length(ind_vec_aux_ew);
-        n_coeff = n_coeff_fi + n_coeff_ew;
-        Aux_mat_1 = [fi_source_directions(ind_vec_aux_fi,:) ; ew_source_directions(ind_vec_aux_ew,:)];
-        Aux_mat_2 = [fi_source_locations(ind_vec_aux_fi,:) ; ew_source_locations(ind_vec_aux_ew,:)];
-        omega_vec = sqrt(sum((Aux_mat_2 - c_tet(source_nonzero_ind(i)*ones(n_coeff,1),:)).^2,2));
-        PBO_mat = [diag(omega_vec) Aux_mat_1; Aux_mat_1' zeros(3,3)];
-        Coeff_mat = PBO_mat\[zeros(n_coeff,3); eye(3)];
-        L_eeg(:,3*(i-1)+1:3*i) = L_eeg_fi(:,ind_vec_aux_fi)*Coeff_mat(1:n_coeff_fi,:) + L_eeg_ew(:,ind_vec_aux_ew)*Coeff_mat(n_coeff_fi+1:n_coeff,:) ;
-
-if mod(i,floor(M2/50))==0
-time_val = toc;
-waitbar(i/M2,h,['Interpolation. Ready: ' datestr(datevec(now+(M2/i - 1)*time_val/86400)) '.']);
-end
-end
-end
-
-% Whitney (only uses face intersecting case)
-
-if source_model == ZefSourceModel.Whitney
-tic;
- for i = 1 : M2
-
-        ind_vec_aux_fi = full(find(T_fi(:,source_nonzero_ind(i))));
-        n_coeff_fi = length(ind_vec_aux_fi);
-        n_coeff = n_coeff_fi;
-        Aux_mat_1 = [fi_source_directions(ind_vec_aux_fi,:)];
-        Aux_mat_2 = [fi_source_locations(ind_vec_aux_fi,:)];
-        omega_vec = sqrt(sum((Aux_mat_2 - c_tet(source_nonzero_ind(i)*ones(n_coeff,1),:)).^2,2));
-        PBO_mat = [diag(omega_vec) Aux_mat_1; Aux_mat_1' zeros(3,3)];
-        Coeff_mat = PBO_mat\[zeros(n_coeff,3); eye(3)];
-        L_eeg(:,3*(i-1)+1:3*i) = L_eeg_fi(:,ind_vec_aux_fi)*Coeff_mat(1:n_coeff_fi,:);
-
-if mod(i,floor(M2/50))==0
-    time_val = toc;
-    waitbar(i/M2,h,['Interpolation. Ready: ' datestr(datevec(now+(M2/i - 1)*time_val/86400)) '.']);
-end
-end
-end
+L_eeg = zef_lead_field_interpolation( ...
+    nodes, ...
+    tetrahedra, ...
+    L, ...
+    source_model, ...
+    source_nonzero_ind, ...
+    L_eeg_fi, ...
+    T_fi, ...
+    fi_source_locations, ...
+    fi_source_directions, ...
+    L_eeg_ew, ...
+    T_ew, ...
+    ew_source_locations, ...
+    ew_source_directions ...
+);
 
     end
 
