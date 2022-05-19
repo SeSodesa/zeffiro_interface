@@ -51,16 +51,16 @@ function L = zef_whitney_interpolation( ...
 
         % Non-zero locations and directions.
 
-        loc_mat = [p_fi_source_directions(ind_vec_aux_fi,:)];
-        dir_mat = [p_fi_source_locations(ind_vec_aux_fi,:)];
+        dir_mat = [p_fi_source_directions(ind_vec_aux_fi,:)];
+        loc_mat = [p_fi_source_locations(ind_vec_aux_fi,:)];
 
-        omega_vec = sqrt(sum((dir_mat - c_tet(p_source_nonzero_inds(i)*ones(n_coeff,1),:)).^2,2));
+        omega_vec = sqrt(sum((loc_mat - c_tet(p_source_nonzero_inds(i)*ones(n_coeff,1),:)).^2,2));
 
         % Position-based optimization
 
         PBO_mat = [ ...
-            diag(omega_vec) loc_mat; ...
-            loc_mat' zeros(3,3) ...
+            diag(omega_vec) dir_mat; ...
+            dir_mat' zeros(3,3) ...
         ];
 
         % Solve for Lagrangian multipliers
