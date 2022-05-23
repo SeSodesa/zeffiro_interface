@@ -4,12 +4,35 @@ function [A, I, J] = zef_adjacency_matrix(nodes, tetra)
     % of nodes and tetrahedra constructed from them. Also returns the nonzero
     % indices I and J of A.
 
+    % Initialization.
+
     N = size(nodes,1);
     A = spalloc(N,N,0);
+
+    % Waitbar and its cleanup object, which closes the waitbar in case of
+    % termination.
+
+    wbtitle = 'Adjacency matrix';
+    wb = waitbar(0, wbtitle);
+
+    cleanupfn = @(wb) close(wb);
+    cleanupobj = onCleanup(@() cleanupfn(wb));
+
+    % Begin iteration.
+
+    waitbar(0, wb, strcat(wbtitle, ''));
+
+    n_of_iters = 3 + 2 + 1;
 
     for i = 1 : 4
 
         for j = i + 1 : 4
+
+            ind = i + j - 1;
+            progress_num = ind / n_of_iters;
+            progress_str = [wbtitle, ': neighbours ', num2str(ind), ' / ', num2str(n_of_iters)];
+
+            waitbar(progress_num, wb, progress_str);
 
             A = A + sparse(            ...
                 tetra(:,i),            ...
@@ -24,11 +47,24 @@ function [A, I, J] = zef_adjacency_matrix(nodes, tetra)
 
     % Stensils are symmetric, as they describe an undirected graph.
 
+    waitbar(0, wb, strcat(wbtitle, ': take care of symmetricity'));
+
     A = A + A';
+
+    waitbar(1, wb);
 
     % Take care of the diagonal.
 
+    init_progress_str = strcat(wbtitle, ': the diagonal ');
+    waitbar(0, wb, progress_str);
+
+    n_of_iters = 4;
+
     for i = 1 : 4
+
+        progress_num = i / n_of_iters;
+        progress_str = [init_progress_str, ' ', num2str(i), ' / ', num2str(n_of_iters)];
+        waitbar(progress_num, wb, progress_str);
 
         A = A + sparse(            ...
             tetra(:,i),            ...
