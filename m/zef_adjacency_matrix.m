@@ -20,8 +20,6 @@ function [A, I, J] = zef_adjacency_matrix(nodes, tetra)
 
     % Begin iteration.
 
-    waitbar(0, wb, strcat(wbtitle, ''));
-
     n_of_iters = 3 + 2 + 1;
 
     for i = 1 : 4
