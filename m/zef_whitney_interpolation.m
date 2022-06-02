@@ -1,26 +1,19 @@
-function L = zef_whitney_interpolation( ...
+function [G, interpolation_positions] = zef_whitney_interpolation( ...
     p_nodes, ...
     p_tetrahedra, ...
-    p_n_of_electrodes, ...
-    p_source_model, ...
-    p_source_nonzero_inds, ...
-    p_L_fi, ...
-    p_fi_adjacency_mat, ...
-    p_fi_source_locations, ...
-    p_fi_source_directions ...
+    p_brain_ind, ...
+    p_intended_source_inds ...
 )
 
-    % Interpolates a given lead field p_n_of_electrodes (p for parameter) with
-    % position-based optimization (PBO), based on the given source model. Note
-    % that even in the case of Whitney-type interpolation, the edgewise source
-    % directions must be given as an empty array. Returns an empty lead field
-    % in case of an error.
+    % Produces a lead field interpolation matrix G with position-based
+    % optimization (PBO), based on the Whitney (face-intersecting) source
+    % model. Also returns the related interpolation positions.
 
-    L = [];
+    G = [];
 
-    % Open up a waitbar
+    % Open up a waitbar.
 
-    wbtitle = 'Lead field interpolation (Whitney)';
+    wbtitle = 'Lead field Whitney interpolation';
     wb = waitbar(0, wbtitle);
 
     % Define cleanup operations, in case of an interruption.
@@ -28,60 +21,109 @@ function L = zef_whitney_interpolation( ...
     cleanupfn = @(wb) close(wb);
     cleanupobj = onCleanup(@() cleanupfn(wb));
 
+    % Dipoles and their adjacency and weight matrices T and G.
+
+    [T_fi, G_fi, ~, fi_source_directions, fi_source_positions, ~] = zef_fi_dipoles( ...
+        p_nodes, ...
+        p_tetrahedra, ...
+        p_brain_ind ...
+    );
+
+    % Form local environment indices based on adjacency matrix T_fi. TODO:
+    % change this to use some other condition than .
+
+    valid_source_inds = full(find(sum(T_fi) >= 4))';
+    valid_source_inds = intersect(valid_source_inds, p_intended_source_inds);
+
+    % Restrict stensils to intended source positions.
+
+    T_fi = T_fi(:, valid_source_inds);
+
+    % Form interpolation positions (barycenters of tetrahedra).
+
+    source_tetra = p_tetrahedra(valid_source_inds,:);
+    interpolation_positions = zef_tetra_barycentra(p_nodes, source_tetra);
+
     % Form initial values based on given nodes, tetrahedra and lead field.
 
-    c_tet = zef_tetra_barycentra(p_nodes, p_tetrahedra);
+    n_of_iterations = size(valid_source_inds, 1);
 
-    n_of_nonzero_inds = size(p_source_nonzero_inds,1);
+    % Initialize weight matrix.
 
-    L = zeros(p_n_of_electrodes, 3 * n_of_nonzero_inds);
+    G_rows = size(p_nodes, 1);
+    G_cols = 3 * size(interpolation_positions, 1);
 
-    % Start iteration
+    G = sparse(G_rows, G_cols, 0);
+
+    % Start iteration over the source positions of interest.
 
     tic;
 
-    for i = 1 : n_of_nonzero_inds
+    for i = 1 : n_of_iterations
 
-        ind_vec_aux_fi = full(find(p_fi_adjacency_mat(:,p_source_nonzero_inds(i))));
+        % Find local neighbour indices.
+
+        fi_neighbour_inds = full(find(T_fi(:,i)));
 
         % N of non-zero object function coefficients.
 
-        n_coeff_fi = length(ind_vec_aux_fi);
-        n_coeff = n_coeff_fi;
+        n_coeff = numel(fi_neighbour_inds);
 
-        % Non-zero locations and directions.
+        % Dipole locations and directions.
 
-        dir_mat = [p_fi_source_directions(ind_vec_aux_fi,:)];
-        loc_mat = [p_fi_source_locations(ind_vec_aux_fi,:)];
-
-        omega_vec = sqrt(sum((loc_mat - c_tet(p_source_nonzero_inds(i)*ones(n_coeff,1),:)).^2,2));
-
-        % Position-based optimization
-
-        PBO_mat = [ ...
-            diag(omega_vec) dir_mat; ...
-            dir_mat' zeros(3,3) ...
+        dir_mat = [ ...
+            fi_source_directions(fi_neighbour_inds,:) ...
         ];
 
-        % Solve for Lagrangian multipliers
+        loc_mat = [ ...
+            fi_source_positions(fi_neighbour_inds,:) ...
+        ];
+
+        % PBO weigth coefficients from differences between barycentra
+        % (interpolation positions) and dipole positions.
+
+        interp_pos = interpolation_positions(i, :);
+        interp_pos = repmat(interp_pos, n_coeff, 1);
+
+        pos_diffs = loc_mat - interp_pos;
+
+        weight_coefs = zef_L2_norm(pos_diffs, 2);
+
+        % Position-based optimization matrix.
+
+        PBO_mat = [                     ...
+            diag(weight_coefs) dir_mat; ...
+            dir_mat' zeros(3,3)         ...
+        ];
+
+        % Solve for Lagrangian multipliers.
 
         Coeff_mat = PBO_mat \ [zeros(n_coeff,3); eye(3)];
 
-        % Interpolate lead field.
+        % Accumulate interpolation matrix.
 
-        L(:, 3*(i-1) + 1:3*i) = ...
-            p_L_fi(:,ind_vec_aux_fi) ...
+        G(:, 3 * (i-1)+1:3*i) = ...
+            G_fi(:,fi_neighbour_inds) ...
             * ...
-            Coeff_mat(1:n_coeff_fi,:) ...
+            Coeff_mat(1:n_coeff,:) ...
         ;
 
-        if mod(i,floor(n_of_nonzero_inds/50))==0
-            time_val = toc;
-            waitbar( ...
-                i/n_of_nonzero_inds, ...
-                wb, ...
-                ['Interpolation. Ready: ' datestr(datevec(now+(n_of_nonzero_inds/i - 1)*time_val/86400)) '.'] ...
-            );
-        end
+        % Update waitbar.
+
+        time_val = toc;
+
+        waitbar( ...
+            i/n_of_iterations, ...
+            wb, ...
+            [ ...
+                wbtitle, ...
+                ' (', ...
+                num2str(i), ...
+                ' / ', ...
+                num2str(n_of_iterations), ...
+                '). Ready: ' datestr(datevec(now+(n_of_iterations/i - 1)*time_val/86400)) '.' ...
+            ] ...
+        );
+
     end
 end
