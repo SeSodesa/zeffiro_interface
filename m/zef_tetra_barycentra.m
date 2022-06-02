@@ -1,6 +1,7 @@
 function barycentra = zef_tetra_barycentra(nodes, tetrahedra)
 
-    % Calculates the barycenters of the given tetrahedra.
+    % Calculates the barycenters of the given tetrahedra (4-tuples of node
+    % indices).
 
     barycentra = 1 / 4 * ( ...
         nodes(tetrahedra(:,1),:) ...
