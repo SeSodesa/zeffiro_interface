@@ -166,8 +166,6 @@ tilavuus = zef_tetra_volume(nodes, tetrahedra, true);
 
 A = zef_stiffness_matrix(nodes, tetrahedra, tilavuus, sigma_tetrahedra);
 
-clear tilavuus ala sigma_tetrahedra;
-
 % Build electrode matrices B and C based on A
 
 [A, B, C] = zef_build_electrodes( ...
