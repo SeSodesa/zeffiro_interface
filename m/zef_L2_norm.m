@@ -7,7 +7,7 @@ function norm = zef_L2_norm(arr, dim)
     if nargin == 2
         norm = sqrt(sum(arr.^2, dim));
     else
-        norm = sqrt(sum(arr.^2));
+        norm = sqrt(sum(arr.^2, 'all'));
     end
 
 end
