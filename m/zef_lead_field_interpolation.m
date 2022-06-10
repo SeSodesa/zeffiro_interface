@@ -10,7 +10,7 @@ function [G, dipole_locations] =  zef_lead_field_interpolation( ...
     % constructs the interpolation matrix G and interpolation (dipole)
     % positions. Errors in case of unknown soure model.
 
-    switch zef_source_model_from(p_source_model)
+    switch ZefSourceModel.from(p_source_model)
 
         case ZefSourceModel.Whitney
 

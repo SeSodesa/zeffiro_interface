@@ -108,8 +108,8 @@ zef.h_adaptive_refinement_k_param.Value = num2str(zef.adaptive_refinement_k_para
 
 zef.h_as_opt_6.Value = zef.surface_sources;
 zef.h_use_depth_electrodes.Value = zef.use_depth_electrodes;
-zef.h_source_model.ItemsData = arrayfun(@zef_source_model_from, 1:length(zef.h_source_model.Items));
-zef.source_model = zef_source_model_from(zef.source_model);
+zef.h_source_model.ItemsData = arrayfun(@ZefSourceModel.from, 1:length(zef.h_source_model.Items));
+zef.source_model = ZefSourceModel.from(zef.source_model);
 if eq(zef.source_model, ZefSourceModel.Error)
     warning("Invalid source model. Setting it as H(div)");
     zef.source_model = ZefSourceModel.Hdiv;
