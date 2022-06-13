@@ -1,17 +1,16 @@
-function G = zef_st_venant_interpolation( ...
+function [G, interpolation_positions] = zef_st_venant_interpolation( ...
     p_nodes, ...
     p_tetrahedra, ...
-    p_interpolation_positions, ...
-    p_regparam, ...
-    p_n_of_electrodes, ...
-    p_source_nonzero_inds, ...
-    p_brain_ind ...
+    p_brain_ind, ...
+    p_intended_source_inds, ...
+    p_regparam ...
 )
 
     % Produces an interpolation matrix G in a tetrahedral finite element mesh
     % with the St. Venant method.
 
     G = [];
+    interpolation_positions = [];
 
     % Open up a waitbar
 
@@ -31,24 +30,25 @@ function G = zef_st_venant_interpolation( ...
 
     % Nearest nodes for each interpolation position with KDTree search
 
-    MdlKDT = KDTreeSearcher(nodes);
+    MdlKDT = KDTreeSearcher(p_nodes);
+
+    interpolation_positions = zef_tetra_barycentra(p_nodes, p_tetrahedra(p_intended_source_inds, :));
+
     center_node_inds = knnsearch(MdlKDT, interpolation_positions);
 
     % Storage for the interpolation results.
 
-    n_of_iters = numel(cener_node_inds);
-
-    weights = cell(n_of_iters);
+    n_of_iters = numel(center_node_inds);
 
     %% Interpolation for each position
 
-    waitbar(0, wb, [wbtitle, ': interpolation'])
+    waitbar(0, wb, [wbtitle, ': interpolation']);
 
-    wbtitleloop = [wbtitle, ': interpolation']
+    wbtitleloop = [wbtitle, ': interpolation'];
 
     % Initialize interpolation weight matrix G
 
-    G = sparse(size(nodes,1), 3 * size(p_interpolation_positions, 1), 0);
+    G = sparse(size(p_nodes,1), 3 * size(interpolation_positions, 1), 0);
 
     % Cartesian directions for interpolation
 
@@ -61,33 +61,55 @@ function G = zef_st_venant_interpolation( ...
         % Fetch reference node coordinates
 
         refnode_ind = center_node_inds(ind);
-        refnode = nodes(refnode_ind, :);
+        refnode = p_nodes(refnode_ind, :);
 
         % Calculate the distances from refnode with Matlab's broadcasting
         % mechanism and save them to the preallocated distance matrix.
 
         neighbour_inds = find(adjacency_mat(:, refnode_ind));
+
+        % Some nodes apparently have no neighbours. Go figure...
+
+        if isempty(neighbour_inds)
+            continue
+        end
+
         neighbour_inds = setdiff(neighbour_inds, refnode_ind);
-        n_of_neighbours = numel(neighbour_inds) + 1;
-        neighbours = nodes(neighbour_inds, :);
+        n_of_neighbours = numel(neighbour_inds); % + 1;
+        neighbours = p_nodes(neighbour_inds, :);
         neighbour_diffs = neighbours - refnode;
 
         % Calculate the distances and longest edge.
 
-        dists = sqrt(sum(neighbour_diffs.^2, 2));
+        dists = zef_L2_norm(neighbour_diffs, 2);
         longest_edge_len = max(dists, [], 'all');
 
-        % Restriction matrices P, b and regularization matrix D.
+        %% Construct restriction matrices P, b and regularization matrix D.
 
-        P = zeros(7, n_of_neighbours);
-        P(1,:) = ones(1, size(P, 2)); % sum of m = 0
-        P(2:4,2:end) = (1/longest_edge_len) * neighbour_diffs; % Moment conditions (3.44)
-        P(5:7,2:end) = dists.^2 / longest_edge_len; % Moment conditions (3.45)
+        P = zeros(9, n_of_neighbours);
+
+        % Conservation of charge (rows of ones)
+
+        P(1:3:end,:) = repmat(ones(1, size(P, 2)), 3, 1);
+
+        % Dipole moment approximations
+
+        try
+            P(2:3:end,:) = (1/longest_edge_len) * neighbour_diffs';
+        catch
+            keyboard;
+        end
+        % Suppression of higher order moments
+
+        suppressor_b = dists'.^2 / longest_edge_len^2;
+        suppressor = repmat(suppressor_b, 3, 1);
+
+        P(3:3:end,:) = suppressor;
 
         b = zeros(9,3);
         b(2:3:end, :) = basis / longest_edge_len;
 
-        D = diag(sum(diffs.^2, 2));
+        D = diag(sum(dists.^2, 2));
 
         % Form the monopolar loads m via least squares approximation
         % m = inv(P'P + aD)P'b.
@@ -96,10 +118,10 @@ function G = zef_st_venant_interpolation( ...
 
         for iind = 1 : 3
 
-            G([refnode_inds; neighbour_inds], 3 * (ind -1 ) + iind) = m(:, iind);
+            % G([refnode_ind; neighbour_inds], 3 * (ind -1 ) + iind) = m(:, iind);
+            G(neighbour_inds, 3 * (ind -1 ) + iind) = m(:, iind);
 
         end
-
 
     end
 
