@@ -2,6 +2,12 @@ function V = zef_tetra_volume(nodes, tetrahedra, take_absolute_value)
 % VOLUME - Calculates a volume V from a given set of finite element nodes, the
 % corresponding tetrahedra and suitable index matrix.
 
+    arguments
+        nodes (:,3) double {mustBeNonNan}
+        tetrahedra (:,4) double {mustBeInteger, mustBePositive}
+        take_absolute_value (1,1) logical
+    end
+
     % A helper matrix to make the calculation more readable
     %
     % TODO: What does indexing into the nodes with the tetrahedra represent,
