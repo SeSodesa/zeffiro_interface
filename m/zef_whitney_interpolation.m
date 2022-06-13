@@ -9,6 +9,13 @@ function [G, interpolation_positions] = zef_whitney_interpolation( ...
     % optimization (PBO), based on the Whitney (face-intersecting) source
     % model. Also returns the related interpolation positions.
 
+    arguments
+        p_nodes (:,3) double {mustBeNonNan}
+        p_tetrahedra (:,4) double {mustBeInteger, mustBeNonnegative}
+        p_brain_inds (:,1) double {mustBeInteger, mustBeNonnegative}
+        p_intended_source_inds (:,1) double {mustBeInteger, mustBeNonnegative}
+    end
+
     G = [];
 
     % Open up a waitbar.

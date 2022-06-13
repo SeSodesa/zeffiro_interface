@@ -9,6 +9,14 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
     % Produces an interpolation matrix G in a tetrahedral finite element mesh
     % with the St. Venant method.
 
+    arguments
+        p_nodes (:,3) double {mustBeNonNan}
+        p_tetrahedra (:,4) double {mustBeInteger, mustBeNonnegative}
+        p_brain_inds (:,1) double {mustBeInteger, mustBeNonnegative}
+        p_intended_source_inds (:,1) double {mustBeInteger, mustBeNonnegative}
+        p_regparam (1,1) double
+    end
+
     G = [];
     interpolation_positions = [];
 
@@ -128,7 +136,6 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
 
         for iind = 1 : 3
 
-            % G([refnode_ind; neighbour_inds], 3 * (ind -1 ) + iind) = m(:, iind);
             G(neighbour_inds, 3 * (ind -1 ) + iind) = m(:, iind);
 
         end
