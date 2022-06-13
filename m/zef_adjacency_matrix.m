@@ -4,6 +4,11 @@ function [A, I, J] = zef_adjacency_matrix(nodes, tetra)
     % of nodes and tetrahedra constructed from them. Also returns the nonzero
     % indices I and J of A.
 
+    arguments
+        nodes (:,3) double {mustBeNonNan}
+        tetra (:,4) double {mustBeInteger, mustBePositive}
+    end
+
     % Initialization.
 
     n_of_nodes = size(nodes,1);
