@@ -42,9 +42,7 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
 
     %% Interpolation for each position
 
-    waitbar(0, wb, [wbtitle, ': interpolation']);
-
-    wbtitleloop = [wbtitle, ': interpolation'];
+    wbtitleloop = [wbtitle, ': interpolation '];
 
     % Initialize interpolation weight matrix G
 
@@ -94,20 +92,32 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
 
         % Dipole moment approximations
 
+        moments = (1/longest_edge_len) * neighbour_diffs;
+
+        moment_x = moments * basis(:,1);
+        moment_y = moments * basis(:,2);
+        moment_z = moments * basis(:,3);
+
         try
-            P(2:3:end,:) = (1/longest_edge_len) * neighbour_diffs';
+            P(2,:) = moment_x';
+            P(5,:) = moment_y';
+            P(8,:) = moment_z';
         catch
             keyboard;
         end
+
         % Suppression of higher order moments
 
-        suppressor_b = dists'.^2 / longest_edge_len^2;
-        suppressor = repmat(suppressor_b, 3, 1);
+        P(3,:) = moment_x'.^2;
+        P(6,:) = moment_y'.^2;
+        P(9,:) = moment_z'.^2;
 
-        P(3:3:end,:) = suppressor;
+        % Vector b
 
         b = zeros(9,3);
         b(2:3:end, :) = basis / longest_edge_len;
+
+        % Regularization matrix D
 
         D = diag(sum(dists.^2, 2));
 
