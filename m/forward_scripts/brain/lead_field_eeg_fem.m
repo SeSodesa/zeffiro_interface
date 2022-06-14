@@ -36,6 +36,8 @@ function [L_eeg, dipole_locations, dipole_directions] = lead_field_eeg_fem(nodes
 n_of_nodes = size(nodes,1);
 source_model = evalin('base','zef.source_model');
 
+
+
 if iscell(elements)
     tetrahedra = elements{1};
     prisms = [];
@@ -90,20 +92,23 @@ clear elements;
     brain_ind = [1:size(tetrahedra,1)]';
     source_ind = [1:size(tetrahedra,1)]';
     cholinc_tol = 1e-3;
-    if size(electrodes,2) == 4
-    electrode_model = 'CEM';
-    n_of_electrodes = max(electrodes(:,1));
-    ele_ind = electrodes;
-    impedance_vec = ones(max(electrodes(:,1)),1);
+
     impedance_inf = 1;
+
+    if size(electrodes,2) == 4
+        electrode_model = 'CEM';
+        n_of_electrodes = max(electrodes(:,1));
+        ele_ind = electrodes;
+        impedance_vec = ones(max(electrodes(:,1)),1);
     else
-    electrode_model = 'PEM';
-    n_of_electrodes = size(electrodes,1);
-    ele_ind = zeros(n_of_electrodes,1);
-    for i = 1 : n_of_electrodes
-    [min_val, min_ind] = min(sum((repmat(electrodes(i,:),n_of_nodes,1)' - nodes').^2));
-    ele_ind(i) = min_ind;
-    end
+        electrode_model = 'PEM';
+        n_of_electrodes = size(electrodes,1);
+        ele_ind = zeros(n_of_electrodes,1);
+        for i = 1 : n_of_electrodes
+            [min_val, min_ind] = min(sum((repmat(electrodes(i,:),n_of_nodes,1)' - nodes').^2));
+            ele_ind(i) = min_ind;
+        end
+        impedance_vec = ones(length(electrodes(:, 1)), 1);
     end
 
     n_varargin = length(varargin);

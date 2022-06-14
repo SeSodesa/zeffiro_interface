@@ -20,6 +20,12 @@ function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec,
     wb = waitbar(0,funtitle);
     wbi = 0;
 
+    % Consider the PEM case
+
+    if impedance_inf
+        impedance_vec = ones(size(impedance_vec));
+    end
+
     % Preallocate electrode matrices
 
     B = spalloc(N,L,0);
@@ -187,6 +193,8 @@ function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec,
 
         wbi = 0;
         waitbar(wbi, wb, strcat(cemtitle, ': updating C at active electrodes.'));
+
+        % Update triangle patches
 
         C = C + sparse(            ...
             ele_ind(I_triangles,1) ...
