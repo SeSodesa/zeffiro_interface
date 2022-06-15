@@ -1,14 +1,16 @@
-function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec, impedance_inf, ele_ind, A, N, L)
+function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec, impedance_inf, ele_ind, A)
 
-% zef_build_elecrodes: constructs the matrices B and C from given nodes,
+% zef_build_elecrodes: constructs the matrices B and C [*] from given nodes,
 % impedances, a stiffness matrix A and electrode indices. Notice that the
 % stiffness matrix A is also returned from the function, to avoid the
 % copy-on-write behaviour of Matlab functions due to assignment in place [†].
 % In other words, the function needs to be called with
 %
-%     [A, B, C] = zef_build_elecrodes(A, ele_ind, N, L);
+%     [A, B, C] = zef_build_elecrodes(A, ele_ind, n_of_nodes, n_of_electrodes);
 %
 % to possibly prevent the copying of the stiffness matrix A.
+%
+% [*]: https://iopscience.iop.org/article/10.1088/0031-9155/57/4/999/meta#pmb407475app1
 %
 % [†]: MathWorks, Avoid unnecessary copies of data,
 % URL: https://se.mathworks.com/help/matlab/matlab_prog/avoid-unnecessary-copies-of-data.html
@@ -28,8 +30,11 @@ function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec,
 
     % Preallocate electrode matrices
 
-    B = spalloc(N,L,0);
-    C = spalloc(L,L,0);
+    n_of_nodes = size(nodes, 1);
+    n_of_electrodes = size(impedance_vec, 1);
+
+    B = spalloc(n_of_nodes,n_of_electrodes,0);
+    C = spalloc(n_of_electrodes,n_of_electrodes,0);
 
     % Choose electrode model
 
@@ -60,7 +65,7 @@ function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec,
         waitbar(1, wb);
         waitbar(0,wb, strcat(cemtitle, ': initial B and C'));
 
-        for ele_loop_ind = 1 : L
+        for ele_loop_ind = 1 : n_of_electrodes
 
             I = find(ele_ind(:,1) == ele_loop_ind);
             sum_ala = sum(ala(I));
@@ -106,7 +111,7 @@ function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec,
             end
 
             wbi = wbi + 1;
-            waitbar(wbi / L, wb);
+            waitbar(wbi / n_of_electrodes, wb);
 
         end
 
@@ -125,9 +130,9 @@ function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec,
             ,                            ...
                 (1/3) * entry_vec        ...
             ,                            ...
-                N                        ...
+                n_of_nodes               ...
             ,                            ...
-                L                        ...
+                n_of_electrodes          ...
             );
 
             waitbar(wbi / 3, wb);
@@ -153,9 +158,9 @@ function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec,
                         ,                               ...
                             (1/6) * entry_vec           ...
                         ,                               ...
-                            N                           ...
+                            n_of_nodes                  ...
                         ,                               ...
-                            N                           ...
+                            n_of_nodes                  ...
                         );
 
                         A = A + A_part;
@@ -169,9 +174,9 @@ function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec,
                         ,                               ...
                             (1/12) * entry_vec          ...
                         ,                               ...
-                            N                           ...
+                            n_of_nodes                  ...
                         ,                               ...
-                            N                           ...
+                            n_of_nodes                  ...
                         );
 
                         A = A + A_part + A_part';
@@ -203,9 +208,9 @@ function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec,
         ,                          ...
             entry_vec              ...
         ,                          ...
-            L                      ...
+            n_of_electrodes        ...
         ,                          ...
-            L                      ...
+            n_of_electrodes        ...
         );
 
         waitbar(1,wb);
@@ -218,26 +223,26 @@ function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec,
 
             entry_vec = (1./impedance_vec(ele_ind(:,1)));
 
-            for i = 1 : L
+            for i = 1 : n_of_electrodes
                 B(ele_ind(i),i) = entry_vec;
                 A(ele_ind(i),ele_ind(i)) = A(ele_ind(i),ele_ind(i)) + entry_vec;
             end
 
-            C = sparse(ele_ind(:,1), ele_ind(:,1), entry_vec, L, L);
+            C = sparse(ele_ind(:,1), ele_ind(:,1), entry_vec, n_of_electrodes, n_of_electrodes);
 
         else
 
-            for i = 1 : L
+            for i = 1 : n_of_electrodes
                 B(ele_ind(i),i) = 1;
             end
 
-            %Dirichlet boundary condition for a single node.
+            % Dirichlet boundary condition for a single node.
 
             A(ele_ind(1),:) = 0;
             A(:,ele_ind(1)) = 0;
             A(ele_ind(1),ele_ind(1)) = 1;
 
-            C = eye(L);
+            C = eye(n_of_electrodes);
 
         end
 
