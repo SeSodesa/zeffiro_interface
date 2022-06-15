@@ -242,11 +242,6 @@ function [T, Schur_complement, A] = zef_transfer_matrix( ...
         end
     end
 
-    % TODO: Set column sums to zero to properly set the zero potential level
-    % with mean and change the signs of dipoles by negation.
-    %
-    % T = -T + mean(-T, 1);
-
     waitbar(1,wb);
     close(wb);
 

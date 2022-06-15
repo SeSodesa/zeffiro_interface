@@ -212,6 +212,10 @@ A = zef_stiffness_matrix(nodes, tetrahedra, tilavuus, sigma_tetrahedra);
     m_max                                       ...
 );
 
+% Set "correct" potential level.
+
+T = T - mean(T, 2);
+
 % Interpolation.
 
 if isequal(lower(direction_mode),'cartesian') || isequal(lower(direction_mode),'normal')
