@@ -6,12 +6,44 @@ function [stensil, signs, source_moments, source_directions, source_locations, n
     brain_ind  ...
 )
 
-    % zef_fi_dipoles: generates the vectors related to face intersecting dipoles
-    % in the tetrahedral mesh: locations, directions and dipole moments. Also
-    % returns the adjacent tetrahedra pairs that form the dipoles.
+    % zef_fi_dipoles: generates the information related to face-intersecting
+    % dipoles in the tetrahedral mesh.
+    %
+    % Input:
+    %
+    % - nodes: the nodes from which the tetrahedral elements are built from.
+    %
+    % - tetrahedra: node index quadruplets that tell which nodes form the
+    % tetrahedra
+    %
+    % - brain_ind: a set of indices telling which tetrahedra are actually
+    % within the brain.
+    %
+    % Output:
+    %
+    % - stensil: an adjacency matrix telling which tetrahedra are next to each
+    % other
+    %
+    % - signs: an n_of_nodes × n_of_sources sparse matrix that maps rows (node
+    % index) and columns (corresponding source index) to the signed moment
+    % pairs.
+    %
+    % - source_moments: a vector of source moments.
+    %
+    % - source_directions: a row matrix of source directions.
+    %
+    % - source_locations: a row matrix of source locations.
+    %
+    % - n_of_adjacent tetra: the number of tetrahedral pairs that form
+    % sources.
 
 
     wb = waitbar(0,'Face intersecting dipoles.');
+
+    % Define cleanup operations
+
+    cleanup_fn = @(h) close(h);
+    cleanup_obj = onCleanup(@() cleanup_fn(wb));
 
     % Matrix sizes
 
@@ -19,44 +51,36 @@ function [stensil, signs, source_moments, source_directions, source_locations, n
     n_of_tetra_in_brain = length(brain_ind);
     n_of_tetra = size(tetrahedra, 1);
 
-    % An auxiliary matrix for picking up faces (node triplets) from
-    % tetrahedra. Row index (corresponding to a node in a tetrahedron) maps to
-    % its neighbours in a tetrahedron.
-
-    node_neigbour_mat = [
-        2 3 4 ;
-        3 4 1 ;
-        4 1 2 ;
-        1 2 3
-    ];
-
-    % Iterate to find nodes that share a face.
+    % Iterate to find nodes that share a face. But first initialize a storage
+    % tuple that can be arranged later.
 
     Ind_cell = cell(1,3);
 
-    for i = 1 : 4
+    for node_i = 1 : 4
 
         % From the tetra in the brain, take faces (node index triples)
-        % constructed from the neighbours of node i in the same tetrahedron
+        % constructed from the neighbours of node node_i in the same tetrahedron
         % and sort the node indices in increasing order.
 
-        tetra_faces_1 = sort(tetrahedra(brain_ind, node_neigbour_mat(i,:)), 2);
+        tetra_faces_1 = sort(tetrahedra(brain_ind, tetra_face_opposite_to(node_i)), 2);
 
-        for j = i + 1 : 4
+        for node_j = node_i + 1 : 4
 
             % Take another face (node index triplet) from the same tetrahedra
             % and perform a similar sorting operation.
 
-            tetra_faces_2 = sort(tetrahedra(brain_ind, node_neigbour_mat(j,:)), 2);
+            tetra_faces_2 = sort(tetrahedra(brain_ind, tetra_face_opposite_to(node_j)), 2);
 
             % Sort faces starting from the leftmost column, so that any
             % identical faces (node index triples) end up at the same row
             % index, with the help of brain_indices and vectors of node
             % indices.
 
+            % matrix of (face (triple), corresponding tetrahedron index, extremal node)
+
             sorted_tetra_faces = sortrows([                                ...
-                tetra_faces_1 brain_ind(:) i*ones(n_of_tetra_in_brain,1) ; ...
-                tetra_faces_2 brain_ind(:) j*ones(n_of_tetra_in_brain,1)   ...
+                tetra_faces_1 brain_ind(:) node_i*ones(n_of_tetra_in_brain,1) ; ...
+                tetra_faces_2 brain_ind(:) node_j*ones(n_of_tetra_in_brain,1)   ...
             ]);
 
             % Find the rows that have the same node triplets, i.e. share a
@@ -76,7 +100,7 @@ function [stensil, signs, source_moments, source_directions, source_locations, n
 
             % Feed the indices into storage tuple.
 
-            Ind_cell{i}{j} = [            ...
+            Ind_cell{node_i}{node_j} = [  ...
                 sorted_tetra_faces(I,4)   ...
                 sorted_tetra_faces(I+1,4) ...
                 sorted_tetra_faces(I,5)   ...
@@ -105,9 +129,10 @@ function [stensil, signs, source_moments, source_directions, source_locations, n
 
     % Set node pairs that share a face.
 
-    tetra_end_1_ind = sub2ind([n_of_tetra 4], sorted_tetra_faces(:,1), sorted_tetra_faces(:,3));
+    tetra_end_1_ind = sub2ind(size(tetrahedra), sorted_tetra_faces(:,1), sorted_tetra_faces(:,3));
     tetra_end_1 = nodes(tetrahedra(tetra_end_1_ind),:);
-    tetra_end_2_ind = sub2ind([n_of_tetra 4], sorted_tetra_faces(:,2), sorted_tetra_faces(:,4));
+
+    tetra_end_2_ind = sub2ind(size(tetrahedra), sorted_tetra_faces(:,2), sorted_tetra_faces(:,4));
     tetra_end_2 = nodes(tetrahedra(tetra_end_2_ind),:);
 
     % FI source locations, moments and directions
@@ -115,10 +140,10 @@ function [stensil, signs, source_moments, source_directions, source_locations, n
     source_directions = (tetra_end_2 - tetra_end_1);
     source_moments = zef_L2_norm(source_directions, 2);
     source_directions = source_directions ./ repmat(source_moments, 1, 3);
-    source_locations = (1/2)*(tetra_end_1 + tetra_end_2);
+    source_locations = (1/2) * (tetra_end_1 + tetra_end_2);
 
-    % Dipole sign matrix G. Maps moments and their negatives to each end of
-    % the tetrahedra pairs that form the FI dipoles.
+    % Dipole sign matrix G. Maps rows(node indices)moments and their negatives to each end of
+    % the node pairs that form the FI dipoles.
 
     n_of_adj_tetra = size(sorted_tetra_faces,1);
 
@@ -149,5 +174,24 @@ function [stensil, signs, source_moments, source_directions, source_locations, n
     );
 
     waitbar(1, wb); close(wb);
+
+end
+
+function face = tetra_face_opposite_to(node_ind)
+
+    % Returns the node index triple corresponding to the face opposite to the
+    % given node index.
+
+    arguments
+        node_ind (1,1) double { mustBeInteger, mustBePositive }
+    end
+
+    all_node_inds = [1, 2, 3, 4];
+
+    if not(ismember(node_ind, all_node_inds))
+        error('Tetrahedra only have node indices from 1 to 4.');
+    end
+
+    face = setdiff(all_node_inds, node_ind);
 
 end
