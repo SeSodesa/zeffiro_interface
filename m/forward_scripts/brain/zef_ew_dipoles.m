@@ -12,6 +12,11 @@ function [stensil, signs, source_moments, source_directions, source_locations, n
 
     wb = waitbar(0, 'Edgewise dipoles');
 
+    % Define cleanup operations
+
+    cleanup_fn = @(h) close(h);
+    cleanup_obj = onCleanup(@() cleanup_fn(wb));
+
     % Matrix sizes
 
     n_of_nodes = size(nodes, 1);
@@ -25,6 +30,7 @@ function [stensil, signs, source_moments, source_directions, source_locations, n
         for j = i + 1 : 4
 
             Ind_cell{i}{j} = [ brain_ind(:) tetrahedra(brain_ind(:),i)  tetrahedra(brain_ind(:),j) ];
+
         end
     end
 
