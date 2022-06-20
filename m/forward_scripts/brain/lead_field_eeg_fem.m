@@ -36,8 +36,6 @@ function [L_eeg, dipole_locations, dipole_directions] = lead_field_eeg_fem(nodes
 n_of_nodes = size(nodes,1);
 source_model = evalin('base','zef.source_model');
 
-
-
 if iscell(elements)
     tetrahedra = elements{1};
     prisms = [];
@@ -157,7 +155,6 @@ clear elements;
     end
     end
     K = length(brain_ind);
-    clear electrodes;
 
     if not(isequal(lower(direction_mode),'cartesian') || isequal(lower(direction_mode),'normal'))
 source_model = 1;
@@ -210,10 +207,6 @@ A = zef_stiffness_matrix(nodes, tetrahedra, tilavuus, sigma_tetrahedra);
     m_max                                       ...
 );
 
-% Set "correct" potential level.
-
-T = T - mean(T, 2);
-
 % Interpolation.
 
 if isequal(lower(direction_mode),'cartesian') || isequal(lower(direction_mode),'normal')
@@ -234,6 +227,14 @@ regparam = 1;
 % Perform interpolation to construct lead field.
 
 L_eeg = T' * G;
+
+% Set "correct" zero potential level.
+
+L_eeg = L_eeg - mean(L_eeg, 1);
+
+% Make sure lead field has correct orientation
+
+L_eeg = zef_lead_field_sign(dipole_locations, electrodes, L_eeg) * L_eeg;
 
 end % if
 end % function
