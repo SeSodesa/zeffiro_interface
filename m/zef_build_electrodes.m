@@ -255,7 +255,7 @@ function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec,
 
     else
 
-        'Error: Unrecognised electrode model in zef_build_electrodes'
+        warning('Unrecognised electrode model in zef_build_electrodes. Returning empty electrode matrices B and C...')
 
         B = [];
         C = [];
