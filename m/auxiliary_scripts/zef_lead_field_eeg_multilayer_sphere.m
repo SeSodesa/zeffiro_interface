@@ -23,21 +23,25 @@ for j = 1 : length(lam_berg)
     cos_alpha = sum(F.*vec_dofs)./sqrt(sum(vec_dofs.^2));
     sin_alpha = abs(sqrt(1 - cos_alpha.^2));
     aux_angle_vec_1 = cross(F,vec_dofs);
-    aux_angle_vec_1 = aux_angle_vec_1./repmat(sqrt(sum(aux_angle_vec_1.^2)),3,1);
+    aux_angle_vec_1 = aux_angle_vec_1 ./ repmat(sqrt(sum(aux_angle_vec_1.^2)),3,1);
     r_q_vec = sqrt(sum((vec_dofs.^2)));
 
     for i = 1 : size(electrode_points,2)
 
-       cos_gamma = (sum(repmat(electrode_points(:,i), 1, size(vec_dofs,2)).*vec_dofs)./(sqrt(sum(vec_dofs.^2))*sqrt(sum(electrode_points(:,i).^2))));
-       sin_gamma = abs(sqrt(1 - cos_gamma.^2));
-       aux_angle_vec_2 = cross(repmat(electrode_points(:,i), 1, size(vec_dofs,2)),vec_dofs);
-       aux_angle_vec_2 = aux_angle_vec_2./repmat(sqrt(sum(aux_angle_vec_2.^2)),3,1);
-       cos_beta = (sum(aux_angle_vec_1.*aux_angle_vec_2));
-       d_vec = sqrt(sum((vec_dofs - repmat(electrode_points(:,i), 1, size(vec_dofs,2))).^2));
-       r_vec = sqrt(sum((repmat(electrode_points(:,i), 1, size(vec_dofs,2))).^2));
-       v_r = cos_alpha.*(2*(r_vec.*cos_gamma - r_q_vec)./(d_vec.^3) + 1./(r_q_vec.*d_vec) - 1./(r_vec.*r_q_vec));
-       v_t = sin_alpha.*cos_beta.*sin_gamma.*(2*r_vec./(d_vec.^3) + ( d_vec + r_vec )./(r_vec.*d_vec.*(r_vec - r_q_vec.*cos_gamma + d_vec)));
-       L_eeg(i,:) = L_eeg(i,:) + lam_berg(j)*(v_r + v_t);
+        cos_gamma = ( ...
+            sum(repmat(electrode_points(:,i), 1, size(vec_dofs,2)).*vec_dofs) ...
+            ./ ...
+            sqrt(sum(vec_dofs.^2))*sqrt(sum(electrode_points(:,i).^2)) ...
+        );
+        sin_gamma = abs(sqrt(1 - cos_gamma.^2));
+        aux_angle_vec_2 = cross(repmat(electrode_points(:,i), 1, size(vec_dofs,2)),vec_dofs);
+        aux_angle_vec_2 = aux_angle_vec_2./repmat(sqrt(sum(aux_angle_vec_2.^2)),3,1);
+        cos_beta = sum(aux_angle_vec_1.*aux_angle_vec_2);
+        d_vec = sqrt(sum((vec_dofs - repmat(electrode_points(:,i), 1, size(vec_dofs,2))).^2));
+        r_vec = sqrt(sum((repmat(electrode_points(:,i), 1, size(vec_dofs,2))).^2));
+        v_r = cos_alpha.*(2*(r_vec.*cos_gamma - r_q_vec)./(d_vec.^3) + 1./(r_q_vec.*d_vec) - 1./(r_vec.*r_q_vec));
+        v_t = sin_alpha.*cos_beta.*sin_gamma.*(2*r_vec./(d_vec.^3) + ( d_vec + r_vec )./(r_vec.*d_vec.*(r_vec - r_q_vec.*cos_gamma + d_vec)));
+        L_eeg(i,:) = L_eeg(i,:) + lam_berg(j) * (v_r + v_t);
 
     end
 end
@@ -45,4 +49,9 @@ end
 L_eeg = repmat(xyz_norm_vec./(4*pi*sigma_val),size(L_eeg,1),1).*L_eeg;
 L_eeg = L_eeg - repmat(sum(L_eeg), size(electrode_points,2), 1)/size(electrode_points,2);
 
-end
+% TODO: check whether the below line should happen. It seems to work as
+% intended.
+
+L_eeg = -L_eeg;
+
+end % function
