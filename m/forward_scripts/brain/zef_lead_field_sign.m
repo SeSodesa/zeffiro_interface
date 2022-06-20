@@ -33,8 +33,6 @@ function Lsign = zef_lead_field_sign( ...
 
     [~, pceind] = min(pce_dists);
 
-    pcepos = p_electrode_positions(pceind, :);
-
     % Indices of p_L that match the SCO.
 
     sco_xyz_inds = 3 * (scoind-1) + 1 : 3 * scoind;
