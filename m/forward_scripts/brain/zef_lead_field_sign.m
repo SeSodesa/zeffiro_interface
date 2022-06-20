@@ -1,6 +1,5 @@
 function Lsign = zef_lead_field_sign( ...
     source_positions, ...
-    source_directions, ...
     electrodes, ...
     L ...
 )
@@ -10,7 +9,6 @@ function Lsign = zef_lead_field_sign( ...
 
     arguments
         source_positions (:, 3) double
-        source_directions (:, 3) double
         electrodes
         L
     end
@@ -22,7 +20,6 @@ function Lsign = zef_lead_field_sign( ...
     [~, scoind] = min(source_distances);
 
     scopos = source_positions(scoind,:);
-    scodir = source_directions(scoind, :);
 
     % Electrode with greatest z-coordinate (EGZ)
 
@@ -30,11 +27,11 @@ function Lsign = zef_lead_field_sign( ...
 
     % Indices of L that match the SCO
 
-    scoLinds = 3 * (scoind-1)+1 : 3 * scoind;
+    sco_xyz_inds = 3 * (scoind-1) + 1 : 3 * scoind;
 
     % Part of L that matches both SCO and EGZ
 
-    scoegzL = L(egzind, scoLinds);
+    scoegzL = L(egzind, sco_xyz_inds);
 
     % Scalar potential of SCO at EGZ
 
@@ -43,7 +40,7 @@ function Lsign = zef_lead_field_sign( ...
     % Calculate the sign
 
     try
-        Lsign = scodir(3) / scoegzu;
+        Lsign = sign(scoegzL(3) / scoegzu);
     catch
         warning('Sign of L could not be determined because of zero division. Setting it as (+)')
         Lsign = 1;
