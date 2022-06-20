@@ -33,6 +33,8 @@ function Lsign = zef_lead_field_sign( ...
 
     [~, pceind] = min(pce_dists);
 
+    pcepos = p_electrode_positions(pceind, :);
+
     % Indices of p_L that match the SCO.
 
     sco_xyz_inds = 3 * (scoind-1) + 1 : 3 * scoind;
@@ -41,17 +43,14 @@ function Lsign = zef_lead_field_sign( ...
 
     scopceL = p_L(pceind, sco_xyz_inds);
 
-    % Scalar potential of SCO at PCE.
+    % Scalar potential of SCO at PCE, u = Lx.
 
-    scopceu = scopceL * scopos';
+    scodir = [ 0 ; 0 ; 1 ];
+
+    scopceu = scopceL * scodir;
 
     % Calculate the sign
 
-    try
-        Lsign = sign(scopceL(3) / scopceu);
-    catch
-        warning('Sign of L could not be determined because of zero division. Setting it as (+)');
-        Lsign = 1;
-    end
+    Lsign = sign(scopceu);
 
 end
