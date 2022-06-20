@@ -41,7 +41,7 @@ function Lsign = zef_lead_field_sign( ...
 
     scopceL = p_L(pceind, sco_xyz_inds);
 
-    % Scalar potential of SCO at EGZ.
+    % Scalar potential of SCO at PCE.
 
     scopceu = scopceL * scopos';
 
