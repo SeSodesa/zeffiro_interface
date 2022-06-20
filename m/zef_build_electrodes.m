@@ -22,6 +22,11 @@ function [A, B, C] = zef_build_electrodes(nodes, electrode_model, impedance_vec,
     wb = waitbar(0,funtitle);
     wbi = 0;
 
+    % Cleanup operations
+
+    cleanup_fn = @(h) close(h);
+    cleanup_obj = onCleanup(@() cleanup_fn(wb));
+
     % Consider the PEM case
 
     if impedance_inf
