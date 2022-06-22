@@ -8,6 +8,27 @@ function [ ...
     node_pair ...
 ] = zef_surface_mesh(tetra, varargin)
 
+    % TODO Documentation
+    %
+    % Input:
+    %
+    % - tetra: the set of volume tetrahedra whose surface is to be constructed (?)
+    % - varargin{1}: the nodes that constitute the tetrahedra (?)
+    % - varargin{2}: the indices that denote which tetrahedra are to be chosen
+    %   as a part of the volume from the given ones (?)
+    %
+    % Output:
+    %
+    % - surface_triangles : Triples of node indices that make up the surface
+    %   triangles (?)
+    % - surface_nodes : the themselves that constitute the surface triangles
+    %   (?)
+    % - tetra_ind : TODO
+    % - tetra_ind_global : TODO
+    % - tetra_ind_diff : TODO
+    % - node_ind : TODO
+    % - node_pair : TODO
+
 I = [];
 surface_nodes = [];
 nodes = [];
@@ -38,7 +59,7 @@ ind_m = [ 2 4 3 ;
           1 4 2 ;
           1 2 3 ];
 
-% Find tetra that share a face by sorting and subtracting.
+% Find tetra indices I that share a face, by sorting and subtracting.
 
 tetra_sort = [
     tetra(:,[2 4 3]) 1*ones(size(tetra,1),1) [1:size(tetra,1)]';
