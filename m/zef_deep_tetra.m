@@ -89,12 +89,14 @@ function out_surface_tetra = surface_tetra_fn(in_surface_triangles, in_volume_te
 
     % Construct surface tetrahedra and sort containers for binary search.
 
-    out_surface_tetra = zeros(n_of_triagles, 4);
+    out_surface_tetra = zeros(n_of_triangles, 4);
 
     % Iterate over triangles and find the tetrahedra that share all 3 nodes
     % except one.
 
     for i = 1 : n_of_triangles
+
+        disp(['Iteration ' num2str(i)]);
 
         triangle_i = in_surface_triangles(i,:);
 
