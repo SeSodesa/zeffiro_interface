@@ -13,21 +13,29 @@ function [ ...
     % Input:
     %
     % - tetra: the set of volume tetrahedra whose surface is to be constructed (?)
+    %
     % - varargin{1}: the nodes that constitute the tetrahedra (?)
+    %
     % - varargin{2}: the indices that denote which tetrahedra are to be chosen
     %   as a part of the volume from the given ones (?)
     %
     % Output:
     %
-    % - surface_triangles : Triples of node indices that make up the surface
-    %   triangles (?)
-    % - surface_nodes : the themselves that constitute the surface triangles
-    %   (?)
-    % - tetra_ind : TODO
-    % - tetra_ind_global : TODO
-    % - tetra_ind_diff : TODO
-    % - node_ind : TODO
-    % - node_pair : TODO
+    % - surface_triangles: Triples of node indices that make up the surface
+    %   triangles
+    %
+    % - surface_nodes: the nodes that constitute the surface triangles
+    %
+    % - tetra_ind: the indices of the tetrahedra that have the surface
+    %   triangles as a face
+    %
+    % - tetra_ind_global: TODO
+    %
+    % - tetra_ind_diff: TODO
+    %
+    % - node_ind: TODO
+    %
+    % - node_pair: TODO
 
 I = [];
 surface_nodes = [];
@@ -149,6 +157,7 @@ if nargout > 4 && nargin > 2
     end % if
 
     I = find(tetra_ind_diff);
+
     tetra_ind_diff(I) = I_diff(tetra_ind_diff(I));
 
 end % if
