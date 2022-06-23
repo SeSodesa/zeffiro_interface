@@ -131,7 +131,9 @@ if nargout > 4 && nargin > 2
         tetra_aux = tetra_diff(tetra_ind_diff(I_aux_1),:);
 
         [I,J] = find(not(ismember(tetra_aux,surface_triangles)));
+
         I_aux_2 = sub2ind(size(tetra_aux), I, J);
+
         node_ind(I_aux_1(I)) = tetra_aux(I_aux_2);
 
         node_pair = [surface_triangles(:,1) node_ind; ...
