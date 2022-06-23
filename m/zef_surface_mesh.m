@@ -10,6 +10,10 @@ function [ ...
 
     % TODO Documentation
     %
+    % The basic idea is that this function returns the surface triangles of a
+    % given tetrahedral volume in different formats, depending on the
+    % combination of input and output arguments.
+    %
     % Input:
     %
     % - tetra: the set of volume tetrahedra whose surface is to be constructed (?)
@@ -24,10 +28,10 @@ function [ ...
     % - surface_triangles: Triples of node indices that make up the surface
     %   triangles
     %
-    % - surface_nodes: the nodes that constitute the surface triangles
+    % - surface_nodes: the nodes that constitute the surface triangles.
     %
     % - tetra_ind: the indices of the tetrahedra that have the surface
-    %   triangles as a face
+    %   triangles as a face.
     %
     % - tetra_ind_global: TODO
     %
@@ -35,7 +39,8 @@ function [ ...
     %
     % - node_ind: TODO
     %
-    % - node_pair: TODO
+    % - node_pair: TODO: pairs of neigbouring nodes on different sides of the
+    %   triangular surface.
 
 I = [];
 surface_nodes = [];
