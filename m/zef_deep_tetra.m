@@ -57,7 +57,7 @@ function out_tetra = zef_deep_tetra( ...
     surface_normals = cross(triangle_edges_1, triangle_edges_2);
     surface_normals = surface_normals ./ zef_L2_norm(surface_normals, 2);
 
-end
+end % zef_deep_tetra
 
 function out_surface_tetra = surface_tetra_fn(in_surface_triangles, in_volume_tetra)
 
@@ -130,6 +130,6 @@ function out_surface_tetra = surface_tetra_fn(in_surface_triangles, in_volume_te
 
         out_surface_tetra(sti,:) = in_volume_tetra(sti,:);
 
-    end
+    end % for
 
-end
+end % surface_tetra_fn
