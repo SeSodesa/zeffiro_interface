@@ -41,13 +41,11 @@ function out_tetra = zef_deep_tetra( ...
 
     [volume_surface_triangles, ~, surf_tetra_inds] = zef_surface_mesh(volume_tetra);
 
+    volume_surface_tetra = volume_tetra(surf_tetra_inds ,:);
+
     % An abbreviation variable for clearer indexing.
 
     vst = volume_surface_triangles;
-
-    % Get surface tetrahedra
-
-    surface_tetra = surface_tetra_fn(vst, volume_tetra);
 
     % Calculate the normed surface normals of the triangles.
 
@@ -62,6 +60,7 @@ end % zef_deep_tetra
 function out_surface_tetra = surface_tetra_fn(in_surface_triangles, in_volume_tetra)
 
     % Finds out which tetrahedra the given surface triangles participate in.
+    % NOTE: currently slow as heck.
     %
     % Input:
     %
