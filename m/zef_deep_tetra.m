@@ -10,12 +10,12 @@ function out_tetra = zef_deep_tetra( ...
     %
     % Input:
     %
-    % - p_nodes: finite elements nodes.
-    % - p_tetra: finite element tetrahedra (quadruples of node indices)
+    % - in_nodes: finite elements nodes.
+    % - in_tetra: finite element tetrahedra (quadruples of node indices)
     %   constructed from above nodes.
-    % - p_volume_inds: the indices of the tetrahedra that form the volume
+    % - in_volume_inds: the indices of the tetrahedra that form the volume
     %   under observation.
-    % - p_acceptable_depth_mm: the depth in millimetres, within which the deep
+    % - in_acceptable_depth_mm: the depth in millimetres, within which the deep
     %   tetra are located.
     %
     % Output:
