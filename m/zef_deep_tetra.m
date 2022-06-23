@@ -39,7 +39,7 @@ function out_tetra = zef_deep_tetra( ...
 
     volume_tetra = in_volume_tetra(in_volume_inds, :);
 
-    volume_surface_triangles = zef_surface_mesh(volume_tetra);
+    [volume_surface_triangles, ~, surf_tetra_inds] = zef_surface_mesh(volume_tetra);
 
     % An abbreviation variable for clearer indexing.
 
@@ -121,6 +121,8 @@ function out_surface_tetra = surface_tetra_fn(in_surface_triangles, in_volume_te
         n_of_st = size(out_surface_tetra, 1);
 
         if max_ind > n_of_st
+
+            warning('Allocating more space for surface tetra.')
 
             add_needed_space = max_ind - n_of_st;
 
