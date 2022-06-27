@@ -14,8 +14,8 @@ function nearest_list = zef_nearest_points( ...
     %
     % Input:
     %
-    % - points: one set of points from which we are looking nearest
-    %   neighbours from.
+    % - points: one set of points from which we are looking nearest neighbours
+    %   from.
     %
     % - neighbour_points: the point cloud we are looking the neighbours of
     %   points from.
@@ -23,8 +23,8 @@ function nearest_list = zef_nearest_points( ...
     % - quantity: a real number whose interpretation is defined by the below
     %   argument. Might be restricted to integers, for example.
     %
-    % - quantity_interpretation: an interpretation for the quantity
-    %   parameter. Can be either 'single', 'count' or 'range'.
+    % - quantity_interpretation: an interpretation for the quantity parameter.
+    %   Can be either 'single', 'count' or 'range'.
     %
     % Output
     %
@@ -40,11 +40,11 @@ function nearest_list = zef_nearest_points( ...
 
     if strcmp(quantity_interpretation, 'count')
 
-        MdlKDT = KDTreeSearcher(neighbour_points);
-
         if ~ isinteger(quantity) | quantity < 0
             error('Given quantity must be a positive integer when its interpretation is the number of neighbours');
         end
+
+        MdlKDT = KDTreeSearcher(neighbour_points);
 
         nearest_list = knnsearch(MdlKDT, points, 'K', quantity);
 
