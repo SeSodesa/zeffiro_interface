@@ -40,7 +40,7 @@ function nearest_list = zef_nearest_points( ...
 
     if strcmp(quantity_interpretation, 'count')
 
-        if ~ isinteger(quantity) | quantity < 0
+        if  (~ is_integer(quantity)) | quantity < 0
             error('Given quantity must be a positive integer when its interpretation is the number of neighbours');
         end
 
@@ -51,6 +51,10 @@ function nearest_list = zef_nearest_points( ...
     elseif strcmp(quantity_interpretation, 'range')
 
         nearest_list = rangesearch(points, neighbour_points, quantity);
+
+        % Reshape and -size
+
+        nearest_list = unique([nearest_list{:}]');
 
     elseif strcmp(quantity_interpretation, 'single')
 
@@ -65,3 +69,15 @@ function nearest_list = zef_nearest_points( ...
     end % if
 
 end % function
+
+%% Helper functions
+
+function isint = is_integer(in_number)
+
+    arguments
+        in_number double
+    end
+
+    isint = in_number == floor(in_number);
+
+end
