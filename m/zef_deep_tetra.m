@@ -1,6 +1,6 @@
-function out_tetra = zef_deep_tetra( ...
+function out_tetra_ind = zef_deep_tetra( ...
     in_nodes, ...
-    in_volume_tetra, ...
+    in_tetra, ...
     in_volume_inds, ...
     in_acceptable_depth_mm ...
 )
@@ -11,48 +11,62 @@ function out_tetra = zef_deep_tetra( ...
     % Input:
     %
     % - in_nodes: finite elements nodes.
+    %
     % - in_tetra: finite element tetrahedra (quadruples of node indices)
     %   constructed from above nodes.
+    %
     % - in_volume_inds: the indices of the tetrahedra that form the volume
     %   under observation.
-    % - in_acceptable_depth_mm: the depth in millimetres, within which the deep
-    %   tetra are located.
+    %
+    % - in_acceptable_depth_mm: the depth in millimetres, within which the
+    %   deep tetra are located.
     %
     % Output:
     %
-    % - o_tetra: the tetrahedra that are deep enough inside the given brain
-    %   segment.
+    % - out_tetra_ind: the indices of the tetrahedra that are deep enough
+    %   inside the given brain segment.
 
     arguments
         in_nodes (:,3) double
-        in_volume_tetra (:,4) double {mustBeInteger, mustBePositive}
+        in_tetra (:,4) double {mustBeInteger, mustBePositive}
         in_volume_inds (:,1) double {mustBeInteger, mustBePositive}
         in_acceptable_depth_mm (1,1) double {mustBeNonnegative}
     end
 
     % Set empty return value.
 
-    out_tetra = [];
+    out_tetra_ind = [];
 
-    % First find out the surface triangles (triples of node indices) of the
-    % volume determined by the volume indices.
+    % Find out the boundary elements (triangles) of the volume.
 
-    volume_tetra = in_volume_tetra(in_volume_inds, :);
+    volume_tetra = in_tetra(in_volume_inds, :);
 
-    [volume_surface_triangles, ~, surf_tetra_inds] = zef_surface_mesh(volume_tetra);
+    volume_node_indices = unique(volume_tetra(:));
 
-    volume_surface_tetra = volume_tetra(surf_tetra_inds ,:);
+    volume_nodes = in_nodes(volume_node_indices, :);
 
-    % An abbreviation variable for clearer indexing.
+    [surface_node_inds, surface_nodes] = zef_surface_mesh(volume_tetra, in_nodes);
 
-    vst = volume_surface_triangles;
+    % Find out non-surface nodes deep enough within the volume with
+    % rangesearch.
 
-    % Calculate the normed surface normals of the triangles.
+    non_surface_nodes = setdiff(volume_nodes, surface_nodes, 'rows');
 
-    triangle_edges_1 = in_nodes(vst(:, 2), :) - in_nodes(vst(:, 1), :);
-    triangle_edges_2 = in_nodes(vst(:, 3), :) - in_nodes(vst(:, 1), :);
+    node_inds_too_near_to_surface = zef_nearest_points( ...
+        surface_nodes, ...
+        non_surface_nodes, ...
+        in_acceptable_depth_mm, ...
+        'range' ...
+    );
 
-    surface_normals = cross(triangle_edges_1, triangle_edges_2);
-    surface_normals = surface_normals ./ zef_L2_norm(surface_normals, 2);
+    nodes_too_near_to_surface = non_surface_nodes(node_inds_too_near_to_surface, :);
+
+    acceptable_non_surface_nodes = setdiff( ...
+        non_surface_nodes, ...
+        nodes_too_near_to_surface, ...
+        'rows' ...
+    );
+
+    % TODO: Find tetra in the volume which only contain acceptable nodes.
 
 end % zef_deep_tetra
