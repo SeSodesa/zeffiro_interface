@@ -1,41 +1,42 @@
-%Copyright © 2018- Sampsa Pursiainen & ZI Development Team
-%See: https://github.com/sampsapursiainen/zeffiro_interface
+% Copyright © 2018- Sampsa Pursiainen & ZI Development Team
+% See: https://github.com/sampsapursiainen/zeffiro_interface
+%
+% TODO Documentation
+%
+% This function decomposes a given set of nodes and tetrahedra (degrees of
+% freedom or DOF) into
+%
+% Input:
+%
+% - nodes: the nodes that make up a finite element mesh.
+%
+% - tetrahedra: quadruples of node indices that indicate which nodes
+%   participate in which tetrahedra.
+%
+% - brain_ind: linear indices of tetrahedra that are in the brain.
+%
+% - varargin{1}: source indices. If not set, these are assumed to be the
+%   same as brain_ind.
+%
+% - varargin{2}: number of sources. If not set, these are fetched from the
+%   global zef instance with evalin.
+%
+% - varargin{3}: DOF decomposition type. TODO. If not set, this is again
+%   fetched from the global zef instance with evalin.
+%
+% Output:
+%
+% - decomposition_ind: TODO
+% - decomposition_count: TODO
+% - dof_positions: TODO
+% - decomposition_ind_first: TODO
+
 function [ ...
     decomposition_ind, ...
     decomposition_count, ...
     dof_positions, ...
     decomposition_ind_first ...
 ] = zef_decompose_dof_space(nodes,tetrahedra,brain_ind,varargin)
-
-    % TODO Documentation
-    %
-    % This function decomposes a given set of nodes and tetrahedra (degrees of
-    % freedom or DOF) into
-    %
-    % Input:
-    %
-    % - nodes: the nodes that make up a finite element mesh.
-    %
-    % - tetrahedra: quadruples of node indices that indicate which nodes
-    %   participate in which tetrahedra.
-    %
-    % - brain_ind: linear indices of tetrahedra that are in the brain.
-    %
-    % - varargin{1}: source indices. If not set, these are assumed to be the
-    %   same as brain_ind.
-    %
-    % - varargin{2}: number of sources. If not set, these are fetched from the
-    %   global zef instance with evalin.
-    %
-    % - varargin{3}: DOF decomposition type. TODO. If not set, this is again
-    %   fetched from the global zef instance with evalin.
-    %
-    % Output:
-    %
-    % - decomposition_ind: TODO
-    % - decomposition_count: TODO
-    % - dof_positions: TODO
-    % - decomposition_ind_first: TODO
 
 
     if not(isempty(varargin))
