@@ -49,8 +49,8 @@ function out_tetra = zef_deep_tetra( ...
 
     % Calculate the normed surface normals of the triangles.
 
-    triangle_edges_1 =  in_nodes(vst(:, 2), :) - in_nodes(vst(:, 1), :);
-    triangle_edges_2 =  in_nodes(vst(:, 3), :) - in_nodes(vst(:, 1), :);
+    triangle_edges_1 = in_nodes(vst(:, 2), :) - in_nodes(vst(:, 1), :);
+    triangle_edges_2 = in_nodes(vst(:, 3), :) - in_nodes(vst(:, 1), :);
 
     surface_normals = cross(triangle_edges_1, triangle_edges_2);
     surface_normals = surface_normals ./ zef_L2_norm(surface_normals, 2);
