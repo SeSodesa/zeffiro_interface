@@ -29,7 +29,8 @@
 % - decomposition_ind: TODO
 % - decomposition_count: TODO
 % - dof_positions: TODO
-% - decomposition_ind_first: TODO
+% - decomposition_ind_first: TODO. Has something to do with generating source
+%   indices before lead field construction.
 
 function [ ...
     decomposition_ind, ...
@@ -111,11 +112,7 @@ function [ ...
 
         [X_lattice, Y_lattice, Z_lattice] = meshgrid(linspace(min_x,max_x,lattice_res_x),linspace(min_y,max_y,lattice_res_y),linspace(min_z,max_z,lattice_res_z));
 
-        lattice_ind_aux = [max(1,round(lattice_res_x*(center_points(:,1)-min(center_points(:,1)))./(max(center_points(:,1))-min(center_points(:,1))))) ...
-        max(1,round(lattice_res_y*(center_points(:,2)-min(center_points(:,2)))./(max(center_points(:,2))-min(center_points(:,2)))))...
-        max(1,round(lattice_res_z*(center_points(:,3)-min(center_points(:,3)))./(max(center_points(:,3))-min(center_points(:,3)))))];
-
-        lattice_ind_aux = (lattice_ind_aux(:,3)-1)*lattice_res_x*lattice_res_y + (lattice_ind_aux(:,1)-1)*lattice_res_y + lattice_ind_aux(:,2);
+        lattice_ind_aux = lattice_index_fn(center_points, lattice_res_x, lattice_res_y, lattice_res_z);
 
         dof_positions = [X_lattice(:) Y_lattice(:) Z_lattice(:)];
         decomposition_ind = lattice_ind_aux;
@@ -141,3 +138,64 @@ function [ ...
     end % if
 
 end % zef_decompose_dof_space
+
+%% Helper functions.
+
+function out_indices = lattice_index_fn( ...
+    in_center_points, ...
+    in_lattice_res_x, ...
+    in_lattice_res_y, ...
+    in_lattice_res_z ...
+)
+
+    % Documentation
+    %
+    % A helper function for generating lattice indices based on the barycentra
+    % of the tetrahedra that form the lattice, and the x-, y- and z-resultions
+    % of the lattice.
+    %
+    % Input:
+    %
+    % - in_center_points: the barycenters of the tetrahedral lattice we are
+    %   observing.
+    %
+    % - in_lattice_res_x: the resolution of the lattice in the x-direction.
+    %
+    % - in_lattice_res_y: the resolution of the lattice in the y-direction.
+    %
+    % - in_lattice_res_z: the resolution of the lattice in the z-direction.
+    %
+    % Output:
+    %
+    % - out_indices: the indices of the lattice we are interested in.
+
+    arguments
+        in_center_points (:,3) double
+        in_lattice_res_x (1,1) double
+        in_lattice_res_y (1,1) double
+        in_lattice_res_z (1,1) double
+    end
+
+    % Aliases for shorter expressions.
+
+    cp1 = in_center_points(:,1);
+    cp2 = in_center_points(:,2);
+    cp3 = in_center_points(:,3);
+
+    lrx = in_lattice_res_x;
+    lry = in_lattice_res_y;
+    lrz = in_lattice_res_z;
+
+    % Lattice index builder.
+
+    lib = [
+        max(1, round( lrx * (cp1 - min(cp1)) ./ (max(cp1) - min(cp1)))) ...
+        max(1, round( lry * (cp2 - min(cp2)) ./ (max(cp2) - min(cp2)))) ...
+        max(1, round( lrz * (cp3 - min(cp3)) ./ (max(cp3) - min(cp3))))
+    ];
+
+    % Indices from builder.
+
+    out_indices = (lib(:,3)-1) * lrx * lry + (lib(:,1)-1) * lry + lib(:,2);
+
+end
