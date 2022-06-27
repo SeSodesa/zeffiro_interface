@@ -40,7 +40,7 @@ function [ ...
 
     if dof_decomposition_type == 1
 
-        dof_positions = (nodes(tetrahedra(source_ind,1),:) + nodes(tetrahedra(source_ind,2),:) + nodes(tetrahedra(source_ind,3),:)+ nodes(tetrahedra(source_ind,4),:))/4;
+        dof_positions = zef_tetra_barycentra(nodes, tetrahedra(source_ind, :));
 
         size_center_points = size(center_points,2);
         size_source_points = size(center_points,2);
