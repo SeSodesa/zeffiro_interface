@@ -1,4 +1,9 @@
-function out_tetra_ind = zef_deep_tetra( ...
+function [ ...
+    out_deep_nodes, ...
+    out_deep_nodes_inds, ...
+    out_deep_tetra, ...
+    out_deep_tetra_inds ...
+] = zef_deep_nodes_and_tetra( ...
     in_nodes, ...
     in_tetra, ...
     in_volume_inds, ...
@@ -33,17 +38,22 @@ function out_tetra_ind = zef_deep_tetra( ...
         in_acceptable_depth_mm (1,1) double {mustBeNonnegative}
     end
 
-    % Set empty return value.
+    % Set empty return values.
 
-    out_tetra_ind = [];
+    out_deep_node_inds = [];
+    out_deep_nodes = [];
+    out_deep_tetra_inds = [];
+    out_deep_tetra = [];
 
     % Find out the boundary elements (triangles) of the volume.
 
     volume_tetra = in_tetra(in_volume_inds, :);
 
-    volume_node_indices = unique(volume_tetra(:));
+    volume_node_inds = volume_tetra(:);
 
-    volume_nodes = in_nodes(volume_node_indices, :);
+    unique_volume_node_inds = unique(volume_node_inds);
+
+    volume_nodes = in_nodes(unique_volume_node_inds, :);
 
     [surface_node_inds, surface_nodes] = zef_surface_mesh(volume_tetra, in_nodes);
 
@@ -59,14 +69,22 @@ function out_tetra_ind = zef_deep_tetra( ...
         'range' ...
     );
 
-    nodes_too_near_to_surface = non_surface_nodes(node_inds_too_near_to_surface, :);
-
-    acceptable_non_surface_nodes = setdiff( ...
-        non_surface_nodes, ...
-        nodes_too_near_to_surface, ...
+    out_deep_node_inds = setdiff( ...
+        volume_node_inds, ...
+        node_inds_too_near_to_surface, ...
         'rows' ...
     );
 
-    % TODO: Find tetra in the volume which only contain acceptable nodes.
+    out_deep_nodes = in_nodes(deep_enough_node_inds, :);
+
+    % Find tetra in the volume which only contain acceptable (deep) nodes.
+
+    tetra_deep_node_info = ismember(in_tetra, deep_enough_node_inds);
+
+    tetra_info_row_sums = sum(tetra_deep_node_info, 2);
+
+    out_deep_tetra_inds = find(tetra_info_row_sums == 4);
+
+    out_deep_tetra = in_tetra(out_deep_tetra_inds, :);
 
 end % zef_deep_tetra
