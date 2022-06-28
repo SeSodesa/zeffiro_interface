@@ -10,8 +10,10 @@ function [ ...
     in_acceptable_depth_mm ...
 )
 
-    % Produces subset of the FEM tetrahedra, whose barycenters are deep enough
-    % within a given volume.
+    % Documentation
+    %
+    % Produces the nodes and tetra which are deep enough within a given volume,
+    % and also their indices.
     %
     % Input:
     %
@@ -55,7 +57,7 @@ function [ ...
 
     volume_nodes = in_nodes(unique_volume_node_inds, :);
 
-    [surface_node_inds, surface_nodes] = zef_surface_mesh(volume_tetra, in_nodes);
+    [~, surface_nodes] = zef_surface_mesh(volume_tetra, in_nodes);
 
     % Find out non-surface nodes deep enough within the volume with
     % rangesearch.
