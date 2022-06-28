@@ -81,7 +81,7 @@ function [ ...
         MdlKDT = KDTreeSearcher(dof_positions);
         decomposition_ind  = knnsearch(MdlKDT,center_points);
 
-        [aux_vec, i_a, i_c] = unique(decomposition_ind);
+        [unique_decomposition_ind, i_a, i_c] = unique(decomposition_ind);
         decomposition_count = accumarray(i_c,1);
         decomposition_pointe = i_a;
 
@@ -110,18 +110,33 @@ function [ ...
         min_z = min_z + l_d_z;
         max_z = max_z - l_d_z;
 
-        [X_lattice, Y_lattice, Z_lattice] = meshgrid(linspace(min_x,max_x,lattice_res_x),linspace(min_y,max_y,lattice_res_y),linspace(min_z,max_z,lattice_res_z));
+        x_space = linspace(min_x,max_x,lattice_res_x);
+        y_space = linspace(min_y,max_y,lattice_res_y);
+        z_space = linspace(min_z,max_z,lattice_res_z);
 
-        lattice_ind_aux = lattice_index_fn(center_points, lattice_res_x, lattice_res_y, lattice_res_z);
+        [X_lattice, Y_lattice, Z_lattice] = meshgrid(x_space, y_space, z_space);
 
         dof_positions = [X_lattice(:) Y_lattice(:) Z_lattice(:)];
-        decomposition_ind = lattice_ind_aux;
-        [aux_vec, i_a, i_c] = unique(decomposition_ind);
-        aux_ind_2 = zeros(size(dof_positions,1),1);
-        aux_ind_2(aux_vec) = [1 : length(aux_vec)];
-        decomposition_ind = aux_ind_2(decomposition_ind);
-        dof_positions = dof_positions(aux_vec,:);
+
+        decomposition_ind = lattice_index_fn( ...
+            center_points, ...
+            lattice_res_x, ...
+            lattice_res_y, ...
+            lattice_res_z ...
+        );
+
+        [unique_decomposition_ind, i_a, i_c] = unique(decomposition_ind);
+
+        decomposition_ind_to_be = zeros(size(dof_positions,1),1);
+
+        decomposition_ind_to_be(unique_decomposition_ind) = [1 : length(unique_decomposition_ind)];
+
+        decomposition_ind = decomposition_ind_to_be(decomposition_ind);
+
+        dof_positions = dof_positions(unique_decomposition_ind,:);
+
         decomposition_count = accumarray(i_c,1);
+
         decomposition_ind_first = i_a;
 
     elseif dof_decomposition_type == 3
