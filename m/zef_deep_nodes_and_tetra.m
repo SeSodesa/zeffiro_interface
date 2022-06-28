@@ -1,6 +1,6 @@
 function [ ...
     out_deep_nodes, ...
-    out_deep_nodes_inds, ...
+    out_deep_node_inds, ...
     out_deep_tetra, ...
     out_deep_tetra_inds ...
 ] = zef_deep_nodes_and_tetra( ...
@@ -12,8 +12,9 @@ function [ ...
 
     % Documentation
     %
-    % Produces the nodes and tetra which are deep enough within a given volume,
-    % and also their indices.
+    % Produces the nodes and tetra which are deep enough within a given
+    % volume, and also their indices in the given global tetra and node data
+    % structures.
     %
     % Input:
     %
@@ -77,11 +78,11 @@ function [ ...
         'rows' ...
     );
 
-    out_deep_nodes = in_nodes(deep_enough_node_inds, :);
+    out_deep_nodes = in_nodes(out_deep_node_inds, :);
 
     % Find tetra in the volume which only contain acceptable (deep) nodes.
 
-    tetra_deep_node_info = ismember(in_tetra, deep_enough_node_inds);
+    tetra_deep_node_info = ismember(in_tetra, out_deep_node_inds);
 
     tetra_info_row_sums = sum(tetra_deep_node_info, 2);
 
