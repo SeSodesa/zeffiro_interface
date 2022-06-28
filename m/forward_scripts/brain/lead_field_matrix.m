@@ -52,6 +52,19 @@ else
     zef.aux_vec = setdiff(zef.brain_ind,zef.non_source_ind);
 end
 
+% Limit ourselves to tetra deep enough (default 1 mm) in the gray matter.
+
+if ~ isfield(zef, 'acceptable_source_depth')
+    zef.acceptable_source_depth = 1; % mm
+end
+
+[~, ~, ~, zef.aux_vec] = zef_deep_nodes_and_tetra( ...
+    zef.nodes, ...
+    zef.tetra, ...
+    zef.aux_vec, ...
+    zef.acceptable_source_depth ...
+);
+
 zef.n_sources_old = zef.n_sources;
 
 for zef_i = 1 : length(zef.compartment_tags)
