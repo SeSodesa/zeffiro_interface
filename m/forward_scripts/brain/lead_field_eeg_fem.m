@@ -230,7 +230,7 @@ regparam = 1e-6;
 
 % Perform interpolation to construct lead field.
 
-L_eeg = T' * G;
+L_eeg = -T' * G;
 
 % Set "correct" zero potential level.
 
