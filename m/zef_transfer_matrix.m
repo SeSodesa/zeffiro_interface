@@ -21,13 +21,14 @@ function [T, Schur_complement, A] = zef_transfer_matrix( ...
 ,                                                        ...
     tol_val                                              ...
 ,                                                        ...
-    m_max                                                ...
+    max_iters                                            ...
 )
 
-% zef_transfer_matrix: builds a transfer matrix T and an auxiliary matrix
-% Schur_complement from a given stiffness matrix A, matrices B and C, sizes
-% n_of_fem_nodes and n_of_electrodes, a permutation matrix and a precoditioner,
-% through preconditioned conjugate gradient (PCG) iteration.
+    % zef_transfer_matrix: builds a transfer matrix T and an auxiliary matrix
+    % Schur_complement from a given stiffness matrix A, matrices B and C,
+    % sizes n_of_fem_nodes and n_of_electrodes, a permutation matrix and a
+    % precoditioner, through preconditioned conjugate gradient (PCG)
+    % iteration.
 
     if isequal(permutation,'symamd')
         perm_vec = symamd(A)';
@@ -88,7 +89,7 @@ function [T, Schur_complement, A] = zef_transfer_matrix( ...
             % Optimization loop: iterate until a point close to minimum is
             % found, or number of max iterations are exceeded.
 
-            while( (norm(r)/norm_b > tol_val) && (m < m_max) )
+            while( (norm(r)/norm_b > tol_val) && (m < max_iters) )
                 a = A * p;
                 a_dot_p = sum(a.*p);
                 aux_val = sum(r.*p);
@@ -188,7 +189,7 @@ function [T, Schur_complement, A] = zef_transfer_matrix( ...
                 p = S2 \ aux_vec;
                 m = 0;
 
-                while( not(isempty(find(sqrt(sum(r.^2))./norm_b(block_iter_sub) > tol_val(block_iter_sub)))) & (m < m_max) )
+                while( not(isempty(find(sqrt(sum(r.^2))./norm_b(block_iter_sub) > tol_val(block_iter_sub)))) & (m < max_iters) )
                     a = A * p;
                     a_dot_p = sum(a.*p);
                     aux_val = sum(r.*p);
