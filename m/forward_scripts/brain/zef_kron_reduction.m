@@ -18,8 +18,8 @@ function out_reduced_interpolation_matrix = zef_kron_reduction( ...
     %
     % - in_schur_compement: this is applied to in_interpolation_matrix to
     %
-    % - in_electrode_model: if this is not 'CEM', the matrix is returned
-    %   as-is.
+    % - in_electrode_model: if this is not 'CEM' but 'PEM', the matrix is
+    %   returned as-is. Has to be one of these options.
     %
     % Output:
     %
