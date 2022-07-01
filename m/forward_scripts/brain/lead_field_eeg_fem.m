@@ -181,7 +181,7 @@ A = zef_stiffness_matrix(nodes, tetrahedra, tilavuus, sigma_tetrahedra);
 
 % Transfer matrix T with preconditioned conjugate gradient (PCG) iteration
 
-[T, ~, ~] = zef_transfer_matrix( ...
+[T, Schur_complement, ~] = zef_transfer_matrix( ...
     A                                           ...
 ,                                               ...
     B                                           ...
@@ -214,7 +214,7 @@ if isequal(lower(direction_mode),'cartesian') || isequal(lower(direction_mode),'
 dipole_locations = [];
 dipole_directions = [];
 
-% Set regilarization parameter based on literature.
+% Set regularization parameter based on literature.
 % TODO: allow passing this in as a parameter.
 
 regparam = 1e-6;
@@ -228,11 +228,14 @@ regparam = 1e-6;
     regparam ...
 );
 
-% Perform interpolation to construct lead field.
+% Construct lead field with transfer matrix, Schur complement and
+% interpolation matrix G.
 
-L_eeg = -T' * G;
+L_eeg = - Schur_complement * T' * G;
 
-% Set "correct" zero potential level.
+% Set "correct" zero potential level. Corresponds to multiplying L_eeg with
+% restriction matrix R, seen in relevant articles such as
+% <https://iopscience.iop.org/article/10.1088/0031-9155/57/4/999/pdf>.
 
 L_eeg = L_eeg - mean(L_eeg, 1);
 
