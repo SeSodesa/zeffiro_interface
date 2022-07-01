@@ -62,6 +62,8 @@ function [G, interpolation_positions] = zef_hdiv_interpolation( ...
 
     n_of_iterations = size(valid_source_inds, 1);
 
+    print_interval = ceil(n_of_iterations / 100);
+
     % Initialize weight matrix.
 
     G_rows = size(p_nodes, 1);
@@ -72,6 +74,11 @@ function [G, interpolation_positions] = zef_hdiv_interpolation( ...
     % Start iteration over the source positions of interest.
 
     tic;
+
+    % Generate coefficient matrix indices.
+
+    S_fi_cell = cell(0);
+    S_ew_cell = cell(0);
 
     for i = 1 : n_of_iterations
 
@@ -121,32 +128,106 @@ function [G, interpolation_positions] = zef_hdiv_interpolation( ...
 
         % Accumulate interpolation matrix.
 
-        G(:, 3 * (i-1)+1:3*i) = ...
-            G_fi(:,fi_neighbour_inds) ...
-            * ...
-            Coeff_mat(1:n_coeff_fi,:) ...
-            + ...
-            G_ew(:,ew_neighbour_inds) ...
-            * ...
-            Coeff_mat(n_coeff_fi+1:n_coeff,:) ...
-        ;
+        col_inds = 3 * (i-1) + 1 : 3 * i;
+
+        % G(:, col_inds) = ...
+        %     G_fi(:,fi_neighbour_inds) ...
+        %     * ...
+        %     Coeff_mat(1:n_coeff_fi,:) ...
+        %     + ...
+        %     G_ew(:,ew_neighbour_inds) ...
+        %     * ...
+        %     Coeff_mat(n_coeff_fi+1:n_coeff,:) ...
+        % ;
+
+        % Row indices
+
+        S_fi_cell{i,1} = repmat(fi_neighbour_inds, 1, size(Coeff_mat,2));
+        S_ew_cell{i,1} = repmat(ew_neighbour_inds, 1, size(Coeff_mat,2));
+
+        % Column indices
+
+        S_fi_cell{i,2} = repmat(col_inds', length(fi_neighbour_inds), 1);
+        S_ew_cell{i,2} = repmat(col_inds', length(ew_neighbour_inds), 1);
+
+        % Values
+
+        S_fi_cell{i,3} = Coeff_mat(1 : n_coeff_fi, :);
+        S_ew_cell{i,3} = Coeff_mat(n_coeff_fi+1 : n_coeff, :);
 
         % Update waitbar.
 
-        time_val = toc;
+        if mod(i, print_interval) == 0
 
-        waitbar( ...
-            i/n_of_iterations, ...
-            wb, ...
-            [ ...
-                wbtitle, ...
-                ' (', ...
-                num2str(i), ...
-                ' / ', ...
-                num2str(n_of_iterations), ...
-                '). Ready: ' datestr(datevec(now+(n_of_iterations/i - 1)*time_val/86400)) '.' ...
-            ] ...
-        );
+            time_val = toc;
+
+            waitbar( ...
+                i/n_of_iterations, ...
+                wb, ...
+                [ ...
+                    wbtitle, ...
+                    ' (', ...
+                    num2str(i), ...
+                    ' / ', ...
+                    num2str(n_of_iterations), ...
+                    '). Ready: ' datestr(datevec(now+(n_of_iterations/i - 1)*time_val/86400)) '.' ...
+                ] ...
+            );
+
+        end
+    end
+
+    % Calculate how many indices we got per column.
+
+    entry_counter_fi = 0;
+    entry_counter_ew = 0;
+
+    for i = 1 : n_of_iterations
+
+        n_of_fi_vals = numel(S_fi_cell{i, 3});
+        n_of_ew_vals = numel(S_ew_cell{i, 3});
+
+        entry_counter_fi = entry_counter_fi + n_of_fi_vals;
+        entry_counter_ew = entry_counter_ew + n_of_ew_vals;
 
     end
+
+    n_of_entries_fi = entry_counter_fi;
+    n_of_entries_ew = entry_counter_ew;
+
+    entry_counter_fi = 0;
+    entry_counter_ew = 0;
+
+    I_fi = zeros(n_of_entries_fi,1);
+    J_fi = zeros(n_of_entries_fi,1);
+    K_fi = zeros(n_of_entries_fi,1);
+
+    I_ew = zeros(n_of_entries_ew,1);
+    J_ew = zeros(n_of_entries_ew,1);
+    K_ew = zeros(n_of_entries_ew,1);
+
+    for i = 1 : n_of_iterations
+
+        I_fi(entry_counter_fi + 1 : entry_counter_fi + numel(S_fi_cell{i,1})) = S_fi_cell{i,1}(:);
+        J_fi(entry_counter_fi + 1 : entry_counter_fi + numel(S_fi_cell{i,2})) = S_fi_cell{i,2}(:);
+        K_fi(entry_counter_fi + 1 : entry_counter_fi + numel(S_fi_cell{i,3})) = S_fi_cell{i,3}(:);
+
+        entry_counter_fi = entry_counter_fi + numel(S_fi_cell{i,1});
+
+        I_ew(entry_counter_ew + 1 : entry_counter_ew + numel(S_ew_cell{i,1})) = S_ew_cell{i,1}(:);
+        J_ew(entry_counter_ew + 1 : entry_counter_ew + numel(S_ew_cell{i,2})) = S_ew_cell{i,2}(:);
+        K_ew(entry_counter_ew + 1 : entry_counter_ew + numel(S_ew_cell{i,3})) = S_ew_cell{i,3}(:);
+
+
+        entry_counter_ew = entry_counter_ew + numel(S_ew_cell{i,1});
+
+    end
+
+    S_fi = sparse(I_fi, J_fi, K_fi, size(G_fi,2), G_cols);
+    S_ew = sparse(I_ew, J_ew, K_ew, size(G_ew,2), G_cols);
+
+    G = G_fi * S_fi + G_ew * S_ew;
+
+    waitbar(1, wb);
+
 end
