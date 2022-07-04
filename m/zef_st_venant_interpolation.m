@@ -99,6 +99,7 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
         % Calculate the distances and longest edge.
 
         dists = zef_L2_norm(neighbour_diffs, 2);
+
         longest_edge_len = max(dists, [], 'all');
 
         %% Construct restriction matrices P, b and regularization matrix D.
