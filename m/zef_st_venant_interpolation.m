@@ -18,6 +18,7 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
     end
 
     G = [];
+
     interpolation_positions = [];
 
     % Open up a waitbar
@@ -28,6 +29,7 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
     % Define cleanup operations, in case of an interruption.
 
     cleanupfn = @(handle) close(handle);
+
     cleanupobj = onCleanup(@() cleanupfn(wb));
 
     % Define adjacency matrix for tetrahedra
@@ -53,6 +55,7 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
     % Initialize interpolation weight matrix G
 
     Grows = size(p_nodes, 1);
+
     Gcols = 3 * size(interpolation_positions, 1);
 
     G = sparse(Grows, Gcols, 0);
@@ -78,6 +81,7 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
         % Fetch reference node coordinates
 
         refnode_ind = center_node_inds(ind);
+
         refnode = p_nodes(refnode_ind, :);
 
         % Calculate the distances from refnode with Matlab's broadcasting
@@ -92,8 +96,11 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
         end
 
         neighbour_inds = setdiff(neighbour_inds, refnode_ind);
+
         n_of_neighbours = numel(neighbour_inds); % + 1;
+
         neighbours = p_nodes(neighbour_inds, :);
+
         neighbour_diffs = neighbours - refnode;
 
         % Calculate the distances and longest edge.
@@ -135,6 +142,7 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
         % Vector b
 
         b = zeros(9,3);
+
         b(2:3:end, :) = basis / longest_edge_len;
 
         % Regularization matrix D
