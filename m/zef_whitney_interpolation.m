@@ -55,6 +55,8 @@ function [G, interpolation_positions] = zef_whitney_interpolation( ...
 
     n_of_iterations = size(valid_source_inds, 1);
 
+    print_interval = ceil(n_of_iterations / 100);
+
     % Initialize weight matrix.
 
     G_rows = size(p_nodes, 1);
