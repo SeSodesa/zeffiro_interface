@@ -68,6 +68,9 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
 
     basis = eye(3);
 
+    % Iterate over neighbours of each center node and form the monopolar
+    % loads.
+
     for ind = 1 : n_of_iters
 
         % Update waitbar.
@@ -154,11 +157,9 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
 
         m = inv(P' * P + p_regparam * D) * P' * b;
 
-        for iind = 1 : 3
+        col_inds = (3 * (ind-1) + 1 : 3 * ind);
 
-            G(neighbour_inds, 3 * (ind -1 ) + iind) = m(:, iind);
-
-        end
+        G(neighbour_inds, col_inds) = m(:,1:3);
 
     end
 
