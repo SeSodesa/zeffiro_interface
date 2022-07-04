@@ -153,4 +153,14 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
 
     end
 
+    % TODO
+    %
+    % Find out why this sign flip is needed! We already know that
+    % zef_transfer_matrix produces a wrongly oriented (negative) Schur
+    % complement because the B and C matrices are not the same for EEG and
+    % tES, but is this related to that, or was a minus sign forgotten from the
+    % above equations?
+
+    G = -G;
+
 end
