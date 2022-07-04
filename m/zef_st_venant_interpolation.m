@@ -48,13 +48,18 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
 
     n_of_iters = numel(center_node_inds);
 
-    %% Interpolation for each position
-
-    wbtitleloop = [wbtitle, ': interpolation '];
+    print_interval = ceil(n_of_iters / 100);
 
     % Initialize interpolation weight matrix G
 
-    G = sparse(size(p_nodes,1), 3 * size(interpolation_positions, 1), 0);
+    Grows = size(p_nodes, 1);
+    Gcols = 3 * size(interpolation_positions, 1);
+
+    G = sparse(Grows, Gcols, 0);
+
+    %% Interpolation for each position
+
+    wbtitleloop = [wbtitle, ': interpolation '];
 
     % Cartesian directions for interpolation
 
@@ -62,7 +67,13 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
 
     for ind = 1 : n_of_iters
 
-        waitbar(ind / n_of_iters, wb, [wbtitleloop, num2str(ind), ' / ', num2str(n_of_iters)]);
+        % Update waitbar.
+
+        if mod(ind, print_interval) == 0
+
+            waitbar(ind / n_of_iters, wb, [wbtitleloop, num2str(ind), ' / ', num2str(n_of_iters)]);
+
+        end
 
         % Fetch reference node coordinates
 
