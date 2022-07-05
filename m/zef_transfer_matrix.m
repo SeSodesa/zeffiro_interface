@@ -24,10 +24,82 @@ function [T, Schur_complement, A] = zef_transfer_matrix( ...
     m_max                                                ...
 )
 
-% zef_transfer_matrix: builds a transfer matrix T and an auxiliary matrix
-% Schur_complement from a given stiffness matrix A, matrices B and C, sizes
-% n_of_fem_nodes and n_of_electrodes, a permutation matrix and a precoditioner,
-% through preconditioned conjugate gradient (PCG) iteration.
+    % Documentation
+    %
+    % Builds a transfer matrix T and an auxiliary matrix Schur_complement from
+    % a given stiffness matrix A, matrices B and C, sizes n_of_fem_nodes and
+    % n_of_electrodes, a permutation matrix and a precoditioner, through
+    % preconditioned conjugate gradient (PCG) iteration.
+    %
+    % Input:
+    %
+    % - A
+    %
+    %   A stiffness matrix related to the FE system under observation.
+    %
+    % - B
+    %
+    %   A matrix whose columns are used in determining the direction vector at
+    %   each optimization iteration. In the case of EEG, this is the electrode
+    %   matrix B produced by zef_build_electrodes.
+    %
+    % - C
+    %
+    %   A matrix used in the construction of the Schur complement of T. In the
+    %   case of EEG, this is the electrode matrix C produced by
+    %   zef_build_electrodes.
+    %
+    % - n_of_fem_nodes
+    %
+    %   As the name implies, this is the number of FEM nodes in the system
+    %   under observation.
+    %
+    % - n_of_electrodes
+    %
+    %   The number of sensors used to measure potentials, gradients or
+    %   whatever.
+    %
+    % - electrode_model
+    %
+    %   The electode model (either 'PEM' or 'CEM') used in the modelling of
+    %   the system under observation.
+    %
+    % - permutation
+    %
+    %   A permutation type used by the preconditioner of the PCG solver. In
+    %   {symamd, symmd, symrcm}.
+    %
+    % - preconditioner
+    %
+    %   A type of preconditioner. Either 'ssor' or another arbitrary value, i
+    %   which case a different default preconditioner will be used.
+    %
+    % - impedance_vec
+    %
+    %   A vector of impedances at the sensors used to measure potentials or
+    %   magnetic fields.
+    %
+    % - impedance_inf
+    %
+    %   A boolean which tells whether the impedances used are infinite. mainly
+    %   relevant in the PEM case (but still needed in any case).
+    %
+    % - tol val
+    %
+    %   A heuristic tolerance value for the PCG solver.
+    %
+    % - m_max
+    %
+    %   A heuristic number of iterations that the PCG solver performs at each
+    %   step.
+    %
+    % Output:
+    %
+    % - T: a transfer matrix of the FE system under observation.
+    %
+    % - Schur_complement: the Schur complement of T.
+    %
+    % - A: a modified stiffness matrix A.
 
     if isequal(permutation,'symamd')
         perm_vec = symamd(A)';
