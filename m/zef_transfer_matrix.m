@@ -22,6 +22,8 @@ function [T, Schur_complement, A] = zef_transfer_matrix( ...
     tol_val                                              ...
 ,                                                        ...
     m_max                                                ...
+,                                                        ...
+    schur_expression                                     ...
 )
 
     % Documentation
@@ -92,6 +94,17 @@ function [T, Schur_complement, A] = zef_transfer_matrix( ...
     %
     %   A heuristic number of iterations that the PCG solver performs at each
     %   step.
+    %
+    % - schur_expression
+    %
+    %   A 2-place function handle that specifies how the columns at index ind
+    %   of the Schur complement of T should be calculated with B and C. For
+    %   example. In the case of EEG and non-infinite impedance we would have
+    %
+    %       schur_expression = @(Tcol, ind) C(:,ind) - B'* Tcol;
+    %
+    %   where B and C were captured from the environment where the function
+    %   handle was created (the call site of zef_transfer_matrix).
     %
     % Output:
     %
@@ -181,9 +194,9 @@ function [T, Schur_complement, A] = zef_transfer_matrix( ...
             T(:,i) = x;
 
             if impedance_inf == 0
-                Schur_complement(:,i) = C(:,i) - B'*x ;
+                Schur_complement(:,i) = schur_expression(x, i); % C(:,i) - B'*x ;
             else
-                Schur_complement(:,i) = C(:,i);
+                Schur_complement(:,i) = schur_expression(x, i); % C(:,i);
             end
 
             if tol_val < relres_vec(i)
@@ -289,9 +302,9 @@ function [T, Schur_complement, A] = zef_transfer_matrix( ...
             % Construct stencil T column by column.
 
             if impedance_inf == 0
-                Schur_complement(:,block_ind) = C(:,block_ind) - B' * T(:,block_ind);
+                Schur_complement(:,block_ind) = schur_expression(T(:,block_ind), block_ind); % C(:,block_ind) - B' * T(:,block_ind);
             else
-                Schur_complement(:,block_ind) = C(:,block_ind);
+                Schur_complement(:,block_ind) = schur_expression(T(:,block_ind), block_ind); % C(:,block_ind);
             end
 
             if not(isempty(find(tol_val < relres_vec)))

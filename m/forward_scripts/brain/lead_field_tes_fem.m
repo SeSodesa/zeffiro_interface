@@ -208,6 +208,12 @@ A = zef_stiffness_matrix(nodes, tetrahedra, tilavuus, sigma_tetrahedra);
 
 % Calculate transfer matrix R_tes based on A
 
+if impedance_inf == 0
+    Schur_expression = @(Tcol, ind) C(:,ind) - B'* Tcol;
+else
+    Schur_expression = @(Tcol, ind) C(:,ind);
+end
+
 [R_tes, Aux_mat, A] = zef_transfer_matrix( ...
     A                                      ...
 ,                                          ...
