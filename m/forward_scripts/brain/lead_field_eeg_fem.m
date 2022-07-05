@@ -182,9 +182,9 @@ A = zef_stiffness_matrix(nodes, tetrahedra, tilavuus, sigma_tetrahedra);
 % Transfer matrix T with preconditioned conjugate gradient (PCG) iteration
 
 if impedance_inf == 0
-    Schur_expression = @(Tcol, ind) C(:,ind) - B'* Tcol;
+    Schur_expression = @(Tcol, ind) B'* Tcol - C(:,ind);
 else
-    Schur_expression = @(Tcol, ind) C(:,ind);
+    Schur_expression = @(Tcol, ind) - C(:,ind);
 end
 
 [T, Schur_complement, ~] = zef_transfer_matrix( ...
@@ -239,7 +239,7 @@ regparam = 1e-6;
 % Construct lead field with transfer matrix, Schur complement and
 % interpolation matrix G.
 
-L_eeg = - Schur_complement * T' * G;
+L_eeg = Schur_complement * T' * G;
 
 % Set "correct" zero potential level. Corresponds to multiplying L_eeg with
 % restriction matrix R, seen in relevant articles such as
