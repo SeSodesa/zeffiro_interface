@@ -75,16 +75,17 @@ clear zef_i;
 
 zef.lf_tag = zef.forward_simulation_table{zef.forward_simulation_selected(1), 1};
 
-[~,~,~,zef.source_ind] = zef_decompose_dof_space(zef.nodes,zef.tetra,zef.aux_vec,[],zef.n_sources,2);
+% Check which type of decomposition is to be used and generate it.
 
-zef.n_sources_aux = zef.n_sources;
+[zef.source_decomposition_inds, zef.source_ind] = decomposition_and_source_index_fn( ...
+    zef.nodes, ...
+    zef.tetra, ...
+    zef.aux_vec, ...
+    zef.source_model, ...
+    zef.n_sources, ...
+    zef.source_space_creation_iterations ...
+);
 
-for zef_i = 1 : zef.source_space_creation_iterations
-    zef.n_sources_aux = round(zef.n_sources*zef.n_sources_aux/length(zef.source_ind));
-    [~,~,~,zef.source_ind] = zef_decompose_dof_space(zef.nodes,zef.tetra,zef.aux_vec,[],zef.n_sources_aux,2);
-end
-
-zef = rmfield(zef,'n_sources_aux');
 zef.source_ind = zef.aux_vec(zef.source_ind);
 zef.n_sources_mod = 0;
 
@@ -180,3 +181,118 @@ end
 if zef.source_interpolation_on
     [zef.source_interpolation_ind] = source_interpolation([]);
 end
+
+%% Helper functions
+
+function [source_decomposition_inds, source_inds] = decomposition_and_source_index_fn( ...
+    nodes, ...
+    tetra, ...
+    restricted_brain_inds, ...
+    source_model, ...
+    wanted_n_of_sources, ...
+    source_space_creation_iterations ...
+)
+
+    % Documentation
+    %
+    % Generates (extrapolated) node (degree of freedom) and source indices for
+    % a node space.
+    %
+    % Input:
+    %
+    % - nodes
+    %
+    %   The finite element node cloud of the model under observation.
+    %
+    % - tetra
+    %
+    %   The tetrahedra (4-tuples of node indices) that are formed from the
+    %   above nodes.
+    %
+    % - restricted_brain_inds
+    %
+    %   The subset of tetra that dipolar sources can be placed into.
+    %
+    % - wanted_n_of_sources
+    %
+    %   The number of sources one wishes to generate.
+    %
+    % - source_space_creation_iterations
+    %
+    %   The number of extrapolation iterations performed to make sure that we
+    %   get as close to the wanted number of sources as was wanted.
+    %
+    % Output:
+    %
+    % - source_decomposition_inds
+    %
+    %   The indices that denote the node decomposition positions in the FEM
+    %   mesh.
+    %
+    % - source_inds
+    %
+    %   The tetrahedra that will be used as sources, based on the generated
+    %   decomposition.
+
+    arguments
+        nodes (:,3) double
+        tetra (:,4) double { mustBeInteger, mustBePositive }
+        restricted_brain_inds (:,1) double { mustBeInteger, mustBePositive }
+        source_model
+        wanted_n_of_sources (1,1) double { mustBeInteger, mustBePositive }
+        source_space_creation_iterations (1,1) double { mustBeInteger, mustBePositive }
+    end
+
+    % Create initial decomposition of node (degree of freedom, DOF) space.
+
+    [source_decomposition_inds, ~, ~, source_inds] = zef_decompose_dof_space( ...
+        nodes, ...
+        tetra, ...
+        restricted_brain_inds, ...
+        [], ...
+        wanted_n_of_sources, ...
+        2 ...
+    );
+
+    % Extrapolate, if we have less sources than we wanted.
+
+    n_of_sources = wanted_n_of_sources;
+
+    for ind = 1 : source_space_creation_iterations
+
+        n_of_sources = round(wanted_n_of_sources * n_of_sources / length(source_inds));
+
+        [source_decomposition_inds, ~, ~, source_inds] = zef_decompose_dof_space( ...
+            nodes, ...
+            tetra, ...
+            restricted_brain_inds, ...
+            [], ...
+            n_of_sources, ...
+            2 ...
+        );
+
+    end
+
+    % Set empty decomposition indices, if source model is not continuous.
+
+    switch ZefSourceModel.from(source_model)
+
+        case ZefSourceModel.Error
+
+            error('Received and erraneous source model.')
+
+        case { ...
+            ZefSourceModel.ContinuousWhitney, ...
+            ZefSourceModel.ContinuousHdiv, ...
+            ZefSourceModel.ContinuousStVenant ...
+        }
+
+            % Do nothing
+
+        otherwise
+
+            zef.source_decomposition_inds = [];
+
+    end % switch
+
+end % function
