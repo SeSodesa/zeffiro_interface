@@ -7,6 +7,9 @@ classdef ZefSourceModel
         Hdiv, ...
         Whitney, ...
         StVenant, ...
+        ContinuousHdiv, ...
+        ContinuousWhitney, ...
+        ContinuousStVenant, ...
         Error ...
     end
 
@@ -43,6 +46,12 @@ classdef ZefSourceModel
                         source_model = p_input;
                     case ZefSourceModel.StVenant
                         source_model = p_input;
+                    case ZefSourceModel.ContinuousWhitney
+                        source_model = p_input;
+                    case ZefSourceModel.ContinuousHdiv
+                        source_model = p_input;
+                    case ZefSourceModel.ContinuousStVenant
+                        source_model = p_input;
                     otherwise
                         warning("I received an enum that is not a ZefSourceModel. Setting erraneous return value.")
                         source_model = ZefSourceModel.Error;
@@ -54,7 +63,7 @@ classdef ZefSourceModel
 
             % If p_input is a real number.
 
-            KNOWN_INTEGERS = [1, 2, 3];
+            KNOWN_INTEGERS = [1, 2, 3, 4, 5, 6];
 
             % Check for valid inputs.
 
@@ -66,6 +75,12 @@ classdef ZefSourceModel
                     source_model = ZefSourceModel.Hdiv;
                 elseif p_input == 3
                     source_model = ZefSourceModel.StVenant;
+                elseif p_input == 4
+                    source_model = ZefSourceModel.ContinuousWhitney;
+                elseif p_input == 5
+                    source_model = ZefSourceModel.ContinousHdiv;
+                elseif p_input == 6
+                    source_model = ZefSourceModel.ContinuousStVenant;
                 else
                     source_model = ZefSourceModel.Error;
                 end
@@ -82,6 +97,12 @@ classdef ZefSourceModel
                     source_model = ZefSourceModel.Hdiv;
                 elseif strcmp(p_input, '3')
                     source_model = ZefSourceModel.StVenant;
+                elseif strcmp(p_input, '4')
+                    source_model = ZefSourceModel.ContinuousWhitney;
+                elseif strcmp(p_input, '5')
+                    source_model = ZefSourceModel.ContinuousHdiv;
+                elseif strcmp(p_input, '6')
+                    source_model = ZefSourceModel.ContinuousStVenant;
                 else
                     source_model = ZefSourceModel.Error;
                 end
