@@ -136,7 +136,7 @@ if zef.lead_field_type == 1
 
 end
 
-if zef.lead_field_type == 2;
+if zef.lead_field_type == 2
     if evalin('base','zef.prism_layers') && not(isempty(zef.prisms))
         [zef.L, zef.source_positions, zef.source_directions] = lead_field_meg_fem( ...
             zef.nodes_aux, ...
@@ -162,7 +162,7 @@ if zef.lead_field_type == 2;
     end
 end
 
-if zef.lead_field_type == 3;
+if zef.lead_field_type == 3
     if evalin('base','zef.prism_layers') && not(isempty(zef.prisms))
         [zef.L, zef.source_positions, zef.source_directions] = lead_field_meg_grad_fem( ...
             zef.nodes_aux, ...
@@ -219,7 +219,7 @@ if zef.lead_field_type == 4
     end
 end
 
-if zef.lead_field_type == 5;
+if zef.lead_field_type == 5
 
     if size(zef.sensors,2) == 6
         zef.lf_param.impedances = zef.sensors(:,6);
@@ -272,7 +272,7 @@ if zef.source_interpolation_on
     [zef.source_interpolation_ind] = source_interpolation([]);
 end
 
-%% Helper functions
+%% Local helper functions
 
 function [source_decomposition_inds, source_inds] = decomposition_and_source_index_fn( ...
     nodes, ...
