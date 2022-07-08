@@ -250,7 +250,7 @@ if zef.lead_field_type == 5
     end
 end
 
-zef = rmfield(zef,{'nodes_aux','sensors_aux','aux_vec','aux_vec_sources'});
+zef = rmfield(zef,{'nodes_aux','sensors_aux','aux_vec_sources'});
 
 zef.lead_field_time = toc;
 
@@ -381,7 +381,7 @@ function [source_decomposition_inds, source_inds] = decomposition_and_source_ind
 
         otherwise
 
-            zef.source_decomposition_inds = [];
+            source_decomposition_inds = [];
 
     end % switch
 
