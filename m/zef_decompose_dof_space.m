@@ -8,29 +8,61 @@
 %
 % Input:
 %
-% - nodes: the nodes that make up a finite element mesh.
+% - nodes
 %
-% - tetrahedra: quadruples of node indices that indicate which nodes
-%   participate in which tetrahedra.
+%   The nodes that make up a finite element mesh.
 %
-% - brain_ind: linear indices of tetrahedra that are in the brain.
+% - tetrahedra
 %
-% - varargin{1}: source indices. If not set, these are assumed to be the
-%   same as brain_ind.
+%   Quadruples of node indices that indicate which nodes participate in which
+%   tetrahedra.
 %
-% - varargin{2}: number of sources. If not set, these are fetched from the
+% - brain_ind
+%
+%   Linear indices of tetrahedra that are in the brain and can contain brain
+%   activity.
+%
+% - varargin{1}
+%
+%   Source indices. If not set, these are assumed to be the same as brain_ind.
+%
+% - varargin{2}
+%
+%   Wanted number of sources. If not set, these are fetched from the global
+%   zef instance with evalin.
+%
+% - varargin{3}
+%
+%   DOF decomposition type. TODO. If not set, this is again fetched from the
 %   global zef instance with evalin.
-%
-% - varargin{3}: DOF decomposition type. TODO. If not set, this is again
-%   fetched from the global zef instance with evalin.
 %
 % Output:
 %
-% - decomposition_ind: TODO
-% - decomposition_count: TODO
-% - dof_positions: TODO
-% - decomposition_ind_first: TODO. Has something to do with generating source
-%   indices before lead field construction.
+% - decomposition_ind
+%
+%   TODO Can be used to index into below dof_positions. For what purpose, one
+%   has no idea. Possibly to determine which of the original tetrahedra
+%   contain the generated dof_positions.
+%
+% - decomposition_count
+%
+%   TODO The number of incidences of each (sorted) index in decomposition_ind.
+%   Possibly the number of dof_positions each tetrahedra contains, but not
+%   sure about this.
+%
+% - dof_positions
+%
+%   An array of decomposition node positions in a Cartesian coordinate system.
+%   Depending on the current zef.dof_decomposition_type integer value, this
+%   might be just (1 or 3) the set of barycentra of the tetrahedra in the FE
+%   mesh, (2) a rectangular grid whose resolution is determined by the minimum
+%   and maximum values of the mesh coordinates + a lattice constant computed
+%   from these.
+%
+% - decomposition_ind_first
+%
+%   TODO These can be used to index into something, possibly the input
+%   tetrahedra for determining which of them are to be interpreted as sources.
 
 function [ ...
     decomposition_ind, ...
