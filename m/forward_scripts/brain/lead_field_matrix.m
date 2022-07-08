@@ -37,7 +37,7 @@ else
     zef.lf_param.pcg_tol = 1e-8;
 end
 
-zef.aux_vec = [];
+zef.brain_activity_inds = [];
 zef.aux_vec_sources = zeros(length(zef.compartment_tags),1);
 
 for zef_i = 1 : length(zef.compartment_tags)
@@ -47,9 +47,9 @@ end
 % if not(zef.source_space_lock_on) && ( isempty(zef.source_ind) || not(zef.n_sources == zef.n_sources_old) || ismember(false,zef.aux_vec_sources) )
 
 if isempty(zef.non_source_ind)
-    zef.aux_vec = zef.brain_ind;
+    zef.brain_activity_inds = zef.brain_ind;
 else
-    zef.aux_vec = setdiff(zef.brain_ind,zef.non_source_ind);
+    zef.brain_activity_inds = setdiff(zef.brain_ind,zef.non_source_ind);
 end
 
 % Limit ourselves to tetra deep enough (default 1 mm) in the gray matter.
@@ -58,10 +58,10 @@ if ~ isfield(zef, 'acceptable_source_depth')
     zef.acceptable_source_depth = 1; % mm
 end
 
-[~, ~, ~, zef.aux_vec] = zef_deep_nodes_and_tetra( ...
+[~, ~, ~, zef.brain_activity_inds] = zef_deep_nodes_and_tetra( ...
     zef.nodes, ...
     zef.tetra, ...
-    zef.aux_vec, ...
+    zef.brain_activity_inds, ...
     zef.acceptable_source_depth ...
 );
 
@@ -80,13 +80,13 @@ zef.lf_tag = zef.forward_simulation_table{zef.forward_simulation_selected(1), 1}
 [zef.source_decomposition_inds, zef.source_ind] = decomposition_and_source_index_fn( ...
     zef.nodes, ...
     zef.tetra, ...
-    zef.aux_vec, ...
+    zef.brain_activity_inds, ...
     zef.source_model, ...
     zef.n_sources, ...
     zef.source_space_creation_iterations ...
 );
 
-zef.source_ind = zef.aux_vec(zef.source_ind);
+zef.source_ind = zef.brain_activity_inds(zef.source_ind);
 zef.n_sources_mod = 0;
 
 %end % if
