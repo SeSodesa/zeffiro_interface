@@ -60,10 +60,10 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
 
     arguments
         p_nodes (:,3) double {mustBeNonNan}
-        p_tetrahedra (:,4) double {mustBeInteger, mustBeNonnegative}
-        p_brain_inds (:,1) double {mustBeInteger, mustBeNonnegative}
-        p_intended_source_inds (:,1) double {mustBeInteger, mustBeNonnegative}
-        p_nearest_neighbour_inds (:,1) double {mustBeInteger, mustBeNonnegative}
+        p_tetrahedra (:,4) double {mustBeInteger, mustBePositive}
+        p_brain_inds (:,1) double {mustBeInteger, mustBePositive}
+        p_intended_source_inds (:,1) double {mustBeInteger, mustBePositive}
+        p_nearest_neighbour_inds (:,1) double {mustBeInteger, mustBePositive}
         p_regparam (1,1) double
     end
 
