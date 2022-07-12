@@ -6,9 +6,51 @@ function [G, interpolation_positions] = zef_whitney_interpolation( ...
     p_nearest_neighbour_inds ...
 )
 
+    % Documentation
+    %
     % Produces a lead field interpolation matrix G with position-based
     % optimization (PBO), based on the Whitney (face-intersecting) source
     % model. Also returns the related interpolation positions.
+    %
+    % Input:
+    %
+    % - p_nodes
+    %
+    %   The nodes that form the tetrahedral mesh.
+    %
+    % - p_tetrahedra
+    %
+    %   The tetrahedra (4-tuples of node indices) that are formed from
+    %   p_nodes.
+    %
+    % - p_brain_inds
+    %
+    %   The indices of the tetrahedra where sources can be placed in the first
+    %   place. In other words, these tetra form the gray matter.
+    %
+    % - p_intended_source_inds
+    %
+    %   These are the subset of the tetrahedral indices which indicate where
+    %   dipolar sources are to be placed in, not just where they can be
+    %   placed.
+    %
+    % - p_nearest_neighbour_inds
+    %
+    %   Used by the continuous source models to determine which neighbours of
+    %   neighbours of each central source tetrahedron are to be included in
+    %   the interpolation. If this is empty, the source model is interpreted
+    %   as being discrete.
+    %
+    % Output:
+    %
+    % - G
+    %
+    %   Interpolation matrix that is to be multiplied by the transpose of the
+    %   transfer matrix in the lead field routines.
+    %
+    % - interpolation_positions
+    %
+    %   The positions at which sources are the be placed after interpolation.
 
     arguments
         p_nodes (:,3) double {mustBeNonNan}
