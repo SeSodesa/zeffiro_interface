@@ -38,17 +38,23 @@
 %
 % Output:
 %
-% - decomposition_ind
+% - nearest_neighbour_ind
 %
-%   TODO Can be used to index into below dof_positions. For what purpose, one
-%   has no idea. Possibly to determine which of the original tetrahedra
-%   contain the generated dof_positions.
+%   Can be used to index into the set of global tetra indices to find out
+%   which tetra in the global mesh is closest to the tetrahedron corresponding
+%   to it. For example
+%
+%       brain_ind(nearest_neighbour_ind(1))
+%
+%   would produce the nearest neighbour of the tetrahedron indicated by
+%   brain_ind(1).
 %
 % - decomposition_count
 %
-%   TODO The number of incidences of each (sorted) index in decomposition_ind.
-%   Possibly the number of dof_positions each tetrahedra contains, but not
-%   sure about this.
+%   The number of incidences of each (sorted) index in nearest_neighbour_ind,
+%   meaning how many times each nearest neghbour is the nearest neighbour of
+%   some tetrahedron. The main use of this is for normalizing results when the
+%   index sets are used.
 %
 % - dof_positions
 %
@@ -59,16 +65,16 @@
 %   and maximum values of the mesh coordinates + a lattice constant computed
 %   from these.
 %
-% - decomposition_ind_first
+% - decomposition_source_inds
 %
-%   TODO These can be used to index into something, possibly the input
-%   tetrahedra for determining which of them are to be interpreted as sources.
+%   These can be used to index into the input brain_ind to determine which of
+%   them can be used as dipolar sources in a head model.
 
 function [ ...
-    decomposition_ind, ...
+    nearest_neighbour_ind, ...
     decomposition_count, ...
     dof_positions, ...
-    decomposition_ind_first ...
+    decomposition_source_inds ...
 ] = zef_decompose_dof_space(nodes,tetrahedra,brain_ind,varargin)
 
 
@@ -111,9 +117,9 @@ function [ ...
         size_source_points = size(center_points,2);
 
         MdlKDT = KDTreeSearcher(dof_positions);
-        decomposition_ind  = knnsearch(MdlKDT,center_points);
+        nearest_neighbour_ind  = knnsearch(MdlKDT,center_points);
 
-        [unique_decomposition_ind, i_a, i_c] = unique(decomposition_ind);
+        [unique_decomposition_ind, i_a, i_c] = unique(nearest_neighbour_ind);
         decomposition_count = accumarray(i_c,1);
         decomposition_pointe = i_a;
 
@@ -150,33 +156,33 @@ function [ ...
 
         dof_positions = [X_lattice(:) Y_lattice(:) Z_lattice(:)];
 
-        decomposition_ind = lattice_index_fn( ...
+        nearest_neighbour_ind = lattice_index_fn( ...
             center_points, ...
             lattice_res_x, ...
             lattice_res_y, ...
             lattice_res_z ...
         );
 
-        [unique_decomposition_ind, i_a, i_c] = unique(decomposition_ind);
+        [unique_decomposition_ind, i_a, i_c] = unique(nearest_neighbour_ind);
 
         decomposition_ind_to_be = zeros(size(dof_positions,1),1);
 
         decomposition_ind_to_be(unique_decomposition_ind) = [1 : length(unique_decomposition_ind)];
 
-        decomposition_ind = decomposition_ind_to_be(decomposition_ind);
+        nearest_neighbour_ind = decomposition_ind_to_be(nearest_neighbour_ind);
 
         dof_positions = dof_positions(unique_decomposition_ind,:);
 
         decomposition_count = accumarray(i_c,1);
 
-        decomposition_ind_first = i_a;
+        decomposition_source_inds = i_a;
 
     elseif dof_decomposition_type == 3
 
-         decomposition_ind = [1:length(brain_ind)]';
-         decomposition_count = ones(size(decomposition_ind));
+         nearest_neighbour_ind = [1:length(brain_ind)]';
+         decomposition_count = ones(size(nearest_neighbour_ind));
          dof_positions = center_points;
-         decomposition_ind_first = [1:length(brain_ind)]';
+         decomposition_source_inds = [1:length(brain_ind)]';
 
     else
 
