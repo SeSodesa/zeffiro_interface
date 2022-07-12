@@ -80,8 +80,7 @@ function [G, interpolation_positions] = zef_whitney_interpolation( ...
         p_brain_inds ...
     );
 
-    % Form local environment indices based on adjacency matrix T_fi. TODO:
-    % change this to use some other condition than .
+    % Form local environment indices based on adjacency matrix T_fi.
 
     valid_source_inds = full(find(sum(T_fi) >= 4))';
     valid_source_inds = intersect(valid_source_inds, p_intended_source_inds);
