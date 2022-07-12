@@ -54,12 +54,12 @@ end
 
 %% Determine which tetra are to be used as sources
 %
-% Start by limiting ourselves to tetra deep enough (default 1 mm) in the gray
-% matter.
+% Start by limiting ourselves to tetra deep enough (default
+% zef.mesh_resolution mm) in the gray matter.
 
 if ~ isfield(zef, 'acceptable_source_depth')
-    warning("Using default acceptable depth of 1 mm for source tetra.")
-    zef.acceptable_source_depth = 1; % mm
+    warning(['Using default acceptable depth of ' num2str(zef.mesh_resolution) ' for source tetra.'])
+    zef.acceptable_source_depth = zef.mesh_resolution; % mm
 end
 
 [~, ~, ~, zef.brain_activity_inds] = zef_deep_nodes_and_tetra( ...
