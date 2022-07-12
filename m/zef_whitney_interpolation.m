@@ -83,6 +83,14 @@ function [G, interpolation_positions] = zef_whitney_interpolation( ...
 
         fi_neighbour_inds = full(find(T_fi(:,i)));
 
+        % Also gather additional tetra into the neighbour inds, if a
+        % continuous model (indicated by non-empty nearest neighbours) is
+        % used.
+
+        if ~ isempty(p_nearest_neighbour_inds)
+            % TODO
+        end
+
         % N of non-zero object function coefficients.
 
         n_coeff_fi = numel(fi_neighbour_inds);

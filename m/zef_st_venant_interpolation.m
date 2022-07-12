@@ -94,6 +94,14 @@ function [G, interpolation_positions] = zef_st_venant_interpolation( ...
 
         neighbour_inds = find(adjacency_mat(:, refnode_ind));
 
+        % Also gather additional tetra into the neighbour inds, if a
+        % continuous model (indicated by non-empty nearest neighbours) is
+        % used.
+
+        if ~ isempty(p_nearest_neighbour_inds)
+            % TODO
+        end
+
         % Some nodes apparently have no neighbours. Go figure...
 
         if isempty(neighbour_inds)
