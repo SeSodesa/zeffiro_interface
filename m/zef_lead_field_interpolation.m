@@ -20,6 +20,7 @@ function [G, dipole_locations] =  zef_lead_field_interpolation( ...
     % - p_brain_inds (common)
     % - p_source_model (common).
     % - p_intended_source_inds (Whitney and Hdiv)
+    % - p_nearest_neighbour_inds (all continuous variants of the source models)
     % - p_regparam (St Venant)
     %
     % Output:
