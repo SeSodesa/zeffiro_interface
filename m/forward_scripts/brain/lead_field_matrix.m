@@ -80,8 +80,8 @@ clear zef_i;
 zef.lf_tag = zef.forward_simulation_table{zef.forward_simulation_selected(1), 1};
 
 % Decompose source space into a rectangular lattice and extract the indices of
-% the source tetra in this frame of reference. Decomposition inds will be
-% empty when discrete models are used.
+% the source tetra in this frame of reference. Nearest source neighbour inds
+% will be empty when discrete source models are used.
 
 [zef.nearest_source_neighbour_inds, zef.source_ind] = decomposition_and_source_index_fn( ...
     zef.nodes, ...
