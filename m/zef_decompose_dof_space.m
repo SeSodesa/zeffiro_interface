@@ -119,7 +119,7 @@ function [ ...
         MdlKDT = KDTreeSearcher(dof_positions);
         nearest_neighbour_ind  = knnsearch(MdlKDT,center_points);
 
-        [unique_decomposition_ind, i_a, i_c] = unique(nearest_neighbour_ind);
+        [unique_nearest_neighbour_ind, i_a, i_c] = unique(nearest_neighbour_ind);
         decomposition_count = accumarray(i_c,1);
         decomposition_pointe = i_a;
 
@@ -163,15 +163,15 @@ function [ ...
             lattice_res_z ...
         );
 
-        [unique_decomposition_ind, i_a, i_c] = unique(nearest_neighbour_ind);
+        [unique_nearest_neighbour_ind, i_a, i_c] = unique(nearest_neighbour_ind);
 
-        decomposition_ind_to_be = zeros(size(dof_positions,1),1);
+        nearest_neighbour_ind_to_be = zeros(size(dof_positions,1),1);
 
-        decomposition_ind_to_be(unique_decomposition_ind) = [1 : length(unique_decomposition_ind)];
+        nearest_neighbour_ind_to_be(unique_nearest_neighbour_ind) = [1 : length(unique_nearest_neighbour_ind)];
 
-        nearest_neighbour_ind = decomposition_ind_to_be(nearest_neighbour_ind);
+        nearest_neighbour_ind = nearest_neighbour_ind_to_be(nearest_neighbour_ind);
 
-        dof_positions = dof_positions(unique_decomposition_ind,:);
+        dof_positions = dof_positions(unique_nearest_neighbour_ind,:);
 
         decomposition_count = accumarray(i_c,1);
 
