@@ -113,15 +113,14 @@ function [ ...
 
         dof_positions = zef_tetra_barycentra(nodes, tetrahedra(source_ind, :));
 
-        size_center_points = size(center_points,2);
-        size_source_points = size(center_points,2);
-
         MdlKDT = KDTreeSearcher(dof_positions);
         nearest_neighbour_ind  = knnsearch(MdlKDT,center_points);
 
-        [unique_nearest_neighbour_ind, i_a, i_c] = unique(nearest_neighbour_ind);
+        [~, i_a, i_c] = unique(nearest_neighbour_ind);
+
         decomposition_count = accumarray(i_c,1);
-        decomposition_pointe = i_a;
+
+        decomposition_source_inds = i_a;
 
     elseif dof_decomposition_type == 2
 
@@ -167,7 +166,7 @@ function [ ...
 
         nearest_neighbour_ind_to_be = zeros(size(dof_positions,1),1);
 
-        nearest_neighbour_ind_to_be(unique_nearest_neighbour_ind) = [1 : length(unique_nearest_neighbour_ind)];
+        nearest_neighbour_ind_to_be(unique_nearest_neighbour_ind) = 1 : length(unique_nearest_neighbour_ind);
 
         nearest_neighbour_ind = nearest_neighbour_ind_to_be(nearest_neighbour_ind);
 
@@ -179,10 +178,13 @@ function [ ...
 
     elseif dof_decomposition_type == 3
 
-         nearest_neighbour_ind = [1:length(brain_ind)]';
+         nearest_neighbour_ind = (1 : length(brain_ind))';
+
          decomposition_count = ones(size(nearest_neighbour_ind));
+
          dof_positions = center_points;
-         decomposition_source_inds = [1:length(brain_ind)]';
+
+         decomposition_source_inds = (1 : length(brain_ind))';
 
     else
 
