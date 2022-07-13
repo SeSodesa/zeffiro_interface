@@ -36,10 +36,11 @@ function [G, interpolation_positions] = zef_hdiv_interpolation( ...
     %
     % - p_nearest_neighbour_inds
     %
-    %   Used by the continuous source models to determine which neighbours of
-    %   neighbours of each central source tetrahedron are to be included in
-    %   the interpolation. If this is empty, the source model is interpreted
-    %   as being discrete.
+    %   Used in the case of continuous source models to determine which
+    %   neighbours of neighbours of each central source tetrahedron are to be
+    %   included in the interpolation. This is the first output value of
+    %   zef_decompose_dof_space. If this is empty, the source model is
+    %   interpreted as being discrete.
     %
     % Output:
     %
@@ -91,11 +92,6 @@ function [G, interpolation_positions] = zef_hdiv_interpolation( ...
     valid_source_inds = full(find(sum(T_fi) >= 4))';
     valid_source_inds = intersect(valid_source_inds, p_intended_source_inds);
 
-    % Restrict stensils to intended source positions.
-
-    T_fi = T_fi(:, valid_source_inds);
-    T_ew = T_ew(:, valid_source_inds);
-
     % Form interpolation positions (barycenters of tetrahedra).
 
     source_tetra = p_tetrahedra(valid_source_inds,:);
@@ -128,17 +124,49 @@ function [G, interpolation_positions] = zef_hdiv_interpolation( ...
 
     for i = 1 : n_of_iterations
 
-        % Find local neighbour indices.
+        % Get global source index.
 
-        fi_neighbour_inds = full(find(T_fi(:,i)));
-        ew_neighbour_inds = full(find(T_ew(:,i)));
+        source_ind = valid_source_inds(i);
 
-        % Also gather additional tetra and edges into the neighbour inds, if a
-        % continuous model (indicated by non-empty nearest neighbours) is
-        % used.
+        % Find local neighbour indices or continuous environment.
 
-        if ~ isempty(p_nearest_neighbour_inds)
-            % TODO
+        if isempty(p_nearest_neighbour_inds)
+
+            fi_neighbour_inds = full(find(T_fi(:,source_ind)));
+            ew_neighbour_inds = full(find(T_ew(:,source_ind)));
+
+        else
+
+            % Gather continuous environment around current source ind.
+
+            env_center_ind = find(source_ind == p_intended_source_inds);
+            env_inds = find(env_center_ind == p_nearest_neighbour_inds);
+
+            % Use cell arrays to store neighbour source inds per column.
+
+            env_size = numel(env_inds);
+
+            fi_ind_cell = cell(1, env_size);
+            ew_ind_cell = cell(1, env_size);
+
+            for ii = 1 : env_size
+
+                fi_ind_cell{ii} = full(find(T_fi(:,env_inds(ii))))';
+                ew_ind_cell{ii} = full(find(T_ew(:,env_inds(ii))))';
+
+            end
+
+            % Filter empty arrays (corresponding to tetra in non-active brain
+            % layers?) out of the cell arrays.
+
+            fi_ind_cell = fi_ind_cell(find(~cellfun(@isempty,fi_ind_cell)));
+            ew_ind_cell = ew_ind_cell(find(~cellfun(@isempty,fi_ind_cell)));
+
+            % Set the neighbour indices to be usd in optimization.
+
+            fi_neighbour_inds = unique([fi_ind_cell{:}]');
+            ew_neighbour_inds = unique([ew_ind_cell{:}]');
+
         end
 
         % N of non-zero object function coefficients.
