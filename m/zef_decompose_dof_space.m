@@ -38,20 +38,20 @@
 %
 % Output:
 %
-% - nearest_neighbour_ind
+% - nearest_neighbour_inds
 %
-%   Can be used to index into the set of global tetra indices to find out
+%   Can be used to index into below decomposition_source_inds to find out
 %   which tetra in the global mesh is closest to the tetrahedron corresponding
 %   to it. For example
 %
-%       brain_ind(nearest_neighbour_ind(1))
+%       decomposition_source_inds(nearest_neighbour_inds(1))
 %
 %   would produce the nearest neighbour of the tetrahedron indicated by
 %   brain_ind(1).
 %
 % - decomposition_count
 %
-%   The number of incidences of each (sorted) index in nearest_neighbour_ind,
+%   The number of incidences of each (sorted) index in nearest_neighbour_inds,
 %   meaning how many times each nearest neghbour is the nearest neighbour of
 %   some tetrahedron. The main use of this is for normalizing results when the
 %   index sets are used.
@@ -71,7 +71,7 @@
 %   them can be used as dipolar sources in a head model.
 
 function [ ...
-    nearest_neighbour_ind, ...
+    nearest_neighbour_inds, ...
     decomposition_count, ...
     dof_positions, ...
     decomposition_source_inds ...
@@ -114,9 +114,9 @@ function [ ...
         dof_positions = zef_tetra_barycentra(nodes, tetrahedra(source_ind, :));
 
         MdlKDT = KDTreeSearcher(dof_positions);
-        nearest_neighbour_ind  = knnsearch(MdlKDT,center_points);
+        nearest_neighbour_inds  = knnsearch(MdlKDT,center_points);
 
-        [~, i_a, i_c] = unique(nearest_neighbour_ind);
+        [~, i_a, i_c] = unique(nearest_neighbour_inds);
 
         decomposition_count = accumarray(i_c,1);
 
@@ -155,20 +155,20 @@ function [ ...
 
         dof_positions = [X_lattice(:) Y_lattice(:) Z_lattice(:)];
 
-        nearest_neighbour_ind = lattice_index_fn( ...
+        nearest_neighbour_inds = lattice_index_fn( ...
             center_points, ...
             lattice_res_x, ...
             lattice_res_y, ...
             lattice_res_z ...
         );
 
-        [unique_nearest_neighbour_ind, i_a, i_c] = unique(nearest_neighbour_ind);
+        [unique_nearest_neighbour_ind, i_a, i_c] = unique(nearest_neighbour_inds);
 
         nearest_neighbour_ind_to_be = zeros(size(dof_positions,1),1);
 
         nearest_neighbour_ind_to_be(unique_nearest_neighbour_ind) = 1 : length(unique_nearest_neighbour_ind);
 
-        nearest_neighbour_ind = nearest_neighbour_ind_to_be(nearest_neighbour_ind);
+        nearest_neighbour_inds = nearest_neighbour_ind_to_be(nearest_neighbour_inds);
 
         dof_positions = dof_positions(unique_nearest_neighbour_ind,:);
 
@@ -178,9 +178,9 @@ function [ ...
 
     elseif dof_decomposition_type == 3
 
-         nearest_neighbour_ind = (1 : length(brain_ind))';
+         nearest_neighbour_inds = (1 : length(brain_ind))';
 
-         decomposition_count = ones(size(nearest_neighbour_ind));
+         decomposition_count = ones(size(nearest_neighbour_inds));
 
          dof_positions = center_points;
 
@@ -241,16 +241,14 @@ function out_indices = lattice_index_fn( ...
     lry = in_lattice_res_y;
     lrz = in_lattice_res_z;
 
-    % Lattice index builder.
+    % Relative coordinates in the rectangular lattice.
 
-    lib = [
-        max(1, round( lrx * (cp1 - min(cp1)) ./ (max(cp1) - min(cp1)))) ...
-        max(1, round( lry * (cp2 - min(cp2)) ./ (max(cp2) - min(cp2)))) ...
-        max(1, round( lrz * (cp3 - min(cp3)) ./ (max(cp3) - min(cp3))))
-    ];
+    rcx = max(1, round( lrx * (cp1 - min(cp1)) ./ (max(cp1) - min(cp1))));
+    rcy = max(1, round( lry * (cp2 - min(cp2)) ./ (max(cp2) - min(cp2))));
+    rcz = max(1, round( lrz * (cp3 - min(cp3)) ./ (max(cp3) - min(cp3))));
 
-    % Indices from builder.
+    % Linear indices from relative coodrinates.
 
-    out_indices = (lib(:,3)-1) * lrx * lry + (lib(:,1)-1) * lry + lib(:,2);
+    out_indices = (rcz-1) * lrx * lry + (rcx-1) * lry + rcy;
 
 end
