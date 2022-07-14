@@ -89,8 +89,7 @@ function [G, interpolation_positions] = zef_hdiv_interpolation( ...
 
     % Form local environment indices based on adjacency matrix T_fi.
 
-    valid_source_inds = full(find(sum(T_fi) >= 4))';
-    valid_source_inds = intersect(valid_source_inds, p_intended_source_inds);
+    valid_source_inds = p_intended_source_inds;
 
     % Form interpolation positions (barycenters of tetrahedra).
 
@@ -139,8 +138,8 @@ function [G, interpolation_positions] = zef_hdiv_interpolation( ...
 
             % Gather continuous environment around current source ind.
 
-            env_center_ind = find(source_ind == p_intended_source_inds);
-            env_inds = find(env_center_ind == p_nearest_neighbour_inds);
+            env_ind_aux = find(p_nearest_neighbour_inds == i);
+            env_inds = [source_ind ; p_brain_inds(env_ind_aux)];
 
             % Use cell arrays to store neighbour source inds per column.
 
@@ -156,13 +155,7 @@ function [G, interpolation_positions] = zef_hdiv_interpolation( ...
 
             end
 
-            % Filter empty arrays (corresponding to tetra in non-active brain
-            % layers?) out of the cell arrays.
-
-            fi_ind_cell = fi_ind_cell(find(~cellfun(@isempty,fi_ind_cell)));
-            ew_ind_cell = ew_ind_cell(find(~cellfun(@isempty,fi_ind_cell)));
-
-            % Set the neighbour indices to be usd in optimization.
+            % Set the neighbour indices to be used in optimization.
 
             fi_neighbour_inds = unique([fi_ind_cell{:}]');
             ew_neighbour_inds = unique([ew_ind_cell{:}]');
