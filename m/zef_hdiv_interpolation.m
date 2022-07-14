@@ -138,8 +138,9 @@ function [G, interpolation_positions] = zef_hdiv_interpolation( ...
 
             % Gather continuous environment around current source ind.
 
-            env_ind_aux = find(p_nearest_neighbour_inds == i);
-            env_inds = [source_ind ; p_brain_inds(env_ind_aux)];
+            i_locations_in_nearest_neighbour_inds = find(p_nearest_neighbour_inds == i);
+
+            env_inds = [source_ind ; p_brain_inds(i_locations_in_nearest_neighbour_inds)];
 
             % Use cell arrays to store neighbour source inds per column.
 
