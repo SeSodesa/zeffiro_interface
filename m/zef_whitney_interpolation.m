@@ -82,12 +82,7 @@ function [G, interpolation_positions] = zef_whitney_interpolation( ...
 
     % Form local environment indices based on adjacency matrix T_fi.
 
-    valid_source_inds = full(find(sum(T_fi) >= 4))';
-    valid_source_inds = intersect(valid_source_inds, p_intended_source_inds);
-
-    % Restrict stensils to intended source positions.
-
-    T_fi = T_fi(:, valid_source_inds);
+    valid_source_inds = p_intended_source_inds;
 
     % Form interpolation positions (barycenters of tetrahedra).
 
@@ -120,16 +115,40 @@ function [G, interpolation_positions] = zef_whitney_interpolation( ...
 
     for i = 1 : n_of_iterations
 
+        % Get global source index.
+
+        source_ind = valid_source_inds(i);
+
         % Find local neighbour indices.
 
-        fi_neighbour_inds = full(find(T_fi(:,i)));
+        if isempty(p_nearest_neighbour_inds)
 
-        % Also gather additional tetra into the neighbour inds, if a
-        % continuous model (indicated by non-empty nearest neighbours) is
-        % used.
+            fi_neighbour_inds = full(find(T_fi(:,source_ind)));
 
-        if ~ isempty(p_nearest_neighbour_inds)
-            % TODO
+        else
+
+            % Gather continuous environment around current source ind.
+
+            i_locations_in_nearest_neighbour_inds = find(p_nearest_neighbour_inds == i);
+
+            env_inds = [source_ind ; p_brain_inds(i_locations_in_nearest_neighbour_inds)];
+
+            % Use cell arrays to store neighbour source inds per column.
+
+            env_size = numel(env_inds);
+
+            fi_ind_cell = cell(1, env_size);
+
+            for ii = 1 : env_size
+
+                fi_ind_cell{ii} = full(find(T_fi(:,env_inds(ii))))';
+
+            end
+
+            % Set the neighbour indices to be used in optimization.
+
+            fi_neighbour_inds = unique([fi_ind_cell{:}]');
+
         end
 
         % N of non-zero object function coefficients.
