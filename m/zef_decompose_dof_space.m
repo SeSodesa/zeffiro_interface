@@ -222,7 +222,10 @@ function out_indices = lattice_index_fn( ...
     %
     % Output:
     %
-    % - out_indices: the indices of the lattice we are interested in.
+    % - out_indices
+    %
+    %   Linear index locations of the tetrehedral barycenters in the lattice
+    %   we are interested in.
 
     arguments
         in_center_points (:,3) double
@@ -241,13 +244,14 @@ function out_indices = lattice_index_fn( ...
     lry = in_lattice_res_y;
     lrz = in_lattice_res_z;
 
-    % Relative coordinates in the rectangular lattice.
+    % Absolute coordinates (relative coordinates times resolution) in the
+    % rectangular lattice.
 
     rcx = max(1, round( lrx * (cp1 - min(cp1)) ./ (max(cp1) - min(cp1))));
     rcy = max(1, round( lry * (cp2 - min(cp2)) ./ (max(cp2) - min(cp2))));
     rcz = max(1, round( lrz * (cp3 - min(cp3)) ./ (max(cp3) - min(cp3))));
 
-    % Linear indices from relative coordinates.
+    % Linear indices from absolute coordinates.
 
     out_indices = (rcz-1) * lrx * lry + (rcx-1) * lry + rcy;
 
