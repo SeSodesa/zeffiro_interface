@@ -247,7 +247,7 @@ function out_indices = lattice_index_fn( ...
     rcy = max(1, round( lry * (cp2 - min(cp2)) ./ (max(cp2) - min(cp2))));
     rcz = max(1, round( lrz * (cp3 - min(cp3)) ./ (max(cp3) - min(cp3))));
 
-    % Linear indices from relative coodrinates.
+    % Linear indices from relative coordinates.
 
     out_indices = (rcz-1) * lrx * lry + (rcx-1) * lry + rcy;
 
