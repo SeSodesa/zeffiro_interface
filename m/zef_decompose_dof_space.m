@@ -247,12 +247,12 @@ function out_indices = lattice_index_fn( ...
     % Absolute coordinates (relative coordinates times resolution) in the
     % rectangular lattice.
 
-    rcx = max(1, round( lrx * (cp1 - min(cp1)) ./ (max(cp1) - min(cp1))));
-    rcy = max(1, round( lry * (cp2 - min(cp2)) ./ (max(cp2) - min(cp2))));
-    rcz = max(1, round( lrz * (cp3 - min(cp3)) ./ (max(cp3) - min(cp3))));
+    acx = max(1, round( lrx * (cp1 - min(cp1)) ./ (max(cp1) - min(cp1))));
+    acy = max(1, round( lry * (cp2 - min(cp2)) ./ (max(cp2) - min(cp2))));
+    acz = max(1, round( lrz * (cp3 - min(cp3)) ./ (max(cp3) - min(cp3))));
 
     % Linear indices from absolute coordinates.
 
-    out_indices = (rcz-1) * lrx * lry + (rcx-1) * lry + rcy;
+    out_indices = (acz-1) * lrx * lry + (acx-1) * lry + acy;
 
 end
