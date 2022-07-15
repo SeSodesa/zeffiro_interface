@@ -1,7 +1,7 @@
 % zef_mpo_system
 %
 % A function for generating a matrix of interpolation coefficients via mean
-% position and orientation- or MPO-interpolation.
+% position and orientation- or MPO-optimization.
 %
 % Input:
 %
