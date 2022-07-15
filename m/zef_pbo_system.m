@@ -17,7 +17,7 @@
 %
 %   The M × 3 interpolation positions needed in interpolation.
 %
-% - arg_interpo_loc_row
+% - arg_interp_loc_row
 %
 %   Since this function will be usually called in a loop, we need the loop
 %   index that signifies which interpolation position (row) we are at. Can
@@ -26,7 +26,7 @@
 % - arg_n_of_coeffs
 %
 %   The number if interpolation / optimization coefficients or the size of the
-%   output system onw wixhes to obtain.
+%   output system one wishes to obtain.
 %
 % Output:
 %
