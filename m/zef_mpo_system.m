@@ -59,7 +59,7 @@ function out_coeff_sys = zef_mpo_system( ...
 
     pos_diffs = arg_locs - interp_pos;
 
-    dists = zef_L2_norm(neighbour_diffs, 2);
+    dists = zef_L2_norm(pos_diffs, 2);
 
     % Reference distance for scaling purposes: twice the length of longest
     % edge, although here distances do not represent edges…
@@ -68,7 +68,7 @@ function out_coeff_sys = zef_mpo_system( ...
 
     % Moments whose components will be inserted into the P-matrices.
 
-    moments = scaling_factor * dists;
+    moments = scaling_factor * pos_diffs;
 
     moment_x = moments(:,1);
     moment_y = moments(:,2);
@@ -84,16 +84,16 @@ function out_coeff_sys = zef_mpo_system( ...
     % direction matrices.
 
     M = [
-        arg_dirs ;
-        arg_dirs * Px ;
-        arg_dirs * Py ;
-        arg_dirs * Pz ;
+        arg_dirs' ;
+        arg_dirs' * Px ;
+        arg_dirs' * Py ;
+        arg_dirs' * Pz ;
     ];
 
     % The vector b, against which M will be inverted, with a Cartesian basis
     % assumption.
 
-    zero_block = zeros(arg_n_of_coeffs,3);
+    zero_block = zeros(arg_n_of_coeffs-1,3);
 
     basis = eye(3);
 
