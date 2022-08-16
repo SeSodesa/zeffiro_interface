@@ -54,12 +54,13 @@ end
 
 %% Determine which tetra are to be used as sources
 %
-% Start by limiting ourselves to tetra deep enough (default
-% zef.mesh_resolution mm) in the gray matter.
+% Start by limiting ourselves to tetra deep enough in the gray matter. The
+% depth of 0 mm is used by default, but the below requirement for having at
+% least 4 neighbours makes sure that we are not directly on the surface.
 
 if ~ isfield(zef, 'acceptable_source_depth')
-    warning(['Using default acceptable depth of ' num2str(zef.mesh_resolution) ' for source tetra.'])
-    zef.acceptable_source_depth = zef.mesh_resolution; % mm
+    warning(['Using default acceptable depth of ' num2str(0) ' mm for source tetra.'])
+    zef.acceptable_source_depth = 0; % mm
 end
 
 [T_fi, G_fi, ~, ~, ~, ~] = zef_fi_dipoles( ...
@@ -67,6 +68,9 @@ end
     zef.tetra, ...
     zef.brain_ind ...
 );
+
+% Also restrict to tetra which have 4 neighbours to make sure we are not on
+% the surface, but in the brain.
 
 valid_source_inds_builder = full(find(sum(T_fi,1) == 4))';
 
