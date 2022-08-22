@@ -120,6 +120,32 @@ classdef ZefSourceModel
 
         end % from
 
+        function vars = variants()
+
+            % ZefSourceModel.variants
+            %
+            % A constant function that generates an array of the variants of the
+            % ZefSourceModel enumeration.
+            %
+            % Output:
+            %
+            % - vars
+            %
+            %   A column vector of the variants. NOTE: the collection includes the
+            %   Error variant, which needs to be accounted for, if only valid
+            %   variants are wanted.
+
+            % A bit funny, but this is necessary for listing the variants
+            % without invoking a constructor.
+
+            source_model = ZefSourceModel.Hdiv;
+
+            % Generate the list of variants.
+
+            vars = enumeration(source_model);
+
+        end
+
     end % methods (Static)
 
 end % classdef
