@@ -78,7 +78,7 @@ classdef ZefSourceModel
                 elseif p_input == 4
                     source_model = ZefSourceModel.ContinuousWhitney;
                 elseif p_input == 5
-                    source_model = ZefSourceModel.ContinousHdiv;
+                    source_model = ZefSourceModel.ContinuousHdiv;
                 elseif p_input == 6
                     source_model = ZefSourceModel.ContinuousStVenant;
                 else
@@ -147,5 +147,66 @@ classdef ZefSourceModel
         end
 
     end % methods (Static)
+
+    methods
+
+        function str = to_string(variant)
+
+            % ZefSourceModel.to_string
+            %
+            % Converts a given ZefSourceModel variant to a string.
+            %
+            % Input:
+            %
+            % - source_model
+            %
+            %   A ZefSourceModel variant.
+            %
+            % Output
+            %
+            % - str
+            %
+            %   A string representation of the given variant. "None", if given
+            %   variant does not exist.
+
+            switch variant
+
+                case ZefSourceModel.Whitney
+
+                    str = "Whitney";
+
+                case ZefSourceModel.Hdiv
+
+                    str = "H(div)";
+
+                case ZefSourceModel.StVenant
+
+                    str = "St. Venant";
+
+                case ZefSourceModel.ContinuousWhitney
+
+                    str = "Continuous Whitney";
+
+                case ZefSourceModel.ContinuousHdiv
+
+                    str = "Continuous H(div)";
+
+                case ZefSourceModel.ContinuousStVenant
+
+                    str = "Continuous St. Venant";
+
+                case ZefSourceModel.Error
+
+                    str = "Error";
+
+                otherwise
+
+                    str = "None";
+
+            end % switch
+
+        end % function
+
+    end % methods
 
 end % classdef
