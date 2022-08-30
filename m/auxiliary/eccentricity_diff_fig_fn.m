@@ -71,11 +71,11 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
     % Set return values.
 
-    rdm_fig = figure(100); set(rdm_fig, 'renderer','painters', 'position', [20,20,800,600]);
+    rdm_fig = figure(100); set(rdm_fig, 'renderer','painters', 'position', [20,20,1000,750]);
 
     rdm_ax = axes(rdm_fig);
 
-    mag_fig = figure(101); set(mag_fig, 'renderer','painters', 'position', [20,20,800,600]);
+    mag_fig = figure(101); set(mag_fig, 'renderer','painters', 'position', [20,20,1000,750]);
 
     mag_ax = axes(mag_fig);
 
@@ -155,7 +155,7 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
         high = low + n_cols - 1;
 
-        group_vec(low:high) = ind_vec_cell{ind};
+        group_vec(low:high) = ind * ind_vec_cell{ind};
 
         low = high + 1;
 
@@ -184,7 +184,9 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
     set(rdm_ax,'Xtick',x_scale*[1:n_intervals])
     set(rdm_ax,'XtickLabels',tick_labels)
     set(rdm_ax,'xlim',[x_scale/2 x_scale*(n_intervals+1/2)])
+
     pbaspect([3 1 1])
+
     set(rdm_ax,'fontsize',12)
     set(rdm_ax,'linewidth',0.25)
     set(rdm_ax,'xgrid','on')
@@ -195,7 +197,7 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
     set(rdm_ax,'yticklabels',{'1E-5','2E-5','4E-5','6E-5','8E-5','1E-4','2E-4','4E-4','6E-4','8E-4','1E-3','2E-3','4E-3','6E-3','8E-3','1E-2','2E-2','4E-2','6E-2','8E-2','1E-1','2E-1','4E-1','6E-1','8E-1','1','2','4','6','8','10'})
     set(rdm_ax,'ticklength',[0.0100 0.0250]/2)
 
-    legend(legend_labels,'Orientation','Horizontal','Location','Northwest');
+    legend(rdm_ax, legend_labels,'Orientation','Horizontal','Location','Northwest');
 
     mag_vec = vertcat(mags{:});
 
@@ -229,6 +231,6 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
     set(mag_ax,'yticklabels',{'1E-5','2E-5','4E-5','6E-5','8E-5','1E-4','2E-4','4E-4','6E-4','8E-4','1E-3','2E-3','4E-3','6E-3','8E-3','1E-2','2E-2','4E-2','6E-2','8E-2','1E-1','2E-1','4E-1','6E-1','8E-1','1','2','4','6','8','10'})
     set(mag_ax,'ticklength',[0.0100 0.0250]/2)
 
-    legend(legend_labels,'Orientation','Horizontal','Location','Northwest')
+    legend(mag_ax, legend_labels,'Orientation','Horizontal','Location','Northwest')
 
 end % function
