@@ -1,11 +1,11 @@
 function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
-    source_points,
+    source_points, ...
     mags, ...
     rdms, ...
+    legend_labels, ...
     n_intervals, ...
     x_scale, ...
-    min_ecc, ...
-    legend_labels ...
+    min_ecc ...
 )
 
     % eccentricity_diff_fig_fn
@@ -50,11 +50,13 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
     arguments
 
-        source_points cell { mustBeVector, mustBeReal }
+        source_points cell { mustBeVector }
 
-        mags cell { mustBeVector, mustBeReal }
+        mags cell { mustBeVector }
 
-        rdms cell { mustBeVector, mustBeReal }
+        rdms cell { mustBeVector }
+
+        legend_labels cell { mustBeText, mustBeVector }
 
         n_intervals (1,1) double { mustBeInteger, mustBePositive } = 5;
 
@@ -62,25 +64,18 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
         min_ecc (1,1) double { ...
             mustBeGreaterThanOrEqual(min_ecc, 0), ...
-            mustBeLessThan(min_ecc, 1), ...
+            mustBeLessThan(min_ecc, 1) ...
         } = 0;
-
-        min_ecc (1,1) double { ...
-            mustBeGreaterThanOrEqual(min_ecc, 0), ...
-            mustBeLessThan(min_ecc, 1), ...
-        } = 0;
-
-        legend_labels cell { mustBeText, mustBeVector }
 
     end
 
     % Set return values.
 
-    rdm_fig = figure; set(gcf,'renderer','painters');
+    rdm_fig = figure(100); set(rdm_fig, 'renderer','painters', 'position', [20,20,800,600]);
 
     rdm_ax = axes(rdm_fig);
 
-    mag_fig = figure; set(gcf,'renderer','painters');
+    mag_fig = figure(101); set(mag_fig, 'renderer','painters', 'position', [20,20,800,600]);
 
     mag_ax = axes(mag_fig);
 
@@ -101,12 +96,16 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
         if mod(group_size(1), 3) ~= 0
 
+            close(rdm_fig);
+
+            close(mag_fig);
+
             error("The number of rows in source point matrix was not divisible by 3.");
 
         end
 
         n_s_p = sqrt(sum(source_point_group.^2,1));
-        n_s_p = repmat(n_s_p',3,2);
+        n_s_p = repmat(n_s_p,3,1);
         n_s_p = n_s_p(:);
         n_s_p = n_s_p/max(n_s_p);
 
@@ -142,7 +141,7 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
     % Group indices stored in index vectors.
 
-    flattened_ind_vecs = [ind_vec_cell{:}];
+    flattened_ind_vecs = vertcat(ind_vec_cell{:});
 
     n_of_inds = numel(flattened_ind_vecs);
 
@@ -152,7 +151,7 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
     for ind = 1 : source_points_len
 
-        n_cols = size(source_points{ind},2);
+        n_cols = 3 * size(source_points{ind},2);
 
         high = low + n_cols - 1;
 
@@ -164,10 +163,14 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
     cat_group_vec = categorical(group_vec);
 
+    % Add graphics to plots.
+
+    rdm_vec = vertcat(rdms{:});
+
     h_rdm = boxchart( ...
         rdm_ax, ...
         x_scale * flattened_ind_vecs, ...
-        log10([rdms{:}]), ...
+        log10(rdm_vec), ...
         'GroupByColor', cat_group_vec ...
     );
 
@@ -182,7 +185,7 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
     set(rdm_ax,'XtickLabels',tick_labels)
     set(rdm_ax,'xlim',[x_scale/2 x_scale*(n_intervals+1/2)])
     pbaspect([3 1 1])
-    set(rdm_ax,'fontsize',4)
+    set(rdm_ax,'fontsize',12)
     set(rdm_ax,'linewidth',0.25)
     set(rdm_ax,'xgrid','on')
     set(rdm_ax,'ygrid','on')
@@ -194,10 +197,12 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
     legend(legend_labels,'Orientation','Horizontal','Location','Northwest');
 
-    h_mag = boxchart(
+    mag_vec = vertcat(mags{:});
+
+    h_mag = boxchart( ...
         mag_ax, ...
-        x_scale * [index_vec_1; index_vec_2; index_vec_3; index_vec_4], ...
-        log10(abs([mag_v_1; mag_v_2; mag_v_3; mag_v_4])), ...
+        x_scale * flattened_ind_vecs, ...
+        log10(abs(mag_vec)), ...
         'GroupByColor',group_vec ...
     );
 
@@ -214,13 +219,13 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
     pbaspect([3 1 1])
 
-    set(mag_ax,'fontsize',4)
+    set(mag_ax,'fontsize',12)
     set(mag_ax,'linewidth',0.25)
     set(mag_ax,'xgrid','on')
     set(mag_ax,'ygrid','on')
     set(mag_ax,'box','on')
     set(mag_ax,'ylim',[-3 0.5])
-    set(set(mag_ax,'ytick',log10([0.00001 0.00002 0.00004 0.00006 0.00008 0.0001 0.0002 0.0004 0.0006 0.0008 0.001 0.002 0.004 0.006 0.008 0.01 0.02 0.04 0.06 0.08 0.1 0.2 0.4 0.6 0.8 1 2 4 6 8 10])))
+    set(mag_ax,'ytick',log10([0.00001 0.00002 0.00004 0.00006 0.00008 0.0001 0.0002 0.0004 0.0006 0.0008 0.001 0.002 0.004 0.006 0.008 0.01 0.02 0.04 0.06 0.08 0.1 0.2 0.4 0.6 0.8 1 2 4 6 8 10]))
     set(mag_ax,'yticklabels',{'1E-5','2E-5','4E-5','6E-5','8E-5','1E-4','2E-4','4E-4','6E-4','8E-4','1E-3','2E-3','4E-3','6E-3','8E-3','1E-2','2E-2','4E-2','6E-2','8E-2','1E-1','2E-1','4E-1','6E-1','8E-1','1','2','4','6','8','10'})
     set(mag_ax,'ticklength',[0.0100 0.0250]/2)
 
