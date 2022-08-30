@@ -5,7 +5,9 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
     legend_labels, ...
     n_intervals, ...
     x_scale, ...
-    min_ecc ...
+    min_ecc, ...
+    mag_handle_num, ...
+    rdm_handle_num ...
 )
 
     % eccentricity_diff_fig_fn
@@ -67,6 +69,19 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
             mustBeLessThan(min_ecc, 1) ...
         } = 0;
 
+        mag_handle_num double { mustBeInteger, mustBePositive } = 100;
+
+        rdm_handle_num double { mustBeInteger, mustBePositive } = 101;
+    end
+
+    % Close figures if they already exist.
+
+    if ishandle(mag_handle_num)
+        close(mag_handle_num);
+    end
+
+    if ishandle(rdm_handle_num)
+        close(rdm_handle_num);
     end
 
     % Set return values.
@@ -155,7 +170,7 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
         high = low + n_cols - 1;
 
-        group_vec(low:high) = ind * ind_vec_cell{ind};
+        group_vec(low:high) = ind * ones(size(ind_vec_cell{ind}));
 
         low = high + 1;
 
