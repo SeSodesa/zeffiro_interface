@@ -202,6 +202,9 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
     pbaspect([3 1 1])
 
+    xlabel(rdm_ax, 'Eccentricity');
+    ylabel(rdm_ax, '${\rm log}_{10}\left({\rm RDM}\right)$' , 'Interpreter', 'latex');
+
     set(rdm_ax,'fontsize',12)
     set(rdm_ax,'linewidth',0.25)
     set(rdm_ax,'xgrid','on')
@@ -235,6 +238,9 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
     set(mag_ax,'xlim',[0 x_scale*(n_intervals+1)])
 
     pbaspect([3 1 1])
+
+    xlabel(mag_ax, 'Eccentricity');
+    ylabel(mag_ax, '${\rm log}_{10}\left(\left|{\rm MAG}\right|\right)$' , 'Interpreter', 'latex');
 
     set(mag_ax,'fontsize',12)
     set(mag_ax,'linewidth',0.25)
