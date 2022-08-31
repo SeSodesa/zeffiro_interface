@@ -49,6 +49,16 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
     %
     %   The minimum eccentricity at which result display is attempted at.
     %
+    % Output:
+    %
+    % - mag_fig
+    %
+    %   The MAG-related figure handle.
+    %
+    % - rdm_fig
+    %
+    %   The RDM-related figure handle.
+    %
 
     arguments
 
