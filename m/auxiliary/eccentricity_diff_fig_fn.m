@@ -196,26 +196,7 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
         set(h_rdm(i),'linewidth',0.25)
     end
 
-    set(rdm_ax,'Xtick',x_scale*[1:n_intervals])
-    set(rdm_ax,'XtickLabels',tick_labels)
-    set(rdm_ax,'xlim',[x_scale/2 x_scale*(n_intervals+1/2)])
-
-    pbaspect([3 1 1])
-
-    set(rdm_ax,'fontsize',12)
-    set(rdm_ax,'linewidth',0.25)
-    set(rdm_ax,'xgrid','on')
-    set(rdm_ax,'ygrid','on')
-    set(rdm_ax,'box','on')
-    set(rdm_ax,'ylim',[-3 0])
-    set(rdm_ax,'ytick',log10([0.00001 0.00002 0.00004 0.00006 0.00008 0.0001 0.0002 0.0004 0.0006 0.0008 0.001 0.002 0.004 0.006 0.008 0.01 0.02 0.04 0.06 0.08 0.1 0.2 0.4 0.6 0.8 1 2 4 6 8 10]))
-    set(rdm_ax,'yticklabels',{'1E-5','2E-5','4E-5','6E-5','8E-5','1E-4','2E-4','4E-4','6E-4','8E-4','1E-3','2E-3','4E-3','6E-3','8E-3','1E-2','2E-2','4E-2','6E-2','8E-2','1E-1','2E-1','4E-1','6E-1','8E-1','1','2','4','6','8','10'})
-    set(rdm_ax,'ticklength',[0.0100 0.0250]/2)
-
-    xlabel(rdm_ax, 'Eccentricity', 'FontSize', 14);
-    ylabel(rdm_ax, '${\rm RDM}$' , 'Interpreter', 'latex', 'FontSize', 14);
-
-    legend(rdm_ax, legend_labels,'Orientation','Horizontal','Location','Northwest');
+    set_axis_props_helper(rdm_ax, legend_labels, x_scale, 'Eccentricity', '${\rm RDM}$', n_intervals, tick_labels);
 
     mag_vec = vertcat(mags{:});
 
@@ -233,25 +214,55 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
         set(h_mag(i),'linewidth',0.25)
     end
 
-    set(mag_ax,'Xtick',x_scale*[1:n_intervals])
-    set(mag_ax,'XtickLabels',tick_labels)
-    set(mag_ax,'xlim',[x_scale/2 x_scale*(n_intervals+1/2)])
-
-    pbaspect([3 1 1])
-
-    set(mag_ax,'fontsize',12)
-    set(mag_ax,'linewidth',0.25)
-    set(mag_ax,'xgrid','on')
-    set(mag_ax,'ygrid','on')
-    set(mag_ax,'box','on')
-    set(mag_ax,'ylim',[-3 0.5])
-    set(mag_ax,'ytick',log10([0.00001 0.00002 0.00004 0.00006 0.00008 0.0001 0.0002 0.0004 0.0006 0.0008 0.001 0.002 0.004 0.006 0.008 0.01 0.02 0.04 0.06 0.08 0.1 0.2 0.4 0.6 0.8 1 2 4 6 8 10]))
-    set(mag_ax,'yticklabels',{'1E-5','2E-5','4E-5','6E-5','8E-5','1E-4','2E-4','4E-4','6E-4','8E-4','1E-3','2E-3','4E-3','6E-3','8E-3','1E-2','2E-2','4E-2','6E-2','8E-2','1E-1','2E-1','4E-1','6E-1','8E-1','1','2','4','6','8','10'})
-    set(mag_ax,'ticklength',[0.0100 0.0250]/2)
-
-    xlabel(mag_ax, 'Eccentricity', 'FontSize', 14);
-    ylabel(mag_ax, '$\left|{\rm MAG}\right|$' , 'Interpreter', 'latex', 'FontSize', 14);
-
-    legend(mag_ax, legend_labels,'Orientation','Horizontal','Location','Northwest')
+    set_axis_props_helper(mag_ax, legend_labels, x_scale, 'Eccentricity', '$\left|{\rm MAG}\right|$', n_intervals, tick_labels);
 
 end % function
+
+%% Helper functions.
+
+function set_axis_props_helper(ax, legend_labels, x_scale, x_label, y_label, n_intervals, tick_labels)
+
+    % set_axis_props_helper
+    %
+    % Sets axis properties for a given axes ax.
+
+    arguments
+
+        ax matlab.graphics.axis.Axes
+
+        legend_labels
+
+        x_scale (1,1) double { mustBePositive }
+
+        x_label (1,1) string
+
+        y_label (1,1) string
+
+        n_intervals (1,1) double { mustBeInteger, mustBePositive }
+
+        tick_labels
+
+    end
+
+    set(ax,'Xtick',x_scale*[1:n_intervals])
+    set(ax,'XtickLabels',tick_labels)
+    set(ax,'xlim',[x_scale/2 x_scale*(n_intervals+1/2)])
+
+    pbaspect(ax, [3 1 1])
+
+    set(ax,'fontsize',12)
+    set(ax,'linewidth',0.25)
+    set(ax,'xgrid','on')
+    set(ax,'ygrid','on')
+    set(ax,'box','on')
+    set(ax,'ylim',[-3 0.5])
+    set(ax,'ytick',log10([0.00001 0.00002 0.00004 0.00006 0.00008 0.0001 0.0002 0.0004 0.0006 0.0008 0.001 0.002 0.004 0.006 0.008 0.01 0.02 0.04 0.06 0.08 0.1 0.2 0.4 0.6 0.8 1 2 4 6 8 10]))
+    set(ax,'yticklabels',{'1E-5','2E-5','4E-5','6E-5','8E-5','1E-4','2E-4','4E-4','6E-4','8E-4','1E-3','2E-3','4E-3','6E-3','8E-3','1E-2','2E-2','4E-2','6E-2','8E-2','1E-1','2E-1','4E-1','6E-1','8E-1','1','2','4','6','8','10'})
+    set(ax,'ticklength',[0.0100 0.0250]/2)
+
+    xlabel(ax, x_label, 'FontSize', 14);
+    ylabel(ax, y_label , 'Interpreter', 'latex', 'FontSize', 14);
+
+    legend(ax, legend_labels,'Orientation','Horizontal','Location','Northwest')
+
+end
