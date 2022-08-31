@@ -31,6 +31,11 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
     %
     %   The RDM measures calculated for the groups of source_points.
     %
+    % - legend_labels
+    %
+    %   The labels of the groups of points found in source_points. The size
+    %   must match M, the number of source point groups in source_points.
+    %
     % - n_intervals
     %
     %   The number of box plot groups one wishes to have displayed in the
@@ -43,11 +48,6 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
     % - min_ecc
     %
     %   The minimum eccentricity at which result display is attempted at.
-    %
-    % - legend_labels
-    %
-    %   The labels of the groups of points found in source_points. The size
-    %   must match M, the number of source point groups in source_points.
     %
 
     arguments
@@ -191,7 +191,7 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
 
     for i = 1 : length(h_rdm)
         set(h_rdm(i),'MarkerStyle','.')
-        set(h_rdm(i),'MarkerSize',0.5)
+        set(h_rdm(i),'MarkerSize',1)
         set(h_rdm(i),'JitterOutliers','off')
         set(h_rdm(i),'linewidth',0.25)
     end
@@ -250,7 +250,7 @@ function set_axis_props_helper(ax, legend_labels, x_scale, x_label, y_label, n_i
 
     pbaspect(ax, [3 1 1])
 
-    set(ax,'fontsize',12)
+    set(ax,'fontsize',14)
     set(ax,'linewidth',0.25)
     set(ax,'xgrid','on')
     set(ax,'ygrid','on')
@@ -259,6 +259,8 @@ function set_axis_props_helper(ax, legend_labels, x_scale, x_label, y_label, n_i
     set(ax,'ytick',log10([0.00001 0.00002 0.00004 0.00006 0.00008 0.0001 0.0002 0.0004 0.0006 0.0008 0.001 0.002 0.004 0.006 0.008 0.01 0.02 0.04 0.06 0.08 0.1 0.2 0.4 0.6 0.8 1 2 4 6 8 10]))
     set(ax,'yticklabels',{'1E-5','2E-5','4E-5','6E-5','8E-5','1E-4','2E-4','4E-4','6E-4','8E-4','1E-3','2E-3','4E-3','6E-3','8E-3','1E-2','2E-2','4E-2','6E-2','8E-2','1E-1','2E-1','4E-1','6E-1','8E-1','1','2','4','6','8','10'})
     set(ax,'ticklength',[0.0100 0.0250]/2)
+
+    ax.Position = [0.06 0 0.9 0.9];
 
     xlabel(ax, x_label, 'FontSize', 14);
     ylabel(ax, y_label , 'Interpreter', 'latex', 'FontSize', 14);
