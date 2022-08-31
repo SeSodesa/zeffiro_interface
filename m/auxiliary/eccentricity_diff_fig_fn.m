@@ -20,8 +20,8 @@ function [mag_fig, rdm_fig] = eccentricity_diff_fig_fn( ...
     %
     % - source_points
     %
-    %   A cell array of 3 × N matrix of source point xyz-coordinates. In other words, the
-    %   number of columns in the matrix.
+    %   An M × 1 or 1 × M cell array of 3 × N matrices of source point
+    %   xyz-coordinates.
     %
     % - mags
     %
