@@ -7,7 +7,7 @@
 # clutter on such systems.
 #
 # File types not listed here will not be tampered with, unless your local Git
-# configuration file instructs Git to do so. By default it does notdo it for
+# configuration file instructs Git to do so. By default it does not do it for
 # any files.
 
 # Declare text files, whose line endings will be normalized.
@@ -21,12 +21,12 @@
 README  text eol=lf
 
 # Then declare binary files to indicate which files should absolutely not be
-# touched.
+# touched, even if a user wants to.
 
-*.pdf   binary
-*.png   binary
-*.jpg   binary
-*.mlapp binary
-*.fig   binary
-*.mat   binary
-*.stl   binary
+*.pdf    binary
+*.png    binary
+*.jpg    binary
+*.mlapp  binary
+*.fig    binary
+*.mat    binary
+*.stl    binary
