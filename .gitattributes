@@ -1,0 +1,27 @@
+## Git Attributes
+#
+# This file contains specifications that make Git automatically make certain
+# edits to text files, before they are added to the working tree (the set of
+# tracked files). The conversions include changing Windows line endings
+# <CR><LF> to Unix equivalents <LF>, so that text files would contain less
+# clutter on such systems.
+#
+# File types not listed here will not be tampered with, unless your local Git
+# configuration file instructs Git to do so. By default it does notdo it for
+# any files.
+
+# Declare text files, whose line endings will be normalized.
+
+*.txt text
+*.md  text
+*.zef text
+*.m   text
+*.sh  text
+
+# Then declare binary files to indicate which files should absolutely not be
+# touched.
+
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.mlapp binary
