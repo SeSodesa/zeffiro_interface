@@ -12,11 +12,11 @@
 
 # Declare text files, whose line endings will be normalized.
 
-*.txt text
-*.md  text
-*.zef text
-*.m   text
-*.sh  text
+*.txt text eol=lf
+*.md  text eol=lf
+*.zef text eol=lf
+*.m   text eol=lf
+*.sh  text eol=lf
 
 # Then declare binary files to indicate which files should absolutely not be
 # touched.
