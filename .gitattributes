@@ -13,6 +13,7 @@
 # Declare text files, whose line endings will be normalized.
 
 *.txt   text eol=lf
+*.asc   text eol=lf
 *.md    text eol=lf
 *.zef   text eol=lf
 *.m     text eol=lf
