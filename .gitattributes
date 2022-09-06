@@ -26,3 +26,4 @@ README  text eol=lf
 *.png   binary
 *.jpg   binary
 *.mlapp binary
+*.fig   binary
