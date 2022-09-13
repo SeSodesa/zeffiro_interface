@@ -14,6 +14,20 @@ function [position_diff, angle_diff, magnitude_diff] = zef_roi_dipole_accuracy( 
 % dipole potential field reconstruction (formed via some inverse method) and an
 % actual dipole potential field, in a region of interest (RoI).
 
+    arguments
+
+        dipole_pos (:,3) double
+
+        dipole_vec (:,3) double
+
+        reconstruction (:,1) double
+
+        source_positions (:,3) double
+
+        roi_radius (1,1) double { mustBeReal, mustBePositive }
+
+    end
+
     % Determine the ball that makes up the RoI around source_positions, based
     % on given dipole positions and RoI radius.
 
