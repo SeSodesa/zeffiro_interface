@@ -6,6 +6,7 @@ function [rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_local
 )
 
 % zef_dipole_localization_map
+%
 % Calculates a reconstruction of a dipole source from a lead field L inside a
 % Region of Interest (RoI) around the source dipole. Returns the
 % reconstruction dipole positions, angles and magnitudes.
