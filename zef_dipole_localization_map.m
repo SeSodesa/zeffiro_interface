@@ -5,26 +5,68 @@ function [rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_local
     inverse_method ...
 )
 
+% zef_dipole_localization_map
 % Calculates a reconstruction of a dipole source from a lead field L inside a
-% Region of Interest (RoI) around the source dipole. Returns the reconstruction
-% dipole positions, angles and magnitudes.
+% Region of Interest (RoI) around the source dipole. Returns the
+% reconstruction dipole positions, angles and magnitudes.
 %
-% Input: zef for reading values like model soruce positions, number of
-% subdivisions of the RoI, the radius of the RoI and the inverse method used to
-% calculate the reconstruction from the lead field. Currently supported
-% inversion methods are
 %
-% - @zef_find_mne_reconstruction
-% - @zef_beamformer
-% - @zef_ramus_iteration
+% NOTE: The return values are empty, if an error occurred.
 %
-% Methods that might be supported later include
+% Input:
 %
-% - @SESAME_inversion (problems with randomization (?) causing too large vector indices)
+% - zef
 %
-% Output: three reconstruction arrays: dipole positions, angles and magnitudes.
-% These will be empty in case of errors, so please check for that when calling
-% the routine.
+%   An instance of zef for reading values like model soruce positions.
+%
+% - n_subset
+%
+%   The number of subdivisions of the RoI.
+%
+% - roi_radius
+%
+%   The radius of the region of interest.T
+%
+% - inverse_method
+%
+%   A function handle to the inverse method used to calculate the
+%   reconstruction from the lead field. Currently supported inversion methods
+%   are
+%
+%   - @zef_find_mne_reconstruction
+%   - @zef_beamformer
+%   - @zef_ramus_iteration
+%
+%   Methods that might be supported later include
+%
+%   - @SESAME_inversion (problems with randomization (?) causing too large vector indices)
+%
+% Output:
+%
+% - rec_vec_position
+%
+%   The dipole positions in the reconstruction.
+%
+% - rec_vec_angle
+%
+%   The angles of the dipoles in the reconstruction.
+%
+% - rec_vec_mag
+%
+%   The magnitudes of the dipole moments in the reconstruction.
+%
+
+    arguments
+
+        zef struct
+
+        n_subset (1,1) double { mustBeInteger, mustBePositive }
+
+        roi_radius (1,1) double { mustBeReal, mustBePositive }
+
+        inverse_method (1,1) function_handle
+
+    end
 
     % Initialize return values as empty.
 
@@ -39,20 +81,23 @@ function [rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_local
     unknown_method = true;
 
     for mind = 1 : length(ACCEPTED_METHODS)
+
         if isequal(inverse_method, ACCEPTED_METHODS{mind})
+
             unknown_method = false;
+
             break
+
         end
+
     end
 
     if unknown_method
-        warning("zef_dipole_localization_map was given an unknown inversion method. Aborting.");
-        return
-    end
 
-    if nargout ~= 3
-        warning('zef_dipole_localization_map must be called with 3 output arguments');
+        warning("zef_dipole_localization_map was given an unknown inversion method. Aborting.");
+
         return
+
     end
 
     % Perform a multigrid decomposition around given source dipole positions.
@@ -109,6 +154,7 @@ function [rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_local
         for j = 1 : 3
 
             source_dir = source_dirs(j,:);
+
             source_pos = zef.source_positions(multigrid_dec(i),:);
 
             % This kind of global state manipulation is from the Satan. Do not
