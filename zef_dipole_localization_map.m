@@ -18,15 +18,15 @@ function [rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_local
 %
 % - zef
 %
-%   An instance of zef for reading values like model soruce positions.
+%   An instance of zef for reading values like model source positions.
 %
 % - n_subset
 %
-%   The number of subdivisions of the RoI.
+%   The number of subdivisions of the region of interest.
 %
 % - roi_radius
 %
-%   The radius of the region of interest.T
+%   The radius of the region of interest.
 %
 % - inverse_method
 %
@@ -197,9 +197,6 @@ function [rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_local
 
             % Whoo boy. We really are in hell, aren't we. Global state
             % manipulation, again.
-
-            assignin('base', 'reconstruction', reconstruction);
-            evalin('base', 'zef.reconstruction = reconstruction;');
 
             % Calculate the differences between sources and reconstruction.
 
