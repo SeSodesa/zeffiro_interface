@@ -10,6 +10,14 @@ function rec = zef_call_inverse_method( ...
 % The returned reconstruction will be empty, if no inverse method was called
 % successfully.
 
+    arguments
+
+        zef struct
+
+        inverse_method_handle (1,1) function_handle
+
+    end
+
     % Initialize empty reconstruction.
 
     rec = [];
