@@ -1,4 +1,4 @@
-function [rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_localization_map( ...
+function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_localization_map( ...
     zef,           ...
     n_subset,      ...
     roi_radius,    ...
@@ -139,7 +139,7 @@ function [rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_local
 
     waitbar(0, wb, strcat(wbtitle, ': inverse method initialization.'));
 
-    zef_init_inverse_method(inverse_method);
+    zef = zef_init_inverse_method(zef, inverse_method);
 
     waitbar(1, wb);
 
@@ -176,10 +176,9 @@ function [rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_local
             % Again, global state manipulation. Only the devil could have
             % though up something so evil.
 
-            assignin('base', 'meas_data', meas_data);
-            evalin('base', 'zef.measurements = meas_data;');
+            zef.measurements = meas_data;
 
-            [rec] = zef_call_inverse_method(zef, inverse_method);
+            [zef, rec] = zef_call_inverse_method(zef, inverse_method);
 
             if isempty(rec)
                 rec_vec_position = [];
