@@ -163,7 +163,7 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_
 
             % Perform a minimum norm estimate and save them.
 
-            meas_data = zef_find_source_legacy;
+            meas_data = find_source_legacy_fn(zef);
 
             zef.measurements = meas_data;
 
@@ -241,6 +241,8 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_
 
 end
 
+%% Helper functions
+
 function zef_cleanup_dipole_localization(wb)
 
 % This is called when the cleabup object in the symbol table of
@@ -248,5 +250,46 @@ function zef_cleanup_dipole_localization(wb)
 
     close(wb);
     set(groot, 'DefaultFigureVisible', 'on');
+
+end
+
+
+function [meas_data] = find_source_legacy_fn(zef)
+
+% find_source_legacy_fn
+%
+% Copied and turned into a proper function from zef_find_source. Generates
+% synthetic measurement data from the lead field contained in a iven zef
+% instance.
+%
+
+    source_positions = zef.source_positions;
+
+    noise_level = zef.inv_synth_source(1,8);
+
+    s_p = zef.inv_synth_source(:,1:3);
+
+    s_o = zef.inv_synth_source(:,4:6);
+
+    s_o = s_o./repmat(sqrt(sum(s_o.^2,2)),1,3);
+
+    s_a = zef.inv_synth_source(:,7);
+
+    s_f = 1e-3*repmat(s_a,1,3).*s_o;
+
+    L = zef.L;
+
+    meas_data = zeros(size(L(:,1),1),1);
+
+    for i = 1 : size(s_p,1)
+
+        [s_min,s_ind] = min(sqrt(sum((source_positions - repmat(s_p(i,:),size(source_positions,1),1)).^2,2)));
+
+        meas_data = meas_data + s_f(i,1)*L(:,3*(s_ind-1)+1) + s_f(i,2)*L(:,3*(s_ind-1)+2) + s_f(i,3)*L(:,3*(s_ind-1)+3);
+    end
+
+    n_val = max(abs(meas_data));
+
+    meas_data = meas_data + noise_level*max(abs(meas_data)).*randn(size(meas_data));
 
 end
