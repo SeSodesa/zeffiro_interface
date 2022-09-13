@@ -158,23 +158,12 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_
 
             source_pos = zef.source_positions(multigrid_dec(i),:);
 
-            % This kind of global state manipulation is from the Satan. Do not
-            % do this, ever.
-
-            assignin('base', 'sd', source_dir);
-            assignin('base', 'sp', source_pos);
-            evalin('base', 'zef.inv_synth_source(1,4:6) = sd;');
-            evalin('base', 'zef.inv_synth_source(1,1:3) = sp;');
-
-            zef.inv_synth_source(1,4:6) = source_dir;
             zef.inv_synth_source(1,1:3) = source_pos;
+            zef.inv_synth_source(1,4:6) = source_dir;
 
-            % Perform a minimum norm estimate.
+            % Perform a minimum norm estimate and save them.
 
             meas_data = zef_find_source_legacy;
-
-            % Again, global state manipulation. Only the devil could have
-            % though up something so evil.
 
             zef.measurements = meas_data;
 
@@ -192,10 +181,8 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = zef_dipole_
             end
 
             reconstruction = zeros(size(zef.source_positions, 1) * 3, 1);
-            reconstruction(1:length(rec(:))) = rec;
 
-            % Whoo boy. We really are in hell, aren't we. Global state
-            % manipulation, again.
+            reconstruction(1:length(rec(:))) = rec;
 
             % Calculate the differences between sources and reconstruction.
 
