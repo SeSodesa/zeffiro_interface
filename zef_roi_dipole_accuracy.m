@@ -47,23 +47,41 @@ function [position_diff, angle_diff, magnitude_diff] = zef_roi_dipole_accuracy( 
 
     reconstruction = reconstruction(:,roi_positions);
 
-    % Find out reconstruction positions, directions and magnitudes by averaging
-    % within the region of interest.
+    % Find out reconstruction positions, directions and magnitudes by
+    % averaging within the region of interest.
 
-    rec_pos = sum(source_positions(roi_positions,:)'.*abs(reconstruction),2)./sum(abs(reconstruction),2);
+    numerator = sum(source_positions(roi_positions,:)' .* abs(reconstruction),2);
+
+    denominator = sum(abs(reconstruction),2);
+
+    rec_pos = numerator ./ denominator;
+
     rec_dir = mean(reconstruction,2);
+
     rec_mag = norm(rec_dir,2);
+
     rec_dir = rec_dir / rec_mag;
 
-    % From the missing comparison quantities for the "actual" dipoles.
+    % Form the missing comparison quantities for the "actual" dipoles.
 
     dipole_mag = norm(dipole_vec(:),2);
+
     dipole_dir = dipole_vec/dipole_mag;
 
     % Form the differences being asked for
 
     position_diff = norm(rec_pos - dipole_pos(:));
-    angle_diff = acos(sum(rec_dir.*dipole_dir(:)))*180/pi;
+
+    % A sanity check:
+    %
+    % π rad = 180 °
+    % ⟺
+    % 1° = π rad / 180
+    % ⟺
+    % n ° = n × pi / 180
+
+    angle_diff = acos(sum(rec_dir.*dipole_dir(:))) * pi / 180;
+
     magnitude_diff = 1 - rec_mag / dipole_mag;
 
 end
