@@ -39,18 +39,23 @@ function h_waitbar = zef_waitbar(varargin)
 
     if isempty(h_zeffiro_menu)
 
-        if plan_of_action == PROGRESSING
+        if plan_of_action == INITIALIZING
 
-            h_waitbar = varargin{2};
-
-            progress_bar_text = "";
-
-        elseif plan_of_action == PROGRESSING_WITH_CHANGED_TEXT ...
-        || plan_of_action == INITIALIZING
+            h_waitbar = init_figure([0.375 0.35 0.2 0.2], 1, -1);
 
             progress_bar_text = varargin{2};
 
-            h_waitbar = init_figure([0.375 0.35 0.2 0.2], 0, -1);
+        elseif plan_of_action == PROGRESSING
+
+            h_waitbar = varargin{2};
+
+            progress_bar_text = h_waitbar.Name;
+
+        elseif plan_of_action == PROGRESSING_WITH_CHANGED_TEXT ...
+
+            h_waitbar = varargin{2};
+
+            progress_bar_text = varargin{3};
 
             h_axes = axes(h_waitbar,'Position',[0.1 0.525 0.8 0.3]);
             h_axes.Visible = 'off';
@@ -101,75 +106,83 @@ function h_waitbar = zef_waitbar(varargin)
         visible_value = 0;
     end
 
-    if plan_of_action == PROGRESSING_WITH_CHANGED_TEXT % nargin == 3
+    % Choose which waitbar to update.
+
+    if plan_of_action == INITIALIZING
+
+        h_waitbar = init_figure([0.375 0.35 0.2 0.2], 1, -1);
+
+        progress_bar_text = varargin{2};
+
+    elseif plan_of_action == PROGRESSING
 
         h_waitbar = varargin{2};
 
-        if length(varargin) > 2
-            progress_bar_text = varargin{3};
-        else
-            h_text = findobj(h_waitbar.Children,'Tag','progress_bar_text');
-            progress_bar_text = h_text.String;
-        end
+        progress_bar_text = h_waitbar.Name;
 
-    else
+    elseif plan_of_action == PROGRESSING_WITH_CHANGED_TEXT ...
 
-        if plan_of_action == INITIALIZING
+        h_waitbar = varargin{2};
 
-            progress_bar_text = varargin{2};
-
-        elseif plan_of_action == PROGRESSING
-
-            progress_bar_text = "";
-
-        else
-
-            error();
-
-        end
-
-        first_step = 1;
-        task_id = task_id + 1;
-        h_zeffiro_menu.ZefTaskId = h_zeffiro_menu.ZefTaskId + 1;
-
-        position_vec_0 = h_zeffiro_menu.Position;
-        position_vec_1 = h_zeffiro_menu.ZefSystemSettings.segmentation_tool_default_position;
-        screen_size = get(groot,'ScreenSize');
-        position_vec_0([1 3]) = position_vec_0([1 3])/screen_size(3);
-        position_vec_0([2 4]) = position_vec_0([2 4])/screen_size(4);
-        position_vec_1([1 3]) = position_vec_1([1 3])/screen_size(3);
-        position_vec_1([2 4]) = position_vec_1([2 4])/screen_size(4);
-
-        position_vec = [position_vec_0(1) position_vec_0(2)-0.3*position_vec_1(4) 0.5*position_vec_1(3) 0.3*position_vec_1(4)];
-
-        h_waitbar = init_figure(position_vec, visible_value, task_id);
-
-        h_waitbar.UserData = [cputime now*86400 now*86400];
+        progress_bar_text = varargin{3};
 
         h_axes = axes(h_waitbar,'Position',[0.1 0.525 0.8 0.3]);
         h_axes.Visible = 'off';
         h_axes.Tag= 'progress_bar_main_axes';
 
         uicontrol('Tag','progress_bar_text','Style','text','Parent',h_waitbar,'Units','normalized','String',progress_bar_text,'HorizontalAlignment','center','Position',[0.1 0.7 0.8 0.15]);
-        uicontrol('Tag','auxiliary_text_1','Style','text','Parent',h_waitbar,'Units','normalized','String','Workspace size (MB)','HorizontalAlignment','center','Position',[0.15 0.05 0.2 0.15]);
-        uicontrol('Tag','auxiliary_text_2','Style','text','Parent',h_waitbar,'Units','normalized','String','Time (s)','HorizontalAlignment','center','Position',[0.4 0.05 0.2 0.15]);
-        uicontrol('Tag','auxiliary_text_3','Style','text','Parent',h_waitbar,'Units','normalized','String','CPU usage (%)','HorizontalAlignment','center','Position',[0.65 0.05 0.2 0.15]);
 
-        h_axes_2 = axes(h_waitbar,'Position',[0.15 0.25 0.2 0.2]);
-        h_axes_2.Visible = 'off';
-        h_axes_2.Tag= 'progress_bar_auxiliary_axes_1';
+        font_size = 12;
 
-        h_axes_2 = axes(h_waitbar,'Position',[0.4 0.25 0.2 0.2]);
-        h_axes_2.Visible = 'off';
-        h_axes_2.Tag= 'progress_bar_auxiliary_axes_2';
+        set(findobj(h_waitbar.Children,'-property','FontUnits'),'FontUnits','pixels');
+        set(findobj(h_waitbar.Children,'-property','FontSize'),'FontSize',font_size);
 
-        h_axes_2 = axes(h_waitbar,'Position',[0.65 0.25 0.2 0.2]);
-        h_axes_2.Visible = 'off';
-        h_axes_2.Tag= 'progress_bar_auxiliary_axes_3';
+    else
 
-        h_waitbar.Colormap = [[ 0 1 1]; [ 0.145   0.624    0.631]];
+        error("zef_waitbar encountered an invalid plan of action.")
 
     end
+
+    % Update waitbar.
+
+    first_step = 1;
+    task_id = task_id + 1;
+    h_zeffiro_menu.ZefTaskId = h_zeffiro_menu.ZefTaskId + 1;
+
+    position_vec_0 = h_zeffiro_menu.Position;
+    position_vec_1 = h_zeffiro_menu.ZefSystemSettings.segmentation_tool_default_position;
+    screen_size = get(groot,'ScreenSize');
+    position_vec_0([1 3]) = position_vec_0([1 3])/screen_size(3);
+    position_vec_0([2 4]) = position_vec_0([2 4])/screen_size(4);
+    position_vec_1([1 3]) = position_vec_1([1 3])/screen_size(3);
+    position_vec_1([2 4]) = position_vec_1([2 4])/screen_size(4);
+
+    position_vec = [position_vec_0(1) position_vec_0(2)-0.3*position_vec_1(4) 0.5*position_vec_1(3) 0.3*position_vec_1(4)];
+
+    h_waitbar.UserData = [cputime now*86400 now*86400];
+
+    h_axes = axes(h_waitbar,'Position',[0.1 0.525 0.8 0.3]);
+    h_axes.Visible = 'off';
+    h_axes.Tag= 'progress_bar_main_axes';
+
+    uicontrol('Tag','progress_bar_text','Style','text','Parent',h_waitbar,'Units','normalized','String',progress_bar_text,'HorizontalAlignment','center','Position',[0.1 0.7 0.8 0.15]);
+    uicontrol('Tag','auxiliary_text_1','Style','text','Parent',h_waitbar,'Units','normalized','String','Workspace size (MB)','HorizontalAlignment','center','Position',[0.15 0.05 0.2 0.15]);
+    uicontrol('Tag','auxiliary_text_2','Style','text','Parent',h_waitbar,'Units','normalized','String','Time (s)','HorizontalAlignment','center','Position',[0.4 0.05 0.2 0.15]);
+    uicontrol('Tag','auxiliary_text_3','Style','text','Parent',h_waitbar,'Units','normalized','String','CPU usage (%)','HorizontalAlignment','center','Position',[0.65 0.05 0.2 0.15]);
+
+    h_axes_2 = axes(h_waitbar,'Position',[0.15 0.25 0.2 0.2]);
+    h_axes_2.Visible = 'off';
+    h_axes_2.Tag= 'progress_bar_auxiliary_axes_1';
+
+    h_axes_2 = axes(h_waitbar,'Position',[0.4 0.25 0.2 0.2]);
+    h_axes_2.Visible = 'off';
+    h_axes_2.Tag= 'progress_bar_auxiliary_axes_2';
+
+    h_axes_2 = axes(h_waitbar,'Position',[0.65 0.25 0.2 0.2]);
+    h_axes_2.Visible = 'off';
+    h_axes_2.Tag= 'progress_bar_auxiliary_axes_3';
+
+    h_waitbar.Colormap = [[ 0 1 1]; [ 0.145   0.624    0.631]];
 
     detail_condition =or((86400*now - h_waitbar.UserData(2)) >= log_frequency,first_step);
 
@@ -241,13 +254,6 @@ function h_waitbar = zef_waitbar(varargin)
         h_axes_4.Tag= 'progress_bar_auxiliary_axes_3';
         h_text.Tag='progress_bar_text';
         h_waitbar.Tag ='progress_bar';
-
-    end
-
-    if not(ishandle(varargin{2}))
-
-        set(findobj(h_waitbar.Children,'-property','FontUnits'),'FontUnits','pixels');
-        set(findobj(h_waitbar.Children,'-property','FontSize'),'FontSize',font_size);
 
     end
 
