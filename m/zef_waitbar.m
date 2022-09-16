@@ -61,7 +61,7 @@ function h_waitbar = zef_waitbar(varargin)
             h_axes.Visible = 'off';
             h_axes.Tag= 'progress_bar_main_axes';
 
-            uicontrol('Tag','progress_bar_text','Style','text','Parent',h_waitbar,'Units','normalized','String',progress_bar_text,'HorizontalAlignment','center','Position',[0.1 0.7 0.8 0.15]);
+            % uicontrol('Tag','progress_bar_text_container','Style','text','Parent',h_waitbar,'Units','normalized','String',progress_bar_text,'HorizontalAlignment','center','Position',[0.1 0.7 0.8 0.15]);
 
             font_size = 12;
 
@@ -106,7 +106,7 @@ function h_waitbar = zef_waitbar(varargin)
         visible_value = 0;
     end
 
-    % Choose which waitbar to update.
+    % Choose whether to update and existing waitbar or an new one.
 
     if plan_of_action == INITIALIZING
 
@@ -118,28 +118,19 @@ function h_waitbar = zef_waitbar(varargin)
 
         h_waitbar = varargin{2};
 
-        progress_bar_text = h_waitbar.Name;
+        h_text = findobj(h_waitbar.Children,'Tag','progress_bar_text');
 
-    elseif plan_of_action == PROGRESSING_WITH_CHANGED_TEXT ...
+        progress_bar_text = h_text.String;
+
+    elseif plan_of_action == PROGRESSING_WITH_CHANGED_TEXT
 
         h_waitbar = varargin{2};
 
         progress_bar_text = varargin{3};
 
-        h_axes = axes(h_waitbar,'Position',[0.1 0.525 0.8 0.3]);
-        h_axes.Visible = 'off';
-        h_axes.Tag= 'progress_bar_main_axes';
-
-        uicontrol('Tag','progress_bar_text','Style','text','Parent',h_waitbar,'Units','normalized','String',progress_bar_text,'HorizontalAlignment','center','Position',[0.1 0.7 0.8 0.15]);
-
-        font_size = 12;
-
-        set(findobj(h_waitbar.Children,'-property','FontUnits'),'FontUnits','pixels');
-        set(findobj(h_waitbar.Children,'-property','FontSize'),'FontSize',font_size);
-
     else
 
-        error("zef_waitbar encountered an invalid plan of action.")
+        error("zef_waitbar encountered an invalid plan of action. You gave the wrong number of arguments in the wrong order")
 
     end
 
@@ -161,26 +152,49 @@ function h_waitbar = zef_waitbar(varargin)
 
     h_waitbar.UserData = [cputime now*86400 now*86400];
 
-    h_axes = axes(h_waitbar,'Position',[0.1 0.525 0.8 0.3]);
+    % Create bar elements on first run.
+
+    if plan_of_action == INITIALIZING
+
+        uicontrol('Tag','progress_bar_text','Style','text','Parent',h_waitbar,'Units','normalized','String',progress_bar_text,'HorizontalAlignment','center','Position',[0.1 0.7 0.8 0.15]);
+        uicontrol('Tag','auxiliary_text_1','Style','text','Parent',h_waitbar,'Units','normalized','String','Workspace size (MB)','HorizontalAlignment','center','Position',[0.15 0.05 0.2 0.15]);
+        uicontrol('Tag','auxiliary_text_2','Style','text','Parent',h_waitbar,'Units','normalized','String','Time (s)','HorizontalAlignment','center','Position',[0.4 0.05 0.2 0.15]);
+        uicontrol('Tag','auxiliary_text_3','Style','text','Parent',h_waitbar,'Units','normalized','String','CPU usage (%)','HorizontalAlignment','center','Position',[0.65 0.05 0.2 0.15]);
+
+    end
+
+    % Either create or use existing axes.
+
+    if plan_of_action == INITIALIZING
+
+        h_axes = axes(h_waitbar,'Position',[0.1 0.525 0.8 0.3]);
+        h_axes_2 = axes(h_waitbar,'Position',[0.15 0.25 0.2 0.2]);
+        h_axes_3 = axes(h_waitbar,'Position',[0.4 0.25 0.2 0.2]);
+        h_axes_4 = axes(h_waitbar,'Position',[0.65 0.25 0.2 0.2]);
+
+    else
+
+        h_axes = findobj(h_waitbar.Children,'Tag','progress_bar_main_axes');
+        h_axes_2 = findobj(h_waitbar.Children,'Tag','progress_bar_auxiliary_axes_1');
+        h_axes_3 = findobj(h_waitbar.Children,'Tag','progress_bar_auxiliary_axes_2');
+        h_axes_4 = findobj(h_waitbar.Children,'Tag','progress_bar_auxiliary_axes_3');
+
+    end
+
+    h_text = findobj(h_waitbar.Children,'Tag','progress_bar_text');
+    h_text.String = progress_bar_text;
+
     h_axes.Visible = 'off';
     h_axes.Tag= 'progress_bar_main_axes';
 
-    uicontrol('Tag','progress_bar_text','Style','text','Parent',h_waitbar,'Units','normalized','String',progress_bar_text,'HorizontalAlignment','center','Position',[0.1 0.7 0.8 0.15]);
-    uicontrol('Tag','auxiliary_text_1','Style','text','Parent',h_waitbar,'Units','normalized','String','Workspace size (MB)','HorizontalAlignment','center','Position',[0.15 0.05 0.2 0.15]);
-    uicontrol('Tag','auxiliary_text_2','Style','text','Parent',h_waitbar,'Units','normalized','String','Time (s)','HorizontalAlignment','center','Position',[0.4 0.05 0.2 0.15]);
-    uicontrol('Tag','auxiliary_text_3','Style','text','Parent',h_waitbar,'Units','normalized','String','CPU usage (%)','HorizontalAlignment','center','Position',[0.65 0.05 0.2 0.15]);
-
-    h_axes_2 = axes(h_waitbar,'Position',[0.15 0.25 0.2 0.2]);
     h_axes_2.Visible = 'off';
     h_axes_2.Tag= 'progress_bar_auxiliary_axes_1';
 
-    h_axes_2 = axes(h_waitbar,'Position',[0.4 0.25 0.2 0.2]);
-    h_axes_2.Visible = 'off';
-    h_axes_2.Tag= 'progress_bar_auxiliary_axes_2';
+    h_axes_3.Visible = 'off';
+    h_axes_3.Tag= 'progress_bar_auxiliary_axes_2';
 
-    h_axes_2 = axes(h_waitbar,'Position',[0.65 0.25 0.2 0.2]);
-    h_axes_2.Visible = 'off';
-    h_axes_2.Tag= 'progress_bar_auxiliary_axes_3';
+    h_axes_4.Visible = 'off';
+    h_axes_4.Tag= 'progress_bar_auxiliary_axes_3';
 
     h_waitbar.Colormap = [[ 0 1 1]; [ 0.145   0.624    0.631]];
 
@@ -203,9 +217,6 @@ function h_waitbar = zef_waitbar(varargin)
 
     if h_waitbar.Visible
 
-        h_axes = findobj(h_waitbar.Children,'Tag','progress_bar_main_axes');
-        h_text = findobj(h_waitbar.Children,'Tag','progress_bar_text');
-        h_text.String = progress_bar_text;
         h_bar = barh(h_axes,[progress_value 1-progress_value; 0 0],'barlayout','stacked','showbaseline','off','edgecolor','none');
 
         h_bar(1).FaceColor = [ 0 1 1];
@@ -214,10 +225,6 @@ function h_waitbar = zef_waitbar(varargin)
         uistack(h_text,'top');
 
         if detail_condition
-
-            h_axes_2 = findobj(h_waitbar.Children,'Tag','progress_bar_auxiliary_axes_1');
-            h_axes_3 = findobj(h_waitbar.Children,'Tag','progress_bar_auxiliary_axes_2');
-            h_axes_4 = findobj(h_waitbar.Children,'Tag','progress_bar_auxiliary_axes_3');
 
             h_pie = pie(h_axes_2,[progress_value_1 1-progress_value_1]);
             h_axes_2.Visible = 'off';
