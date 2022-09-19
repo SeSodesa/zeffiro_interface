@@ -75,32 +75,6 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
     rec_vec_angle = [];
     rec_vec_magnitude = [];
 
-    % Check for initial errors
-
-    ACCEPTED_METHODS = {@zef_find_mne_reconstruction, @zef_beamformer, @zef_ramus_iteration};
-
-    unknown_method = true;
-
-    for mind = 1 : length(ACCEPTED_METHODS)
-
-        if isequal(inverse_method, ACCEPTED_METHODS{mind})
-
-            unknown_method = false;
-
-            break
-
-        end
-
-    end
-
-    if unknown_method
-
-        warning("zef_dipole_localization_map was given an unknown inversion method. Aborting.");
-
-        return
-
-    end
-
     % Perform a multigrid decomposition around given source dipole positions.
 
     [multigrid_dec, multigrid_ind, multigrid_perm] = make_multigrid_dec(zef.source_positions, n_subset, 1, 1);
