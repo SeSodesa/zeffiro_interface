@@ -1,56 +1,3 @@
-function [zef, rec] = zef_call_inverse_method( ...
-    zef, ...
-    inverse_method_name ...
-)
-
-% Calls the scripts needed to initialize a given inverse method and then the
-% inversion method itself. Also filters the reconstruction produced by the
-% inverse method and returns it.
-%
-% The returned reconstruction will be empty, if no inverse method was called
-% successfully.
-
-    arguments
-
-        zef struct
-
-        inverse_method_name (1,1) function_handle
-
-    end
-
-    % Initialize empty reconstruction.
-
-    rec = [];
-
-    % Get the name of the given inverse method.
-
-    inverse_method_name = func2str(inverse_method_name);
-
-    % See if a given inverse method is recognised and if so, call it after
-    % running the required initialization script.
-
-    if strcmp(inverse_method_name, "mne")
-        [rec, ~] = goodness_of_inversion.mne(zef);
-    end
-
-    if strcmp(inverse_method_name, "beamformer")
-        [rec, ~, ~] = goodness_of_inversion.beamformer(zef);
-    end
-
-    if strcmp(inverse_method_name, "ramus")
-        error("TODO RAMUS")
-        [rec, ~] = inverse_method_name();
-    end
-
-    if strcmp(inverse_method_name, "sesame")
-        error("TODO SESAME")
-        [rec] = inverse_method_name();
-    end
-
-end
-
-%% Local helper functions
-
 function [rec, info] = zef_mne(zef)
 
     arguments
@@ -362,8 +309,11 @@ function [rec, info] = zef_mne(zef)
 
         if size_f > 1
         t = [1:size_f];
+
         %gaussian_window = blackmanharris(length(t))';
+
         %f = f.*gaussian_window;
+
         f = mean(f,2);
         end
 
@@ -454,4 +404,4 @@ function [rec, info] = zef_mne(zef)
         rec = rec./max(aux_norm_vec);
     end;
 
-end
+end % function

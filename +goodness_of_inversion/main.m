@@ -65,7 +65,7 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 
         roi_radius (1,1) double { mustBeReal, mustBePositive }
 
-        inverse_method (1,1) function_handle
+        inverse_method (1,1) string { mustBeMember(inverse_method, ["mne", "beamformer", "ramus", "sesame"]) }
 
     end
 
