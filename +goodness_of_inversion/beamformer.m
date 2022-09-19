@@ -37,7 +37,7 @@ reconstruction_information.source_directions = zef.source_directions;
 reconstruction_information.snr_val = zef.inv_snr;
 reconstruction_information.number_of_frames = zef.number_of_frames;
 
-[L,n_interp, procFile] = zef_processLeadfields(source_direction_mode);
+[L,n_interp, procFile] = goodness_of_inversion.process_lead_fields(zef, source_direction_mode);
 
 L_aux = L;
 S_mat = std_lhood^2*eye(size(L,1));
@@ -49,15 +49,15 @@ else
 number_of_frames = 1;
 end
 
-f_data = zef_getFilteredData;
+f_data = goodness_of_inversion.get_filtered_data(zef);
 
-  if zef.cov_type == 1
-    C = (f_data-mean(f_data,2))*(f_data-mean(f_data,2))'/size(f_data,2);
-    C = C+lambda_cov*trace(C)*eye(size(C))/size(f_data,1);
-elseif zef.cov_type == 2
- C = (f_data-mean(f_data,2))*(f_data-mean(f_data,2))'/size(f_data,2);
-    C = C + lambda_cov*eye(size(C));
-end
+    if zef.cov_type == 1
+        C = (f_data-mean(f_data,2))*(f_data-mean(f_data,2))'/size(f_data,2);
+        C = C+lambda_cov*trace(C)*eye(size(C))/size(f_data,1);
+    elseif zef.cov_type == 2
+        C = (f_data-mean(f_data,2))*(f_data-mean(f_data,2))'/size(f_data,2);
+        C = C + lambda_cov*eye(size(C));
+    end
 
 tic;
 %------------------ TIME LOOP STARTS HERE ------------------------------

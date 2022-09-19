@@ -20,11 +20,11 @@ function [f] = get_filtered_data(zef, object_string, use_normalization)
 
     f = zef.measurements;
 
-    high_pass = eval(['zef.' object_string '_low_cut_frequency']);
+    high_pass = eval("zef." + object_string + "_low_cut_frequency");
 
-    low_pass = eval(['zef.' object_string '_high_cut_frequency']);
+    low_pass = eval("zef." + object_string + "_high_cut_frequency");
 
-    sampling_freq = eval(['zef.' object_string '_sampling_frequency']);
+    sampling_freq = eval("zef." + object_string + "_sampling_frequency");
 
     if use_normalization
 
