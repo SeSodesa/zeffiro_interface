@@ -69,6 +69,26 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 %     - source_interpolation_ind
 %     - use_gpu
 %
+%   - Beamformer
+%
+%     - beamformer.normalize_leadfield.Value
+%     - bf_type
+%     - cov_type
+%     - inv_cov_lambda
+%     - inv_high_cut_frequency
+%     - inv_leadfield_lambda
+%     - inv_low_cut_frequency
+%     - inv_sampling_frequency
+%     - inv_snr
+%     - inv_time_1
+%     - inv_time_2
+%     - inv_time_3
+%     - L_reg_type
+%     - number_of_frames
+%     - source_direction_mode
+%     - source_directions
+%     - source_interpolation_ind
+%
 % Output:
 %
 % - rec_vec_position
