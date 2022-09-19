@@ -14,17 +14,13 @@ function [zef, rec] = zef_call_inverse_method( ...
 
         zef struct
 
-        inverse_method_name (1,1) function_handle
+        inverse_method_name (1,1) string { mustBeMember(inverse_method_name, ["mne", "beamformer", "ramus", "sesame"]) }
 
     end
 
     % Initialize empty reconstruction.
 
     rec = [];
-
-    % Get the name of the given inverse method.
-
-    inverse_method_name = func2str(inverse_method_name);
 
     % See if a given inverse method is recognised and if so, call it after
     % running the required initialization script.
