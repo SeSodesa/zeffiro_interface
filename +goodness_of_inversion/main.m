@@ -30,17 +30,44 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 %
 % - inverse_method
 %
-%   A function handle to the inverse method used to calculate the
+%   A string that indicates the inverse method used to calculate the
 %   reconstruction from the lead field. Currently supported inversion methods
 %   are
 %
-%   - @zef_find_mne_reconstruction
-%   - @zef_beamformer
-%   - @zef_ramus_iteration
+%   - "mne"
+%   - "beamformer"
+%   - "ramus"
+%   - "sesame"
 %
-%   Methods that might be supported later include
+%   In order to work, the following lists of fields need to exist within zef
+%   for the inverse methods to function at all:
 %
-%   - @SESAME_inversion (problems with randomization (?) causing too large vector indices)
+%   - MNE
+%
+%     - compartment_tags
+%     - gpu_count
+%     - inv_prior_over_measurement_db
+%     - inv_amplitude_db
+%     - inv_snr
+%     - L
+%     - measurements
+%     - mne_data_segment
+%     - mne_high_cut_frequency
+%     - mne_low_cut_frequency
+%     - mne_normalize_data
+%     - mne_number_of_frames
+%     - mne_prior
+%     - mne_sampling_frequency
+%     - mne_time_1
+%     - mne_time_2
+%     - mne_time_3
+%     - mne_type
+%     - reuna_t
+%     - reuna_p
+%     - source_direction_mode
+%     - source_directions
+%     - source_interpolation_ind
+%     - use_gpu
 %
 % Output:
 %
