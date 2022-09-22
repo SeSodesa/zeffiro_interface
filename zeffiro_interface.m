@@ -250,7 +250,7 @@ function zef = zeffiro_interface(args)
 
     end % if
 
-    % Importing given file contents to a new project.
+    % Import given file contents to a new project.
 
     if not(args.import_to_new_project == "")
 
