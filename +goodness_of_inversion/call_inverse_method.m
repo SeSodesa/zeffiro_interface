@@ -14,7 +14,7 @@ function [zef, rec] = zef_call_inverse_method( ...
 
         zef struct
 
-        inverse_method_name (1,1) string { mustBeMember(inverse_method_name, ["mne", "beamformer", "ramus", "sesame"]) }
+        inverse_method_name (1,1) string { mustBeMember(inverse_method_name, ["MNE", "Beamformer", "RAMUS", "SESAME", "sLORETA"]) }
 
     end
 
@@ -25,20 +25,21 @@ function [zef, rec] = zef_call_inverse_method( ...
     % See if a given inverse method is recognised and if so, call it after
     % running the required initialization script.
 
-    if strcmp(inverse_method_name, "mne")
-        [rec, ~] = goodness_of_inversion.mne(zef);
+    if strcmp(inverse_method_name, "MNE") ...
+    || strcmp(inverse_method_name, "sLORETA")
+        [rec, ~] = goodness_of_inversion.mne(zef, inverse_method_name);
     end
 
-    if strcmp(inverse_method_name, "beamformer")
+    if strcmp(inverse_method_name, "Beamformer")
         [rec, ~, ~] = goodness_of_inversion.beamformer(zef);
     end
 
-    if strcmp(inverse_method_name, "ramus")
+    if strcmp(inverse_method_name, "RAMUS")
         error("TODO RAMUS")
         [rec, ~] = inverse_method_name();
     end
 
-    if strcmp(inverse_method_name, "sesame")
+    if strcmp(inverse_method_name, "SESAME")
         error("TODO SESAME")
         [rec] = inverse_method_name();
     end

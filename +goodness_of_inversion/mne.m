@@ -1,8 +1,10 @@
-function [rec, info] = zef_mne(zef)
+function [rec, info] = zef_mne(zef, mne_type)
 
     arguments
 
         zef struct
+
+        mne_type (1,1) string { mustBeMember(mne_type, ["mne", "sLORETA"]) }
 
     end
 
@@ -17,7 +19,7 @@ function [rec, info] = zef_mne(zef)
     pm_val = pm_val - amplitude_db;
 
     snr_val = zef.inv_snr;
-    mne_type = zef.mne_type;
+    % mne_type = zef.mne_type;
     mne_prior = zef.mne_prior;
     std_lhood = 10^(-snr_val/20);
     sampling_freq = zef.mne_sampling_frequency;
@@ -338,14 +340,14 @@ function [rec, info] = zef_mne(zef)
         L_inv = L.*repmat(d_sqrt',size(L,1),1);
         L_inv = d_sqrt.*(L_inv'*(inv(L_inv*L_inv' + S_mat)));
 
-        if isequal(mne_type,2)
+        if isequal(mne_type,"mne")
 
             % dSPM
             aux_vec = sum(L_inv.^2, 2);
             aux_vec = sqrt(aux_vec);
             L_inv = L_inv./aux_vec(:,ones(size(L_inv,2),1));
 
-        elseif isequal(mne_type, 3)
+        elseif isequal(mne_type, "sLORETA")
 
             %'sLORETA'
 
