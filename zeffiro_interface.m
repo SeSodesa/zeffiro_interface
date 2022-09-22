@@ -1,36 +1,47 @@
 function zef = zeffiro_interface(args)
-%This fuction starts Zeffiro Interface. It can be run with a variable
-%number of arguments, which can be called as a list of name-value pairs as
-%follows:
+
 %
-%zeffiro_interface('property name 1','property value 1','property name 2','property value 2');
+% zeffiro_interface
 %
-%This will enable running Zeffiro with or without a display and performing
-%different operations. The list of properties (and their values) is the
-%following:
+% This fuction starts Zeffiro Interface. It can be run with a variable number
+% of key–value arguments, which can be called as a list of name-value pairs as
+% follows:
 %
-%Property: 'restart'                     Value: none
-%Property: 'start_mode'                  Value: 'display' or 'nodisplay'
-%Propertu: 'open_project'                Value: <project file name>,
-%Property: 'import_to_new_project'       Value: <file name>,
-%Property: 'import_to_existing_project'  Value: <file name>,
-%Property: 'save_project'                Value: <file name>,
-%Property: 'export_fem_mesh'             Value: <file name>,
-%Property: 'open_figure'                 Value: <file name>,
-%Property: 'open_figure_folder'          Value: <file name>,
-%Property: 'run_script'                  Value: <file name>,
-%Property: 'exit_zeffiro'                Value: none
-%Property: 'quit_matlab'                 Vaule: none
-%Property: 'use_github'                  Value: 1 (yes) or 0 (no)
-%Property: 'use_gpu'                     Value: 1 (yes) or 0 (no)
-%Property: 'use_gpu_graphic'             Value: 1 (yes) or 0 (no)
-%Property: 'gpu_num'                     Value: <gpu device number>
-%Property: 'use_display'                 Value: 1 (yes) or 0 (no)
-%Property: 'parallel_processes'          Value: <parallel pool size>
-%Property: 'verbose_mode'                Value: 1 (yes) or 0 (no)
-%Property: 'use_waitbar'                 Value: 1 (yes) or 0 (no)
-%Property: 'use_log'                     Value: 1 (yes) or 0 (no)
-%Property: 'log_file_name'               Value: <log file name>
+%   zef = zeffiro_interface('name_1', value_1, 'name_2', value_2, …);
+%
+% Matlab versions newer or equal to r2021a may also use the syntax
+%
+%   zef = zeffiro_interafce(name_1=value_1, name_2=value_2, …)
+%
+% Either way, this enables running Zeffiro with or without a display and
+% performing different operations. The list of names (and their values) is the
+% following:
+%
+%   name                            value
+%
+%   'restart'                       none
+%   'start_mode'                    'display' or 'nodisplay'
+%   'open_project'                  <project file name>,
+%   'import_to_new_project'         <file name>,
+%   'import_to_existing_project'    <file name>,
+%   'save_project'                  <file name>,
+%   'export_fem_mesh'               <file name>,
+%   'open_figure'                   <file name>,
+%   'open_figure_folder'            <file name>,
+%   'run_script'                    <file name>,
+%   'exit_zeffiro'                  none
+%   'quit_matlab'                   none
+%   'use_github'                    1 (yes) or 0 (no)
+%   'use_gpu'                       1 (yes) or 0 (no)
+%   'use_gpu_graphic'               1 (yes) or 0 (no)
+%   'gpu_num'                       <gpu device number>
+%   'use_display'                   1 (yes) or 0 (no)
+%   'parallel_processes'            <parallel pool size>
+%   'verbose_mode'                  1 (yes) or 0 (no)
+%   'use_waitbar'                   1 (yes) or 0 (no)
+%   'use_log'                       1 (yes) or 0 (no)
+%   'log_file_name'                 <log file name>
+%
 
     arguments
 
