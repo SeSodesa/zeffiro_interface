@@ -1,6 +1,6 @@
 %Copyright © 2018- Sampsa Pursiainen & ZI Development Team
 %See: https://github.com/sampsapursiainen/zeffiro_interface
-function [z,reconstruction_information] = zef_ramus_iteration(void)
+function [z,reconstruction_information] = zef_ramus_iteration(zef)
 
     h = zef_waitbar([0 0 0],['RAMUS iteration.']);
 
