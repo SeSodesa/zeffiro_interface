@@ -176,7 +176,7 @@ function zef = zeffiro_interface(args)
 
         % TODO: does not work.
         %
-        % evalc('cvx_startup');
+        % evalc("cvx_startup");
 
     end
 
@@ -332,13 +332,13 @@ function zef = zeffiro_interface(args)
 
         if isempty(file_path)
 
-            file_path = './data/';
+            file_path = "./data/";
 
         end
 
         if isempty(file_2)
 
-            file_2 = '.mat';
+            file_2 = ".mat";
 
         end
 
@@ -377,11 +377,11 @@ function zef = zeffiro_interface(args)
             file_path = file_path + filesep;
 
             if isempty(file_path)
-                file_path = './fig/';
+                file_path = "./fig/";
             end
 
             if isempty(file_2)
-                file_2 = '.fig';
+                file_2 = ".fig";
             end
 
             zef.file_path = file_path;
