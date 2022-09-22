@@ -395,24 +395,13 @@ function zef = zeffiro_interface(args)
     end % if
 
     % Finally before possibly quitting, run the script given as an argument.
+    %
+    % NOTE: using eval here is very unsafe. Allows for arbitrary code
+    % execution. Make sure given script is from a trusted source.
 
     if not(run_script == "")
 
-        run_script_name = run_script;
-
-        if not(iscell(run_script_name))
-
-           run_script_name_aux = run_script_name;
-
-           run_script_name = cell(0);
-
-           run_script_name{1} = run_script_name_aux;
-
-        end
-
-        for i = 1 : length(run_script_name)
-            eval(run_script_name{i});
-        end
+        eval(run_script);
 
     end % if
 
