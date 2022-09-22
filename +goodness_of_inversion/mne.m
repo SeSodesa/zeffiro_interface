@@ -4,7 +4,7 @@ function [rec, info] = zef_mne(zef, mne_type)
 
         zef struct
 
-        mne_type (1,1) string { mustBeMember(mne_type, ["mne", "sLORETA"]) }
+        mne_type (1,1) string { mustBeMember(mne_type, ["MNE", "sLORETA"]) }
 
     end
 
@@ -340,7 +340,7 @@ function [rec, info] = zef_mne(zef, mne_type)
         L_inv = L.*repmat(d_sqrt',size(L,1),1);
         L_inv = d_sqrt.*(L_inv'*(inv(L_inv*L_inv' + S_mat)));
 
-        if isequal(mne_type,"mne")
+        if isequal(mne_type,"MNE")
 
             % dSPM
             aux_vec = sum(L_inv.^2, 2);
