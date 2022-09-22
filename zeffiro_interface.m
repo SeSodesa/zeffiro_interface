@@ -155,6 +155,8 @@ function zef = zeffiro_interface(args)
 
     zef.code_path = zef.program_path + filesep + "m";
 
+    zef.data_path = zef.program_path + filesep + data";
+
     run(zef.code_path + filesep + "zef_close_all.m");
 
     zef.zeffiro_task_id = 0;
@@ -165,7 +167,6 @@ function zef = zeffiro_interface(args)
 
     addpath(zef.program_path);
     addpath(zef.code_path);
-    addpath(zef.program_path);
     addpath(genpath(zef.code_path));
     addpath(genpath(zef.cluster_path));
 
@@ -179,6 +180,14 @@ function zef = zeffiro_interface(args)
 
     if exist("zef_start_config.m","file")
         eval("zef_start_config");
+    end
+
+    zef = zef_start(zef);
+
+    if zef.zeffiro_restart && isfile(zef.data_path + filesep + "default_project.mat")
+
+        zef = zef_load(zef, "default_project.mat", zef.data_path + filesep);
+
     end
 
     %% Finally, do the things specified by the input arguments.
@@ -274,11 +283,15 @@ function zef = zeffiro_interface(args)
         file_path = file_path + filesep;
 
         if isempty(file_path)
+
             file_path = "./data/";
+
         end
 
         if isempty(file_2)
+
             file_2 = ".mat";
+
         end
 
         zef.file_path = file_path;
@@ -293,6 +306,8 @@ function zef = zeffiro_interface(args)
 
     end % if
 
+    % Export FE mesh to a given path.
+
     if not(export_fem_mesh == "")
 
         export_fem_mesh_file = export_fem_mesh;
@@ -302,11 +317,15 @@ function zef = zeffiro_interface(args)
         file_path = file_path + filesep;
 
         if isempty(file_path)
+
             file_path = './data/';
+
         end
 
         if isempty(file_2)
+
             file_2 = '.mat';
+
         end
 
         zef.file_path = file_path;
@@ -320,6 +339,8 @@ function zef = zeffiro_interface(args)
         option_counter = option_counter + 2;
 
     end % if
+
+    % Open figure in a given path.
 
     if not(open_figure == "")
 
@@ -361,7 +382,7 @@ function zef = zeffiro_interface(args)
 
     end % if
 
-    % Open figures in a given folder, if given.
+    % Open all figures in a given folder, if given.
 
     if not(open_figure_folder == "")
 
@@ -389,7 +410,7 @@ function zef = zeffiro_interface(args)
 
     end % if
 
-    % Finally before possibly quitting, run the script given as an argument.
+    % Finally, before possibly quitting, run the script given as an argument.
     %
     % NOTE: using eval here is very unsafe. Allows for arbitrary code
     % execution. Make sure given script is from a trusted source.
