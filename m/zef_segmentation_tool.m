@@ -36,7 +36,7 @@ zef.mlapp = 1;
 
 clear zef_data;
 
-zef.aux_dir = dir([zef.program_path filesep 'profile']);
+zef.aux_dir = dir(zef.program_path + filesep + "profile");
 zef.aux_cell = cell(0);
 zef_j = 0;
 for zef_i = 3 : length(zef.aux_dir)
