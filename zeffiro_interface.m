@@ -80,8 +80,8 @@ function zef = zeffiro_interface(args)
 
     end
 
-    % Set zef fields based on name–value arguments.
-    %
+    %% Set zef fields based on name–value arguments.
+
     % TODO: add code below to handle different values of the arguments.
 
     zef.zeffiro_restart = args.restart;
@@ -128,13 +128,68 @@ function zef = zeffiro_interface(args)
 
     zef.log_file_name = args.log_file_name;
 
-    % Do things base on input settings.
+    %% Do things based on input settings.
+
+    % Prevent starting of Zeffiro if there is an existing value of zef.
 
     if not(zef.zeffiro_restart) && evalin('base','exist(''zef'',''var'');')
 
         error('It looks like that another instance of Zeffiro interface is already open. To enable this script, close Zeffiro Interface by command ''zef_close_all'' or clear zef by command ''clear zef''.')
 
     end
+
+    % Open new project if given.
+
+    if not(open_project == "")
+
+        open_project_file = open_project;
+
+        [file_path, file_1, file_2] = fileparts(open_project_file);
+
+        file_path = [file_path filesep];
+
+        if isempty(file_path)
+            file_path = './data/';
+        end
+
+        if isempty(file_2)
+            file_2 = '.mat';
+        end
+
+        zef.file_path = [file_path];
+
+        zef.file = [file_1 file_2];
+
+        zef = zef_load(zef,zef.file,zef.file_path);
+
+    end
+
+    if not(import_to_new_project == "")
+
+        import_segmentation_file = import_to_new_project;
+
+        [file_path, file_1, file_2] = fileparts(import_segmentation_file);
+
+        file_path = [file_path filesep];
+
+        if isempty(file_path)
+            file_path = './data/';
+        end
+
+        if isempty(file_2)
+            file_2 = '.mat';
+        end
+
+        zef.new_empty_project = 1;
+        zef_start_new_project;
+        zef.file_path = [file_path];
+        zef.file = [file_1 file_2];
+        zef = zef_import_segmentation(zef);
+        zef = zef_build_compartment_table(zef);
+
+    end
+
+    % Choose GPU device, if available.
 
     zef.gpu_count = gpuDeviceCount;
 
@@ -367,38 +422,38 @@ end
                 option_counter = option_counter + 2;
 
                if exist('use_github','var')
-         zef.use_github = use_github;
-          end
-         if exist('use_gpu','var')
-         zef.use_gpu = use_gpu;
-          end
-         if exist('use_gpu_graphic','var')
-           zef.use_gpu_graphic = use_gpu_graphic;
-          end
-             if exist('gpu_num','var')
-           zef.gpu_num = gpu_num;
-       end
-         if exist('parallel_processes','var')
-         zef.parallel_processes = parallel_processes;
-         end
-         if exist('verbose_mode','var')
-         zef.zeffiro_verbose_mode = verbose_mode;
-         end
-         if exist('use_log','var')
-         zef.use_log = use_log;
-        end
-        if exist('log_file_name','var')
-         zef.zeffiro_log_file_name = log_file_name;
-        end
-        if exist('use_waitbar','var')
-         zef.use_waitbar = use_waitbar;
-         end
-           if exist('use_display','var')
-               zef.use_display =  use_display;
-           end
-       if and(zef.gpu_count > 0, zef.use_gpu)
-      gpuDevice(zef.gpu_num);
-       end
+                zef.use_github = use_github;
+               end
+               if exist('use_gpu','var')
+                zef.use_gpu = use_gpu;
+               end
+               if exist('use_gpu_graphic','var')
+                   zef.use_gpu_graphic = use_gpu_graphic;
+               end
+                if exist('gpu_num','var')
+                zef.gpu_num = gpu_num;
+                end
+                 if exist('parallel_processes','var')
+                 zef.parallel_processes = parallel_processes;
+                 end
+                 if exist('verbose_mode','var')
+                 zef.zeffiro_verbose_mode = verbose_mode;
+                 end
+                 if exist('use_log','var')
+                 zef.use_log = use_log;
+                end
+                if exist('log_file_name','var')
+                 zef.zeffiro_log_file_name = log_file_name;
+                end
+                if exist('use_waitbar','var')
+                 zef.use_waitbar = use_waitbar;
+                 end
+                   if exist('use_display','var')
+                       zef.use_display =  use_display;
+                   end
+                   if and(zef.gpu_count > 0, zef.use_gpu)
+                  gpuDevice(zef.gpu_num);
+                   end
 
             elseif isequal(varargin{option_counter},lower('import_to_new_project'))
 
