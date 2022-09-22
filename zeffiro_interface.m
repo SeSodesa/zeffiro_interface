@@ -179,6 +179,24 @@ function zef = zeffiro_interface(args)
 
     end
 
+    % Choose GPU device, if available.
+
+    zef.gpu_count = gpuDeviceCount;
+
+    if zef.gpu_count > 0 && zef.use_gpu
+
+        try
+
+            gpuDevice(zef.gpu_num);
+
+        catch
+
+            warning("Tried using GPU with index " + zef.gpu_num + " but no such device was found. Starting without GPU...");
+
+        end
+
+    end % if
+
     % Open new project if given.
 
     if not(open_project == "")
@@ -262,24 +280,6 @@ function zef = zeffiro_interface(args)
 
     end % if
 
-    % Choose GPU device, if available.
-
-    zef.gpu_count = gpuDeviceCount;
-
-    if zef.gpu_count > 0 && zef.use_gpu
-
-        try
-
-            gpuDevice(zef.gpu_num);
-
-        catch
-
-            warning("Tried using GPU with index " + zef.gpu_num + " but no such device was found. Starting without GPU...");
-
-        end
-
-    end % if
-
     if not(export_fem_mesh == "")
 
         export_fem_mesh_file = export_fem_mesh;
@@ -348,6 +348,8 @@ function zef = zeffiro_interface(args)
 
     end % if
 
+    % Open figures in a given folder, if given.
+
     if not(open_figure_folder == "")
 
         file_path = open_figure_folder;
@@ -374,6 +376,8 @@ function zef = zeffiro_interface(args)
 
     end % if
 
+    % Finally before possibly quitting, run the script given as an argument.
+
     if not(run_script == "")
 
         run_script_name = run_script;
@@ -394,9 +398,13 @@ function zef = zeffiro_interface(args)
 
     end % if
 
+    % Exit zeffiro, if told to.
+
     if zef.exit_zeffiro
         zef_close_all;
     end
+
+    % Close Matlab, if told to.
 
     if zef.quit_matlab
         quit force;
