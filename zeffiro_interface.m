@@ -91,6 +91,14 @@ function zef = zeffiro_interface(args)
 
     end
 
+    % Prevent starting of Zeffiro, if there is an existing value of zef.
+
+    if not(args.restart) && evalin("base","exist('zef', 'var');")
+
+        error('It looks like that another instance of Zeffiro interface is already open. To enable this script, close Zeffiro Interface by command ''zef_close_all'' or clear zef by command ''clear zef''.')
+
+    end
+
     %% Set zef fields based on name–value arguments.
 
     zef = struct;
@@ -139,23 +147,19 @@ function zef = zeffiro_interface(args)
 
     zef.log_file_name = args.log_file_name;
 
-    %% Then do initial preparations
+    %% Then do initial preparations like path building and additions.
 
     program_path_aux = mfilename("fullpath");
 
-    [program_path, ~] = fileparts(program_path_aux);
+    [zef.program_path, ~] = fileparts(program_path_aux);
 
-    run(program_path + filesep + "m/zef_close_all.m"]);
+    zef.code_path = zef.program_path + filesep + "m";
+
+    run(zef.code_path + filesep + "zef_close_all.m");
 
     zef.zeffiro_task_id = 0;
 
     zef.zeffiro_restart_time = now;
-
-    zef.zeffiro_restart = zeffiro_restart;
-
-    zef.program_path = program_path;
-
-    zef.code_path = zef.program_path + filesep + "m";
 
     zef.cluster_path =  zef.program_path + filesep + "cluster";
 
@@ -164,6 +168,7 @@ function zef = zeffiro_interface(args)
     addpath(zef.program_path);
     addpath(genpath(zef.code_path));
     addpath(genpath(zef.cluster_path));
+
     addpath(genpath(zef.program_path + filesep + "mlapp"));
     addpath(genpath(zef.program_path + filesep + "fig"));
     addpath(genpath(zef.program_path + filesep + "plugins"));
@@ -172,21 +177,11 @@ function zef = zeffiro_interface(args)
 
     addpath(zef.program_path + filesep + "external");
 
-    zef.start_mode = "default";
-
     if exist("zef_start_config.m","file")
         eval("zef_start_config");
     end
 
     %% Finally, do the things specified by the input arguments.
-
-    % Prevent starting of Zeffiro, if there is an existing value of zef.
-
-    if not(zef.zeffiro_restart) && evalin('base','exist(''zef'',''var'');')
-
-        error('It looks like that another instance of Zeffiro interface is already open. To enable this script, close Zeffiro Interface by command ''zef_close_all'' or clear zef by command ''clear zef''.')
-
-    end
 
     % Choose GPU device, if available.
 
