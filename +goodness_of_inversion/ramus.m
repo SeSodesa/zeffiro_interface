@@ -43,7 +43,7 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
     reconstruction_information.snr_val = zef.ramus_snr;
     reconstruction_information.pm_val = zef.inv_prior_over_measurement_db;
 
-    [L,n_interp, procFile] = zef_processLeadfields(source_direction_mode);
+    [L,n_interp, procFile] = goodness_of_inversion.process_leadfields(source_direction_mode);
 
     if zef.use_gpu == 1 & zef.gpu_count > 0
         L = gpuArray(L);
@@ -247,7 +247,7 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
 
     end % for
 
-    [z] = zef_postProcessInverse(z_inverse, procFile);
-    [z] = zef_normalizeInverseReconstruction(z);
+    [z] = goodness_of_inversion.postprocess_reconstruction(z_inverse, procFile);
+    [z] = goodness_of_inversion.normalize_reconstruction(z);
 
 end % function
