@@ -84,6 +84,8 @@ function zef = zeffiro_interface(args)
 
     % TODO: add code below to handle different values of the arguments.
 
+    zef = struct;
+
     zef.zeffiro_restart = args.restart;
 
     zef.start_mode = args.start_mode;
@@ -128,9 +130,48 @@ function zef = zeffiro_interface(args)
 
     zef.log_file_name = args.log_file_name;
 
-    %% Do things based on input settings.
+    %% Then do initial preparations
 
-    % Prevent starting of Zeffiro if there is an existing value of zef.
+    program_path_aux = mfilename("fullpath");
+
+    [program_path, ~] = fileparts(program_path_aux);
+
+    run(program_path + filesep + "m/zef_close_all.m"]);
+
+    zef.zeffiro_task_id = 0;
+
+    zef.zeffiro_restart_time = now;
+
+    zef.zeffiro_restart = zeffiro_restart;
+
+    zef.program_path = program_path;
+
+    zef.code_path = zef.program_path + filesep + "m";
+
+    zef.cluster_path =  zef.program_path + filesep + "cluster";
+
+    addpath(zef.program_path);
+    addpath(zef.code_path);
+    addpath(zef.program_path);
+    addpath(genpath(zef.code_path));
+    addpath(genpath(zef.cluster_path));
+    addpath(genpath(zef.program_path + filesep + "mlapp"));
+    addpath(genpath(zef.program_path + filesep + "fig"));
+    addpath(genpath(zef.program_path + filesep + "plugins"));
+    addpath(genpath(zef.program_path + filesep + "profile"));
+    addpath(genpath(zef.program_path + filesep + "scripts"));
+
+    addpath(zef.program_path + filesep + "external");
+
+    zef.start_mode = "default";
+
+    if exist("zef_start_config.m","file")
+        eval("zef_start_config");
+    end
+
+    %% Do things based on input arguments.
+
+    % Prevent starting of Zeffiro, if there is an existing value of zef.
 
     if not(zef.zeffiro_restart) && evalin('base','exist(''zef'',''var'');')
 
@@ -146,14 +187,14 @@ function zef = zeffiro_interface(args)
 
         [file_path, file_1, file_2] = fileparts(open_project_file);
 
-        file_path = [file_path filesep];
+        file_path = file_path + filesep;
 
         if isempty(file_path)
-            file_path = './data/';
+            file_path = "./data/";
         end
 
         if isempty(file_2)
-            file_2 = '.mat';
+            file_2 = ".mat";
         end
 
         zef.file_path = [file_path];
@@ -162,7 +203,9 @@ function zef = zeffiro_interface(args)
 
         zef = zef_load(zef,zef.file,zef.file_path);
 
-    end
+    end % if
+
+    % Importing given file contents to a new project.
 
     if not(import_to_new_project == "")
 
@@ -173,11 +216,11 @@ function zef = zeffiro_interface(args)
         file_path = [file_path filesep];
 
         if isempty(file_path)
-            file_path = './data/';
+            file_path = "./data/";
         end
 
         if isempty(file_2)
-            file_2 = '.mat';
+            file_2 = ".mat";
         end
 
         zef.new_empty_project = 1;
@@ -187,7 +230,37 @@ function zef = zeffiro_interface(args)
         zef = zef_import_segmentation(zef);
         zef = zef_build_compartment_table(zef);
 
-    end
+    end % if
+
+    % Import given file contents into an existing project.
+
+    if not(import_to_existing_project == "")
+
+        import_segmentation_file = import_to_existing_project;
+
+        [file_path, file_1, file_2] = fileparts(import_segmentation_file);
+
+        file_path = file_path + filesep;
+
+        if isempty(file_path)
+            file_path = "./data/";
+        end
+
+        if isempty(file_2)
+            file_2 = ".mat";
+        end
+
+        zef.file_path = file_path;
+
+        zef.file = file_1 + file_2;
+
+        zef.new_empty_project = 0;
+
+        zef = zef_import_segmentation(zef);
+
+        zef = zef_build_compartment_table(zef);
+
+    end % if
 
     % Choose GPU device, if available.
 
@@ -205,6 +278,128 @@ function zef = zeffiro_interface(args)
 
         end
 
+    end % if
+
+    if not(export_fem_mesh == "")
+
+        export_fem_mesh_file = export_fem_mesh;
+
+        [file_path, file_1, file_2] = fileparts(export_fem_mesh_file );
+
+        file_path = file_path + filesep;
+
+        if isempty(file_path)
+            file_path = './data/';
+        end
+
+        if isempty(file_2)
+            file_2 = '.mat';
+        end
+
+        zef.file_path = file_path;
+
+        zef.file = file_1 + file_2;
+
+        zef.save_switch = 1;
+
+        zef_export_fem_mesh_as(zef);
+
+        option_counter = option_counter + 2;
+
+    end % if
+
+    if not(open_figure == "")
+
+        open_figure_file = open_figure;
+
+        if not(iscell(open_figure_file))
+
+            open_figure_file_aux = open_figure_file;
+
+            open_figure_file = cell(0);
+
+            open_figure_file{1} = open_figure_file_aux;
+
+        end
+
+        for i = 1 : length(open_figure_file)
+
+            [file_path, file_1, file_2] = fileparts(open_figure_file{i});
+
+            file_path = file_path + filesep;
+
+            if isempty(file_path)
+                file_path = './fig/';
+            end
+
+            if isempty(file_2)
+                file_2 = '.fig';
+            end
+
+            zef.file_path = file_path;
+
+            zef.file = file_1 + file_2;
+
+            zef.save_switch = 1;
+
+            zef = zef_import_figure(zef);
+
+        end % for
+
+    end % if
+
+    if not(open_figure_folder == "")
+
+        file_path = open_figure_folder;
+
+        dir_aux = dir(fullfile(zef_data.program_path,file_path));
+
+        for i = 3 : length(dir_aux)
+
+            [~, file_1, file_2] = fileparts(dir_aux(i).name);
+
+            if isequal(file_2, ".fig")
+
+                zef.file_path = file_path;
+
+                zef.file = file_1 + file_2;
+
+                zef.save_switch = 1;
+
+                zef = zef_import_figure(zef);
+
+            end % if
+
+        end % for
+
+    end % if
+
+    if not(run_script == "")
+
+        run_script_name = run_script;
+
+        if not(iscell(run_script_name))
+
+           run_script_name_aux = run_script_name;
+
+           run_script_name = cell(0);
+
+           run_script_name{1} = run_script_name_aux;
+
+        end
+
+        for i = 1 : length(run_script_name)
+            eval(run_script_name{i});
+        end
+
+    end % if
+
+    if zef.exit_zeffiro
+        zef_close_all;
+    end
+
+    if zef.quit_matlab
+        quit force;
     end
 
 %% Old code below. TODO: remove this along with the varargin.
@@ -228,42 +423,42 @@ if nargout == 0
 
     if isequal(zeffiro_restart,0)
 
-        if evalin('base','exist(''zef'',''var'');')
-            error('It looks like that another instance of Zeffiro interface is already open. To enable this script, close Zeffiro Interface by command ''zef_close_all'' or clear zef by command ''clear zef''.')
+        if evalin("base',"exist('zef','var');")
+            error("It looks like that another instance of Zeffiro interface is already open. To enable this script, close Zeffiro Interface by command ''zef_close_all'' or clear zef by command ''clear zef''.')
         end
 
     end
 
 end
 
-    program_path_aux = mfilename('fullpath');
+    program_path_aux = mfilename("fullpath");
     [program_path, ~] = fileparts(program_path_aux);
-    run([program_path filesep 'm/zef_close_all.m']);
+    run(program_path + filesep "m/zef_close_all.m"]);
     zef = struct;
 
     zef.zeffiro_task_id = 0;
     zef.zeffiro_restart_time = now;
     zef.zeffiro_restart = zeffiro_restart;
     zef.program_path = program_path;
-    zef.code_path = [zef.program_path filesep 'm'];
-    zef.cluster_path =  [zef.program_path filesep 'cluster'];
+    zef.code_path = zef.program_path + filesep + "m"];
+    zef.cluster_path =  zef.program_path + filesep + "cluster"];
 
     addpath(zef.program_path);
     addpath(zef.code_path);
     addpath(zef.program_path);
     addpath(genpath([zef.code_path]));
     addpath(genpath([zef.cluster_path]));
-    addpath(genpath([zef.program_path filesep 'mlapp']));
-    addpath(genpath([zef.program_path filesep 'fig']));
-    addpath(genpath([zef.program_path filesep 'plugins']));
-    addpath(genpath([zef.program_path filesep 'profile']));
-    addpath(genpath([zef.program_path filesep 'scripts']));
-    addpath([zef.program_path filesep 'external']);
+    addpath(genpath([zef.program_path filesep "mlapp"]));
+    addpath(genpath([zef.program_path filesep "fig"]));
+    addpath(genpath([zef.program_path filesep "plugins"]));
+    addpath(genpath([zef.program_path filesep "profile"]));
+    addpath(genpath([zef.program_path filesep "scripts"]));
+    addpath(zef.program_path + filesep + "external");
 
-    zef.start_mode = 'default';
+    zef.start_mode = "default";
 
-    if exist('zef_start_config.m','file')
-      eval('zef_start_config');
+    if exist("zef_start_config.m","file")
+      eval("zef_start_config");
     end
 
     if not(isempty(varargin))
