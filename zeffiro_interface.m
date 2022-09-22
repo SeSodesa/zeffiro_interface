@@ -32,6 +32,8 @@ function zef = zeffiro_interface(varargin, args)
 %Property: 'use_log'                     Value: 1 (yes) or 0 (no)
 %Property: 'log_file_name'               Value: <log file name>
 
+    % TODO: remove varargin entirely.
+
     arguments (Repeating)
 
         varargin
@@ -86,6 +88,8 @@ function zef = zeffiro_interface(varargin, args)
 
     end
 
+    % TODO: add code below to handle different values of the arguments.
+
     zef.zeffiro_restart = args.restart;
 
     zef.start_mode = args.start_mode;
@@ -130,7 +134,7 @@ function zef = zeffiro_interface(varargin, args)
 
     zef.log_file_name = args.log_file_name;
 
-%% Old code below
+%% Old code below. TODO: remove this along with the varargin.
 
 warning off;
 option_counter = 1;
