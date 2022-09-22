@@ -93,8 +93,6 @@ function zef = zeffiro_interface(args)
 
     %% Set zef fields based on name–value arguments.
 
-    % TODO: add code below to handle different values of the arguments.
-
     zef = struct;
 
     zef.zeffiro_restart = args.restart;
@@ -180,7 +178,7 @@ function zef = zeffiro_interface(args)
         eval("zef_start_config");
     end
 
-    %% Do things based on input arguments.
+    %% Finally, do the things specified by the input arguments.
 
     % Prevent starting of Zeffiro, if there is an existing value of zef.
 
@@ -245,18 +243,27 @@ function zef = zeffiro_interface(args)
         file_path = [file_path filesep];
 
         if isempty(file_path)
+
             file_path = "./data/";
+
         end
 
         if isempty(file_2)
+
             file_2 = ".mat";
+
         end
 
         zef.new_empty_project = 1;
+
         zef_start_new_project;
-        zef.file_path = [file_path];
-        zef.file = [file_1 file_2];
+
+        zef.file_path = file_path;
+
+        zef.file = file_1 + file_2;
+
         zef = zef_import_segmentation(zef);
+
         zef = zef_build_compartment_table(zef);
 
     end % if
