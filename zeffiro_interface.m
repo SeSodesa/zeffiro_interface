@@ -1,4 +1,4 @@
-function zef = zeffiro_interface(varargin, args)
+function zef = zeffiro_interface(args)
 %This fuction starts Zeffiro Interface. It can be run with a variable
 %number of arguments, which can be called as a list of name-value pairs as
 %follows:
@@ -32,19 +32,11 @@ function zef = zeffiro_interface(varargin, args)
 %Property: 'use_log'                     Value: 1 (yes) or 0 (no)
 %Property: 'log_file_name'               Value: <log file name>
 
-    % TODO: remove varargin entirely.
-
-    arguments (Repeating)
-
-        varargin
-
-    end
-
     arguments
 
         args.restart (1,1) logical = false;
 
-        args.start_mode (1,1) string { mustBeMember(args.start_mode, ["display", "nodisplay"]) } = "nodisplay";
+        args.start_mode (1,1) string { mustBeMember(args.start_mode, ["display", "nodisplay", "default"]) } = "default";
 
         args.open_project (1,1) string = "";
 
@@ -88,6 +80,8 @@ function zef = zeffiro_interface(varargin, args)
 
     end
 
+    % Set zef fields based on name–value arguments.
+    %
     % TODO: add code below to handle different values of the arguments.
 
     zef.zeffiro_restart = args.restart;
@@ -133,6 +127,30 @@ function zef = zeffiro_interface(varargin, args)
     zef.use_log = args.use_log;
 
     zef.log_file_name = args.log_file_name;
+
+    % Do things base on input settings.
+
+    if not(zef.zeffiro_restart) && evalin('base','exist(''zef'',''var'');')
+
+        error('It looks like that another instance of Zeffiro interface is already open. To enable this script, close Zeffiro Interface by command ''zef_close_all'' or clear zef by command ''clear zef''.')
+
+    end
+
+    zef.gpu_count = gpuDeviceCount;
+
+    if zef.gpu_count > 0 && zef.use_gpu
+
+        try
+
+            gpuDevice(zef.gpu_num);
+
+        catch
+
+            warning("Tried using GPU with index " + zef.gpu_num + " but no such device was found. Starting without GPU...");
+
+        end
+
+    end
 
 %% Old code below. TODO: remove this along with the varargin.
 
@@ -198,6 +216,7 @@ end
         start_mode = 'display';
 
      while option_counter <= length(varargin)
+
             if ischar(varargin{option_counter})
             if ismember(lower(varargin{option_counter}),{lower('display'),lower('nodisplay')})
                 start_mode = lower(varargin{option_counter});
@@ -283,11 +302,11 @@ end
 
         if isequal(zef.zeffiro_restart,0) && isequal(exist([zef.program_path filesep 'data' filesep 'default_project.mat']),2)
         zef = zef_load(zef,'default_project.mat',[zef.program_path filesep 'data' filesep]);
-            end
+        end
 
-              if exist('use_github','var')
+        if exist('use_github','var')
          zef.use_github = use_github;
-          end
+        end
          if exist('use_gpu','var')
          zef.use_gpu = use_gpu;
           end
