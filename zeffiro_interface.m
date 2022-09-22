@@ -83,7 +83,7 @@ function zef = zeffiro_interface(args)
 
         args.verbose_mode (1,1) logical = false;
 
-        args.use_waibar (1,1) logical = false;
+        args.use_waitbar (1,1) logical = false;
 
         args.use_log (1,1) logical = false;
 
@@ -95,7 +95,7 @@ function zef = zeffiro_interface(args)
 
     if not(args.restart) && evalin("base","exist('zef', 'var');")
 
-        error('It looks like that another instance of Zeffiro interface is already open. To enable this script, close Zeffiro Interface by command ''zef_close_all'' or clear zef by command ''clear zef''.')
+        error("It looks like that another instance of Zeffiro interface is already open. To enable this script, close Zeffiro Interface by command 'zef_close_all' or clear zef by command 'clear zef'.")
 
     end
 
@@ -106,26 +106,6 @@ function zef = zeffiro_interface(args)
     zef.zeffiro_restart = args.restart;
 
     zef.start_mode = args.start_mode;
-
-    zef.open_project = args.open_project;
-
-    zef.import_to_new_project = args.import_to_new_project;
-
-    zef.import_to_existing_project = args.import_to_existing_project;
-
-    zef.save_project = args.save_project;
-
-    zef.export_fem_mesh = args.export_fem_mesh;
-
-    zef.open_figure = args.open_figure;
-
-    zef.open_figure_folder = args.open_figure_folder;
-
-    zef.run_script = args.run_script;
-
-    zef.exit_zeffiro = args.exit_zeffiro;
-
-    zef.quit_matlab = args.quit_matlab;
 
     zef.use_github = args.use_github;
 
@@ -141,7 +121,7 @@ function zef = zeffiro_interface(args)
 
     zef.verbose_mode = args.verbose_mode;
 
-    zef.use_waibar = args.use_waibar;
+    zef.use_waitbar = args.use_waitbar;
 
     zef.use_log = args.use_log;
 
@@ -149,15 +129,25 @@ function zef = zeffiro_interface(args)
 
     %% Then do initial preparations like path building and additions.
 
-    program_path_aux = mfilename("fullpath");
+    program_path = mfilename("fullpath");
 
-    [zef.program_path, ~] = fileparts(program_path_aux);
+    [program_path, ~] = fileparts(program_path);
 
-    zef.code_path = zef.program_path + filesep + "m";
+    program_path = string(program_path);
 
-    zef.data_path = zef.program_path + filesep + data";
+    code_path = program_path + filesep + "m";
 
-    run(zef.code_path + filesep + "zef_close_all.m");
+    % TODO: should this be run here?
+    %
+    % run(code_path + filesep + "zef_close_all.m");
+
+    zef.program_path = program_path;
+
+    zef.code_path = code_path;
+
+    zef.data_path = zef.program_path + filesep + "data";
+
+    zef.external_path = zef.program_path + filesep + "external";
 
     zef.zeffiro_task_id = 0;
 
@@ -176,17 +166,41 @@ function zef = zeffiro_interface(args)
     addpath(genpath(zef.program_path + filesep + "profile"));
     addpath(genpath(zef.program_path + filesep + "scripts"));
 
-    addpath(zef.program_path + filesep + "external");
+    addpath(zef.external_path);
 
-    if exist("zef_start_config.m","file")
-        eval("zef_start_config");
+    if not(zef.zeffiro_restart)
+
+        addpath(zef.external_path + filesep + "SDPT3/");
+        addpath(zef.external_path + filesep + "SeDuMi/");
+        addpath(zef.external_path + filesep + "CVX/");
+
+        % TODO: does not work.
+        %
+        % evalc('cvx_startup');
+
     end
 
     zef = zef_start(zef);
 
-    if zef.zeffiro_restart && isfile(zef.data_path + filesep + "default_project.mat")
+    if not(zef.zeffiro_restart) && isfile(zef.data_path + filesep + "default_project.mat")
 
         zef = zef_load(zef, "default_project.mat", zef.data_path + filesep);
+
+    end
+
+    zef = zef_start_log(zef);
+
+    if isfield(zef, "h_zeffiro_window_main") ...
+    && isvalid(zef.h_zeffiro_window_main) ...
+    && zef.start_mode == "display"
+
+        zef.start_mode = start_mode;
+        zef.h_zeffiro.Visible = 1;
+        zef.h_zeffiro_window_main.Visible = 1;
+        zef.h_mesh_tool.Visible = 1;
+        zef.h_mesh_visualization_tool.Visible = 1;
+        zef.h_zeffiro_menu.Visible = 1;
+        zef.use_display = 1;
 
     end
 
@@ -212,7 +226,7 @@ function zef = zeffiro_interface(args)
 
     % Open new project if given.
 
-    if not(open_project == "")
+    if not(args.open_project == "")
 
         open_project_file = open_project;
 
@@ -238,7 +252,7 @@ function zef = zeffiro_interface(args)
 
     % Importing given file contents to a new project.
 
-    if not(import_to_new_project == "")
+    if not(args.import_to_new_project == "")
 
         import_segmentation_file = import_to_new_project;
 
@@ -274,7 +288,7 @@ function zef = zeffiro_interface(args)
 
     % Import given file contents into an existing project.
 
-    if not(import_to_existing_project == "")
+    if not(args.import_to_existing_project == "")
 
         import_segmentation_file = import_to_existing_project;
 
@@ -308,7 +322,7 @@ function zef = zeffiro_interface(args)
 
     % Export FE mesh to a given path.
 
-    if not(export_fem_mesh == "")
+    if not(args.export_fem_mesh == "")
 
         export_fem_mesh_file = export_fem_mesh;
 
@@ -342,7 +356,7 @@ function zef = zeffiro_interface(args)
 
     % Open figure in a given path.
 
-    if not(open_figure == "")
+    if not(args.open_figure == "")
 
         open_figure_file = open_figure;
 
@@ -384,7 +398,7 @@ function zef = zeffiro_interface(args)
 
     % Open all figures in a given folder, if given.
 
-    if not(open_figure_folder == "")
+    if not(args.open_figure_folder == "")
 
         file_path = open_figure_folder;
 
@@ -415,510 +429,519 @@ function zef = zeffiro_interface(args)
     % NOTE: using eval here is very unsafe. Allows for arbitrary code
     % execution. Make sure given script is from a trusted source.
 
-    if not(run_script == "")
+    if not(args.run_script == "")
 
-        eval(run_script);
+        eval(args.run_script);
 
     end % if
 
     % Exit zeffiro, if told to.
 
-    if zef.exit_zeffiro
+    if args.exit_zeffiro
         zef_close_all;
     end
 
     % Close Matlab, if told to.
 
-    if zef.quit_matlab
+    if args.quit_matlab
         quit force;
+    end
+
+    % Make sure zef exists as a varible in the base workspace.
+
+    if nargout == 0
+
+        assignin("base", "zef", zef);
+
     end
 
 %% Old code below. TODO: remove this along with the varargin.
 
-warning off;
-option_counter = 1;
-zeffiro_restart = 0;
-
-if not(isempty(varargin))
-
-    if isequal(varargin{1},'restart')
-
-        zeffiro_restart = 1;
-        option_counter = option_counter + 1;
-
-    end
-
-end
-
-if nargout == 0
-
-    if isequal(zeffiro_restart,0)
-
-        if evalin("base',"exist('zef','var');")
-            error("It looks like that another instance of Zeffiro interface is already open. To enable this script, close Zeffiro Interface by command ''zef_close_all'' or clear zef by command ''clear zef''.')
-        end
-
-    end
-
-end
-
-    program_path_aux = mfilename("fullpath");
-    [program_path, ~] = fileparts(program_path_aux);
-    run(program_path + filesep "m/zef_close_all.m"]);
-    zef = struct;
-
-    zef.zeffiro_task_id = 0;
-    zef.zeffiro_restart_time = now;
-    zef.zeffiro_restart = zeffiro_restart;
-    zef.program_path = program_path;
-    zef.code_path = zef.program_path + filesep + "m"];
-    zef.cluster_path =  zef.program_path + filesep + "cluster"];
-
-    addpath(zef.program_path);
-    addpath(zef.code_path);
-    addpath(zef.program_path);
-    addpath(genpath([zef.code_path]));
-    addpath(genpath([zef.cluster_path]));
-    addpath(genpath([zef.program_path filesep "mlapp"]));
-    addpath(genpath([zef.program_path filesep "fig"]));
-    addpath(genpath([zef.program_path filesep "plugins"]));
-    addpath(genpath([zef.program_path filesep "profile"]));
-    addpath(genpath([zef.program_path filesep "scripts"]));
-    addpath(zef.program_path + filesep + "external");
-
-    zef.start_mode = "default";
-
-    if exist("zef_start_config.m","file")
-      eval("zef_start_config");
-    end
-
-    if not(isempty(varargin))
-
-        start_mode = 'display';
-
-     while option_counter <= length(varargin)
-
-            if ischar(varargin{option_counter})
-            if ismember(lower(varargin{option_counter}),{lower('display'),lower('nodisplay')})
-                start_mode = lower(varargin{option_counter});
-                option_counter = option_counter + 1;
-            elseif  ismember(lower(varargin{option_counter}),{'start_mode'})
-                start_mode = lower(varargin{option_counter+1});
-                option_counter = option_counter + 2;
-            elseif ismember(varargin{option_counter},lower('profile_name'))
-                zef.ini_cell_mod = {'Profile name',varargin{option_counter+1},'profile_name','string'};
-                option_counter = option_counter + 2;
-
-            elseif isequal(varargin{option_counter},lower('use_github'))
-
-                use_github = varargin{option_counter+1};
-
-                option_counter = option_counter + 2;
-
-                elseif isequal(varargin{option_counter},lower('use_gpu'))
-
-                use_gpu = varargin{option_counter+1};
-
-                option_counter = option_counter + 2;
-
-                elseif isequal(varargin{option_counter},lower('use_gpu_graphic'))
-
-                use_gpu_graphic = varargin{option_counter+1};
-
-                option_counter = option_counter + 2;
-
-                elseif isequal(varargin{option_counter},lower('gpu_num'))
-
-                gpu_num = varargin{option_counter+1};
-
-                option_counter = option_counter + 2;
-
-                elseif isequal(varargin{option_counter},lower('use_display'))
-
-                use_display = varargin{option_counter+1};
-
-                option_counter = option_counter + 2;
-
-               elseif isequal(varargin{option_counter},lower('parallel_processes'))
-
-               parallel_processes = varargin{option_counter+1};
-
-                option_counter = option_counter + 2;
-
-               elseif isequal(varargin{option_counter},lower('verbose_mode'))
-
-               verbose_mode = varargin{option_counter+1};
-
-                option_counter = option_counter + 2;
-
-                elseif isequal(varargin{option_counter},lower('use_log'))
-
-               use_log = varargin{option_counter+1};
-
-                option_counter = option_counter + 2;
-
-                  elseif isequal(varargin{option_counter},lower('log_file_name'))
-
-               log_file_name = varargin{option_counter+1};
-
-                option_counter = option_counter + 2;
-
-            elseif isequal(varargin{option_counter},lower('use_waitbar'))
-
-               use_waitbar = varargin{option_counter+1};
-
-                option_counter = option_counter + 2;
-
-            else
-                option_counter = option_counter + 1;
-            end
-            else
-               option_counter = option_counter + 1;
-            end
-     end
-
-        zef.start_mode = 'nodisplay';
-        zef = zef_start(zef);
-
-
-        if isequal(zef.zeffiro_restart,0) && isequal(exist([zef.program_path filesep 'data' filesep 'default_project.mat']),2)
-        zef = zef_load(zef,'default_project.mat',[zef.program_path filesep 'data' filesep]);
-        end
-
-        if exist('use_github','var')
-         zef.use_github = use_github;
-        end
-         if exist('use_gpu','var')
-         zef.use_gpu = use_gpu;
-          end
-         if exist('use_gpu_graphic','var')
-           zef.use_gpu_graphic = use_gpu_graphic;
-          end
-             if exist('gpu_num','var')
-           zef.gpu_num = gpu_num;
-       end
-         if exist('parallel_processes','var')
-         zef.parallel_processes = parallel_processes;
-         end
-        if exist('verbose_mode','var')
-         zef.zeffiro_verbose_mode = verbose_mode;
-        end
-        if exist('use_log','var')
-         zef.use_log = use_log;
-        end
-        if exist('log_file_name','var')
-         zef.zeffiro_log_file_name = log_file_name;
-        end
-         if exist('use_waitbar','var')
-         zef.use_waitbar = use_waitbar;
-         end
-           if exist('use_display','var')
-               zef.use_display =  use_display;
-           end
-
-         zef = zef_start_log(zef);
-
-       if and(zef.gpu_count > 0, zef.use_gpu)
-      gpuDevice(zef.gpu_num);
-       end
-
-        option_counter = 1;
-
-        while option_counter <= length(varargin)
-
-            if ischar(varargin{option_counter})
-
-            if isequal(varargin{option_counter},lower('open_project'))
-
-                open_project_file = varargin{option_counter+1};
-                [file_path, file_1, file_2] = fileparts(open_project_file);
-                file_path = [file_path filesep];
-
-                if isempty(file_path)
-                    file_path = './data/';
-                end
-
-                if isempty(file_2)
-                    file_2 = '.mat';
-                end
-
-                zef.file_path = [file_path];
-                zef.file = [file_1 file_2];
-                zef = zef_load(zef,zef.file,zef.file_path);
-                option_counter = option_counter + 2;
-
-               if exist('use_github','var')
-                zef.use_github = use_github;
-               end
-               if exist('use_gpu','var')
-                zef.use_gpu = use_gpu;
-               end
-               if exist('use_gpu_graphic','var')
-                   zef.use_gpu_graphic = use_gpu_graphic;
-               end
-                if exist('gpu_num','var')
-                zef.gpu_num = gpu_num;
-                end
-                 if exist('parallel_processes','var')
-                 zef.parallel_processes = parallel_processes;
-                 end
-                 if exist('verbose_mode','var')
-                 zef.zeffiro_verbose_mode = verbose_mode;
-                 end
-                 if exist('use_log','var')
-                 zef.use_log = use_log;
-                end
-                if exist('log_file_name','var')
-                 zef.zeffiro_log_file_name = log_file_name;
-                end
-                if exist('use_waitbar','var')
-                 zef.use_waitbar = use_waitbar;
-                 end
-                   if exist('use_display','var')
-                       zef.use_display =  use_display;
-                   end
-                   if and(zef.gpu_count > 0, zef.use_gpu)
-                  gpuDevice(zef.gpu_num);
-                   end
-
-            elseif isequal(varargin{option_counter},lower('import_to_new_project'))
-
-                import_segmentation_file = varargin{option_counter+1};
-                [file_path, file_1, file_2] = fileparts(import_segmentation_file);
-                file_path = [file_path filesep];
-
-                if isempty(file_path)
-                    file_path = './data/';
-                end
-
-                if isempty(file_2)
-                    file_2 = '.mat';
-                end
-
-                zef.new_empty_project = 1;
-                zef_start_new_project;
-                zef.file_path = [file_path];
-                zef.file = [file_1 file_2];
-                zef = zef_import_segmentation(zef);
-                zef = zef_build_compartment_table(zef);
-                option_counter = option_counter + 2;
-
-            elseif isequal(varargin{option_counter},lower('import_to_existing_project'))
-
-                import_segmentation_file = varargin{option_counter+1};
-                [file_path, file_1, file_2] = fileparts(import_segmentation_file);
-                file_path = [file_path filesep];
-
-                if isempty(file_path)
-                    file_path = './data/';
-                end
-
-                if isempty(file_2)
-                    file_2 = '.mat';
-                end
-
-                zef.file_path = [file_path];
-                zef.file = [file_1 file_2];
-                zef.new_empty_project = 0;
-                zef = zef_import_segmentation(zef);
-                zef = zef_build_compartment_table(zef);
-                option_counter = option_counter + 2;
-
-
-            elseif isequal(varargin{option_counter},lower('save_project'))
-
-                save_project_file = varargin{option_counter+1};
-                [file_path, file_1, file_2] = fileparts(save_project_file);
-                file_path = [file_path filesep];
-
-                if isempty(file_path)
-                    file_path = './data/';
-                end
-
-                if isempty(file_2)
-                    file_2 = '.mat';
-                end
-
-                zef.file_path = [file_path];
-                zef.file = [file_1 file_2];
-                zef.save_switch = 1;
-                zef = zef_save(zef);
-                option_counter = option_counter + 2;
-
-            elseif isequal(varargin{option_counter},lower('export_fem_mesh'))
-
-                export_fem_mesh_file = varargin{option_counter+1};
-                [file_path, file_1, file_2] = fileparts(export_fem_mesh_file );
-                file_path = [file_path filesep];
-
-                if isempty(file_path)
-                    file_path = './data/';
-                end
-
-                if isempty(file_2)
-                    file_2 = '.mat';
-                end
-
-                zef.file_path = [file_path];
-                zef.file = [file_1 file_2];
-                zef.save_switch = 1;
-                zef_export_fem_mesh_as(zef);
-                option_counter = option_counter + 2;
-
-            elseif ismember(varargin{option_counter},lower('open_figure'))
-
-                open_figure_file = varargin{option_counter+1};
-
-                if not(iscell(open_figure_file))
-                    open_figure_file_aux = open_figure_file;
-                    open_figure_file = cell(0);
-                    open_figure_file{1} = open_figure_file_aux;
-                end
-
-                for i = 1 : length(open_figure_file)
-
-                    [file_path, file_1, file_2] = fileparts(open_figure_file{i});
-                    file_path = [file_path filesep];
-
-                    if isempty(file_path)
-                        file_path = './fig/';
-                    end
-
-                    if isempty(file_2)
-                        file_2 = '.fig';
-                    end
-
-                    zef.file_path = [file_path];
-                    zef.file = [file_1 file_2];
-                    zef.save_switch = 1;
-                    zef = zef_import_figure(zef);
-                    option_counter = option_counter + 2;
-                end
-
-            elseif ismember(varargin{option_counter},lower('open_figure_folder'))
-
-                file_path = varargin{option_counter+1};
-                dir_aux = dir(fullfile(zef_data.program_path,file_path));
-
-                for i = 3 : length(dir_aux)
-
-                    [~,file_1,file_2] = fileparts(dir_aux(i).name);
-
-                    if isequal(file_2,'.fig')
-                        zef.file_path = [file_path];
-                        zef.file = [file_1 file_2];
-                        zef.save_switch = 1;
-                        zef = zef_import_figure(zef);
-                        option_counter = option_counter + 2;
-                    end
-                end
-
-                option_counter = option_counter + 2;
-
-            elseif ismember(varargin{option_counter},lower('run_script'))
-
-                run_script_name = varargin{option_counter+1};
-
-                if not(iscell(run_script_name))
-                   run_script_name_aux = run_script_name;
-                   run_script_name = cell(0);
-                   run_script_name{1} = run_script_name_aux;
-                end
-
-                for i = 1 : length(run_script_name)
-                    eval(run_script_name{i});
-                end
-
-                option_counter = option_counter + 2;
-
-            elseif ismember(varargin{option_counter},lower('exit_zeffiro'))
-                zef_close_all;
-                option_counter = option_counter + 1;
-            elseif ismember(varargin{option_counter},lower('quit_matlab'))
-                quit force;
-                option_counter = option_counter + 1;
-            else
-                option_counter = option_counter + 1;
-            end
-            else
-                 option_counter = option_counter + 1;
-            end
-        end
-
-
-        if exist('zef','var')
-        if isfield(zef,'h_zeffiro_window_main')
-            if isvalid(zef.h_zeffiro_window_main)
-                if exist('use_display','var')
-                    start_mode = 'display';
-                end
-                if ismember(start_mode,'display')
-                    zef.start_mode = start_mode;
-                    zef.h_zeffiro.Visible = 1;
-                    zef.h_zeffiro_window_main.Visible = 1;
-                    zef.h_mesh_tool.Visible = 1;
-                    zef.h_mesh_visualization_tool.Visible = 1;
-                    zef.h_zeffiro_menu.Visible = 1;
-                    zef.use_display = 1;
-
-
-       if and(zef.gpu_count > 0, zef.use_gpu)
-      gpuDevice(zef.gpu_num);
-       end
-
-                end
-            end
-        end
-
-
-        if exist('use_github','var')
-         zef.use_github = use_github;
-          end
-         if exist('use_gpu','var')
-         zef.use_gpu = use_gpu;
-          end
-         if exist('use_gpu_graphic','var')
-           zef.use_gpu_graphic = use_gpu_graphic;
-          end
-             if exist('gpu_num','var')
-           zef.gpu_num = gpu_num;
-       end
-         if exist('parallel_processes','var')
-         zef.parallel_processes = parallel_processes;
-         end
-         if exist('verbose_mode','var')
-         zef.zeffiro_verbose_mode = verbose_mode;
-         end
-         if exist('use_log','var')
-         zef.use_log = use_log;
-        end
-        if exist('log_file_name','var')
-         zef.zeffiro_log_file_name = log_file_name;
-        end
-    if exist('use_waitbar','var')
-         zef.use_waitbar = use_waitbar;
-         end
-           if exist('use_display','var')
-               zef.use_display =  use_display;
-           end
-
-    zef.zeffiro_restart = 0;
-        end
-
-            else
-        zef = zef_start(zef);
-        zef = zef_start_log(zef);
-    if isequal(zef.zeffiro_restart,0) && exist([zef.program_path filesep 'data' filesep 'default_project.mat'],'file')
-        zef = zef_load(zef,'default_project.mat',[zef.program_path filesep 'data' filesep]);
-    end
-    end
-
-        if nargout == 0
-    if    exist('zef','var')
-        assignin('base','zef',zef);
-    end
-    end
-
-
-warning on;
-end
+% warning off;
+% option_counter = 1;
+% zeffiro_restart = 0;
+%
+% if not(isempty(varargin))
+%
+%     if isequal(varargin{1},'restart')
+%
+%         zeffiro_restart = 1;
+%         option_counter = option_counter + 1;
+%
+%     end
+%
+% end
+%
+% if nargout == 0
+%
+%     if isequal(zeffiro_restart,0)
+%
+%         if evalin("base',"exist('zef','var');")
+%             error("It looks like that another instance of Zeffiro interface is already open. To enable this script, close Zeffiro Interface by command ''zef_close_all'' or clear zef by command ''clear zef''.')
+%         end
+%
+%     end
+%
+% end
+%
+%     program_path_aux = mfilename("fullpath");
+%     [program_path, ~] = fileparts(program_path_aux);
+%     run(program_path + filesep "m/zef_close_all.m"]);
+%     zef = struct;
+%
+%     zef.zeffiro_task_id = 0;
+%     zef.zeffiro_restart_time = now;
+%     zef.zeffiro_restart = zeffiro_restart;
+%     zef.program_path = program_path;
+%     zef.code_path = zef.program_path + filesep + "m"];
+%     zef.cluster_path =  zef.program_path + filesep + "cluster"];
+%
+%     addpath(zef.program_path);
+%     addpath(zef.code_path);
+%     addpath(zef.program_path);
+%     addpath(genpath([zef.code_path]));
+%     addpath(genpath([zef.cluster_path]));
+%     addpath(genpath([zef.program_path filesep "mlapp"]));
+%     addpath(genpath([zef.program_path filesep "fig"]));
+%     addpath(genpath([zef.program_path filesep "plugins"]));
+%     addpath(genpath([zef.program_path filesep "profile"]));
+%     addpath(genpath([zef.program_path filesep "scripts"]));
+%     addpath(zef.program_path + filesep + "external");
+%
+%     zef.start_mode = "default";
+%
+%     if exist("zef_start_config.m","file")
+%       eval("zef_start_config");
+%     end
+%
+%     if not(isempty(varargin))
+%
+%         start_mode = 'display';
+%
+%      while option_counter <= length(varargin)
+%
+%             if ischar(varargin{option_counter})
+%             if ismember(lower(varargin{option_counter}),{lower('display'),lower('nodisplay')})
+%                 start_mode = lower(varargin{option_counter});
+%                 option_counter = option_counter + 1;
+%             elseif  ismember(lower(varargin{option_counter}),{'start_mode'})
+%                 start_mode = lower(varargin{option_counter+1});
+%                 option_counter = option_counter + 2;
+%             elseif ismember(varargin{option_counter},lower('profile_name'))
+%                 zef.ini_cell_mod = {'Profile name',varargin{option_counter+1},'profile_name','string'};
+%                 option_counter = option_counter + 2;
+%
+%             elseif isequal(varargin{option_counter},lower('use_github'))
+%
+%                 use_github = varargin{option_counter+1};
+%
+%                 option_counter = option_counter + 2;
+%
+%                 elseif isequal(varargin{option_counter},lower('use_gpu'))
+%
+%                 use_gpu = varargin{option_counter+1};
+%
+%                 option_counter = option_counter + 2;
+%
+%                 elseif isequal(varargin{option_counter},lower('use_gpu_graphic'))
+%
+%                 use_gpu_graphic = varargin{option_counter+1};
+%
+%                 option_counter = option_counter + 2;
+%
+%                 elseif isequal(varargin{option_counter},lower('gpu_num'))
+%
+%                 gpu_num = varargin{option_counter+1};
+%
+%                 option_counter = option_counter + 2;
+%
+%                 elseif isequal(varargin{option_counter},lower('use_display'))
+%
+%                 use_display = varargin{option_counter+1};
+%
+%                 option_counter = option_counter + 2;
+%
+%                elseif isequal(varargin{option_counter},lower('parallel_processes'))
+%
+%                parallel_processes = varargin{option_counter+1};
+%
+%                 option_counter = option_counter + 2;
+%
+%                elseif isequal(varargin{option_counter},lower('verbose_mode'))
+%
+%                verbose_mode = varargin{option_counter+1};
+%
+%                 option_counter = option_counter + 2;
+%
+%                 elseif isequal(varargin{option_counter},lower('use_log'))
+%
+%                use_log = varargin{option_counter+1};
+%
+%                 option_counter = option_counter + 2;
+%
+%                   elseif isequal(varargin{option_counter},lower('log_file_name'))
+%
+%                log_file_name = varargin{option_counter+1};
+%
+%                 option_counter = option_counter + 2;
+%
+%             elseif isequal(varargin{option_counter},lower('use_waitbar'))
+%
+%                use_waitbar = varargin{option_counter+1};
+%
+%                 option_counter = option_counter + 2;
+%
+%             else
+%                 option_counter = option_counter + 1;
+%             end
+%             else
+%                option_counter = option_counter + 1;
+%             end
+%      end
+%
+%         zef.start_mode = 'nodisplay';
+%         zef = zef_start(zef);
+%
+%
+%         if isequal(zef.zeffiro_restart,0) && isequal(exist([zef.program_path filesep 'data' filesep 'default_project.mat']),2)
+%         zef = zef_load(zef,'default_project.mat',[zef.program_path filesep 'data' filesep]);
+%         end
+%
+%         if exist('use_github','var')
+%          zef.use_github = use_github;
+%         end
+%          if exist('use_gpu','var')
+%          zef.use_gpu = use_gpu;
+%           end
+%          if exist('use_gpu_graphic','var')
+%            zef.use_gpu_graphic = use_gpu_graphic;
+%           end
+%              if exist('gpu_num','var')
+%            zef.gpu_num = gpu_num;
+%        end
+%          if exist('parallel_processes','var')
+%          zef.parallel_processes = parallel_processes;
+%          end
+%         if exist('verbose_mode','var')
+%          zef.zeffiro_verbose_mode = verbose_mode;
+%         end
+%         if exist('use_log','var')
+%          zef.use_log = use_log;
+%         end
+%         if exist('log_file_name','var')
+%          zef.zeffiro_log_file_name = log_file_name;
+%         end
+%          if exist('use_waitbar','var')
+%          zef.use_waitbar = use_waitbar;
+%          end
+%            if exist('use_display','var')
+%                zef.use_display =  use_display;
+%            end
+%
+%          zef = zef_start_log(zef);
+%
+%        if and(zef.gpu_count > 0, zef.use_gpu)
+%       gpuDevice(zef.gpu_num);
+%        end
+%
+%         option_counter = 1;
+%
+%         while option_counter <= length(varargin)
+%
+%             if ischar(varargin{option_counter})
+%
+%             if isequal(varargin{option_counter},lower('open_project'))
+%
+%                 open_project_file = varargin{option_counter+1};
+%                 [file_path, file_1, file_2] = fileparts(open_project_file);
+%                 file_path = [file_path filesep];
+%
+%                 if isempty(file_path)
+%                     file_path = './data/';
+%                 end
+%
+%                 if isempty(file_2)
+%                     file_2 = '.mat';
+%                 end
+%
+%                 zef.file_path = [file_path];
+%                 zef.file = [file_1 file_2];
+%                 zef = zef_load(zef,zef.file,zef.file_path);
+%                 option_counter = option_counter + 2;
+%
+%                if exist('use_github','var')
+%                 zef.use_github = use_github;
+%                end
+%                if exist('use_gpu','var')
+%                 zef.use_gpu = use_gpu;
+%                end
+%                if exist('use_gpu_graphic','var')
+%                    zef.use_gpu_graphic = use_gpu_graphic;
+%                end
+%                 if exist('gpu_num','var')
+%                 zef.gpu_num = gpu_num;
+%                 end
+%                  if exist('parallel_processes','var')
+%                  zef.parallel_processes = parallel_processes;
+%                  end
+%                  if exist('verbose_mode','var')
+%                  zef.zeffiro_verbose_mode = verbose_mode;
+%                  end
+%                  if exist('use_log','var')
+%                  zef.use_log = use_log;
+%                 end
+%                 if exist('log_file_name','var')
+%                  zef.zeffiro_log_file_name = log_file_name;
+%                 end
+%                 if exist('use_waitbar','var')
+%                  zef.use_waitbar = use_waitbar;
+%                  end
+%                    if exist('use_display','var')
+%                        zef.use_display =  use_display;
+%                    end
+%                    if and(zef.gpu_count > 0, zef.use_gpu)
+%                   gpuDevice(zef.gpu_num);
+%                    end
+%
+%             elseif isequal(varargin{option_counter},lower('import_to_new_project'))
+%
+%                 import_segmentation_file = varargin{option_counter+1};
+%                 [file_path, file_1, file_2] = fileparts(import_segmentation_file);
+%                 file_path = [file_path filesep];
+%
+%                 if isempty(file_path)
+%                     file_path = './data/';
+%                 end
+%
+%                 if isempty(file_2)
+%                     file_2 = '.mat';
+%                 end
+%
+%                 zef.new_empty_project = 1;
+%                 zef_start_new_project;
+%                 zef.file_path = [file_path];
+%                 zef.file = [file_1 file_2];
+%                 zef = zef_import_segmentation(zef);
+%                 zef = zef_build_compartment_table(zef);
+%                 option_counter = option_counter + 2;
+%
+%             elseif isequal(varargin{option_counter},lower('import_to_existing_project'))
+%
+%                 import_segmentation_file = varargin{option_counter+1};
+%                 [file_path, file_1, file_2] = fileparts(import_segmentation_file);
+%                 file_path = [file_path filesep];
+%
+%                 if isempty(file_path)
+%                     file_path = './data/';
+%                 end
+%
+%                 if isempty(file_2)
+%                     file_2 = '.mat';
+%                 end
+%
+%                 zef.file_path = [file_path];
+%                 zef.file = [file_1 file_2];
+%                 zef.new_empty_project = 0;
+%                 zef = zef_import_segmentation(zef);
+%                 zef = zef_build_compartment_table(zef);
+%                 option_counter = option_counter + 2;
+%
+%
+%             elseif isequal(varargin{option_counter},lower('save_project'))
+%
+%                 save_project_file = varargin{option_counter+1};
+%                 [file_path, file_1, file_2] = fileparts(save_project_file);
+%                 file_path = [file_path filesep];
+%
+%                 if isempty(file_path)
+%                     file_path = './data/';
+%                 end
+%
+%                 if isempty(file_2)
+%                     file_2 = '.mat';
+%                 end
+%
+%                 zef.file_path = [file_path];
+%                 zef.file = [file_1 file_2];
+%                 zef.save_switch = 1;
+%                 zef = zef_save(zef);
+%                 option_counter = option_counter + 2;
+%
+%             elseif isequal(varargin{option_counter},lower('export_fem_mesh'))
+%
+%                 export_fem_mesh_file = varargin{option_counter+1};
+%                 [file_path, file_1, file_2] = fileparts(export_fem_mesh_file );
+%                 file_path = [file_path filesep];
+%
+%                 if isempty(file_path)
+%                     file_path = './data/';
+%                 end
+%
+%                 if isempty(file_2)
+%                     file_2 = '.mat';
+%                 end
+%
+%                 zef.file_path = [file_path];
+%                 zef.file = [file_1 file_2];
+%                 zef.save_switch = 1;
+%                 zef_export_fem_mesh_as(zef);
+%                 option_counter = option_counter + 2;
+%
+%             elseif ismember(varargin{option_counter},lower('open_figure'))
+%
+%                 open_figure_file = varargin{option_counter+1};
+%
+%                 if not(iscell(open_figure_file))
+%                     open_figure_file_aux = open_figure_file;
+%                     open_figure_file = cell(0);
+%                     open_figure_file{1} = open_figure_file_aux;
+%                 end
+%
+%                 for i = 1 : length(open_figure_file)
+%
+%                     [file_path, file_1, file_2] = fileparts(open_figure_file{i});
+%                     file_path = [file_path filesep];
+%
+%                     if isempty(file_path)
+%                         file_path = './fig/';
+%                     end
+%
+%                     if isempty(file_2)
+%                         file_2 = '.fig';
+%                     end
+%
+%                     zef.file_path = [file_path];
+%                     zef.file = [file_1 file_2];
+%                     zef.save_switch = 1;
+%                     zef = zef_import_figure(zef);
+%                     option_counter = option_counter + 2;
+%                 end
+%
+%             elseif ismember(varargin{option_counter},lower('open_figure_folder'))
+%
+%                 file_path = varargin{option_counter+1};
+%                 dir_aux = dir(fullfile(zef_data.program_path,file_path));
+%
+%                 for i = 3 : length(dir_aux)
+%
+%                     [~,file_1,file_2] = fileparts(dir_aux(i).name);
+%
+%                     if isequal(file_2,'.fig')
+%                         zef.file_path = [file_path];
+%                         zef.file = [file_1 file_2];
+%                         zef.save_switch = 1;
+%                         zef = zef_import_figure(zef);
+%                         option_counter = option_counter + 2;
+%                     end
+%                 end
+%
+%                 option_counter = option_counter + 2;
+%
+%             elseif ismember(varargin{option_counter},lower('run_script'))
+%
+%                 run_script_name = varargin{option_counter+1};
+%
+%                 if not(iscell(run_script_name))
+%                    run_script_name_aux = run_script_name;
+%                    run_script_name = cell(0);
+%                    run_script_name{1} = run_script_name_aux;
+%                 end
+%
+%                 for i = 1 : length(run_script_name)
+%                     eval(run_script_name{i});
+%                 end
+%
+%                 option_counter = option_counter + 2;
+%
+%             elseif ismember(varargin{option_counter},lower('exit_zeffiro'))
+%                 zef_close_all;
+%                 option_counter = option_counter + 1;
+%             elseif ismember(varargin{option_counter},lower('quit_matlab'))
+%                 quit force;
+%                 option_counter = option_counter + 1;
+%             else
+%                 option_counter = option_counter + 1;
+%             end
+%             else
+%                  option_counter = option_counter + 1;
+%             end
+%         end
+%
+%
+%         if exist('zef','var')
+%         if isfield(zef,'h_zeffiro_window_main')
+%             if isvalid(zef.h_zeffiro_window_main)
+%                 if exist('use_display','var')
+%                     start_mode = 'display';
+%                 end
+%                 if ismember(start_mode,'display')
+%                     zef.start_mode = start_mode;
+%                     zef.h_zeffiro.Visible = 1;
+%                     zef.h_zeffiro_window_main.Visible = 1;
+%                     zef.h_mesh_tool.Visible = 1;
+%                     zef.h_mesh_visualization_tool.Visible = 1;
+%                     zef.h_zeffiro_menu.Visible = 1;
+%                     zef.use_display = 1;
+%
+%
+%        if and(zef.gpu_count > 0, zef.use_gpu)
+%       gpuDevice(zef.gpu_num);
+%        end
+%
+%                 end
+%             end
+%         end
+%
+%
+%         if exist('use_github','var')
+%          zef.use_github = use_github;
+%           end
+%          if exist('use_gpu','var')
+%          zef.use_gpu = use_gpu;
+%           end
+%          if exist('use_gpu_graphic','var')
+%            zef.use_gpu_graphic = use_gpu_graphic;
+%           end
+%              if exist('gpu_num','var')
+%            zef.gpu_num = gpu_num;
+%        end
+%          if exist('parallel_processes','var')
+%          zef.parallel_processes = parallel_processes;
+%          end
+%          if exist('verbose_mode','var')
+%          zef.zeffiro_verbose_mode = verbose_mode;
+%          end
+%          if exist('use_log','var')
+%          zef.use_log = use_log;
+%         end
+%         if exist('log_file_name','var')
+%          zef.zeffiro_log_file_name = log_file_name;
+%         end
+%     if exist('use_waitbar','var')
+%          zef.use_waitbar = use_waitbar;
+%          end
+%            if exist('use_display','var')
+%                zef.use_display =  use_display;
+%            end
+%
+%     zef.zeffiro_restart = 0;
+%         end
+%
+%             else
+%         zef = zef_start(zef);
+%         zef = zef_start_log(zef);
+%     if isequal(zef.zeffiro_restart,0) && exist([zef.program_path filesep 'data' filesep 'default_project.mat'],'file')
+%         zef = zef_load(zef,'default_project.mat',[zef.program_path filesep 'data' filesep]);
+%     end
+%     end
+%
+%         if nargout == 0
+%     if    exist('zef','var')
+%         assignin('base','zef',zef);
+%     end
+%     end
+%
+%
+% warning on;
+
+end % function
