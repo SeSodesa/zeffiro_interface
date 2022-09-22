@@ -42,6 +42,10 @@ function zef = zeffiro_interface(args)
 %   'use_log'                       1 (yes) or 0 (no)
 %   'log_file_name'                 <log file name>
 %
+%   NOTE: the value behind the name run_script is run using the Matlab
+%   function eval, meaning one should be absolutely sure that the script
+%   contents come from a trusted source.
+%
 
     arguments
 
