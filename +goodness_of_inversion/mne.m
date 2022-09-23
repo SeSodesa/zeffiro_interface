@@ -84,7 +84,7 @@ function [rec, info] = mne(zef, mne_type)
             visible_vec(i,1) = i*visible_val;
             submesh_cell{i} = submesh_ind;
 
-            if eval(['zef.' compartment_tags{k} '_sources']) > 0;
+            if eval(['zef.' compartment_tags{k} '_sources']) > 0
                 aux_brain_ind = [aux_brain_ind i];
                 aux_dir_mode = [aux_dir_mode eval(['zef.' compartment_tags{k} '_sources'])-1];
             end
@@ -128,7 +128,7 @@ function [rec, info] = mne(zef, mne_type)
             visible_vec(i,1) = i*visible_val;
             submesh_cell{i} = submesh_ind;
 
-            if eval(['zef.' compartment_tags{k} '_sources']) > 0;
+            if eval(['zef.' compartment_tags{k} '_sources']) > 0
 
                 aux_brain_ind = [aux_brain_ind i];
 
@@ -196,9 +196,14 @@ function [rec, info] = mne(zef, mne_type)
 
     ones_vec = ones(size(L,1),1);
 
-    L_0 = L_1(:,s_ind_4).*s_1(ones_vec,s_ind_4) + L_2(:,s_ind_4).*s_2(ones_vec,s_ind_4) + L_3(:,s_ind_4).*s_3(ones_vec,s_ind_4);
+    L_0 = L_1(:,s_ind_4).*s_1(ones_vec,s_ind_4) ...
+        + L_2(:,s_ind_4).*s_2(ones_vec,s_ind_4) ...
+        + L_3(:,s_ind_4).*s_3(ones_vec,s_ind_4);
+
     L(:,s_ind_4) = L_0;
+
     L(:,n_interp+s_ind_4) = L_0;
+
     L(:,2*n_interp+s_ind_4) = L_0;
 
     end
@@ -216,9 +221,13 @@ function [rec, info] = mne(zef, mne_type)
     end
 
     if zef.mne_prior == "balanced"
+
         balance_spatially = 1;
+
     else
+
         balance_spatially = 0;
+
     end
 
     [theta0] = goodness_of_inversion.find_gaussian_prior( ...
@@ -238,19 +247,29 @@ function [rec, info] = mne(zef, mne_type)
     S_mat = std_lhood^2*eye(size(L,1));
 
     if zef.use_gpu == 1 && zef.gpu_count > 0
+
         S_mat = gpuArray(S_mat);
+
     end
 
     if number_of_frames > 1
+
         rec = cell(number_of_frames,1);
+
     else
+
         number_of_frames = 1;
+
     end
 
     if iscell(zef.measurements)
+
         f = eval(['zef.measurements{' int2str(zef.mne_data_segment) '}']);
+
     else
+
         f = zef.measurements;
+
     end
 
     data_norm = 1;
@@ -264,7 +283,7 @@ function [rec, info] = mne(zef, mne_type)
     elseif zef.mne_normalize_data == "average column norm"
         data_norm = sum(sqrt(sum(abs(f).^2)))/size(f,2);
         %std_lhood = std_lhood^2;
-    end;
+    end
 
     f = f/data_norm;
 
@@ -289,7 +308,7 @@ function [rec, info] = mne(zef, mne_type)
 
         time_val = toc;
 
-        if f_ind > 1;
+        if f_ind > 1
             date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400));
         end
 
@@ -309,26 +328,33 @@ function [rec, info] = mne(zef, mne_type)
 
         if size_f > 1
 
-            if zef.mne_time_2 >=0 ...
+            if zef.mne_time_2 >= 0 ...
             && zef.mne_time_1 >= 0 ...
             && 1 + sampling_freq*zef.mne_time_1 <= size_f
-                f = f_data(:, max(1, 1 + floor(sampling_freq*zef.mne_time_1+sampling_freq*(f_ind - 1)*zef.mne_time_3)) : min(size_f, 1 + floor(sampling_freq*(zef.mne_time_1 + zef.mne_time_2)+sampling_freq*(f_ind - 1)*zef.mne_time_3)));
+                f = f_data( ...
+                    :, ...
+                    max(1, 1 + floor(sampling_freq*zef.mne_time_1+sampling_freq*(f_ind - 1)*zef.mne_time_3)) : min(size_f, 1 + floor(sampling_freq*(zef.mne_time_1 + zef.mne_time_2)+sampling_freq*(f_ind - 1)*zef.mne_time_3)) ...
+                );
             end
 
         end
 
         if size_f > 1
-        t = [1:size_f];
 
-        %gaussian_window = blackmanharris(length(t))';
+            t = [1:size_f];
 
-        %f = f.*gaussian_window;
+            %gaussian_window = blackmanharris(length(t))';
 
-        f = mean(f,2);
+            %f = f.*gaussian_window;
+
+            f = mean(f,2);
+
         end
 
-        if zef.use_gpu == 1 & zef.gpu_count > 0
+        if zef.use_gpu == 1 && zef.gpu_count > 0
+
             f = gpuArray(f);
+
         end
 
         m_max = sqrt(size(L,2));
@@ -336,16 +362,23 @@ function [rec, info] = mne(zef, mne_type)
         z_vec = zeros(length(z_vec),1);
 
         if length(theta0)==1
+
             d_sqrt = sqrt(theta0)*ones(size(z_vec));
+
         else
+
             d_sqrt = sqrt(theta0);
+
         end
 
-        if zef.use_gpu == 1 & zef.gpu_count > 0
+        if zef.use_gpu == 1 && zef.gpu_count > 0
+
             d_sqrt = gpuArray(d_sqrt);
+
         end
 
         L_inv = L.*repmat(d_sqrt',size(L,1),1);
+
         L_inv = d_sqrt.*(L_inv'*(inv(L_inv*L_inv' + S_mat)));
 
         if isequal(mne_type,"MNE")
@@ -366,33 +399,50 @@ function [rec, info] = mne(zef, mne_type)
 
         z_vec = L_inv * f;
 
-        if zef.use_gpu == 1 & zef.gpu_count > 0
+        if zef.use_gpu == 1 && zef.gpu_count > 0
+
             z_vec = gather(z_vec);
+
         end
 
         if ismember(source_direction_mode,[2])
+
             z_vec_aux = (z_vec(s_ind_4) + z_vec(n_interp+s_ind_4) + z_vec(2*n_interp+s_ind_4))/3;
+
             z_vec(s_ind_4) = z_vec_aux.*source_directions(s_ind_4,1);
+
             z_vec(n_interp+s_ind_4) = z_vec_aux.*source_directions(s_ind_4,2);
+
             z_vec(2*n_interp+s_ind_4) = z_vec_aux.*source_directions(s_ind_4,3);
+
         end
 
         if ismember(source_direction_mode,[3])
+
             z_vec = [z_vec.*source_directions(:,1); z_vec.*source_directions(:,2); z_vec.*source_directions(:,3)];
+
         end
 
         if ismember(source_direction_mode,[1 2])
+
             z_aux(s_ind_1) = z_vec;
+
         end
 
-        if ismember(source_direction_mode,[3])
+        if ismember(source_direction_mode, 3)
+
             z_aux(s_ind_2) = z_vec;
+
         end
 
         if number_of_frames > 1
+
             rec{f_ind} = z_aux;
+
         else
+
             rec = z_aux;
+
         end
 
     end
@@ -401,17 +451,24 @@ function [rec, info] = mne(zef, mne_type)
 
         aux_norm_vec = 0;
 
-        for f_ind = 1 : number_of_frames;
+        for f_ind = 1 : number_of_frames
+
             aux_norm_vec = max(sqrt(sum(reshape(rec{f_ind}, 3, length(rec{f_ind})/3).^2)),aux_norm_vec);
+
         end
 
-        for f_ind = 1 : number_of_frames;
+        for f_ind = 1 : number_of_frames
+
             rec{f_ind} = rec{f_ind}./max(aux_norm_vec);
+
         end
 
     else
+
         aux_norm_vec = sqrt(sum(reshape(rec, 3, length(rec)/3).^2));
+
         rec = rec./max(aux_norm_vec);
+
     end
 
 end % function
