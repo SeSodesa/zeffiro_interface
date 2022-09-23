@@ -264,7 +264,7 @@ function zef = zeffiro_interface(args)
 
         [file_path, file_1, file_2] = fileparts(import_segmentation_file);
 
-        file_path = [file_path filesep];
+        file_path = file_path + filesep;
 
         if isempty(file_path)
 
