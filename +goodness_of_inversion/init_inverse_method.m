@@ -83,13 +83,42 @@ function zef = init_inverse_method(zef, inverse_method_name, mne, beamformer, ra
     end
 
     if strcmp(inverse_method_name, "RAMUS")
-        % zef_init_ramus_inversion_tool;
-        % zef_update_ramus_inversion_tool;
+
+        zef.ramus_multiresolution_levels = ramus.ramus_multiresolution_levels;
+
+        zef.ramus_multiresolution_sparsity = ramus.ramus_multiresolution_sparsity;
+
+        zef.ramus_n_of_decompositions = ramus.ramus_n_of_decompositions;
+
+        zef.ramus_hyperprior = ramus.ramus_hyperprior;
+
+        zef.ramus_signal_to_noise_ratio = ramus.ramus_signal_to_noise_ratio;
+
+        zef.ramus_ias_map_iterations = ramus.ramus_ias_map_iterations;
+
+        zef.ramus_sampling_frequency = ramus.ramus_sampling_frequency;
+
+        zef.ramus_low_cut_frequency = ramus.ramus_low_cut_frequency;
+
+        zef.ramus_high_cut_frequency = ramus.ramus_high_cut_frequency;
+
+        zef.ramus_time_start = ramus.ramus_time_start;
+
+        zef.ramus_time_window = ramus.ramus_time_window;
+
+        zef.ramus_n_of_time_steps = ramus.ramus_n_of_time_steps;
+
+        zef.ramus_time_step = ramus.ramus_time_step;
+
+        zef.ramus_data_normalization = ramus.ramus_data_normalization;
+
+        zef.ramus_initial_guess_mode = ramus.ramus_initial_guess_mode;
+
     end
 
     if strcmp(inverse_method_name, "SESAME")
-        % SESAME_App_run;
-        % zef_SESAME_init;
-        % zef_update_SESAME;
+
+        error("SESAME is still to be implemented. Aborting.")
+
     end
 end
