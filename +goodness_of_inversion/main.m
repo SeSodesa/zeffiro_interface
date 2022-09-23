@@ -2,7 +2,7 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
     zef,           ...
     n_subset,      ...
     roi_radius,    ...
-    inverse_method, ...
+    inverse_method_name, ...
     mne, ...
     beamformer, ...
     ramus, ...
@@ -32,7 +32,7 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 %
 %   The radius of the region of interest.
 %
-% - inverse_method
+% - inverse_method_name
 %
 %   A string that indicates the inverse method used to calculate the
 %   reconstruction from the lead field. Currently supported inversion methods
@@ -160,7 +160,7 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 
         roi_radius (1,1) double { mustBeReal, mustBePositive }
 
-        inverse_method (1,1) string { mustBeMember(inverse_method, ["MNE", "sLORETA", "Beamformer", "RAMUS", "SESAME"]) }
+        inverse_method_name (1,1) string { mustBeMember(inverse_method_name, ["MNE", "sLORETA", "Beamformer", "RAMUS", "SESAME"]) }
 
         % MNE parameters.
 
@@ -369,7 +369,7 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 
     waitbar(0, wb, wbtitle + ": inverse method initialization.");
 
-    zef = goodness_of_inversion.init_inverse_method(zef, inverse_method);
+    zef = goodness_of_inversion.init_inverse_method(zef, inverse_method_name, mne, beamformer, ramus, sesame);
 
     waitbar(1, wb);
 
@@ -397,7 +397,7 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 
             zef.measurements = meas_data;
 
-            [zef, rec] = goodness_of_inversion.call_inverse_method(zef, inverse_method);
+            [zef, rec] = goodness_of_inversion.call_inverse_method(zef, inverse_method_name);
 
             if isempty(rec)
                 rec_vec_position = [];
