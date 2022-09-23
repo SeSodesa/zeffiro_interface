@@ -103,11 +103,7 @@ function zef = zeffiro_interface(args)
 
     end
 
-    if args.restart
-
-        zef_close_all();
-
-    end
+    zef_close_all();
 
     %% Set zef fields based on name–value arguments.
 
@@ -139,7 +135,7 @@ function zef = zeffiro_interface(args)
 
     %% Then do initial preparations like path building and additions.
 
-    program_path = mfilename("fullpath");
+    program_path = string(mfilename("fullpath"));
 
     [program_path, ~] = fileparts(program_path);
 
