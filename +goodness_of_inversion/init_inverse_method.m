@@ -5,6 +5,43 @@ function zef = init_inverse_method(zef, inverse_method_name, mne, beamformer, ra
     % Set required values in zef based on the given inverse method name and
     % related given arguments.
     %
+    % Inputs:
+    %
+    % - zef
+    %
+    %   The zef struct that will be passed to the inverse methods and from
+    %   which the necessary fields will be read.
+    %
+    % - inverse_method_name
+    %
+    %   This determines which zef values will be set by this function.
+    %
+    % - mne
+    %
+    %   The MNE-related key–value pairs given to the main function, stored in
+    %   a struct.
+    %
+    % - beamformer
+    %
+    %   The Beamformer-related key–value pairs given to the main function, stored in
+    %   a struct.
+    %
+    % - ramus
+    %
+    %   The RAMUS-related key–value pairs given to the main function, stored in
+    %   a struct.
+    %
+    % - TODO sesame
+    %
+    %   The SESAME-related key–value pairs given to the main function, stored
+    %   in a struct.
+    %
+    % Outputs:
+    %
+    % - zef
+    %
+    %   The input zef struct with the needed inverse method fields set.
+    %
 
     arguments
 
