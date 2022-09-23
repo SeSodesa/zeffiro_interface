@@ -1,4 +1,4 @@
-function zef = zef_init_inverse_method(zef, inverse_method_name)
+function zef = zef_init_inverse_method(zef, inverse_method_name, mne, beamformer, ramus, sesame)
 
     % See if a given inverse method is recognised and if so, call it after
     % running the required initialization script.
