@@ -9,17 +9,17 @@ end
 zef_data = struct;
 
 if nargin < 3
-if not(isempty(zef.save_file_path)) && not(isequal(zef.save_file_path,0))
+if not(zef.save_file_path == "") && not(zef.save_file_path == "")
 [file_name, path_name] = uigetfile('*.mat','Open project',zef.save_file_path);
 else
 [file_name, path_name] = uigetfile('*.mat','Open project');
 end
 end
-if not(isequal(file_name,0))
+if not(file_name == "")
 zef_start_new_project;
 
-zef_data.save_file = file_name;
-zef_data.save_file_path = path_name;
+zef_data.save_file = string(file_name);
+zef_data.save_file_path = string(path_name);
 
 matfile_whos = whos('-file',[path_name filesep file_name]);
 matfile_fieldnames = {matfile_whos.name}';
@@ -77,8 +77,8 @@ zef_data.mlapp = 1;
 
  zef = zef_apply_system_settings(zef);
 
- zef.save_file = zef_data.save_file;
- zef.save_file_path = zef_data.save_file_path;
+ zef.save_file = string(zef_data.save_file);
+ zef.save_file_path = string(zef_data.save_file_path);
  if isfield(zef_data,'profile_name')
  zef.profile_name = string(zef_data.profile_name);
  end

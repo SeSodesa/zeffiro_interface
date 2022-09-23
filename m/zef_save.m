@@ -13,11 +13,11 @@ elseif nargin == 4
 end
 
 if zef.save_switch == 1
-    
-if nargin < 3    
+
+if nargin < 3
 if zef.use_display
-if not(isempty(zef.save_file_path)) & not(zef.save_file_path==0)
-[zef.file zef.file_path] = uiputfile('*.mat','Save as...',[zef.save_file_path zef.save_file]);
+if not(zef.save_file_path == "") & not(zef.save_file_path == "")
+[zef.file zef.file_path] = uiputfile('*.mat','Save as...',zef.save_file_path + zef.save_file);
 else
 [zef.file zef.file_path] = uiputfile('*.mat','Save as...');
 end
@@ -27,8 +27,8 @@ else
     zef.file_path = path_name;
 end
 if not(isequal(zef.file,0))
-zef.save_file = zef.file;
-zef.save_file_path = zef.file_path;
+zef.save_file = string(zef.file);
+zef.save_file_path = string(zef.file_path);
 zef_close_tools;
 zef_close_figs;
 
@@ -42,7 +42,7 @@ end
 
 zef_data = zef;
 zef_data = zef_remove_object_handles(zef_data);
-save([zef.save_file_path zef.save_file],'-struct','zef_data','-v7.3');
+save(zef.save_file_path + zef.save_file,'-struct','zef_data','-v7.3');
 clear zef_data;
 zef_segmentation_tool;
 zef_mesh_tool;
@@ -59,7 +59,7 @@ else
 end
     end
 if not(isequal(zef.file,0));
-save([zef.file_path zef.file],'-struct','zef','L','-v7.3');
+save(zef.file_path + zef.file,'-struct','zef','L','-v7.3');
 end
 end
 if zef.save_switch == 3
@@ -71,7 +71,7 @@ else
 end
     end
 if not(isequal(zef.file,0));
-save([zef.file_path zef.file],'-struct','zef','source_positions','source_directions','-v7.3');
+save(zef.file_path + zef.file,'-struct','zef','source_positions','source_directions','-v7.3');
 end
 end
 if zef.save_switch == 4
@@ -83,7 +83,7 @@ else
 end
     end
 if not(isequal(zef.file,0));
-save([zef.file_path zef.file],'-struct','zef',[zef.current_sensors '_points'],[zef.current_sensors '_directions'],'-v7.3');
+save(zef.file_path + zef.file,'-struct','zef',[zef.current_sensors '_points'],[zef.current_sensors '_directions'],'-v7.3');
 end
 end
 if zef.save_switch == 5
@@ -105,10 +105,10 @@ for zef_i = 1 : size(zef.sensors,1)
 zef.sensors_attached_surface(zef_i,1:3) = zef.surface_mesh_nodes{end}(zef.min_ind,:);
 end
 clear zef_i;
-save([zef.file_path zef.file],'-struct','zef','sensors','surface_mesh_nodes','surface_mesh_triangles','sensors_attached_surface','-v7.3');
+save(zef.file_path + zef.file,'-struct','zef','sensors','surface_mesh_nodes','surface_mesh_triangles','sensors_attached_surface','-v7.3');
 zef = rmfield(zef,{'min_val','min_ind','sensors_attached_surface'});
 else
-save([zef.file_path zef.file],'-struct','zef','sensors','surface_mesh_nodes','surface_mesh_triangles');
+save(zef.file_path + zef.file,'-struct','zef','sensors','surface_mesh_nodes','surface_mesh_triangles');
 zef = rmfield(zef,{'surface_mesh_nodes','surface_mesh_triangles'});
 end
 end
@@ -127,21 +127,21 @@ zef.tetrahedra = zef.tetra;
 %[zef.sigma,zef.brain_ind] = zef_postprocess_fem_mesh([]);
 if zef.imaging_method== 1
 [zef.sensors_attached_volume] = zef_attach_sensors_volume([]);
-save([zef.file_path zef.file],'-struct','zef','sensors','nodes','tetrahedra','prisms','surface_triangles','sigma','sigma_prisms','sensors_attached_volume','brain_ind','-v7.3');
+save(zef.file_path + zef.file,'-struct','zef','sensors','nodes','tetrahedra','prisms','surface_triangles','sigma','sigma_prisms','sensors_attached_volume','brain_ind','-v7.3');
 zef = rmfield(zef,{'sensors_attached_volume','tetrahedra'});
 else
-save([zef.file_path zef.file],'-struct','zef','sensors','nodes','tetrahedra','surface_triangles','sigma','-v7.3');
+save(zef.file_path + zef.file,'-struct','zef','sensors','nodes','tetrahedra','surface_triangles','sigma','-v7.3');
 zef = rmfield(zef,'tetrahedra');
 end
 end
 end
 if zef.save_switch == 7
-if not(isempty(zef.save_file)) & not(isempty(zef.save_file_path)) & not(zef.save_file_path==0) & not(isequal(zef.save_file,'default_project.mat'))
+if not(zef.save_file == "") & not(isempty(zef.save_file_path)) & not(zef.save_file_path=="") & not(isequal(zef.save_file,'default_project.mat'))
 zef_close_tools;
 zef_close_figs;
 zef_data = zef;
 zef_data = zef_remove_object_handles(zef_data);
-save([zef.save_file_path zef.save_file],'-struct','zef_data','-v7.3');
+save(zef.save_file_path + zef.save_file,'-struct','zef_data','-v7.3');
 clear zef_data;
 zef_mesh_tool;
 zef_mesh_visualization_tool
@@ -149,19 +149,19 @@ zef_update;
 else
 if zef.use_display
 if not(isempty(zef.save_file_path)) & not(zef.save_file_path==0)
-[zef.file zef.file_path] = uiputfile('*.mat','Save as...',[zef.save_file_path zef.save_file]);
+[zef.file zef.file_path] = uiputfile('*.mat','Save as...',zef.save_file_path + zef.save_file);
 else
 [zef.file zef.file_path] = uiputfile('*.mat','Save as...');
 end
 end
 if not(isequal(zef.file,0));
-zef.save_file = zef.file;
-zef.save_file_path = zef.file_path;
+zef.save_file = string(zef.file);
+zef.save_file_path = string(zef.file_path);
 zef_close_tools;
 zef_close_figs;
 zef_data = zef;
 zef_data = zef_remove_object_handles(zef_data);
-save([zef.save_file_path zef.save_file],'-struct','zef_data','-v7.3');
+save(zef.save_file_path + zef.save_file,'-struct','zef_data','-v7.3');
 clear zef_data;
 end
 end
@@ -176,9 +176,9 @@ end
 end
 if not(isequal(zef.file,0));
 if zef.file_index == 1
-save([zef.file_path zef.file],'-struct','zef','reconstruction','-v7.3');
+save(zef.file_path + zef.file,'-struct','zef','reconstruction','-v7.3');
 else
-save([zef.file_path zef.file],'-struct','zef','reconstruction','-ascii');
+save(zef.file_path + zef.file,'-struct','zef','reconstruction','-ascii');
 end
 end
 end
