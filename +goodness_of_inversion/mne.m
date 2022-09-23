@@ -1,4 +1,4 @@
-function [rec, info] = zef_mne(zef, mne_type)
+function [rec, info] = mne(zef, mne_type)
 
     arguments
 
@@ -205,23 +205,29 @@ function [rec, info] = zef_mne(zef, mne_type)
 
     source_count = n_interp;
 
-    if zef.mne_normalize_data == 1;
+    if zef.mne_normalize_data == "maximum entry";
 
-        normalize_data = 'maximum';
+        normalize_data = "maximum";
 
     else
 
-        normalize_data = 'average';
+        normalize_data = "average";
 
     end
 
-    if mne_prior == 1
+    if zef.mne_prior == "balanced"
         balance_spatially = 1;
     else
         balance_spatially = 0;
     end
 
-    [theta0] = zef_find_gaussian_prior(snr_val-pm_val,L,size(L,2), zef.mne_normalize_data, 0);
+    [theta0] = goodness_of_inversion.find_gaussian_prior( ...
+        snr_val-pm_val, ...
+        L, ...
+        'source_space_size', size(L,2), ...
+        'normalization_type', normalize_data, ...
+        'w_param_modifier', 0 ...
+    );
 
     if zef.use_gpu == 1 & zef.gpu_count > 0
 
@@ -249,13 +255,13 @@ function [rec, info] = zef_mne(zef, mne_type)
 
     data_norm = 1;
 
-    if zef.mne_normalize_data == 1;
+    if zef.mne_normalize_data == "maximum entry";
         data_norm = max(abs(f(:)));
         %std_lhood = std_lhood^2;
-    elseif zef.mne_normalize_data == 2;
+    elseif zef.mne_normalize_data == "maximum column norm";
         data_norm = max(sqrt(sum(abs(f).^2)));
         %std_lhood = std_lhood^2;
-    elseif zef.mne_normalize_data == 3;
+    elseif zef.mne_normalize_data == "average column norm";
         data_norm = sum(sqrt(sum(abs(f).^2)))/size(f,2);
         %std_lhood = std_lhood^2;
     end;
