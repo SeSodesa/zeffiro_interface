@@ -103,6 +103,12 @@ function zef = zeffiro_interface(args)
 
     end
 
+    if args.restart
+
+        zef_close_all();
+
+    end
+
     %% Set zef fields based on name–value arguments.
 
     zef = struct;
