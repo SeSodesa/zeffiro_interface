@@ -8,12 +8,12 @@ zef = zef_apply_system_settings(zef);
 
 
 if isequal(zef.zeffiro_restart,0)
-    
+
     use_github = zef.use_github;
     if evalin('caller','exist(''use_github'',''var'')')
         use_github = evalin('caller','use_github');
     end
-    
+
 if use_github
     !git pull
 end
@@ -30,12 +30,12 @@ zef = rmfield(zef, 'ver');
 
 if ismember(zef.start_mode,{'nodisplay'})
    zef.use_display = 0;
-else 
+else
    zef.use_display = 1;
 end
 
 if not(zef.use_display)
-    addpath(genpath([zef.program_path '/nodisplay']));
+    addpath(genpath(zef.program_path + filesep + "nodisplay"));
 end
 
 if zef.gpu_count > 0 & zef.use_gpu == 1
