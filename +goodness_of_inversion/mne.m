@@ -205,7 +205,7 @@ function [rec, info] = mne(zef, mne_type)
 
     source_count = n_interp;
 
-    if zef.mne_normalize_data == "maximum entry";
+    if zef.mne_normalize_data == "maximum entry"
 
         normalize_data = "maximum";
 
@@ -229,7 +229,7 @@ function [rec, info] = mne(zef, mne_type)
         'w_param_modifier', 0 ...
     );
 
-    if zef.use_gpu == 1 & zef.gpu_count > 0
+    if zef.use_gpu == 1 && zef.gpu_count > 0
 
         L = gpuArray(L);
 
@@ -247,7 +247,7 @@ function [rec, info] = mne(zef, mne_type)
         number_of_frames = 1;
     end
 
-    if iscell(zef.measurements);
+    if iscell(zef.measurements)
         f = eval(['zef.measurements{' int2str(zef.mne_data_segment) '}']);
     else
         f = zef.measurements;
@@ -255,13 +255,13 @@ function [rec, info] = mne(zef, mne_type)
 
     data_norm = 1;
 
-    if zef.mne_normalize_data == "maximum entry";
+    if zef.mne_normalize_data == "maximum entry"
         data_norm = max(abs(f(:)));
         %std_lhood = std_lhood^2;
-    elseif zef.mne_normalize_data == "maximum column norm";
+    elseif zef.mne_normalize_data == "maximum column norm"
         data_norm = max(sqrt(sum(abs(f).^2)));
         %std_lhood = std_lhood^2;
-    elseif zef.mne_normalize_data == "average column norm";
+    elseif zef.mne_normalize_data == "average column norm"
         data_norm = sum(sqrt(sum(abs(f).^2)))/size(f,2);
         %std_lhood = std_lhood^2;
     end;
@@ -291,7 +291,7 @@ function [rec, info] = mne(zef, mne_type)
 
         if f_ind > 1;
             date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400));
-        end;
+        end
 
         if ismember(source_direction_mode, [1,2])
             z_aux = zeros(size(L,2),1);
@@ -309,7 +309,9 @@ function [rec, info] = mne(zef, mne_type)
 
         if size_f > 1
 
-            if zef.mne_time_2 >=0 && zef.mne_time_1 >= 0 && 1 + sampling_freq*zef.mne_time_1 <= size_f;
+            if zef.mne_time_2 >=0 ...
+            && zef.mne_time_1 >= 0 ...
+            && 1 + sampling_freq*zef.mne_time_1 <= size_f
                 f = f_data(:, max(1, 1 + floor(sampling_freq*zef.mne_time_1+sampling_freq*(f_ind - 1)*zef.mne_time_3)) : min(size_f, 1 + floor(sampling_freq*(zef.mne_time_1 + zef.mne_time_2)+sampling_freq*(f_ind - 1)*zef.mne_time_3)));
             end
 
@@ -340,7 +342,7 @@ function [rec, info] = mne(zef, mne_type)
         end
 
         if zef.use_gpu == 1 & zef.gpu_count > 0
-        d_sqrt = gpuArray(d_sqrt);
+            d_sqrt = gpuArray(d_sqrt);
         end
 
         L_inv = L.*repmat(d_sqrt',size(L,1),1);
@@ -401,7 +403,7 @@ function [rec, info] = mne(zef, mne_type)
 
         for f_ind = 1 : number_of_frames;
             aux_norm_vec = max(sqrt(sum(reshape(rec{f_ind}, 3, length(rec{f_ind})/3).^2)),aux_norm_vec);
-        end;
+        end
 
         for f_ind = 1 : number_of_frames;
             rec{f_ind} = rec{f_ind}./max(aux_norm_vec);
@@ -410,6 +412,6 @@ function [rec, info] = mne(zef, mne_type)
     else
         aux_norm_vec = sqrt(sum(reshape(rec, 3, length(rec)/3).^2));
         rec = rec./max(aux_norm_vec);
-    end;
+    end
 
 end % function
