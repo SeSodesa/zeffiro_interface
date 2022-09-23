@@ -2,7 +2,11 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
     zef,           ...
     n_subset,      ...
     roi_radius,    ...
-    inverse_method ...
+    inverse_method, ...
+    mne, ...
+    beamformer, ...
+    ramus, ...
+    sesame ...
 )
 
 % goodness_of_inversion.main
@@ -89,6 +93,50 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 %     - source_directions
 %     - source_interpolation_ind
 %
+% - mne
+%
+%   A set of key–value argument pairs for setting MNE parameters. These are
+%   all prefixed with "mne_". These are also used by sLORETA, which is just
+%   another version of MNE. The options and their default values are as
+%   follows:
+%
+%   Key                         Value
+%   -------------------------   ----------------------------------------
+%
+%   mne_low_cut_frequency       A positive real number, default = 7.
+%
+%   mne_high_cut_frequency      A positive real number, default = 9.
+%
+%   mne_normalize_data          "maximum entry" (default), "maximum column norm",
+%                               "average column norm" or "none".
+%
+%   mne_number_of_frames        A non-negative whole number, default = 1.
+%
+%   mne_prior                   "balanced" (default) or "constant"
+%
+%   mne_sampling_frequency      A positive real number, default = 1025.
+%
+%   mne_time_start              A positive real number, default = 0.
+%
+%   mne_time_window             A positive real number, default = 0
+%
+%   mne_time_step               A positive real number, default = 1
+%
+% - beamformer
+%
+%   A set of key–value argument pairs for setting Beamformer parameters. These
+%   are all prefixed with "beamformer_".
+%
+% - ramus
+%
+%   A set of key–value argument pairs for setting RAMUS parameters. These are
+%   all prefixed with "ramus_".
+%
+% - sesame
+%
+%   A set of key–value argument pairs for setting SESAME parameters. These are
+%   all prefixed with "sesame_".
+%
 % Output:
 %
 % - rec_vec_position
@@ -113,6 +161,44 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
         roi_radius (1,1) double { mustBeReal, mustBePositive }
 
         inverse_method (1,1) string { mustBeMember(inverse_method, ["MNE", "sLORETA", "Beamformer", "RAMUS", "SESAME"]) }
+
+        % MNE parameters.
+
+        mne.mne_low_cut_frequency (1,1) double { mustBePositive } = 7;
+
+        mne.mne_high_cut_frequency (1,1) double { mustBePositive } = 9;
+
+        mne.mne_normalize_data (1,1) string { mustBeMember( ...
+                mne.mne_normalize_data, ...
+                [ "maximum entry", "maximum column norm", "average column norm", "none" ] ...
+            ) } = "maximum entry";
+
+        mne.mne_number_of_frames (1,1) double { mustBeInteger, mustBePositive } = 1;
+
+        mne.mne_prior (1,1) string { mustBeMember( ...
+                mne.mne_prior, ...
+                [ "balanced", "constant" ] ...
+            ) } = "balanced";
+
+        mne.mne_sampling_frequency (1,1) double { mustBeReal, mustBePositive } = 1025.
+
+        mne.mne_time_start (1,1) double { mustBeReal, mustBeNonnegative } = 0.
+
+        mne.mne_time_window (1,1) double { mustBeReal, mustBeNonnegative } = 0
+
+        mne.mne_time_step (1,1) double { mustBeReal, mustBePositive } = 1
+
+        % TODO Beamformer parameters.
+
+        beamformer.beamformer = []
+
+        % TODO RAMUS parameters.
+
+        ramus.ramus = []
+
+        % TODO SESAME parameters.
+
+        sesame.sesame = []
 
     end
 
