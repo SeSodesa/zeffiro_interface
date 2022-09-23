@@ -156,9 +156,9 @@ function [rec, info] = mne(zef, mne_type)
     n_vec_aux = cross(aux_p(aux_t(:,2),:)' - aux_p(aux_t(:,1),:)', aux_p(aux_t(:,3),:)' - aux_p(aux_t(:,1),:)')';
     n_vec_aux = n_vec_aux./repmat(sqrt(sum(n_vec_aux.^2,2)),1,3);
 
-    n_vec_aux(:,1) = zef_smooth_field(aux_t, n_vec_aux(:,1), size(aux_p(:,1),1),7);
-    n_vec_aux(:,2) = zef_smooth_field(aux_t, n_vec_aux(:,2), size(aux_p(:,1),1),7);
-    n_vec_aux(:,3) = zef_smooth_field(aux_t, n_vec_aux(:,3), size(aux_p(:,1),1),7);
+    n_vec_aux(:,1) = goodness_of_inversion.smooth_field(aux_t, n_vec_aux(:,1), size(aux_p(:,1),1),7);
+    n_vec_aux(:,2) = goodness_of_inversion.smooth_field(aux_t, n_vec_aux(:,2), size(aux_p(:,1),1),7);
+    n_vec_aux(:,3) = goodness_of_inversion.smooth_field(aux_t, n_vec_aux(:,3), size(aux_p(:,1),1),7);
 
     n_vec_aux =  - n_vec_aux./repmat(sqrt(sum(n_vec_aux.^2,2)),1,3);
 
