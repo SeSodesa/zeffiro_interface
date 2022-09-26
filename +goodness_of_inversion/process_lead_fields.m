@@ -1,4 +1,4 @@
-function [L,n_interp, procFile] = process_lead_fields(zef, source_direction_mode)
+function [L,n_interp, procFile] = process_lead_fields(zef)
 
     % process_lead_fields
     %
@@ -16,7 +16,7 @@ function [L,n_interp, procFile] = process_lead_fields(zef, source_direction_mode
 
     n_interp = length(s_ind_1);
 
-    if source_direction_mode == 2
+    if zef.source_direction_mode == 2
 
         [s_ind_3] = zef.source_interpolation_ind{3};
 
@@ -91,17 +91,17 @@ function [L,n_interp, procFile] = process_lead_fields(zef, source_direction_mode
 
     end
 
-    if source_direction_mode == 3
+    if zef.source_direction_mode == 3
         source_directions = source_directions(s_ind_1,:);
     end
 
     s_ind_0=s_ind_1;
 
-    if source_direction_mode == 1  || source_direction_mode == 2
+    if zef.source_direction_mode == 1  || zef.source_direction_mode == 2
         s_ind_1 = [3*s_ind_1-2 ; 3*s_ind_1-1 ; 3*s_ind_1]; %not triplet anymore
     end
 
-    if  source_direction_mode == 3
+    if  zef.source_direction_mode == 3
         s_ind_2 = [3*s_ind_1-2 ; 3*s_ind_1-1 ; 3*s_ind_1];
     end
 
@@ -110,7 +110,7 @@ function [L,n_interp, procFile] = process_lead_fields(zef, source_direction_mode
     L = zef.L;
     L = L(:,s_ind_1);
 
-    if source_direction_mode == 2
+    if zef.source_direction_mode == 2
 
         L_1 = L(:,1:n_interp);
         L_2 = L(:,n_interp+1:2*n_interp);
@@ -127,14 +127,14 @@ function [L,n_interp, procFile] = process_lead_fields(zef, source_direction_mode
 
     end
 
-    procFile.source_direction_mode=source_direction_mode;
-    procFile.source_directions=source_directions;
-    procFile.s_ind_1=s_ind_1;
-    procFile.s_ind_2=s_ind_2;
-    procFile.s_ind_3=s_ind_3;
-    procFile.s_ind_4=s_ind_4;
-    procFile.n_interp=n_interp;
-    procFile.sizeL2=size(L,2);
-    procFile.s_ind_0=s_ind_0;
+    procFile.source_direction_mode = zef.source_direction_mode;
+    procFile.source_directions = zef.source_directions;
+    procFile.s_ind_1 = s_ind_1;
+    procFile.s_ind_2 = s_ind_2;
+    procFile.s_ind_3 = s_ind_3;
+    procFile.s_ind_4 = s_ind_4;
+    procFile.n_interp = n_interp;
+    procFile.sizeL2 = size(L,2);
+    procFile.s_ind_0 = s_ind_0;
 
 end % function
