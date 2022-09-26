@@ -24,7 +24,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
 
     std_lhood = 10^(-snr_val/20);
 
-    lambda_cov = zef.inv_cov_lambda;
+    lambda_cov = zef.beamformer_inv_cov_lambda;
 
     lambda_L = zef.inv_leadfield_lambda;
 

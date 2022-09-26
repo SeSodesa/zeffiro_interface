@@ -270,6 +270,8 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
             ] ...
         ) } = "matrix norm";
 
+        beamformer.beamformer_inv_cov_lambda (1,1) double = 0.05;
+
         % TODO RAMUS parameters.
 
         ramus.ramus_multiresolution_levels (1,1) double { mustBeInteger, mustBePositive } = 2;
