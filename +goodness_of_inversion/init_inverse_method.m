@@ -155,6 +155,18 @@ function zef = init_inverse_method(zef, inverse_method_name, mne, beamformer, ra
 
         zef.ramus_initial_guess_mode = ramus.ramus_initial_guess_mode;
 
+        [decomposition, indices, count] = goodness_of_inversion.make_multires_dec( ...
+            ramus.ramus_n_decompositions, ...
+            ramus.ramus_n_levels, ...
+            ramus.ramus_multires_sparsity ...
+        );
+
+        zef.ramus_multires_dec = decomposition;
+
+        zef.ramus_multires_ind = indices;
+
+        zef.ramus_multires_count = count;
+
     end
 
     if strcmp(inverse_method_name, "SESAME")
