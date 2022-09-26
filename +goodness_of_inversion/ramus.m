@@ -45,7 +45,7 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
 
     [L,n_interp, procFile] = goodness_of_inversion.process_lead_fields(zef);
 
-    if zef.use_gpu == 1 & zef.gpu_count > 0
+    if zef.use_gpu == 1 && zef.gpu_count > 0
         L = gpuArray(L);
     end
 
@@ -53,7 +53,7 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
 
     S_mat = std_lhood^2*eye(size(L,1));
 
-    if zef.use_gpu == 1 & zef.gpu_count > 0
+    if zef.use_gpu == 1 && zef.gpu_count > 0
         S_mat = gpuArray(S_mat);
     end
 
@@ -69,7 +69,7 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
 
         time_val = toc;
 
-        if f_ind > 1;
+        if f_ind > 1
             date_str = datestr(datevec(now+(number_of_frames/(f_ind-1) - 1)*time_val/86400));
         end
 
@@ -91,7 +91,7 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
 
         n_ias_map_iter = zef.ramus_n_map_iterations;
 
-        if zef.use_gpu == 1 & zef.gpu_count > 0
+        if zef.use_gpu == 1 && zef.gpu_count > 0
             f = gpuArray(f);
         end
 
@@ -141,13 +141,13 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
                         source_count_aux = 1;
                     end
 
-                    if zef.ramus_normalize_data==1;
+                    if zef.ramus_normalize_data==1
                         normalize_data = 'maximum';
                     else
                         normalize_data = 'average';
                     end
 
-                    if ramus_hyperprior == 1
+                    if ramus_hyperprior == "spatially balanced"
                         balance_spatially = 1;
                     else
                         balance_spatially = 0;
@@ -187,15 +187,15 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
 
                     for i = 1 : n_iter(j)
 
-                        if f_ind > 1;
+                        if f_ind > 1
                             zef_waitbar([i/n_iter(j) j/n_multires n_rep/n_decompositions],h,['Dec. ' int2str(n_rep) ' of ' int2str(n_decompositions) ', Step ' int2str(f_ind) ' of ' int2str(number_of_frames) '. Ready: ' date_str '.' ]);
                         else
                             zef_waitbar([i/n_iter(j) j/n_multires n_rep/n_decompositions],h,['IAS MAP iteration. Dec. ' int2str(n_rep) ' of ' int2str(n_decompositions) ', Time step ' int2str(f_ind) ' of ' int2str(number_of_frames) '.' ]);
-                        end;
+                        end
 
                         d_sqrt = sqrt(theta);
 
-                        if zef.use_gpu == 1 & zef.gpu_count > 0
+                        if zef.use_gpu == 1 && zef.gpu_count > 0
                             d_sqrt = gpuArray(d_sqrt);
                         end
 
@@ -203,7 +203,7 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
 
                         z_vec = d_sqrt.*(L'*((L*L' + S_mat)\f));
 
-                        if zef.use_gpu == 1 & zef.gpu_count > 0
+                        if zef.use_gpu == 1 && zef.gpu_count > 0
                             z_vec = gather(z_vec);
                         end
 
