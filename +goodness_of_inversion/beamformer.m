@@ -98,10 +98,10 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
 
     f_data = goodness_of_inversion.get_filtered_data(zef);
 
-        if zef.cov_type == 1
+        if zef.beamformer_covariance_mode == "full data, measurement based"
             C = (f_data-mean(f_data,2))*(f_data-mean(f_data,2))'/size(f_data,2);
             C = C+lambda_cov*trace(C)*eye(size(C))/size(f_data,1);
-        elseif zef.cov_type == 2
+        elseif zef.beamformer_covariance_mode == "full data, basic"
             C = (f_data-mean(f_data,2))*(f_data-mean(f_data,2))'/size(f_data,2);
             C = C + lambda_cov*eye(size(C));
         end
@@ -131,7 +131,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
     f = zef_getTimeStep(f_data, f_ind, true);
     size_f = size(f,2);
 
-    if zef.cov_type == 3
+    if zef.beamformer_covariance_mode == "pointwise, measurement based"
 
         if size_f > 1
             C = (f-mean(f,2))*(f-mean(f,2))'/size(f,2);
@@ -140,7 +140,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
         end
         C = C+lambda_cov*trace(C)*eye(size(C))/size(f,1);
 
-    elseif zef.cov_type == 4
+    elseif zef.beamformer_covariance_mode == "pointwise, basic"
 
         if size_f > 1
             C = (f-mean(f,2))*(f-mean(f,2))'/size(f,2);
