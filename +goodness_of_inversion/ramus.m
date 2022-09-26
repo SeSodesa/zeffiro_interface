@@ -83,7 +83,7 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
 
         z_vec = ones(size(L_aux,2),1);
 
-        [f] = zef_getTimeStep(f_data, f_ind, true);
+        [f] = goodness_of_inversion.get_time_step(zef, f_data, f_ind, 'Optional_averaging_bool', true);
 
         if f_ind == 1
             zef_waitbar([0 0 0],h,['IAS MAP iteration. Time step ' int2str(f_ind) ' of ' int2str(number_of_frames) '.']);
@@ -200,6 +200,8 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
                         end
 
                         L = L_aux_2.*repmat(d_sqrt',size(L,1),1);
+
+                        % TODO: find out why f has size [0 0].
 
                         z_vec = d_sqrt.*(L'*((L*L' + S_mat)\f));
 
