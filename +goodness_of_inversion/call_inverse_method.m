@@ -27,21 +27,27 @@ function [zef, rec] = zef_call_inverse_method( ...
 
     if strcmp(inverse_method_name, "MNE") ...
     || strcmp(inverse_method_name, "sLORETA")
+
         [rec, ~] = goodness_of_inversion.mne(zef, inverse_method_name);
+
     end
 
     if strcmp(inverse_method_name, "Beamformer")
+
         [rec, ~, ~] = goodness_of_inversion.beamformer(zef);
+
     end
 
     if strcmp(inverse_method_name, "RAMUS")
-        error("TODO RAMUS")
-        [rec, ~] = inverse_method_name();
+
+        [rec, ~] = goodness_of_inversion.ramus(zef);
+
     end
 
     if strcmp(inverse_method_name, "SESAME")
+
         error("TODO SESAME")
-        [rec] = inverse_method_name();
+
     end
 
 end
