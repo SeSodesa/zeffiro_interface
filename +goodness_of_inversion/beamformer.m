@@ -26,7 +26,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
 
     lambda_cov = zef.beamformer_inv_cov_lambda;
 
-    lambda_L = zef.inv_leadfield_lambda;
+    lambda_L = zef.beamformer_inv_lead_field_lambda;
 
     sampling_freq = zef.inv_sampling_frequency;
 

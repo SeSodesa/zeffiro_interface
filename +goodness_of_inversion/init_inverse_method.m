@@ -119,6 +119,8 @@ function zef = init_inverse_method(zef, inverse_method_name, mne, beamformer, ra
 
         zef.beamformer_inv_cov_lambda = beamformer.beamformer_inv_cov_lambda;
 
+        zef.beamformer_inv_lead_field_lambda = beamformer.beamformer_inv_lead_field_lambda;
+
     end
 
     if strcmp(inverse_method_name, "RAMUS")
