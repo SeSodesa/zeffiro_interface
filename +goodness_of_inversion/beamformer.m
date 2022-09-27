@@ -256,9 +256,9 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
             end % if
 
             %Leadfield regularization
-            if zef.L_reg_type==1
+            if zef.beamformer_lead_field_regularization_procedure=="basic"
                 invLTinvCL = inv(L_aux'*L_aux+lambda_L*eye(size(L_aux,2)));
-            elseif zef.L_reg_type==2
+            elseif zef.beamformer_lead_field_regularization_procedure=="pseudoinverse"
                 invLTinvCL = pinv(L_aux'*L_aux);
             end
 
@@ -318,11 +318,11 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                 if ismember(L_ind(n_iter,1),procFile.s_ind_4)
                     L_aux = L(:,L_ind(n_iter,1));
                     %Leadfield regularization
-                    if zef.L_reg_type==1
+                    if zef.beamformer_lead_field_regularization_procedure=="basic"
                         lambdaI = lambda_L*eye(size(L_aux,2));
                     end
                     L_aux = L_aux2(:,L_ind(n_iter,1));
-                    if zef.L_reg_type==2
+                    if zef.beamformer_lead_field_regularization_procedure=="pseudoinverse"
                         weights = C\pinv(L_aux)';
                     else
                         weights = (C\L(:,L_ind(n_iter,1)))/(L_aux'*L_aux+lambdaI);
@@ -336,7 +336,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
 
                     %Leadfield regularization
                     %
-                    if zef.L_reg_type==1
+                    if zef.beamformer_lead_field_regularization_procedure=="basic"
                         lambdaI = lambda_L*eye(size(L_aux,2));
                     end
 
@@ -395,7 +395,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
 
                 L_aux = L(:,L_ind(n_iter,1));
                 %Leadfield regularization
-                if zef.L_reg_type==1
+                if zef.beamformer_lead_field_regularization_procedure=="basic"
                     lambdaI = lambda_L*eye(size(L_aux,2));
                 end
 
@@ -558,9 +558,9 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
             L_aux = L_aux*opt_orientation;
 
             %Leadfield regularization
-            if zef.L_reg_type==1
+            if zef.beamformer_lead_field_regularization_procedure=="basic"
                 invLTinvCL = inv(L_aux'*L_aux+lambda_L*eye(size(L_aux,2)));
-            elseif zef.L_reg_type==2
+            elseif zef.beamformer_lead_field_regularization_procedure=="pseudoinverse"
                 invLTinvCL = pinv(L_aux'*L_aux);
             end
 
@@ -672,9 +672,9 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
             L_aux = L_aux*opt_orientation;
 
             %Leadfield regularization
-            if zef.L_reg_type==1
+            if zef.beamformer_lead_field_regularization_procedure=="basic"
                 invSqrtLTinvC2L = sqrt(inv(L_aux'*L_aux+lambda_L*eye(size(L_aux,2))));
-            elseif zef.L_reg_type==2
+            elseif zef.beamformer_lead_field_regularization_procedure=="pseudoinverse"
                 invSqrtLTinvC2L = sqrt(pinv(L_aux'*L_aux));
             end
 
