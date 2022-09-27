@@ -127,6 +127,50 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 %   A set of key–value argument pairs for setting Beamformer parameters. These
 %   are all prefixed with "beamformer_".
 %
+%   Key                                             Value
+%   --------------------------                      -------------------------
+%
+%   beamformer_estimate_type                        One of "linearly constrained minimum variance",
+%                                                   "unit noise gain", "unit-gain-constrained" or
+%                                                   "unit noise gain scalar".
+%
+%   beamformer_estimated_attribute                  One of "dipole moments", "locations" or "both".
+%
+%   beamformer_covariance_regularization_parameter  A double, default = 0.05;
+%
+%   beamformer_covariance_mode                      One of "full data, measurement based", "full data, basic",
+%                                                   "pointwise, measurement based" or "pointwise, basic".
+%
+%   beamformer_lead_field_regularization_parameter  A double, default = 0.001.
+%
+%   beamformer_lead_field_regularization_procedure  One of "pseudoinverse" or "basic".
+%
+%   beamformer_signal_to_noise_ratio                A double, default = 30 dB.
+%
+%   beamformer_sampling_frequency                   TODO
+%
+%   beamformer_low_cut_frequency                    TODO
+%
+%   beamformer_high_cut_frequency                   TODO
+%
+%   beamformer_time_start                           TODO
+%
+%   beamformer_time_window                          TODO
+%
+%   beamformer_n_of_time_steps                      TODO
+%
+%   beamformer_time_step                            TODO
+%
+%   beamformer_data_segment                         TODO
+%
+%   beamformer_data_normalization                   TODO
+%
+%   beamformer_lead_field_normalization             TODO
+%
+%   beamformer_inv_cov_lambda                       TODO
+%
+%   beamformer_inv_lead_field_lambda                TODO
+%
 % - ramus
 %
 %   A set of key–value argument pairs for setting RAMUS parameters. These are
@@ -188,7 +232,7 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 
         mne.mne_time_step (1,1) double { mustBeReal, mustBePositive } = 1
 
-        % TODO Beamformer parameters.
+        % Beamformer parameters.
 
         beamformer.beamformer_estimate_type (1,1) string { ...
             mustBeMember( ...
@@ -274,7 +318,7 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 
         beamformer.beamformer_inv_lead_field_lambda (1,1) double = 0.001;
 
-        % TODO RAMUS parameters.
+        % RAMUS parameters.
 
         ramus.ramus_multiresolution_levels (1,1) double { mustBeInteger, mustBePositive } = 2;
 
