@@ -57,7 +57,7 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
         S_mat = gpuArray(S_mat);
     end
 
-    [f_data] = zef_getFilteredData;
+    [f_data] = goodness_of_inversion.get_filtered_data(zef);
 
     tic;
 
