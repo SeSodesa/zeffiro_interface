@@ -201,8 +201,6 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
 
                         L = L_aux_2.*repmat(d_sqrt',size(L,1),1);
 
-                        % TODO: find out why f has size [0 0].
-
                         z_vec = d_sqrt.*(L'*((L*L' + S_mat)\f));
 
                         if zef.use_gpu == 1 && zef.gpu_count > 0
