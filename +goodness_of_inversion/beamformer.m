@@ -79,7 +79,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
     reconstruction_information.snr_val = zef.inv_snr;
     reconstruction_information.number_of_frames = zef.number_of_frames;
 
-    [L,n_interp, procFile] = goodness_of_inversion.process_lead_fields(zef, source_direction_mode);
+    [L,n_interp, procFile] = goodness_of_inversion.process_lead_fields(zef);
 
     L_aux = L;
     S_mat = std_lhood^2*eye(size(L,1));
@@ -197,7 +197,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                 else
 
                     %Leadfield normalizations
-                    if strcmp(zef.beamformer.normalize_leadfield.Value,'1')
+                    if strcmp(zef.beamformer_lead_field_normalization,'1')
 
                         %Leadfield normalization suggested by
                         %- B.D. Van Veen et al. "Localization of brain electrical activity via linearly constrained minimum variance spatial filtering",
@@ -207,12 +207,12 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                         L_aux = L(:,L_ind(n_iter,:));
                         L_aux = L_aux2(:,L_ind(n_iter,:))/norm(L_aux);
 
-                    elseif strcmp(zef.beamformer.normalize_leadfield.Value, '2')
+                    elseif strcmp(zef.beamformer_lead_field_normalization, '2')
 
                         L_aux = L(:,L_ind(n_iter,:));
                         L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,1));
 
-                    elseif strcmp(zef.beamformer.normalize_leadfield.Value, '3')
+                    elseif strcmp(zef.beamformer_lead_field_normalization, '3')
 
                         L_aux = L(:,L_ind(n_iter,:));
                         L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,2));
@@ -227,7 +227,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
             else
 
                 %Leadfield normalizations
-                if strcmp(zef.beamformer.normalize_leadfield.Value,'1')
+                if strcmp(zef.beamformer_lead_field_normalization,'1')
 
                     %Leadfield normalization suggested by
                     %- B.D. Van Veen et al. "Localization of brain electrical activity via linearly constrained minimum variance spatial filtering",
@@ -237,12 +237,12 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                     L_aux = L(:,L_ind(n_iter,:));
                     L_aux = L_aux2(:,L_ind(n_iter,:))/norm(L_aux);
 
-                elseif strcmp(zef.beamformer.normalize_leadfield.Value,'2')
+                elseif strcmp(zef.beamformer_lead_field_normalization,'2')
 
                     L_aux = L(:,L_ind(n_iter,:));
                     L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,1));
 
-                elseif strcmp(zef.beamformer.normalize_leadfield.Value,'3')
+                elseif strcmp(zef.beamformer_lead_field_normalization,'3')
 
                     L_aux = L(:,L_ind(n_iter,:));
                     L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,2));
@@ -342,7 +342,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
 
                     %Leadfield normalization
 
-                    if strcmp(zef.beamformer.normalize_leadfield.Value,'1')
+                    if strcmp(zef.beamformer_lead_field_normalization,'1')
 
                         %Leadfield normalization suggested by
                         %- B.D. Van Veen et al. "Localization of brain electrical activity via linearly constrained minimum variance spatial filtering",
@@ -357,7 +357,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                               weights = C\pinv(L_aux)';
                           end
 
-                    elseif strcmp(zef.beamformer.normalize_leadfield.Value,'2')
+                    elseif strcmp(zef.beamformer_lead_field_normalization,'2')
 
                         L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,1));
                         if ~ismember(zef.L_reg_type,[2])
@@ -367,7 +367,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                             weights = C\pinv(L_aux)';
                         end
 
-                    elseif strcmp(zef.beamformer.normalize_leadfield.Value,'3')
+                    elseif strcmp(zef.beamformer_lead_field_normalization,'3')
 
                         L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,2));
                         if ~ismember(zef.L_reg_type,[2])
@@ -401,7 +401,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
 
             %Leadfield normalization
 
-                if strcmp(zef.beamformer.normalize_leadfield.Value,'1')
+                if strcmp(zef.beamformer_lead_field_normalization,'1')
                     %Leadfield normalization suggested by
                     %- B.D. Van Veen et al. "Localization of brain electrical activity via linearly constrained minimum variance spatial filtering",
                     %IEEE Trans. Biomed. Eng., vol. 44, pp. 867–880, Sept. 1997.
@@ -415,7 +415,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                         weights = weights*pinv(L_aux'*L_aux);
                     end
 
-                elseif strcmp(zef.beamformer.normalize_leadfield.Value,'2')
+                elseif strcmp(zef.beamformer_lead_field_normalization,'2')
 
                     L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,1));
                     if ~ismember(zef.L_reg_type,[2])
@@ -425,7 +425,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                         weights = weights*pinv(L_aux'*L_aux);
                     end
 
-                elseif strcmp(zef.beamformer.normalize_leadfield.Value,'3')
+                elseif strcmp(zef.beamformer_lead_field_normalization,'3')
 
                     L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,2));
                     if ~ismember(zef.L_reg_type,[2])
@@ -508,7 +508,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                 else
 
                     %Leadfield normalizations
-                    if strcmp(zef.beamformer.normalize_leadfield.Value,'1')
+                    if strcmp(zef.beamformer_lead_field_normalization,'1')
                         %Leadfield normalization suggested by
                         %- B.D. Van Veen et al. "Localization of brain electrical activity via linearly constrained minimum variance spatial filtering",
                         %IEEE Trans. Biomed. Eng., vol. 44, pp. 867–880, Sept. 1997.
@@ -516,10 +516,10 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                         %Phys. Med. Biol., vol. 44, pp. 2081–2097, 1999.
                         L_aux = L(:,L_ind(n_iter,:));
                         L_aux = L_aux2(:,L_ind(n_iter,:))/norm(L_aux);
-                    elseif strcmp(zef.beamformer.normalize_leadfield.Value,'2')
+                    elseif strcmp(zef.beamformer_lead_field_normalization,'2')
                         L_aux = L(:,L_ind(n_iter,:));
                         L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,1));
-                    elseif strcmp(zef.beamformer.normalize_leadfield.Value,'3')
+                    elseif strcmp(zef.beamformer_lead_field_normalization,'3')
                         L_aux = L(:,L_ind(n_iter,:));
                         L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,2));
                     else
@@ -532,7 +532,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
 
                 %Leadfield normalizations
 
-                if strcmp(zef.beamformer.normalize_leadfield.Value,'1')
+                if strcmp(zef.beamformer_lead_field_normalization,'1')
                     %Leadfield normalization suggested by
                     %- B.D. Van Veen et al. "Localization of brain electrical activity via linearly constrained minimum variance spatial filtering",
                     %IEEE Trans. Biomed. Eng., vol. 44, pp. 867–880, Sept. 1997.
@@ -540,10 +540,10 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                     %Phys. Med. Biol., vol. 44, pp. 2081–2097, 1999.
                     L_aux = L(:,L_ind(n_iter,:));
                     L_aux = L_aux2(:,L_ind(n_iter,:))/norm(L_aux);
-                elseif strcmp(zef.beamformer.normalize_leadfield.Value,'2')
+                elseif strcmp(zef.beamformer_lead_field_normalization,'2')
                     L_aux = L(:,L_ind(n_iter,:));
                     L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,1));
-                elseif strcmp(zef.beamformer.normalize_leadfield.Value,'3')
+                elseif strcmp(zef.beamformer_lead_field_normalization,'3')
                     L_aux = L(:,L_ind(n_iter,:));
                     L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,2));
                 else
@@ -611,7 +611,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                     L_aux = L(:,L_ind(n_iter,1));
                 else
                     %Leadfield normalizations
-                    if strcmp(zef.beamformer.normalize_leadfield.Value,'1')
+                    if strcmp(zef.beamformer_lead_field_normalization,'1')
                         %Leadfield normalization suggested by
                         %- B.D. Van Veen et al. "Localization of brain electrical activity via linearly constrained minimum variance spatial filtering",
                         %IEEE Trans. Biomed. Eng., vol. 44, pp. 867–880, Sept. 1997.
@@ -619,10 +619,10 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                         %Phys. Med. Biol., vol. 44, pp. 2081–2097, 1999.
                         L_aux = L(:,L_ind(n_iter,:));
                         L_aux = L(:,L_ind(n_iter,:))/norm(L_aux);
-                    elseif strcmp(zef.beamformer.normalize_leadfield.Value,'2')
+                    elseif strcmp(zef.beamformer_lead_field_normalization,'2')
                         L_aux = L(:,L_ind(n_iter,:));
                         L_aux = L(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,1));
-                    elseif strcmp(zef.beamformer.normalize_leadfield.Value,'3')
+                    elseif strcmp(zef.beamformer_lead_field_normalization,'3')
                         L_aux = L(:,L_ind(n_iter,:));
                         L_aux = L(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,2));
                     else
@@ -634,7 +634,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
 
                 %Leadfield normalizations
 
-                if strcmp(zef.beamformer.normalize_leadfield.Value,'1')
+                if strcmp(zef.beamformer_lead_field_normalization, "matrix norm")
 
                     %Leadfield normalization suggested by
                     %- B.D. Van Veen et al. "Localization of brain electrical activity via linearly constrained minimum variance spatial filtering",
@@ -644,12 +644,12 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef)
                     L_aux = L(:,L_ind(n_iter,:));
                     L_aux = L(:,L_ind(n_iter,:))/norm(L_aux);
 
-                elseif strcmp(zef.beamformer.normalize_leadfield.Value,'2')
+                elseif strcmp(zef.beamformer_lead_field_normalization, "column norm")
 
                     L_aux = L(:,L_ind(n_iter,:));
                     L_aux = L(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,1));
 
-                elseif strcmp(zef.beamformer.normalize_leadfield.Value,'3')
+                elseif strcmp(zef.beamformer_lead_field_normalization, "row norm")
 
                     L_aux = L(:,L_ind(n_iter,:));
                     L_aux = L(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,2));
