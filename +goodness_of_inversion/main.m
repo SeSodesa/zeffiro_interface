@@ -176,6 +176,45 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 %   A set of key–value argument pairs for setting RAMUS parameters. These are
 %   all prefixed with "ramus_".
 %
+%   Key                             Value
+%   ------------------------------  -------------------------------------
+%
+%   ramus_multiresolution_levels    TODO
+%
+%   ramus_multiresolution_sparsity  TODO
+%
+%   ramus_n_of_decompositions       TODO
+%
+%   ramus_hyperprior                TODO
+%
+%   ramus_signal_to_noise_ratio     TODO
+%
+%   ramus_ias_map_iterations        TODO
+%
+%   ramus_sampling_frequency        TODO
+%
+%   ramus_low_cut_frequency         TODO
+%
+%   ramus_high_cut_frequency        TODO
+%
+%   ramus_time_start                TODO
+%
+%   ramus_time_window               TODO
+%
+%   ramus_n_of_time_steps           TODO
+%
+%   ramus_time_step                 TODO
+%
+%   ramus_data_normalization        TODO
+%
+%   ramus_initial_guess_mode        TODO
+%
+%   ramus_n_decompositions          TODO
+%
+%   ramus_n_levels                  TODO
+%
+%   ramus_multires_sparsity         TODO
+%
 % - sesame
 %
 %   A set of key–value argument pairs for setting SESAME parameters. These are
