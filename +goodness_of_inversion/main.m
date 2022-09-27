@@ -323,9 +323,9 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
             ] ...
         ) } = "hyperparameter value";
 
-        ramus.ramus_n_decompositions (1,1) double { mustBeInteger, mustBePositive } = 1;
+        ramus.ramus_n_decompositions (1,1) double { mustBeInteger, mustBePositive } = 10;
 
-        ramus.ramus_n_levels (1,1) double { mustBeInteger, mustBePositive } = 1;
+        ramus.ramus_n_levels (1,1) double { mustBeInteger, mustBePositive } = 2;
 
         ramus.ramus_multires_sparsity (1,1) double { mustBeInteger, mustBePositive } = 10;
 
