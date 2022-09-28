@@ -1,4 +1,13 @@
-function [f,t] = get_time_step(zef, f_data, f_ind, options)
+function [f,t] = get_time_step( ...
+    zef, ...
+    f_data, ...
+    f_ind, ...
+    time_start, ...
+    time_window, ...
+    time_step, ...
+    sampling_frequency, ...
+    options ...
+)
 
     % get_time_step
     %
@@ -15,33 +24,33 @@ function [f,t] = get_time_step(zef, f_data, f_ind, options)
 
         f_data
 
-        f_ind
+        f_ind (1,1) double { mustBePositive, mustBeInteger }
+
+        time_start (1,1) double
+
+        time_window (1,1) double
+
+        time_step (1,1) double
+
+        sampling_frequency
 
         options.Optional_averaging_bool (1,1) double = true;
 
-        options.object_string (1,1) string = "inv";
-
     end
 
-    if isfield(zef, options.object_string + "_time_3")
-        time_step = zef.(options.object_string + "_time_3");
-    else
-        time_step = Inf;
-    end
-
-    sampling_freq = zef.(options.object_string + "_sampling_frequency");
+    sampling_freq = sampling_frequency;
 
     size_Data=size(f_data,2);
 
     % This part gives wrong values, because it uses the time step length?
 
     if size_Data>1
-        if zef.(options.object_string + "_time_2") >=0 ...
-        && zef.(options.object_string + "_time_1") >= 0 ...
-        && 1 + sampling_freq*zef.(options.object_string + '_time_1') <= size_Data
+        if time_window >=0 ...
+        && time_start >= 0 ...
+        && 1 + sampling_freq*time_start <= size_Data
 
-            t_ind = max(1, 1 + floor(sampling_freq* zef.(options.object_string + "_time_1")+sampling_freq*(f_ind - 1)*time_step)) : ...
-                min(size_Data, 1 + floor(sampling_freq*(zef.(options.object_string + "_time_1") + zef.(options.object_string + "_time_2") + sampling_freq*(f_ind - 1)*time_step)));
+            t_ind = max(1, 1 + floor(sampling_freq * time_start+sampling_freq*(f_ind - 1)*time_step)) : ...
+                min(size_Data, 1 + floor(sampling_freq*(time_start + time_window + sampling_freq*(f_ind - 1)*time_step)));
             f = f_data(:, t_ind);
             t = (double(t_ind)-1)./sampling_freq;
 
