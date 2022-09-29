@@ -122,6 +122,8 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 %
 %   mne_time_step               A positive real number, default = 1
 %
+%   mne_signal_to_noise_ratio   A double, default = 30 dB
+%
 % - beamformer
 %
 %   A set of key–value argument pairs for setting Beamformer parameters. These
@@ -263,13 +265,15 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
                 [ "balanced", "constant" ] ...
             ) } = "balanced";
 
-        mne.mne_sampling_frequency (1,1) double { mustBeReal, mustBePositive } = 1025.
+        mne.mne_sampling_frequency (1,1) double { mustBeReal, mustBePositive } = 1025;
 
-        mne.mne_time_start (1,1) double { mustBeReal, mustBeNonnegative } = 0.
+        mne.mne_time_start (1,1) double { mustBeReal, mustBeNonnegative } = 0;
 
-        mne.mne_time_window (1,1) double { mustBeReal, mustBeNonnegative } = 0
+        mne.mne_time_window (1,1) double { mustBeReal, mustBeNonnegative } = 0;
 
-        mne.mne_time_step (1,1) double { mustBeReal, mustBePositive } = 1
+        mne.mne_time_step (1,1) double { mustBeReal, mustBePositive } = 1;
+
+        mne.mne_signal_to_noise_ratio (1,1) double { mustBeReal } = 30;
 
         % Beamformer parameters.
 
@@ -490,7 +494,14 @@ function [zef, rec_vec_position, rec_vec_angle, rec_vec_magnitude] = main( ...
 
             zef.measurements = meas_data;
 
-            [zef, rec] = goodness_of_inversion.call_inverse_method(zef, inverse_method_name);
+            [zef, rec] = goodness_of_inversion.call_inverse_method( ...
+                zef, ...
+                inverse_method_name, ...
+                mne, ...
+                beamformer, ...
+                ramus, ...
+                sesame ...
+            );
 
             if isempty(rec)
                 rec_vec_position = [];

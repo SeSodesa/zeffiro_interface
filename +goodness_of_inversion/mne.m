@@ -1,4 +1,4 @@
-function [rec, info] = mne(zef, mne_type)
+function [rec, info] = mne(zef, mne_type, params)
 
     arguments
 
@@ -6,9 +6,36 @@ function [rec, info] = mne(zef, mne_type)
 
         mne_type (1,1) string { mustBeMember(mne_type, ["MNE", "sLORETA"]) }
 
+        params.low_cut_frequency (1,1) double { mustBePositive } = 7;
+
+        params.high_cut_frequency (1,1) double { mustBePositive } = 9;
+
+        params.normalize_data (1,1) string { mustBeMember( ...
+                params.normalize_data, ...
+                [ "maximum entry", "maximum column norm", "average column norm", "none" ] ...
+            ) } = "maximum entry";
+
+        params.number_of_frames (1,1) double { mustBeInteger, mustBePositive } = 1;
+
+        params.prior (1,1) string { mustBeMember( ...
+                params.prior, ...
+                [ "balanced", "constant" ] ...
+            ) } = "balanced";
+
+        params.sampling_frequency (1,1) double { mustBeReal, mustBePositive } = 1025.
+
+        params.time_start (1,1) double { mustBeReal, mustBeNonnegative } = 0.
+
+        params.time_window (1,1) double { mustBeReal, mustBeNonnegative } = 0
+
+        params.time_step (1,1) double { mustBeReal, mustBePositive } = 1
+
+        params.signal_to_noise_ratio (1,1) double { mustBeReal, mustBePositive } = 30;
+
     end
 
     inverse_gamma_ind = [1:4];
+
     gamma_ind = [5:10];
 
     [s_ind_1] = unique(zef.source_interpolation_ind{1});
@@ -18,15 +45,15 @@ function [rec, info] = mne(zef, mne_type)
     amplitude_db = zef.inv_amplitude_db;
     pm_val = pm_val - amplitude_db;
 
-    snr_val = zef.inv_snr;
+    snr_val = params.signal_to_noise_ratio;
     % mne_type = zef.mne_type;
-    mne_prior = zef.mne_prior;
+    mne_prior = params.prior;
     std_lhood = 10^(-snr_val/20);
-    sampling_freq = zef.mne_sampling_frequency;
-    high_pass = zef.mne_low_cut_frequency;
-    low_pass = zef.mne_high_cut_frequency;
-    number_of_frames = zef.mne_number_of_frames;
-    time_step = zef.mne_time_3;
+    sampling_freq = params.sampling_frequency;
+    high_pass = params.low_cut_frequency;
+    low_pass = params.high_cut_frequency;
+    number_of_frames = params.number_of_frames;
+    time_step = params.time_step;
     source_direction_mode = zef.source_direction_mode;
     source_directions = zef.source_directions;
 
@@ -36,8 +63,8 @@ function [rec, info] = mne(zef, mne_type)
     info.std_lhood=std_lhood;
 
     info.snr_val = zef.inv_snr;
-    info.mne_type = zef.mne_type;
-    info.mne_prior = zef.mne_prior;
+    info.mne_type = mne_type;
+    info.mne_prior = params.prior;
     info.sampling_freq = zef.mne_sampling_frequency;
     info.high_pass = zef.mne_low_cut_frequency;
     info.low_pass = zef.mne_high_cut_frequency;
