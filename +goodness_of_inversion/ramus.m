@@ -1,6 +1,68 @@
 %Copyright © 2018- Sampsa Pursiainen & ZI Development Team
 %See: https://github.com/sampsapursiainen/zeffiro_interface
-function [z,reconstruction_information] = zef_ramus_iteration(zef)
+function [z,reconstruction_information] = ramus( ...
+    zef, ...
+    params ...
+)
+
+    arguments
+
+        zef (1,1) struct
+
+        params.multiresolution_levels (1,1) double { mustBeInteger, mustBePositive } = 2;
+
+        params.multiresolution_sparsity (1,1) double { mustBeReal, mustBePositive } = 10;
+
+        params.n_of_decompositions (1,1) double { mustBeInteger, mustBePositive } = 10;
+
+        params.hyperprior (1,1) string { mustBeMember( ...
+            params.hyperprior, ...
+            ["spatially balanced", "spatially constant"]) ...
+        } = "spatially balanced";
+
+        params.signal_to_noise_ratio (1,1) double { mustBeReal } = 30;
+
+        params.ias_map_iterations (1,1) double { mustBeInteger, mustBePositive } = 10;
+
+        params.sampling_frequency (1,1) double { mustBePositive } = 1025;
+
+        params.low_cut_frequency (1,1) double { mustBePositive } = 7;
+
+        params.high_cut_frequency (1,1) double { mustBePositive } = 9;
+
+        params.time_start (1,1) double { mustBeNonnegative } = 0;
+
+        params.time_window (1,1) double { mustBeNonnegative } = 0;
+
+        params.n_of_time_steps (1,1) double { mustBeInteger, mustBePositive } = 1;
+
+        params.time_step (1,1) double { mustBeInteger, mustBeNonnegative } = 0;
+
+        params.data_normalization (1,1) string { mustBeMember( ...
+            params.data_normalization, ...
+            [ ...
+                "maximum entry", ...
+                "maximum column norm", ...
+                "average column norm", ...
+                "none" ...
+            ] ...
+        ) } = "maximum entry";
+
+        params.initial_guess_mode (1,1) string { mustBeMember( ...
+            params.initial_guess_mode, ...
+            [ ...
+                "hyperparameter value", ...
+                "hyperprior expectation", ...
+            ] ...
+        ) } = "hyperparameter value";
+
+        params.n_decompositions (1,1) double { mustBeInteger, mustBePositive } = 10;
+
+        params.n_levels (1,1) double { mustBeInteger, mustBePositive } = 2;
+
+        params.multires_sparsity (1,1) double { mustBeInteger, mustBePositive } = 10;
+
+    end
 
     h = zef_waitbar([0 0 0],['RAMUS iteration.']);
 
@@ -10,37 +72,37 @@ function [z,reconstruction_information] = zef_ramus_iteration(zef)
 
     [s_ind_1] = unique(zef.source_interpolation_ind{1});
     n_interp = length(s_ind_1);
-    n_multires = zef.ramus_multires_n_levels;
-    ramus_hyperprior = zef.ramus_hyperprior;
-    sparsity_factor = zef.ramus_multires_sparsity;
-    snr_val = zef.ramus_snr;
+    n_multires = params.multiresolution_levels;
+    ramus_hyperprior = params.hyperprior;
+    sparsity_factor = params.multires_sparsity;
+    snr_val = params.signal_to_noise_ratio;
     pm_val = zef.inv_prior_over_measurement_db;
     amplitude_db = zef.inv_amplitude_db;
     pm_val = pm_val - amplitude_db;
-    sampling_freq = zef.ramus_sampling_frequency;
-    high_pass = zef.ramus_low_cut_frequency;
-    low_pass = zef.ramus_high_cut_frequency;
-    number_of_frames = zef.ramus_number_of_frames;
-    time_step = zef.ramus_time_3;
+    sampling_freq = params.sampling_frequency;
+    high_pass = params.low_cut_frequency;
+    low_pass = params.high_cut_frequency;
+    number_of_frames = params.n_of_time_steps;
+    time_step = params.time_step;
     source_direction_mode = zef.source_direction_mode;
     source_directions = zef.source_directions;
-    n_decompositions = zef.ramus_multires_n_decompositions;
+    n_decompositions = params.n_of_decompositions;
     weight_vec_aux = (sparsity_factor.^[0:n_multires-1]');
 
     std_lhood = 10^(-snr_val/20);
 
     reconstruction_information.tag = 'RAMUS';
-    reconstruction_information.inv_time_1 = zef.ramus_time_1;
-    reconstruction_information.inv_time_2 = zef.ramus_time_2;
-    reconstruction_information.inv_time_3 = zef.ramus_time_3;
-    reconstruction_information.sampling_freq = zef.ramus_sampling_frequency;
-    reconstruction_information.low_pass = zef.ramus_high_cut_frequency;
-    reconstruction_information.high_pass = zef.ramus_low_cut_frequency;
-    reconstruction_information.number_of_frames = zef.ramus_number_of_frames;
+    reconstruction_information.inv_time_1 = params.time_start;
+    reconstruction_information.inv_time_2 = params.time_window;
+    reconstruction_information.inv_time_3 = params.time_step;
+    reconstruction_information.sampling_freq = params.sampling_frequency;
+    reconstruction_information.low_pass = params.high_cut_frequency;
+    reconstruction_information.high_pass = params.low_cut_frequency;
+    reconstruction_information.number_of_frames = params.n_of_time_steps;
     reconstruction_information.source_direction_mode = zef.source_direction_mode;
     reconstruction_information.source_directions = zef.source_directions;
-    reconstruction_information.ias_hyperprior = zef.ramus_hyperprior;
-    reconstruction_information.snr_val = zef.ramus_snr;
+    reconstruction_information.ias_hyperprior = params.hyperprior;
+    reconstruction_information.snr_val = params.signal_to_noise_ratio;
     reconstruction_information.pm_val = zef.inv_prior_over_measurement_db;
 
     [L,n_interp, procFile] = goodness_of_inversion.process_lead_fields(zef);
