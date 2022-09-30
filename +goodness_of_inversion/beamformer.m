@@ -799,11 +799,11 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef, params)
     Var_loc{f_ind} = Var_vec;
     end;
 
-    z = zef_postProcessInverse(z, procFile);
-    z = zef_normalizeInverseReconstruction(z);
+    z = goodness_of_inversion.postprocess_reconstruction(z, procFile);
+    z = goodness_of_inversion.normalize_reconstruction(z);
 
-    Var_loc = zef_postProcessInverse(Var_loc, procFile);
-    Var_loc = zef_normalizeInverseReconstruction(Var_loc);
+    Var_loc = goodness_of_inversion.postprocess_reconstruction(Var_loc, procFile);
+    Var_loc = goodness_of_inversion.normalize_reconstruction(Var_loc);
 
     close(h);
 
