@@ -31,7 +31,7 @@ function [f] = get_filtered_data(zef, use_normalization, opts)
 
     f = zef.measurements;
 
-    if data_mode == raw
+    if data_mode == "raw"
 
         return
 
