@@ -16,7 +16,10 @@ function [scale_param, snr_vec] = find_gaussian_prior(snr_val, L, opts)
 
         opts.source_space_size (1,1) double { mustBeInteger, mustBePositive } = 1;
 
-        opts.normalization_type (1,1) string { mustBeMember(opts.normalization_type, ["maximum", "average"]) } = "maximum";
+        opts.normalization_type (1,1) string { mustBeMember( ...
+            opts.normalization_type, ...
+            ["maximum entry", "average"] ...
+        ) } = "maximum entry";
 
         opts.balance_snr (1,1) logical = true;
 
@@ -44,7 +47,7 @@ function [scale_param, snr_vec] = find_gaussian_prior(snr_val, L, opts)
 
     else
 
-        if isequal(opts.normalization_type,"maximum")
+        if isequal(opts.normalization_type, "maximum entry")
 
             source_strength = mean(1./((max(abs(L))') .^ w_param));
 
@@ -56,7 +59,7 @@ function [scale_param, snr_vec] = find_gaussian_prior(snr_val, L, opts)
 
         if opts.balance_snr
 
-            if isequal(opts.normalization_type,'maximum')
+            if isequal(opts.normalization_type, "maximum entry")
                 signal_strength = (size(L,2)*(max(abs(L))')./sum(max(abs(L))')).^(w_param);
             else
                 signal_strength = (size(L,2).*(sqrt(sum(L.^2))')./sum(sqrt(sum(L.^2))')).^(w_param);
