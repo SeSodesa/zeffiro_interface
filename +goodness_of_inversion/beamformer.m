@@ -434,7 +434,8 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef, params)
                         %- J. Gross and A.A. Ioannides. "Linear transformations of data space in MEG",
                         %Phys. Med. Biol., vol. 44, pp. 2081–2097, 1999.
                           L_aux = L_aux2(:,L_ind(n_iter,:))/norm(L_aux);
-                          if ~ismember(zef.L_reg_type,[2])
+
+                          if ~ (params.lead_field_regularization_procedure == "pseudoinverse")
                               weights = C\L_aux;
                               weights = weights/(L_aux'*L_aux+lambdaI);
                           else
@@ -444,7 +445,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef, params)
                     elseif strcmp(params.lead_field_normalization, "column norm")
 
                         L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,1));
-                        if ~ismember(zef.L_reg_type,[2])
+                        if ~ (params.lead_field_regularization_procedure == "pseudoinverse"
                             weights = C\L_aux;
                             weights = weights/(L_aux'*L_aux+lambdaI);
                         else
@@ -454,7 +455,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef, params)
                     elseif strcmp(params.lead_field_normalization, "row norm")
 
                         L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,2));
-                        if ~ismember(zef.L_reg_type,[2])
+                        if ~ (params.lead_field_regularization_procedure == "pseudoinverse")
                             weights = C\L_aux;
                             weights = weights/(L_aux'*L_aux+lambdaI);
                         else
@@ -464,7 +465,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef, params)
                     else
 
                         L_aux = L_aux2(:,L_ind(n_iter,:));
-                        if ~ismember(zef.L_reg_type,[2])
+                        if ~ (params.lead_field_regularization_procedure == "pseudoinverse")
                             weights = C\L_aux;
                             weights = weights/(L_aux'*L_aux+lambdaI);
                         else
@@ -492,7 +493,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef, params)
                     %- J. Gross and A.A. Ioannides. "Linear transformations of data space in MEG",
                     %Phys. Med. Biol., vol. 44, pp. 2081–2097, 1999.
                     L_aux = L_aux2(:,L_ind(n_iter,:))/norm(L_aux);
-                    if ~ismember(zef.L_reg_type,[2])
+                    if ~ (params.lead_field_regularization_procedure == "pseudoinverse")
                         weights = C\L_aux;
                         weights = weights/(L_aux'*L_aux+lambdaI);
                     else
@@ -502,7 +503,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef, params)
                 elseif strcmp(params.lead_field_normalization, "column norm")
 
                     L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,1));
-                    if ~ismember(zef.L_reg_type,[2])
+                    if ~ (params.lead_field_regularization_procedure == "pseudoinverse")
                         weights = C\L_aux;
                         weights = weights/(L_aux'*L_aux+lambdaI);
                     else
@@ -512,7 +513,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef, params)
                 elseif strcmp(params.lead_field_normalization, "row norm")
 
                     L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,2));
-                    if ~ismember(zef.L_reg_type,[2])
+                    if ~ (params.lead_field_regularization_procedure == "pseudoinverse")
                         weights = C\L_aux;
                         weights = weights/(L_aux'*L_aux+lambdaI);
                     else
@@ -522,7 +523,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef, params)
                 else
 
                     L_aux = L_aux2(:,L_ind(n_iter,:));
-                    if ~ismember(zef.L_reg_type,[2])
+                    if ~ (params.lead_field_regularization_procedure == "pseudoinverse")
                         weights = C\L_aux;
                         weights = weights/(L_aux'*L_aux+lambdaI);
                     else
