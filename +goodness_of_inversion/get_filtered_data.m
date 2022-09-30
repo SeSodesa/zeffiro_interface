@@ -1,4 +1,4 @@
-function [f] = get_filtered_data(zef, object_string, use_normalization)
+function [f] = get_filtered_data(zef, use_normalization, opts)
 
 % get_filtered_data
 %
@@ -10,37 +10,54 @@ function [f] = get_filtered_data(zef, object_string, use_normalization)
 
     arguments
 
-        zef struct
-
-        object_string (1,1) string = "inv";
+        zef (1,1) struct
 
         use_normalization (1,1) logical = false;
+
+        normalize_data (1,1) string { mustBeMember( ...
+            normalize_data, ...
+            [ "maximum entry", "maximum column norm", "average column norm", "none" ] ...
+        ) } = "maximum entry";
+
+        data_mode (1,1) string { mustBemember( data_mode, ["raw", "filtered temporal"] ) } = "raw";
+
+        opts.low_cut_frequency (1,1) double { mustBePositive } = 7;
+
+        opts.high_cut_frequency (1,1) double { mustBePositive } = 9;
+
+        opts.sampling_frequency (1,1) double { mustBePositive } = 20000;
 
     end
 
     f = zef.measurements;
 
-    high_pass = eval("zef." + object_string + "_low_cut_frequency");
+    if data_mode == raw
 
-    low_pass = eval("zef." + object_string + "_high_cut_frequency");
+        return
 
-    sampling_freq = eval("zef." + object_string + "_sampling_frequency");
+    end
+
+    high_pass = opts.low_cut_frequency;
+
+    low_pass = opts.high_cut_frequency;
+
+    sampling_freq = opts.sampling_frequency;
 
     if use_normalization
 
-        switch zef.normalize_data
+        switch normalize_data
 
-            case 1
+            case "maximum entry"
                 data_norm = max(abs(f(:)));
-            case 2
+            case "maximum column norm"
                 data_norm = max(sqrt(sum(abs(f).^2)));
-            case 3
+            case "average column norm"
                 data_norm = sum(sqrt(sum(abs(f).^2)))/size(f,2);
             otherwise
                 data_norm = 1;
         end
 
-        f = f/data_norm;
+        f = f / data_norm;
 
     end
 
