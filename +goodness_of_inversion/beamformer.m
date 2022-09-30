@@ -212,7 +212,16 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef, params)
     z_vec = ones(size(L,2),1);
     Var_vec = ones(size(L,2),1);
 
-    f = zef_getTimeStep(f_data, f_ind, true);
+    f = goodness_of_inversion.get_time_step( ...
+        zef, ...
+        f_data, ...
+        f_ind, ...
+        params.time_start, ...
+        params.time_window, ...
+        params.time_step, ...
+        params.sampling_frequency ...
+    );
+
     size_f = size(f,2);
 
     if params.covariance_mode == "pointwise, measurement based"
@@ -445,7 +454,7 @@ function [z,Var_loc,reconstruction_information] = beamformer(zef, params)
                     elseif strcmp(params.lead_field_normalization, "column norm")
 
                         L_aux = L_aux2(:,L_ind(n_iter,:))./sqrt(sum(L_aux.^2,1));
-                        if ~ (params.lead_field_regularization_procedure == "pseudoinverse"
+                        if ~ (params.lead_field_regularization_procedure == "pseudoinverse")
                             weights = C\L_aux;
                             weights = weights/(L_aux'*L_aux+lambdaI);
                         else
