@@ -1,4 +1,4 @@
-function [f] = get_filtered_data(zef, use_normalization, opts)
+function [f] = get_filtered_data(zef, use_normalization, normalize_data, data_mode, opts)
 
 % get_filtered_data
 %
@@ -19,7 +19,7 @@ function [f] = get_filtered_data(zef, use_normalization, opts)
             [ "maximum entry", "maximum column norm", "average column norm", "none" ] ...
         ) } = "maximum entry";
 
-        data_mode (1,1) string { mustBemember( data_mode, ["raw", "filtered temporal"] ) } = "raw";
+        data_mode (1,1) string { mustBeMember( data_mode, ["raw", "filtered temporal"] ) } = "raw";
 
         opts.low_cut_frequency (1,1) double { mustBePositive } = 7;
 

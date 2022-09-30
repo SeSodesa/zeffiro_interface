@@ -1,4 +1,4 @@
-function zef = init_inverse_method(zef, inverse_method_name, mne, beamformer, ramus, sesame)
+function zef = init_inverse_method(zef, inverse_method_name, invp, mne, beamformer, ramus, sesame)
 
     % init_inverse_method
     %
@@ -48,6 +48,8 @@ function zef = init_inverse_method(zef, inverse_method_name, mne, beamformer, ra
         zef struct
 
         inverse_method_name (1,1) string { mustBeMember(inverse_method_name, ["MNE", "Beamformer", "RAMUS", "SESAME"]) }
+
+        invp struct
 
         mne struct
 
