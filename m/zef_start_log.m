@@ -17,7 +17,7 @@ if zef.use_log
         + num2str(length(dir(zef.program_path + filesep + "data" + filesep + "log"))-1) ...
         + ".log";
 
-log_dir = dir(zef.program_path + filesep + "data" + filesep + "log"]);
+log_dir = dir(zef.program_path + filesep + "data" + filesep + "log");
 n_files = length(log_dir)-2;
 if n_files > zef.max_n_log_files
 date_info_cell = {log_dir(3:end).date}';
