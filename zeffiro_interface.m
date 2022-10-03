@@ -437,21 +437,7 @@ function zef = zeffiro_interface(args)
 
     if not(args.run_script == "")
 
-        for ii = 1 : numel(run_script)
-
-            filename = args.run_script(ii);
-
-            if not(isfile(filename))
-
-                error("Given script file does not exist. Aborting...")
-
-            end
-
-            file_contents = string(fileread(filename));
-
-            eval(file_contents);
-
-        end
+        eval(args.run_script);
 
     end % if
 
