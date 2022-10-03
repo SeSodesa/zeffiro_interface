@@ -296,7 +296,7 @@ function zef = zeffiro_interface(args)
 
     if not(args.import_to_existing_project == "")
 
-        import_segmentation_file = import_to_existing_project;
+        import_segmentation_file = args.import_to_existing_project;
 
         [file_path, file_1, file_2] = fileparts(import_segmentation_file);
 
