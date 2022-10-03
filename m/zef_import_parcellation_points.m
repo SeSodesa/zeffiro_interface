@@ -32,6 +32,8 @@ end
 
 [~,~,file_type_aux] = fileparts(filename);
 
+file_type_aux = strjoin(file_type_aux, "");
+
 if isequal(file_type_aux,'.asc')
     file_type = 1; 
 elseif isequal(file_type_aux,'.dat')
@@ -44,6 +46,8 @@ if not(parcellation_merge)
 else
     zef.parcellation_points = zef.parcellation_points;
 end
+
+filename = strjoin(filename, "");
 
 if file_type == 1
 zef_i = fopen(filename);

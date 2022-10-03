@@ -34,6 +34,8 @@ end
 filename = [file_path file];
 end
 
+filename = strjoin(filename, "");
+
 if not(isempty(filename))
 [parcellation_aux] = struct2cell(load(filename));
 parcellation_aux = {struct2cell(parcellation_aux{1}),parcellation_aux{2:end}};
