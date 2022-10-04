@@ -7,7 +7,7 @@ if isempty(zef)
 end
 
 file_name = [];
-folder_name = []; 
+folder_name = [];
 
 if not(isempty(varargin))
     file_name = varargin{1};
@@ -28,7 +28,7 @@ end
 
 if not(isequal(file_name,0));
 
-h_fig = open([folder_name '/' file_name]);
+h_fig = open(fullfile(folder_name, file_name));
 set(h_fig,'Tag','');
 set(h_fig,'SizeChangedFcn','');
 
@@ -121,7 +121,7 @@ set(h_fig,'Tag',num2str(zef_fig_num));
 
 set(h_fig,'SizeChangedFcn','zef_set_figure_current_size;');
 
-h_fig.Name = [h_fig.Name ' ' '{' file_name '}'];
+h_fig.Name = string(h_fig.Name) + " " + "{" + file_name + "}";
 h_aux_1 = findobj(h_fig.Children,'Style','listbox');
 h_aux_2 = findobj(h_aux_1,'Tag','system_information');
 if not(isempty(h_aux_1))
@@ -136,7 +136,7 @@ end
 
 eval('zef = rmfield(zef,''zeffiro_current_size_aux'');');
 
-if nargout == 0 
+if nargout == 0
     assignin('base','zef',zef)
 end
 
