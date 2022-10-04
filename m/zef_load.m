@@ -15,19 +15,22 @@ else
 [file_name, path_name] = uigetfile('*.mat','Open project');
 end
 end
+
+file_name = strjoin(file_name, "");
+
 if not(file_name == "")
 zef_start_new_project;
 
 zef_data.save_file = string(file_name);
 zef_data.save_file_path = string(path_name);
 
-matfile_whos = whos('-file',[path_name filesep file_name]);
+matfile_whos = whos('-file',path_name + filesep + file_name);
 matfile_fieldnames = {matfile_whos.name}';
 
 if isequal(length(matfile_fieldnames),1)
-load([path_name filesep file_name]);
-save([path_name filesep file_name],'-struct','zef_data','-v7.3');
-matfile_whos = whos('-file',[path_name filesep file_name]);
+load(path_name + filesep + file_name);
+save(path_name + filesep + file_name,'-struct','zef_data','-v7.3');
+matfile_whos = whos('-file', path_name + filesep + file_name);
 matfile_fieldnames = {matfile_whos.name}';
 end
 
@@ -45,7 +48,7 @@ if zef.use_display
 figure(h_waitbar);
 end
 for i = 1 : n_fields
-aux_struct = load([path_name filesep file_name],matfile_fieldnames{i});
+aux_struct = load(path_name + filesep + file_name,matfile_fieldnames{i});
 zef_data.(matfile_fieldnames{i}) = aux_struct.(matfile_fieldnames{i});
 if isequal(mod(i,ceil(n_fields/100)),0)
 zef_waitbar(i/n_fields,h_waitbar,['Loading fields: ' num2str(i) ' / ' num2str(n_fields) '.']);
