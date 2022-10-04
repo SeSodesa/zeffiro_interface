@@ -9,7 +9,7 @@ end
 zef_data = struct;
 
 if nargin < 3
-if not(zef.save_file_path == "") && not(zef.save_file_path == "")
+if not(zef.save_file_path == "")
 [file_name, path_name] = uigetfile('*.mat','Open project',zef.save_file_path);
 else
 [file_name, path_name] = uigetfile('*.mat','Open project');
@@ -28,14 +28,14 @@ matfile_whos = whos('-file', fullfile(path_name, file_name));
 matfile_fieldnames = {matfile_whos.name}';
 
 if isequal(length(matfile_fieldnames),1)
-load(path_name + filesep + file_name);
-save(path_name + filesep + file_name,'-struct','zef_data','-v7.3');
-matfile_whos = whos('-file', path_name + filesep + file_name);
+load(fullfile(path_name, file_name));
+save(fullfile(path_name, file_name),'-struct','zef_data','-v7.3');
+matfile_whos = whos('-file', fullfile(path_name, file_name));
 matfile_fieldnames = {matfile_whos.name}';
 end
 
 if ismember('zeffiro_variable_data',matfile_fieldnames)
-aux_struct = load([path_name filesep file_name],'zeffiro_variable_data');
+aux_struct = load(fullfile(path_name, file_name),'zeffiro_variable_data');
 zeffiro_variable_data = aux_struct.('zeffiro_variable_data');
 if not(isempty(zeffiro_variable_data))
 matfile_fieldnames = setdiff(matfile_fieldnames,zeffiro_variable_data(:,2));
@@ -57,7 +57,7 @@ end
 close(h_waitbar);
 zef_data = zef_remove_object_handles(zef_data);
 zef_remove_system_fields;
-zef_data.project_matfile = [path_name filesep file_name];
+zef_data.project_matfile = fullfile(path_name, file_name);
 
 zef_data.matlab_release = version('-release');
 zef_data.matlab_release = str2num(zef_data.matlab_release(1:4)) + double(zef_data.matlab_release(5))/128;
