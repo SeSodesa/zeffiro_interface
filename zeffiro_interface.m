@@ -14,8 +14,8 @@ function zef = zeffiro_interface(args)
 %   zef = zeffiro_interface(name_1=value_1, name_2=value_2, …)
 %
 % Either way, this enables running Zeffiro with or without a display and
-% performing different operations. The list of names and their values is the
-% following:
+% performing different operations. The list of names and their values is given
+% below.
 %
 %   Name                            Value and explanation
 %   ------------------------------- ------------------------------------------
