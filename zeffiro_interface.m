@@ -594,6 +594,11 @@ function zef = zeffiro_interface(args)
 
         assignin("base", "zef", zef);
 
+        % This prevents the returning of zef twice, with "ans" as the name of
+        % the other instance.
+
+        clear zef;
+
     end
 
 end % function
