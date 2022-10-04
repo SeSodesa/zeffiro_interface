@@ -35,7 +35,7 @@ else
 end
 
 if not(zef.use_display)
-    addpath(genpath(zef.program_path + filesep + "nodisplay"));
+    addpath(genpath(fullfile(zef.program_path, "nodisplay")));
 end
 
 if zef.gpu_count > 0 & zef.use_gpu == 1
