@@ -11,13 +11,14 @@ function zef = zeffiro_interface(args)
 %
 % Matlab versions newer or equal to r2021a may also use the syntax
 %
-%   zef = zeffiro_interafce(name_1=value_1, name_2=value_2, …)
+%   zef = zeffiro_interface(name_1=value_1, name_2=value_2, …)
 %
 % Either way, this enables running Zeffiro with or without a display and
 % performing different operations. The list of names and their values is the
 % following:
 %
-%   name                            value
+%   Name                            Value
+%   ------------------------------- ------------------------------------------
 %
 %   'restart'                       true or false (default = false)
 %   'start_mode'                    'display' or 'nodisplay' (default = "display")
