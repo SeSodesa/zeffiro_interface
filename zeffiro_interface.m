@@ -257,7 +257,7 @@ function zef = zeffiro_interface(args)
 
     program_path = string(program_path);
 
-    code_path = program_path + filesep + "m";
+    code_path = fullfile(program_path, "m");
 
     % TODO: should this be run here?
     %
@@ -267,34 +267,34 @@ function zef = zeffiro_interface(args)
 
     zef.code_path = code_path;
 
-    zef.data_path = zef.program_path + filesep + "data";
+    zef.data_path = fullfile(zef.program_path, "data");
 
-    zef.external_path = zef.program_path + filesep + "external";
+    zef.external_path = fullfile(zef.program_path, "external");
 
     zef.zeffiro_task_id = 0;
 
     zef.zeffiro_restart_time = now;
 
-    zef.cluster_path =  zef.program_path + filesep + "cluster";
+    zef.cluster_path =  fullfile(zef.program_path, "cluster");
 
     addpath(zef.program_path);
     addpath(zef.code_path);
     addpath(genpath(zef.code_path));
     addpath(genpath(zef.cluster_path));
 
-    addpath(genpath(zef.program_path + filesep + "mlapp"));
-    addpath(genpath(zef.program_path + filesep + "fig"));
-    addpath(genpath(zef.program_path + filesep + "plugins"));
-    addpath(genpath(zef.program_path + filesep + "profile"));
-    addpath(genpath(zef.program_path + filesep + "scripts"));
+    addpath(genpath(fullfile(zef.program_path, "mlapp")));
+    addpath(genpath(fullfile(zef.program_path, "fig")));
+    addpath(genpath(fullfile(zef.program_path, "plugins")));
+    addpath(genpath(fullfile(zef.program_path, "profile")));
+    addpath(genpath(fullfile(zef.program_path, "scripts")));
 
     addpath(zef.external_path);
 
     if not(zef.zeffiro_restart)
 
-        addpath(zef.external_path + filesep + "SDPT3/");
-        addpath(zef.external_path + filesep + "SeDuMi/");
-        addpath(zef.external_path + filesep + "CVX/");
+        addpath(fullfile(zef.external_path, "SDPT3"));
+        addpath(fullfile(zef.external_path, "SeDuMi"));
+        addpath(fullfile(zef.external_path, "CVX"));
 
         % TODO: does not work.
         %
@@ -304,9 +304,9 @@ function zef = zeffiro_interface(args)
 
     zef = zef_start(zef);
 
-    if not(zef.zeffiro_restart) && isfile(zef.data_path + filesep + "default_project.mat")
+    if not(zef.zeffiro_restart) && isfile(fullfile(zef.data_path, "default_project.mat"))
 
-        zef = zef_load(zef, "default_project.mat", zef.data_path + filesep);
+        zef = zef_load(zef, "default_project.mat", fullfile(zef.data_path));
 
     end
 
@@ -354,13 +354,11 @@ function zef = zeffiro_interface(args)
 
         [file_path, file_1, file_2] = fileparts(open_project_file);
 
-        file_path = file_path + filesep;
-
-        if isempty(file_path)
+        if file_path == ""
             file_path = "./data/";
         end
 
-        if isempty(file_2)
+        if file_2 == ""
             file_2 = ".mat";
         end
 
@@ -380,15 +378,13 @@ function zef = zeffiro_interface(args)
 
         [file_path, file_1, file_2] = fileparts(import_segmentation_file);
 
-        file_path = file_path + filesep;
-
-        if isempty(file_path)
+        if file_path == ""
 
             file_path = "./data/";
 
         end
 
-        if isempty(file_2)
+        if file_2 == ""
 
             file_2 = ".mat";
 
@@ -416,15 +412,13 @@ function zef = zeffiro_interface(args)
 
         [file_path, file_1, file_2] = fileparts(import_segmentation_file);
 
-        file_path = file_path + filesep;
-
-        if isempty(file_path)
+        if file_path == ""
 
             file_path = "./data/";
 
         end
 
-        if isempty(file_2)
+        if file_2 == ""
 
             file_2 = ".mat";
 
@@ -450,15 +444,13 @@ function zef = zeffiro_interface(args)
 
         [file_path, file_1, file_2] = fileparts(export_fem_mesh_file );
 
-        file_path = file_path + filesep;
-
-        if isempty(file_path)
+        if file_path == ""
 
             file_path = "./data/";
 
         end
 
-        if isempty(file_2)
+        if file_2 == ""
 
             file_2 = ".mat";
 
@@ -466,7 +458,7 @@ function zef = zeffiro_interface(args)
 
         zef.file_path = file_path;
 
-        zef.file = file_1 + file_2;
+        zef.file = fullfile(file_1, ile_2);
 
         zef.save_switch = 1;
 
@@ -494,19 +486,17 @@ function zef = zeffiro_interface(args)
 
             [file_path, file_1, file_2] = fileparts(open_figure_file{i});
 
-            file_path = file_path + filesep;
-
-            if isempty(file_path)
+            if file_path == ""
                 file_path = "./fig/";
             end
 
-            if isempty(file_2)
+            if file_2 == ""
                 file_2 = ".fig";
             end
 
             zef.file_path = file_path;
 
-            zef.file = file_1 + file_2;
+            zef.file = fullfile(file_1, file_2);
 
             zef.save_switch = 1;
 
@@ -563,15 +553,13 @@ function zef = zeffiro_interface(args)
 
         [file_path, file_1, file_2] = fileparts(save_project_file);
 
-        file_path = file_path + filesep;
-
-        if isempty(file_path)
+        if file_path == ""
 
             file_path = "./data/";
 
         end
 
-        if isempty(file_2)
+        if file_2 == ""
 
             file_2 = ".mat";
 
