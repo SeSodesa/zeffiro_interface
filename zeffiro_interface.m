@@ -436,36 +436,6 @@ function zef = zeffiro_interface(args)
 
     end % if
 
-    % Export FE mesh to a given path.
-
-    if not(args.export_fem_mesh == "")
-
-        export_fem_mesh_file = export_fem_mesh;
-
-        [file_path, file_1, file_2] = fileparts(export_fem_mesh_file );
-
-        if file_path == ""
-
-            file_path = "./data/";
-
-        end
-
-        if file_2 == ""
-
-            file_2 = ".mat";
-
-        end
-
-        zef.file_path = file_path;
-
-        zef.file = fullfile(file_1, ile_2);
-
-        zef.save_switch = 1;
-
-        zef_export_fem_mesh_as(zef);
-
-    end % if
-
     % Open figure in a given path.
 
     if not(args.open_figure == "")
@@ -543,6 +513,36 @@ function zef = zeffiro_interface(args)
     if not(args.run_script == "")
 
         eval(args.run_script);
+
+    end % if
+
+    % Export FE mesh to a given path.
+
+    if not(args.export_fem_mesh == "")
+
+        export_fem_mesh_file = export_fem_mesh;
+
+        [file_path, file_1, file_2] = fileparts(export_fem_mesh_file );
+
+        if file_path == ""
+
+            file_path = "./data/";
+
+        end
+
+        if file_2 == ""
+
+            file_2 = ".mat";
+
+        end
+
+        zef.file_path = file_path;
+
+        zef.file = fullfile(file_1, ile_2);
+
+        zef.save_switch = 1;
+
+        zef_export_fem_mesh_as(zef);
 
     end % if
 
