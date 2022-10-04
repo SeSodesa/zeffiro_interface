@@ -16,7 +16,7 @@ else
 end
 end
 
-file_name = strjoin(file_name, "");
+file_name = string(file_name);
 
 if not(file_name == "")
 zef_start_new_project;
@@ -24,7 +24,7 @@ zef_start_new_project;
 zef_data.save_file = string(file_name);
 zef_data.save_file_path = string(path_name);
 
-matfile_whos = whos('-file',path_name + filesep + file_name);
+matfile_whos = whos('-file', fullfile(path_name, file_name));
 matfile_fieldnames = {matfile_whos.name}';
 
 if isequal(length(matfile_fieldnames),1)
@@ -48,7 +48,7 @@ if zef.use_display
 figure(h_waitbar);
 end
 for i = 1 : n_fields
-aux_struct = load(path_name + filesep + file_name,matfile_fieldnames{i});
+aux_struct = load(fullfile(path_name, file_name), matfile_fieldnames{i});
 zef_data.(matfile_fieldnames{i}) = aux_struct.(matfile_fieldnames{i});
 if isequal(mod(i,ceil(n_fields/100)),0)
 zef_waitbar(i/n_fields,h_waitbar,['Loading fields: ' num2str(i) ' / ' num2str(n_fields) '.']);
