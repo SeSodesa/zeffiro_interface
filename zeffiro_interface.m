@@ -350,7 +350,7 @@ function zef = zeffiro_interface(args)
 
     if not(args.open_project == "")
 
-        open_project_file = open_project;
+        open_project_file = args.open_project;
 
         [file_path, file_1, file_2] = fileparts(open_project_file);
 
@@ -364,11 +364,11 @@ function zef = zeffiro_interface(args)
             file_2 = ".mat";
         end
 
-        zef.file_path = [file_path];
+        zef.file_path = file_path;
 
-        zef.file = [file_1 file_2];
+        zef.file = file_1 + file_2;
 
-        zef = zef_load(zef,zef.file,zef.file_path);
+        zef = zef_load(zef, zef.file, zef.file_path);
 
     end % if
 
@@ -472,8 +472,6 @@ function zef = zeffiro_interface(args)
 
         zef_export_fem_mesh_as(zef);
 
-        option_counter = option_counter + 2;
-
     end % if
 
     % Open figure in a given path.
@@ -556,6 +554,38 @@ function zef = zeffiro_interface(args)
         eval(args.run_script);
 
     end % if
+
+    % Save entire open project to the given file, if not empty.
+
+    if not(args.save_project == "")
+
+        save_project_file = args.save_project;
+
+        [file_path, file_1, file_2] = fileparts(save_project_file);
+
+        file_path = file_path + filesep;
+
+        if isempty(file_path)
+
+            file_path = "./data/";
+
+        end
+
+        if isempty(file_2)
+
+            file_2 = ".mat";
+
+        end
+
+        zef.file_path = file_path;
+
+        zef.file = file_1 + file_2;
+
+        zef.save_switch = 1;
+
+        zef = zef_save(zef);
+
+    end
 
     % Exit zeffiro, if told to.
 
