@@ -377,7 +377,7 @@ function zef = zeffiro_interface(args)
 
     if not(args.import_to_new_project == "")
 
-        import_segmentation_file = import_to_new_project;
+        import_segmentation_file = args.import_to_new_project;
 
         [file_path, fname, fsuffix] = fileparts(import_segmentation_file);
 
@@ -443,7 +443,7 @@ function zef = zeffiro_interface(args)
 
     if not(args.open_figure == "")
 
-        open_figure_file = open_figure;
+        open_figure_file = args.open_figure;
 
         if not(iscell(open_figure_file))
 
@@ -483,7 +483,7 @@ function zef = zeffiro_interface(args)
 
     if not(args.open_figure_folder == "")
 
-        file_path = open_figure_folder;
+        file_path = args.open_figure_folder;
 
         dir_aux = dir(fullfile(zef_data.program_path,file_path));
 
