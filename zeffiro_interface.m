@@ -534,7 +534,8 @@ function zef = zeffiro_interface(args)
 
     end % if
 
-    % Finally, before possibly quitting, run the script given as an argument.
+    % Before possibly saving and quitting, run the script given as an
+    % argument.
     %
     % NOTE: using eval here is very unsafe. Allows for arbitrary code
     % execution. Make sure given script is from a trusted source.
