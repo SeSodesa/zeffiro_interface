@@ -358,7 +358,7 @@ function zef = zeffiro_interface(args)
         [file_path, fname, fsuffix] = fileparts(open_project_file);
 
         if file_path == ""
-            file_path = "./data/";
+            file_path = fullfile(zef.program_path, "data");
         end
 
         if fsuffix == ""
@@ -383,7 +383,7 @@ function zef = zeffiro_interface(args)
 
         if file_path == ""
 
-            file_path = "./data/";
+            file_path = fullfile(zef.program_path, "data");
 
         end
 
@@ -417,7 +417,7 @@ function zef = zeffiro_interface(args)
 
         if file_path == ""
 
-            file_path = "./data/";
+            file_path = fullfile(zef.program_path, "data");
 
         end
 
@@ -460,7 +460,7 @@ function zef = zeffiro_interface(args)
             [file_path, fname, fsuffix] = fileparts(open_figure_file{i});
 
             if file_path == ""
-                file_path = "./fig/";
+                file_path = fullfile(zef.program_path, "fig");
             end
 
             if fsuffix == ""
@@ -529,7 +529,7 @@ function zef = zeffiro_interface(args)
 
         if file_path == ""
 
-            file_path = "./data/";
+            file_path = fullfile(zef.program_path, "data");
 
         end
 
@@ -559,7 +559,7 @@ function zef = zeffiro_interface(args)
 
         if file_path == ""
 
-            file_path = "./data/";
+            file_path = fullfile(zef.program_path, "data");
 
         end
 
