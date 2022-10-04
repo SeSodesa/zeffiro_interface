@@ -485,11 +485,11 @@ function zef = zeffiro_interface(args)
 
         file_path = args.open_figure_folder;
 
-        dir_aux = dir(fullfile(zef_data.program_path,file_path));
+        dir_aux = dir(fullfile(zef.program_path,file_path));
 
         for i = 3 : length(dir_aux)
 
-            [~, fname, fsuffix] = fileparts(dir_aux(i).name);
+            [~, fname, fsuffix] = fileparts(string(dir_aux(i).name));
 
             if isequal(fsuffix, ".fig")
 
