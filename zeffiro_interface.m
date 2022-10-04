@@ -355,19 +355,19 @@ function zef = zeffiro_interface(args)
 
         open_project_file = args.open_project;
 
-        [file_path, file_1, file_2] = fileparts(open_project_file);
+        [file_path, fname, fsuffix] = fileparts(open_project_file);
 
         if file_path == ""
             file_path = "./data/";
         end
 
-        if file_2 == ""
-            file_2 = ".mat";
+        if fsuffix == ""
+            fsuffix = ".mat";
         end
 
         zef.file_path = file_path;
 
-        zef.file = file_1 + file_2;
+        zef.file = fname + fsuffix;
 
         zef = zef_load(zef, zef.file, zef.file_path);
 
@@ -379,7 +379,7 @@ function zef = zeffiro_interface(args)
 
         import_segmentation_file = import_to_new_project;
 
-        [file_path, file_1, file_2] = fileparts(import_segmentation_file);
+        [file_path, fname, fsuffix] = fileparts(import_segmentation_file);
 
         if file_path == ""
 
@@ -387,9 +387,9 @@ function zef = zeffiro_interface(args)
 
         end
 
-        if file_2 == ""
+        if fsuffix == ""
 
-            file_2 = ".mat";
+            fsuffix = ".mat";
 
         end
 
@@ -399,7 +399,7 @@ function zef = zeffiro_interface(args)
 
         zef.file_path = file_path;
 
-        zef.file = file_1 + file_2;
+        zef.file = fname + fsuffix;
 
         zef = zef_import_segmentation(zef);
 
@@ -413,7 +413,7 @@ function zef = zeffiro_interface(args)
 
         import_segmentation_file = args.import_to_existing_project;
 
-        [file_path, file_1, file_2] = fileparts(import_segmentation_file);
+        [file_path, fname, fsuffix] = fileparts(import_segmentation_file);
 
         if file_path == ""
 
@@ -421,15 +421,15 @@ function zef = zeffiro_interface(args)
 
         end
 
-        if file_2 == ""
+        if fsuffix == ""
 
-            file_2 = ".mat";
+            fsuffix = ".mat";
 
         end
 
         zef.file_path = file_path;
 
-        zef.file = file_1 + file_2;
+        zef.file = fname + fsuffix;
 
         zef.new_empty_project = 0;
 
@@ -457,19 +457,19 @@ function zef = zeffiro_interface(args)
 
         for i = 1 : length(open_figure_file)
 
-            [file_path, file_1, file_2] = fileparts(open_figure_file{i});
+            [file_path, fname, fsuffix] = fileparts(open_figure_file{i});
 
             if file_path == ""
                 file_path = "./fig/";
             end
 
-            if file_2 == ""
-                file_2 = ".fig";
+            if fsuffix == ""
+                fsuffix = ".fig";
             end
 
             zef.file_path = file_path;
 
-            zef.file = fullfile(file_1, file_2);
+            zef.file = fname + fsuffix;
 
             zef.save_switch = 1;
 
@@ -489,13 +489,13 @@ function zef = zeffiro_interface(args)
 
         for i = 3 : length(dir_aux)
 
-            [~, file_1, file_2] = fileparts(dir_aux(i).name);
+            [~, fname, fsuffix] = fileparts(dir_aux(i).name);
 
-            if isequal(file_2, ".fig")
+            if isequal(fsuffix, ".fig")
 
                 zef.file_path = file_path;
 
-                zef.file = file_1 + file_2;
+                zef.file = fname + fsuffix;
 
                 zef.save_switch = 1;
 
@@ -523,9 +523,9 @@ function zef = zeffiro_interface(args)
 
     if not(args.export_fem_mesh == "")
 
-        export_fem_mesh_file = export_fem_mesh;
+        export_fem_mesh_file = args.export_fem_mesh;
 
-        [file_path, file_1, file_2] = fileparts(export_fem_mesh_file );
+        [file_path, fname, fsuffix] = fileparts(export_fem_mesh_file );
 
         if file_path == ""
 
@@ -533,15 +533,15 @@ function zef = zeffiro_interface(args)
 
         end
 
-        if file_2 == ""
+        if fsuffix == ""
 
-            file_2 = ".mat";
+            fsuffix = ".mat";
 
         end
 
         zef.file_path = file_path;
 
-        zef.file = fullfile(file_1, ile_2);
+        zef.file = fname + fsuffix;
 
         zef.save_switch = 1;
 
@@ -555,7 +555,7 @@ function zef = zeffiro_interface(args)
 
         save_project_file = args.save_project;
 
-        [file_path, file_1, file_2] = fileparts(save_project_file);
+        [file_path, fname, fsuffix] = fileparts(save_project_file);
 
         if file_path == ""
 
@@ -563,15 +563,15 @@ function zef = zeffiro_interface(args)
 
         end
 
-        if file_2 == ""
+        if fsuffix == ""
 
-            file_2 = ".mat";
+            fsuffix = ".mat";
 
         end
 
         zef.file_path = file_path;
 
-        zef.file = file_1 + file_2;
+        zef.file = fname + fsuffix;
 
         zef.save_switch = 1;
 
