@@ -7,42 +7,42 @@ function zef = zeffiro_interface(args)
 % of key–value arguments, which can be called as a list of name-value pairs as
 % follows:
 %
-%   zef = zeffiro_interface('name_1', value_1, 'name_2', value_2, …);
+%   zef = zeffiro_interface("name_1", value_1, "name_2", value_2, …);
 %
 % Matlab versions newer or equal to r2021a may also use the syntax
 %
 %   zef = zeffiro_interafce(name_1=value_1, name_2=value_2, …)
 %
 % Either way, this enables running Zeffiro with or without a display and
-% performing different operations. The list of names (and their values) is the
+% performing different operations. The list of names and their values is the
 % following:
 %
 %   name                            value
 %
-%   'restart'                       none
-%   'start_mode'                    'display' or 'nodisplay'
+%   'restart'                       true or false (default = false)
+%   'start_mode'                    'display' or 'nodisplay' (default = "display")
 %   'open_project'                  <project file name>,
-%   'import_to_new_project'         <file name>,
-%   'import_to_existing_project'    <file name>,
-%   'save_project'                  <file name>,
-%   'export_fem_mesh'               <file name>,
-%   'open_figure'                   <file name>,
-%   'open_figure_folder'            <file name>,
-%   'run_script'                    <file name>,
-%   'exit_zeffiro'                  none
-%   'quit_matlab'                   none
-%   'use_github'                    1 (yes) or 0 (no)
-%   'use_gpu'                       1 (yes) or 0 (no)
-%   'use_gpu_graphic'               1 (yes) or 0 (no)
+%   'import_to_new_project'         <file name> (default = ""),
+%   'import_to_existing_project'    <file name> (default = ""),
+%   'save_project'                  <file name> (default = ""),
+%   'export_fem_mesh'               <file name> (default = ""),
+%   'open_figure'                   <file name> (default = ""),
+%   'open_figure_folder'            <file name> (default = ""),
+%   'run_script'                    <the script as a string>,
+%   'exit_zeffiro'                  true or false (default = false)
+%   'quit_matlab'                   true or false (default = false)
+%   'use_github'                    true or false (default = false)
+%   'use_gpu'                       true or false (default = false)
+%   'use_gpu_graphic'               true or false (default = false)
 %   'gpu_num'                       <gpu device number>
-%   'use_display'                   1 (yes) or 0 (no)
+%   'use_display'                   true or false (default = false)
 %   'parallel_processes'            <parallel pool size>
-%   'verbose_mode'                  1 (yes) or 0 (no)
-%   'use_waitbar'                   1 (yes) or 0 (no)
-%   'use_log'                       1 (yes) or 0 (no)
+%   'verbose_mode'                  true or false (default = false)
+%   'use_waitbar'                   true or false (default = false)
+%   'use_log'                       true or false (default = false)
 %   'log_file_name'                 <log file name>
 %
-%   NOTE: the value behind the name run_script is run using the Matlab
+%   NOTE: the value behind the name "run_script" is run using the Matlab
 %   function eval, meaning one should be absolutely sure that the script
 %   contents come from a trusted source.
 %
@@ -99,9 +99,15 @@ function zef = zeffiro_interface(args)
 
     if not(args.restart) && evalin("base","exist('zef', 'var');")
 
-        error("It looks like that another instance of Zeffiro interface is already open. To enable this script, close Zeffiro Interface by command 'zef_close_all' or clear zef by command 'clear zef'.")
+        error( ...
+            "It looks like another instance of Zeffiro Interface is already open." ...
+            + " To start a new instance, close Zeffiro Interface with 'zef_close_all' or" ...
+            + " clear zef from the base workspace with the command 'clear zef'." ...
+        )
 
     end
+
+    addpath(fullfile("m"))
 
     zef_close_all();
 
