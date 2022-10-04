@@ -42,7 +42,7 @@ end
 
 zef_data = zef;
 zef_data = zef_remove_object_handles(zef_data);
-save(zef.save_file_path + zef.save_file,'-struct','zef_data','-v7.3');
+save(fullfile(zef.save_file_path, zef.save_file),'-struct','zef_data','-v7.3');
 clear zef_data;
 zef_segmentation_tool;
 zef_mesh_tool;
