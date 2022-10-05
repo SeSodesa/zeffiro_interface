@@ -6,7 +6,7 @@ zef.compartment_structure_aux = cell(0);
 
 if not(zef.new_empty_project)
 
-zef.segmentation_profile_aux = readcell(zef.program_path + "/profile/" + zef.profile_name + "/zeffiro_segmentation.ini",'filetype','text','delimiter',',');
+zef.segmentation_profile_aux = readcell([zef.program_path '/profile/' zef.profile_name  '/zeffiro_segmentation.ini'],'filetype','text','delimiter',',');
 [zef_i] = find(ismember(char(zef.segmentation_profile_aux{:,2}),{'compartment_tags'}));
 
 zef.compartment_tags_aux = zef.segmentation_profile_aux(zef_i,4:end);

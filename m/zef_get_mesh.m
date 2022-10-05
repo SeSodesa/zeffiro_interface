@@ -24,8 +24,6 @@ eval(['zef.' field_id '_submesh_ind_original_surface_mesh = [];']);
 merge_on = eval(['zef.' field_id '_merge']);
 invert_on = eval(['zef.' field_id '_invert']);
 
-file_str = strjoin(file_str, "");
-
 if isequal(file_type,'points')
 
 if merge_on

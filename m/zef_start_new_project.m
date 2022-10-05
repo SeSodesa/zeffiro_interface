@@ -3,7 +3,7 @@
 if zef.use_display
 zef = zeffiro_interface('restart', true);
 else
-zef = zeffiro_interface('restart', true, 'start_mode', 'nodisplay');
+zef = zeffiro_interface('restart', true, 'start_mode','nodisplay');
 end
 
 zef = zef_delete_all_compartments(zef);

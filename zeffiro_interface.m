@@ -266,7 +266,7 @@ function zef = zeffiro_interface(args)
     %
     % run(code_path + filesep + "zef_close_all.m");
 
-    zef.program_path = program_path;
+    zef.program_path = char(program_path);
 
     zef.code_path = code_path;
 
@@ -365,9 +365,9 @@ function zef = zeffiro_interface(args)
             fsuffix = ".mat";
         end
 
-        zef.file_path = file_path;
+        zef.file_path = char(file_path);
 
-        zef.file = fname + fsuffix;
+        zef.file = char(fname + fsuffix);
 
         zef = zef_load(zef, zef.file, zef.file_path);
 
@@ -397,9 +397,9 @@ function zef = zeffiro_interface(args)
 
         zef_start_new_project;
 
-        zef.file_path = file_path;
+        zef.file_path = char(file_path);
 
-        zef.file = fname + fsuffix;
+        zef.file = char(fname + fsuffix);
 
         zef = zef_import_segmentation(zef);
 
@@ -427,9 +427,9 @@ function zef = zeffiro_interface(args)
 
         end
 
-        zef.file_path = file_path;
+        zef.file_path = char(file_path);
 
-        zef.file = fname + fsuffix;
+        zef.file = char(fname + fsuffix);
 
         zef.new_empty_project = 0;
 
@@ -467,9 +467,9 @@ function zef = zeffiro_interface(args)
                 fsuffix = ".fig";
             end
 
-            zef.file_path = file_path;
+            zef.file_path = char(file_path);
 
-            zef.file = fname + fsuffix;
+            zef.file = char(fname + fsuffix);
 
             zef.save_switch = 1;
 
@@ -493,9 +493,9 @@ function zef = zeffiro_interface(args)
 
             if isequal(fsuffix, ".fig")
 
-                zef.file_path = file_path;
+                zef.file_path = char(file_path);
 
-                zef.file = fname + fsuffix;
+                zef.file = char(fname + fsuffix9;
 
                 zef.save_switch = 1;
 
@@ -539,9 +539,9 @@ function zef = zeffiro_interface(args)
 
         end
 
-        zef.file_path = file_path;
+        zef.file_path = char(file_path);
 
-        zef.file = fname + fsuffix;
+        zef.file = char(fname + fsuffix);
 
         zef.save_switch = 1;
 
@@ -569,9 +569,9 @@ function zef = zeffiro_interface(args)
 
         end
 
-        zef.file_path = file_path;
+        zef.file_path = char(file_path);
 
-        zef.file = fname + fsuffix;
+        zef.file = char(fname + fsuffix);
 
         zef.save_switch = 1;
 
