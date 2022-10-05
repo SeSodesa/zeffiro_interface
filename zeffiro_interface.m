@@ -495,7 +495,7 @@ function zef = zeffiro_interface(args)
 
                 zef.file_path = char(file_path);
 
-                zef.file = char(fname + fsuffix9;
+                zef.file = char(fname + fsuffix);
 
                 zef.save_switch = 1;
 
