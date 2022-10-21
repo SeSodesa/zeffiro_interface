@@ -110,6 +110,10 @@ function sensitivities_with_statistics = inverse_sensitivity_fn( ...
 
     project_struct = zef_eeg_lead_field(project_struct);
 
+    % Use Cartesian coordinates.
+
+    project_struct.source_direction_mode = 1;
+
     % Start the MNE tool and calculate reconstruction sensitivities for the
     % given MNE type.
 
