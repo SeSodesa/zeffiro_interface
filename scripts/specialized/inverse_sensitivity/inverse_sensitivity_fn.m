@@ -26,7 +26,7 @@ function sensitivities_with_statistics = inverse_sensitivity_fn( ...
     % - inverse_method
     %
     %   The name of an inverse method as a string. Valid names are "sLORETA",
-    %   "dSPM", "MNE" and "Dipole Scan".
+    %   "dSPM", "MNE", "IAS" and "Dipole Scan".
     %
     % - mesh_resolution
     %
@@ -70,7 +70,7 @@ function sensitivities_with_statistics = inverse_sensitivity_fn( ...
 
         project_path (1,:) char
 
-        inverse_method (1,:) char { mustBeMember(inverse_method, ["sLORETA", "dSPM", "MNE", "Dipole Scan"]) }
+        inverse_method (1,:) char { mustBeMember(inverse_method, ["sLORETA", "dSPM", "MNE", "IAS", "Dipole Scan"]) }
 
         mesh_resolution (1,1) double { mustBeReal, mustBePositive }
 
@@ -124,6 +124,10 @@ function sensitivities_with_statistics = inverse_sensitivity_fn( ...
     elseif inverse_method == "Dipole Scan"
 
         sensitivities = zef_sensitivity_map_dipoleScan(project_struct, n_of_runs, noise_level_db, diff_type);
+
+    elseif inverse_method == "IAS"
+
+        sensitivities = zef_sensitivity_map_ias(project_struct, n_of_runs, noise_level_db, diff_type);
 
     else
 
