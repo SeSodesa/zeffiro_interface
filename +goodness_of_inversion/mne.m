@@ -1,5 +1,39 @@
 function [rec, info] = mne(zef, mne_type, params)
 
+    %
+    % mne
+    %
+    % A function which performs a minimum norm estimate (MNE) of type MNE,
+    % sLORETA or dSPM on a given lead field.
+    %
+    % Input:
+    %
+    % - zef
+    %
+    %   An instance of the core struct zef of Zeffiro Interface.
+    %
+    % - mne_type
+    %
+    %   One of "MNE", "sLORETA" or "dSPM". Capitalization matters.
+    %
+    % - params
+    %
+    %   The set of parameters related to MNE as name–value pairs. They are as
+    %   follows:
+    %
+    %   - TODO
+    %
+    % Output:
+    %
+    % - rec
+    %
+    %   The MNE reconstruction or a set of source directions.
+    %
+    % - info
+    %
+    %   Human readable information related to the reconstruction.
+    %
+
     arguments
 
         zef (1,1) struct
