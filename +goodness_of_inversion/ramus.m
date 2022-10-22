@@ -66,6 +66,8 @@ function [z,reconstruction_information] = ramus( ...
 
         params.hyperprior_weight (1,1) double { mustBeReal, mustBePositive } = 1 / 2
 
+        params.prior_over_measurement_db (1,1) double = 20;
+
     end
 
     h = zef_waitbar([0 0 0],['RAMUS iteration.']);
@@ -80,7 +82,7 @@ function [z,reconstruction_information] = ramus( ...
     ramus_hyperprior = params.hyperprior;
     sparsity_factor = params.multires_sparsity;
     snr_val = params.signal_to_noise_ratio;
-    pm_val = zef.inv_prior_over_measurement_db;
+    pm_val = params.prior_over_measurement_db;
     amplitude_db = zef.inv_amplitude_db;
     pm_val = pm_val - amplitude_db;
     sampling_freq = params.sampling_frequency;
@@ -107,7 +109,7 @@ function [z,reconstruction_information] = ramus( ...
     reconstruction_information.source_directions = zef.source_directions;
     reconstruction_information.ias_hyperprior = params.hyperprior;
     reconstruction_information.snr_val = params.signal_to_noise_ratio;
-    reconstruction_information.pm_val = zef.inv_prior_over_measurement_db;
+    reconstruction_information.pm_val = params.prior_over_measurement_db;
 
     [L,n_interp, procFile] = goodness_of_inversion.process_lead_fields(zef);
 
