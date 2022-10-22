@@ -2,7 +2,7 @@ function [rec, info] = mne(zef, mne_type, params)
 
     arguments
 
-        zef struct
+        zef (1,1) struct
 
         mne_type (1,1) string { mustBeMember(mne_type, ["MNE", "sLORETA", "dSPM"]) }
 
