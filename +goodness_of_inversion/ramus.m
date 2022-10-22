@@ -62,6 +62,10 @@ function [z,reconstruction_information] = ramus( ...
 
         params.multires_sparsity (1,1) double { mustBeInteger, mustBePositive } = 10;
 
+        params.hyperprior_tail_length_db (1,1) double { mustBeReal, mustBePositive } = 1
+
+        params.hyperprior_weight (1,1) double { mustBeReal, mustBePositive } = 1 / 2
+
     end
 
     h = zef_waitbar([0 0 0],['RAMUS iteration.']);
@@ -212,22 +216,42 @@ function [z,reconstruction_information] = ramus( ...
                         source_count_aux = 1;
                     end
 
-                    if zef.ramus_normalize_data==1
-                        normalize_data = 'maximum';
+                    if params.data_normalization == "maximum entry"
+                        normalize_data = "maximum";
                     else
-                        normalize_data = 'average';
+                        normalize_data = "L2";
                     end
 
                     if ramus_hyperprior == "spatially balanced"
-                        balance_spatially = 1;
+                        balance_spatially = true;
                     else
-                        balance_spatially = 0;
+                        balance_spatially = false;
                     end
 
-                    if zef.inv_hyperprior == 1
-                        [beta, theta0] = zef_find_ig_hyperprior(snr_val-pm_val,zef.inv_hyperprior_tail_length_db,L_aux_2,source_count, zef.ramus_normalize_data,balance_spatially,zef.inv_hyperprior_weight);
-                    elseif zef.inv_hyperprior == 2
-                        [beta, theta0] = zef_find_g_hyperprior(snr_val-pm_val,zef.inv_hyperprior_tail_length_db,L_aux_2,source_count,zef.ramus_normalize_data,balance_spatially,zef.inv_hyperprior_weight);
+                    if params.hyperprior == "spatially balanced"
+
+                        [beta, theta0] = goodness_of_inversion.find_ig_hyperprior( ...
+                            L_aux_2, ...
+                            snr_val-pm_val, ...
+                            params.hyperprior_tail_length_db, ...
+                            source_count, ...
+                            normalize_data, ...
+                            balance_spatially, ...
+                            params.hyperprior_weight ...
+                        );
+
+                    elseif params.hyperprior == "spatially constant"
+
+                        [beta, theta0] = zef_find_g_hyperprior( ...
+                            L_aux_2, ...
+                            snr_val-pm_val, ...
+                            params.hyperprior_tail_length_db, ...
+                            source_count, ...
+                            params.data_normalization, ...
+                            balance_spatially, ...
+                            params.hyperprior_weight ...
+                        );
+
                     end
 
                     if n_rep == 1 || zef.ramus_init_guess_mode == 2
