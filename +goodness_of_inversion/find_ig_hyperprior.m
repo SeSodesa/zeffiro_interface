@@ -18,8 +18,8 @@ function [shape_param, scale_param, snr_vec] = find_ig_hyperprior( ...
     %
     % find_ig_hyperprior
     %
-    % Forms the hyper-prior information needed by inverse methods such as
-    % RAMUS.
+    % Forms the inverse-gamma (inv-γ) hyper-prior information needed by
+    % inverse methods such as RAMUS.
     %
 
     arguments
@@ -143,6 +143,7 @@ function [shape_param, scale_param, snr_vec] = find_ig_hyperprior( ...
     end
 
     shape_param = (a+b)/2;
+
     scale_param = source_strength.^2 .* relative_noise_std.^2 .* (shape_param - 1) ./ source_space_size;
 
 end % function
