@@ -228,6 +228,7 @@ for d in ${FREESURFER_INFOLDER}/[^.]*/; do
 		'zef.exclude_box = 1;', \
 		'zef.pml_max_size = 1.2;', \
 		'zef.refinement_surface_on = 1;', \
+		'zef.use_fem_mesh_inflation = 0;', \
 		'zef = zef_update(zef);', \
 		'zef = zef_add_compartment(zef);', \
 		'zef.compartment_tags = zef.compartment_tags([2:end 1]);', \
