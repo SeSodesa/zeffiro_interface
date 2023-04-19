@@ -2,7 +2,7 @@ function zef = zef_nse_tool_start(zef)
 
 if nargin == 0
 zef = evalin('base','zef');
-end    
+end
 
 zef = zef_tool_start(zef,'zef_nse_tool_window',2/3,1);
 

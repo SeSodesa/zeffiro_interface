@@ -10,8 +10,8 @@ end
 
 if not(isfield(zef,'inv_time_2'))
 zef.nse_field.inv_time_2 = 0;
-end 
- 
+end
+
 if not(isfield(zef,'inv_time_3'))
 zef.nse_field.inv_time_3 = 0;
 end
@@ -38,11 +38,11 @@ end
 
 if not(isfield(zef.nse_field,'viscosity_exponent'))
 zef.nse_field.viscosity_exponent = 0.6;
-end 
+end
 
 if not(isfield(zef.nse_field,'viscosity_delta'))
 zef.nse_field.viscosity_delta = 0.001;
-end 
+end
 
 if not(isfield(zef.nse_field,'use_gpu'))
 zef.nse_field.use_gpu = 1;
@@ -132,6 +132,13 @@ end
 
 if not(isfield(zef.nse_field,'venule_diameter'))
 zef.nse_field.venule_diameter = 2e-5;
+end
+
+
+if not ( isfield ( zef.nse_field, "arteriole_diameter" ) )
+
+    zef.nse_field.arteriole_diameter = zef.nse_field.venule_diameter ;
+
 end
 
 if not(isfield(zef.nse_field,'pressure_decay_in_arterioles'))
@@ -226,5 +233,4 @@ if not(isfield(zef.nse_field,'gravity_z'))
 zef.nse_field.gravity_z = 9.81;
 end
 
-
-end
+end % function
